@@ -1,0 +1,205 @@
+** we will maintain constants for staff departments
+-------------------------------------------------------------------
+*common to all table
+id,int,pk
+created_by, str		fk, users.id
+created_at, Date
+updated_at, Date	nullable
+updated_by, str		nullable	fk,users.id
+is_active, bool
+---------------------------------------------------------------------------
+21.table:roles
+-user_id,int, fk users.id
+-role, int, default 3
+--------------------------------------------------------------------------
+20.table:users
+-mobile,str			unique
+-email,str			unique
+-passwrod,str
+-address,str			nullable
+-first_name,str
+-last_name,str		
+-gender,str			nullable
+-dob,Date			nullable
+-profile_picture_url,str	nullable
+---------------------------------------------------------------------------------
+19.table:staffs
+-user_id, int, fk users.id	unique
+-salary, double
+-qualification,str
+-join_date,Date
+-leave_date,Date
+-department,str
+----------------------------------------------------------------------------------
+18.table:cart
+-product_id,int,fk product.id
+-user_id,int,fk,users.id
+-status,int, default 1
+----------------------------------------------------------------------------------
+17.table:wishlist
+-product_id,int,fk product.id
+-user_id,int,fk,users.id
+----------------------------------------------------------------------------------
+16.table:orders
+-product_id,int, fk products.id
+-user_id,int,fk users.id
+-quanity,int
+-price, double
+-payment_method,int
+-order_status,int
+-shipping_address,str
+-payment_status,int
+-area_pincode, str
+----------------------------------------------------------------------------------
+15.table:product
+-product_name,str
+-brand, str
+-model,str
+-price,str
+-discount,str, nullable
+-stock,int	
+-category_id,int, fk categories.id
+-product_img_urls,str[], null[]
+-specifications,str
+-payment_methods, int[]
+-available_area_pincodes,str[]
+-return_policy,str,null
+----------------------------------------------------------------------------------
+14.table:categories
+-category_name,str
+-category_img_url:str, null
+----------------------------------------------------------------------------------
+13.table:services
+-service_name, str			
+-description, str
+-service_type_id,int, fk service_types
+-service_charge,double
+-available_area_pincodes, str[]
+-payment_methods, int[]
+-discount, int
+-service_img_urls, str[]
+----------------------------------------------
+12.table:service_types
+-type_name, str
+-service_img_url, str
+-------------------------------------------
+11.table:bookings					
+-service_id, int, fk service.id				
+-user_id, int, fk user.id				
+-staff_id, int, fk user.id				
+-total_charges, double					
+-service_location, str					
+-service_status, int					
+-payment_status,int					
+-payment_method, int			
+-area_pincode, str
+----------------------------------------------------------------------
+10.table:messages	
+-conversation_id, fk conversation.id
+-message_text, text
+-attachament_url, text
+-read_status, bool
+-------------------------------------------------
+9.table:conversations
+-id
+-user_id, int fk user.id
+-staff_id, int fk user.id
+---------------------------------------------------------------------------
+8.table:product_reviews
+-user_id, int, fk user.id
+-review_title, text
+-description, text
+-img_urls, str[]
+-rating, double
+-product_id, int, fk products.id
+---------------------------------------------------------------------------
+7.table:service_reviews
+-user_id, int, fk user.id
+-review_title, text
+-description, text
+-img_urls, str[]
+-rating, double
+-service_id, int, fk services.id
+---------------------------------------------------------------------------
+6.table:contacts
+-email, text
+-phone, text
+-name, text
+-query, text
+-query_img_urls, str[]
+----------------------------------------------------------------------------
+5.table:coupons					
+-coupon_code, str					
+-expiry_date, Date					
+-discount, not null
+-discount_type, not null, int			
+-coupon_img, str
+-count, int	
+-----------------------------------------------------------------------------	
+4.table:product_questions
+-product_id, int fk, products.id
+-question, text, not null
+-user_id, int, fk, users.id
+------------------------------------------------------------------------------
+3.table:product_answers
+-question_id, int, fk
+-answer, text
+-staff_id, int, fk, users.id
+------------------------------------------------------------------------------	
+2.table:service_questions
+-service_id, int fk, services.id
+-question, text, not null
+-user_id, int, fk, users.id
+-------------------------------------------------------------------------------	
+1.table:service_answers
+-question_id, int, fk
+-answer, text
+-staff_id, int, fk, users.id
+-------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------
+constants
+-------------------------------------------------------------
+payment_methods:
+	1-COD
+	2-ONLINE_PAYMENT
+-------------------------
+roles:
+	1-ADMIN
+	2-STAFF
+	3-CUSTOMER
+------------------------
+order_statuses:
+	1-PROCESSING
+	2-PACKAGING
+	3-SHIPPING
+	4-DELIVERED
+	5-ON_THE_WAY
+	6-RETURNED
+	7-CANCELLED
+------------------------
+discount_types:
+	1-CASH
+	2-PERCENTAGE
+-----------------------
+service_statuses:
+	1-BOOKED
+	2-ON_THE_WAY
+	3-PROVIDED
+	4-CANCELLED
+	5-PENDING
+	6-RESCHEDULED
+-----------------------
+cart_status:
+	1-REMOVED
+	2-ORDERED
+	3-ADDED
+-----------------------
+departments:
+	1-
+	2-
+	3-
