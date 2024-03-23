@@ -17,12 +17,12 @@
                 <input type="password" id="password" class="form-control">
             </div>
             <div class="col-md-8 my-3">
-                <input type="submit" value="LOGIN" class="btn btn-dark btn-sm">
+                <input type="submit" value="LOGIN" class="btn btn-outline-dark btn-sm">
                 <div class="row my-3">
-                <div class="col">
-                    <a href="#">Forgot password ?</a>
-                    <a href="#" class="float-end">New user ?</a>
-                </div>
+                    <div class="col">
+                        <a href="{{ url_for('auth_bp.reset_password') }}">Forgot password ?</a>
+                        <a href="{{ url_for('auth_bp.signup') }}" class="float-end">New user ?</a>
+                    </div>
                 </div>
             </div>
         </div>
