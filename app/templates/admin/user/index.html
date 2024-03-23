@@ -19,6 +19,8 @@
                 <th># id</th>
                 <th>email</th>
                 <th>password</th>
+                <th>roles</th>
+
             </tr>
         </thead>
         <tbody>
@@ -27,6 +29,11 @@
                 <td>{{user.id}}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.password }}</td>
+                <td>
+                {% for role in user.roles %}
+                    {{ roles[role.role] }},
+                {% endfor %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>

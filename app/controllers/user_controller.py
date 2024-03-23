@@ -22,4 +22,9 @@ class UserController:
 
     def get(self):
         users = user_service.get()
-        return render_template("admin/user/index.html", users=users)
+        roles = {
+            1: "ADMIN",
+            2: "STAFF",
+            3: "CUSTOMER"
+        }
+        return render_template("admin/user/index.html", users=users, roles=roles)
