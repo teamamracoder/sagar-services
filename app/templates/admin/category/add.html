@@ -12,8 +12,17 @@
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
-                {{ form.category.label(class="form-label") }}
-                {{ form.category(class="form-control form-control-sm") }}
+                {{ form.category_name.label(class="form-label") }}
+                {{ form.category_name(class="form-control form-control-sm") }}
+            </div>
+            <p class="text-danger">
+                {% if error %}
+                    {{ error }}
+                {% endif %}
+            </p>
+            <div class="col-12">
+                {{ form.category_img_url.label(class="form-label") }}
+                {{ form.category_img_url(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
