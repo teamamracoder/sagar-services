@@ -7,6 +7,8 @@
     <title>{% block title %}Dashboard{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
@@ -20,27 +22,114 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url_for('user_bp.index') }}">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('role_bp.index') }}">Roles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('category.index') }}">Categories</a>
-                    </li>
+                    <div class="list-group mt-3 rounded-0 d-lg-none" id="navLinks">
+                        <!-- links -->
+                    </div>
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="container-fluid" style="min-height: 600px;">
-        {% block content %}{% endblock %}
+        <div class="row">
+            <div class="col-2 p-0 d-none d-lg-block" style="min-height: 800px;">
+                <div class="list-group rounded-0 d-none d-lg-block" id="sidebarLinks">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                        Dashboard
+                    </a>
+                    <a class="list-group-item list-group-item-action p-0">
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item rounded-0">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed px-3" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#profile" aria-expanded="false"
+                                        aria-controls="profile">
+                                        Profile
+                                    </button>
+                                </h2>
+                                <div id="profile" class="accordion-collapse collapse">
+                                    <div class="accordion-body p-0">
+                                        <div class="list-group rounded-0">
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-1</a>
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-2</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item rounded-0">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed px-3" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#product" aria-expanded="false"
+                                        aria-controls="product">
+                                        Product
+                                    </button>
+                                </h2>
+                                <div id="product" class="accordion-collapse collapse">
+                                    <div class="accordion-body p-0">
+                                        <div class="list-group rounded-0">
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-1</a>
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-2</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed px-3" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#service" aria-expanded="false"
+                                        aria-controls="service">
+                                        Service
+                                    </button>
+                                </h2>
+                                <div id="service" class="accordion-collapse collapse">
+                                    <div class="accordion-body p-0">
+                                        <div class="list-group rounded-0">
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-1</a>
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-2</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed px-3" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#support" aria-expanded="false"
+                                        aria-controls="support">
+                                        Support
+                                    </button>
+                                </h2>
+                                <div id="support" class="accordion-collapse collapse">
+                                    <div class="accordion-body p-0">
+                                        <div class="list-group rounded-0">
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-1</a>
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action ui-bg-grey">link-2</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-10">{% block content %}{% endblock %}</div>
+        </div>
     </div>
 
-    <footer>
-        <div class="bg-dark text-white text-center">all rights are reserved &copy; {{'2024'}}</div>
-    </footer>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        $('#navLinks').html($('#sidebarLinks').html())
+    </script>
 </body>
 
 </html>

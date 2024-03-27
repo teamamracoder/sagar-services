@@ -2,3 +2,11 @@
 .form-control {
   border-radius: 0;
 }
+
+.ui-bg-grey {
+  background-color: #0002;
+}
+
+.ui-bg-grey:hover {
+  background-color: #00000031;
+}

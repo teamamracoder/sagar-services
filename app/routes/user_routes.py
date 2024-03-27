@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask_login import login_required
 
 from app.controllers import UserController
 
@@ -7,6 +8,7 @@ user_controller = UserController()
 
 
 @user_bp.route("/admin/users/")
+@login_required
 def index():
     return user_controller.get()
 
