@@ -1,5 +1,5 @@
 from db import db
-
+from datetime import datetime
 
 class CategoryModel(db.Model):
     __tablename__ = "categories"
@@ -16,7 +16,7 @@ class CategoryModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.DateTime)
+    created_at=db.Column(db.DateTime,default=datetime.now)
 
     updated_by = db.Column(
         db.Integer,
@@ -26,12 +26,12 @@ class CategoryModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime)
+    updated_at=db.Column(db.DateTime,default=datetime.now)
 
     is_active=db.Column(db.Boolean,default=True)
 
 
-    category_img_url=db.Column(db.Text)
+    product_img_url=db.Column(db.Text)
 
 
     products = db.relationship("ProductModel", back_populates="categories")

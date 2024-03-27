@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">{% extends 'admin/base.html' %}
+
+    {% block title %}Edit ServiceAnswer{% endblock %}
+    
+    {% block content %}
+    
+    
+    <div class="container">
+        <h3 class="text-center my-3">Edit ServiceAnswer</h3>
+    
+        <form method="POST" action="{{ url_for('service_answer.edit', id=id) }}">
+            {{ form.csrf_token }}
+            <div class="row">
+                <div class="col-12">
+                    {{ form.created_by.label(class="form-label") }}
+                    {{ form.created_by(class="form-control form-control-sm") }}
+                </div>
+                <div class="col-12">
+                  {{ form.question_id.label(class="form-label") }}
+                  {{ form.question_id(class="form-control form-control-sm") }}
+              </div>
+                <div class="col-12">
+                    {{ form.answer.label(class="form-label") }}
+                    {{ form.answer(class="form-control form-control-sm") }}
+                </div>
+                <div class="col-12">
+                    {{ form.staff_id.label(class="form-label") }}
+                    {{ form.staff_id(class="form-control form-control-sm") }}
+                </div>
+                <div class="col-12 my-2">
+                    <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                    <a href="{{ url_for('service_answer.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                </div>
+            </div>
+        </form>
+    
+    </div>
+    
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Service Answers</title>
+</head>
+<body>
+    <h1 class="text-center">Edit Service Answers</h1>
+    <form action="{{ url_for('service_answer.edit', id=id) }}" method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.created_by.label }}:
+            {{ form.created_by(size=20) }}
+            {% for error in form.created_by.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.question_id.label }}:
+            {{ form.question_id(size=20) }}
+            {% for error in form.question_id.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.answer.label }}:
+            {{ form.answer(size=20) }}
+            {% for error in form.answer.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.staff_id.label }}:
+            {{ form.staff_id(size=20) }}
+            {% for error in form.staff_id.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <button type="submit">Update</button>
+    </form>
+    <a href="{{ url_for('service_answer.index') }}">Back</a>
+</body>
+</html>

@@ -1,32 +1,43 @@
 from db import db
-from flask_login import UserMixin
 from datetime import datetime
 
 
-class UserModel(UserMixin, db.Model):
+class UserModel(db.Model):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id=db.Column(db.Integer, primary_key=True)
 
     created_by = db.Column(db.Integer)
 
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at=db.Column(db.DateTime,default=datetime.now)
 
     updated_by = db.Column(db.Integer)
 
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at=db.Column(db.DateTime,default=datetime.now)
 
-    is_active = db.Column(db.Boolean, default=False)
+    is_active=db.Column(db.Boolean,default=False)
 
     first_name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=False)
-    mobile = db.Column(db.String(20), unique=True, nullable=False)
+    mobile = db.Column(db.String(20), unique=True, nullable=False) 
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     address = db.Column(db.Text)
     gender = db.Column(db.String(20))
     dob = db.Column(db.Date)
     profile_photo_url = db.Column(db.Text)
+
+
+
+
+
+
+
+
+
+
+
+
 
     # roles = db.relationship("RoleModel", backref="user")
     # staff = db.relationship("RoleModel", back_populates="users",uselist=False)

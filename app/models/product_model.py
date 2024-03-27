@@ -23,7 +23,7 @@ class ProductModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.DateTime)
+    created_at=db.Column(db.DateTime,default=datetime.now)
 
     updated_by = db.Column(
         db.Integer,
@@ -33,7 +33,7 @@ class ProductModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime)
+    updated_at=db.Column(db.DateTime,default=datetime.now)
 
     is_active=db.Column(db.Boolean,default=True)
 
@@ -48,6 +48,8 @@ class ProductModel(db.Model):
     discount=db.Column(db.Double)
 
     stock=db.Column(db.Integer,nullable=False)
+
+
 
     product_img_urls=db.Column(db.ARRAY(db.Text),default=[])
 

@@ -1,0 +1,57 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Services</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('service.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Services</th>
+                <th>Description</th>
+                <th>Charge</th>
+                <th>Available area</th>
+                <th>Pay_Method</th>
+                <th>Discount</th>
+                <th>Image</th>
+                <th>Type_Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <td>{{ service.service_name }}</td>
+                <td>{{ service.description }}</td>
+                <td>{{ service.service_charge }}</td>
+                <td>{{ service.available_area_pincode }}</td>
+                <td>{{ service.payment_methods }}</td>
+                <td>{{ service.discount }}</td>
+                <td>{{ service.service_img_urls }}</td>
+                <td>{{ service.service_type_id }}</td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm my-2" href="{{ url_for('service.edit', id=service.id) }}">Update</a>
+                    <a class="btn btn-outline-warning btn-sm my-2" href="{{ url_for('service.status', activate=True, id=service.id) }}">
+                        {% if not service.is_active %}
+                        Active
+                        {% else %}
+                        Deactive
+                        {% endif %}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

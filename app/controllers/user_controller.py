@@ -15,12 +15,16 @@ class UserController:
                 password=form.password.data,
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
-                mobile=form.mobile.data,
+                mobile=form.mobile.data
             )
             return redirect(url_for("user_bp.index"))
         return render_template("admin/user/add.html", form=form)
 
     def get(self):
         users = user_service.get()
-        roles = {1: "ADMIN", 2: "STAFF", 3: "CUSTOMER"}
+        roles = {
+            1: "ADMIN",
+            2: "STAFF",
+            3: "CUSTOMER"
+        }
         return render_template("admin/user/index.html", users=users, roles=roles)

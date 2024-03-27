@@ -11,9 +11,3 @@ class UserService:
 
     def get(self):
         return UserModel.query.all()
-
-    def get_by_id(self, id):
-        return UserModel.query.get(id)
-
-    def get_user_by_email_and_password(self, email, password):
-        return UserModel.query.filter_by(email=email, password=password).first()
