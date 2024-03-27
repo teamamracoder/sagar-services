@@ -17,7 +17,7 @@ class CategoryController:
                 created_at=datetime.now(),
                 category_img_url=form.category_img_url.data
             ):
-                return redirect(url_for("category_bp.index"))
+                return redirect(url_for("category.index"))
             return render_template("admin/category/add.html", form=form,error="category already exist")
         return render_template("admin/category/add.html", form=form)
 
@@ -38,7 +38,7 @@ class CategoryController:
                 updated_at=datetime.now(),
                 category_img_url=form.category_img_url.data
             )
-            return redirect(url_for("category_bp.index"))
+            return redirect(url_for("category.index"))
         form.category_name.data=category.category_name
         form.category_img_url.data=category.category_img_url
         return render_template("admin/category/update.html",id=id, form=form)
@@ -48,4 +48,4 @@ class CategoryController:
         if category is None:
             return render_template("admin/error/something_went_wrong.html")
         category_service.status(id)
-        return redirect(url_for("category_bp.index"))
+        return redirect(url_for("category.index"))

@@ -1,7 +1,7 @@
 from flask import Blueprint
 from app.controllers import CategoryController
 
-category_bp = Blueprint("category_bp", __name__)
+category_bp = Blueprint("category", __name__)
 category_controller = CategoryController()
 
 
