@@ -1,6 +1,5 @@
 from db import db
 from app.models import CategoryModel
-from datetime import datetime
 
 class CategoryService:
     def create(self,**kwargs):
