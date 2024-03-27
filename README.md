@@ -5,11 +5,13 @@
 - install packages
   > pip install -r requirements.txt
 - migration
+
   > flask db init
 
   > flask db migrate -m "msg"
 
   > flask db upgrade
+
 - run
   > flask run
 
@@ -23,6 +25,8 @@
   - https://docs.sqlalchemy.org/en/20/
 - flask-wtf
   - https://flask-wtf.readthedocs.io/en/1.2.x/quickstart/
+- flask_login
+  - https://flask-login.readthedocs.io/en/latest/
 - jinja
   - https://jinja.palletsprojects.com/en/2.11.x/templates/
 - html
