@@ -38,20 +38,35 @@
                 {{ form.stock(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
-                {{ form.product_img_urls.label(class="form-label") }}
-                {{ form.product_img_urls(class="form-control form-control-sm") }}
+                <label class="form-label">Product Image URLs</label>
+                {% for field in form.product_img_urls %}
+                <div class="input-group mb-3">
+                    {{ field(class="form-control") }}
+                    <button class="btn btn-outline-secondary" type="button" onclick="addInputField(this)">Add</button>
+                </div>
+                {% endfor %}
             </div>
             <div class="col-12">
                 {{ form.specifications.label(class="form-label") }}
                 {{ form.specifications(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
-                {{ form.payment_methods.label(class="form-label") }}
-                {{ form.payment_methods(class="form-control form-control-sm") }}
+                <label class="form-label">Payment Methods</label>
+                {% for field in form.payment_methods %}
+                <div class="input-group mb-3">
+                    {{ field(class="form-control") }}
+                    <button class="btn btn-outline-secondary" type="button" onclick="addInputField(this)">Add</button>
+                </div>
+                {% endfor %}
             </div>
             <div class="col-12">
-                {{ form.available_area_pincodes.label(class="form-label") }}
-                {{ form.available_area_pincodes(class="form-control form-control-sm") }}
+                <label class="form-label">Available Area Pincodes</label>
+                {% for field in form.available_area_pincodes %}
+                <div class="input-group mb-3">
+                    {{ field(class="form-control") }}
+                    <button class="btn btn-outline-secondary" type="button" onclick="addInputField(this)">Add</button>
+                </div>
+                {% endfor %}
             </div>
             <div class="col-12">
                 {{ form.return_policy.label(class="form-label") }}
@@ -63,5 +78,14 @@
             </div>
         </div>
     </form>
+    <script>
+    function addInputField(button) {
+        var inputGroup = button.parentNode;
+        var newInput = document.createElement("input");
+        newInput.setAttribute("type", "text");
+        newInput.setAttribute("class", "form-control");
+        inputGroup.parentNode.insertBefore(newInput, inputGroup.nextSibling);
+    }
+    </script>
 </div>
 {% endblock %}
