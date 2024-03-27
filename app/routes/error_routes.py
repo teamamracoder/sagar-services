@@ -14,3 +14,8 @@ def page_not_found(path):
 @error_bp.route("/something-went-wrong")
 def something_went_wrong():
     return error_controller.something_went_wrong()
+
+
+@error_bp.route("/unauthorized-access")
+def unauthorized_access():
+    return error_controller.unauthorized_access()

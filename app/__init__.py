@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from config import Config
 from db import db
 from .routes import register_blueprints
+from .auth import init_auth
 
 
 def create_app():
@@ -18,5 +19,6 @@ def create_app():
         db.create_all()
 
     register_blueprints(app)
+    init_auth(app)
 
     return app
