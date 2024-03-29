@@ -128,6 +128,25 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed px-3" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#user" aria-expanded="false"
+                                        aria-controls="user">
+                                        Users & Roles
+                                    </button>
+                                </h2>
+                                <div id="user" class="accordion-collapse collapse">
+                                    <div class="accordion-body p-0">
+                                        <div class="list-group rounded-0">
+                                            <a href="{{ url_for('user_bp.index') }}"
+                                                class="list-group-item list-group-item-action ui-bg-grey border-0">Users</a>
+                                            <a href="{{ url_for('role_bp.index') }}"
+                                                class="list-group-item list-group-item-action ui-bg-grey border-0">Roles</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </a>
                 </div>
