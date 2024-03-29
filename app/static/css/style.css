@@ -4,9 +4,13 @@
 }
 
 .ui-bg-grey {
-  background-color: #0002;
+  background-color: #0001;
 }
 
 .ui-bg-grey:hover {
-  background-color: #00000031;
+  background-color: #0003;
+}
+
+.accordion-button:not(.collapse){
+    box-shadow:none;
 }

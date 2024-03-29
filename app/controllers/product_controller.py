@@ -14,7 +14,7 @@ class ProductController:
         form = CreateProductForm()
         if form.validate_on_submit():
             if product_service.create(
-                created_by=1,  # Assuming the current user's ID
+                created_by=1,
                 created_at=datetime.now(),
                 product_name=form.product_name.data,
                 brand=form.brand.data,
