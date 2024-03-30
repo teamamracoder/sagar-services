@@ -1,16 +1,16 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateUserForm
 from app.services import UserService
 
-user_service = UserService()
-
 
 class UserController:
+    def __init__(self) -> None:
+        self.user_service = UserService()
 
     def create(self):
         form = CreateUserForm()
         if form.validate_on_submit():
-            user_service.create(
+            self.user_service.create(
                 email=form.email.data,
                 password=form.password.data,
                 first_name=form.first_name.data,
@@ -21,6 +21,10 @@ class UserController:
         return render_template("admin/user/add.html", form=form)
 
     def get(self):
-        users = user_service.get()
-        roles = {1: "ADMIN", 2: "STAFF", 3: "CUSTOMER"}
-        return render_template("admin/user/index.html", users=users, roles=roles)
+        return render_template("admin/user/index.html")
+
+    def get_user_data(self):
+        # Determine the column to sort by
+        columns = ["id", "first_name", "email"]
+        data = self.user_service.get(request, columns)
+        return jsonify(data)
