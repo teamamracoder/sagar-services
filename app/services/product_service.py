@@ -38,9 +38,7 @@ class ProductService:
         img_urls = kwargs['product_img_urls']
         new_img_urls = []
         for img_url in img_urls:
-            print(img_url)
-            print(type(img_url))
-            if img_url:
+            if not isinstance(img_url, str) and img_url is not None:
                 num = str(random.random())
                 filename = num + secure_filename(img_url.filename)
 
@@ -49,10 +47,12 @@ class ProductService:
 
                 new_img_urls.append(filename)
 
-        existing_img_urls.extend(new_img_urls)
+        existing_img_urls+=new_img_urls
         kwargs['product_img_urls']=existing_img_urls
-
+        print(kwargs['product_img_urls'])
         for key, value in kwargs.items():
+            print(key)
+            print(value)
             setattr(product, key, value)
         db.session.commit()
 

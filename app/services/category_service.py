@@ -28,6 +28,8 @@ class CategoryService:
     def get(self):
         return CategoryModel.query.order_by(CategoryModel.id.desc()).all()
 
+    def get_active(self):
+        return CategoryModel.query.filter_by(is_active=True).order_by(CategoryModel.category_name).all()
 
 
     def get_category_by_id(self,id):

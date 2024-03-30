@@ -1,8 +1,10 @@
 from flask import render_template, redirect, url_for
 from app.forms import CreateProductForm,UpdateProductForm
 from app.services import ProductService
+from app.services import CategoryService
 from datetime import datetime
 product_service = ProductService()
+category_service = CategoryService()
 
 class ProductController:
 
@@ -12,6 +14,8 @@ class ProductController:
 
     def create(self):
         form = CreateProductForm()
+        categories=category_service.get_active()
+        form.category_id.choices = [(category.id, category.category_name) for category in categories]
         if form.validate_on_submit():
             if product_service.create(
                 created_by=1,
@@ -35,10 +39,12 @@ class ProductController:
 
     def update(self, id):
         product = product_service.get_product_by_id(id)
-        if not product:
-            print("not found")
+        if product is None:
+            return render_template("admin/error/something_went_wrong.html")
 
+        categories=category_service.get_active()
         form = UpdateProductForm(obj=product)
+        form.category_id.choices = [(category.id, category.category_name) for category in categories]
         if form.validate_on_submit():
             updated_data = {
                 'category_id': form.category_id.data,
