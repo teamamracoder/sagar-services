@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_login import login_required
-
+from app.constants import roles
 from app.auth import role_required
 from app.controllers import UserController
 
@@ -9,6 +9,8 @@ user_controller = UserController()
 
 
 @user_bp.route("/admin/users/")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return user_controller.get()
 
@@ -20,6 +22,6 @@ def get_user_data():
 
 @user_bp.route("/admin/users/add/", methods=["GET", "POST"])
 @login_required
-@role_required([1, 2])
+@role_required([roles.get_key("ADMIN")])
 def add():
     return user_controller.create()

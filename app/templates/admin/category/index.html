@@ -18,7 +18,7 @@
             <tr>
                 <th># id</th>
                 <th>category</th>
-                <th>image</th>
+<!--                <th>image</th>-->
                 <th>created by</th>
                 <th>created at</th>
                 <th>updated by</th>
@@ -32,11 +32,25 @@
             <tr>
                 <td>{{category.id}}</td>
                 <td>{{ category.category_name }}</td>
-                <td>{{ category.product_img_url }}</td>
+<!--                <td>-->
+                    {# if category.category_img_url: #}
+<!--                        <img src="{# url_for('static', filename='img/products/'+category.category_img_url) #}" class="adminTableImg">-->
+                    {# endif #}
+<!--                </td>-->
                 <td>{{ category.created_by }}</td>
-                <td>{{ category.created_at }}</td>
+                <td>
+                    {{ category.created_at.strftime('%Y-%m-%d') }}
+                    <span class="text-secondary"> {{ category.created_at.strftime('%I:%M %p') }}</span>
+                </td>
                 <td>{{ category.updated_by }}</td>
-                <td>{{ category.updated_at }}</td>
+                <td>
+                    {% if category.updated_at: %}
+                        {{ category.updated_at.strftime('%Y-%m-%d') }}
+                        <span class="text-secondary"> {{ category.updated_at.strftime('%I:%M %p') }}</span>
+                    {% endif %}
+
+                </td>
+
                 <td>
                     <a href="{{url_for('category.update',id=category.id)}}" class="btn btn-outline-dark btn-sm my-2">Edit</a>
                 </td>
