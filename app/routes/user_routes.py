@@ -13,6 +13,11 @@ def index():
     return user_controller.get()
 
 
+@user_bp.route("/admin/users/data")
+def get_user_data():
+    return user_controller.get_user_data()
+
+
 @user_bp.route("/admin/users/add/", methods=["GET", "POST"])
 @login_required
 @role_required([1, 2])
