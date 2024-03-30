@@ -27,8 +27,7 @@ class ProductController:
                 payment_methods=form.payment_methods.data,
                 available_area_pincodes=form.available_area_pincodes.data,
                 category_id=form.category_id.data,
-
-                    return_policy=form.return_policy.data
+                return_policy=form.return_policy.data
             ):
                 return redirect(url_for("product.index"))
             return render_template("admin/product/add.html", form=form, error="Product already exists")

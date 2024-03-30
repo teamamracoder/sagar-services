@@ -6,7 +6,7 @@
 <div class="container">
     <h3 class="text-center my-3">Add Product</h3>
 
-    <form method="POST" action="{{ url_for('product.add') }}">
+    <form method="POST" action="{{ url_for('product.add') }}" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -38,12 +38,9 @@
                 {{ form.stock(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
-                <label class="form-label">Product Image URLs</label>
-                {% for field in form.product_img_urls %}
-                <div class="input-group mb-3">
-                    {{ field(class="form-control") }}
-                    <button class="btn btn-outline-secondary" type="button" onclick="addInputField(this)">Add</button>
-                </div>
+                {% for img_url in form.product_img_urls %}
+                    {{ img_url.label(class="form-label") }}
+                    {{ img_url(class="form-control form-control-sm") }}
                 {% endfor %}
             </div>
             <div class="col-12">

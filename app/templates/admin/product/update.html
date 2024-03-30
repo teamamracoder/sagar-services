@@ -6,7 +6,7 @@
 <div class="container">
     <h3 class="text-center my-3">Update Product</h3>
 
-    <form method="POST" action="{{ url_for('product.update', id=product.id) }}">
+    <form method="POST" action="{{ url_for('product.update', id=product.id) }}" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -38,8 +38,10 @@
                 {{ form.stock(class="form-control form-control-sm", value=product.stock) }}
             </div>
             <div class="col-12">
-                {{ form.product_img_urls.label(class="form-label") }}
-                {{ form.product_img_urls(class="form-control form-control-sm", value=product.product_img_urls) }}
+                {% for img_url in form.product_img_urls %}
+                    {{ img_url.label(class="form-label") }}
+                    {{ img_url(class="form-control form-control-sm") }}
+                {% endfor %}
             </div>
             <div class="col-12">
                 {{ form.specifications.label(class="form-label") }}
