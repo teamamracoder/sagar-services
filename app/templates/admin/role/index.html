@@ -13,24 +13,51 @@
         </div>
     </div>
 
-    <table class="table table-bordered">
-        <thead class="table-dark">
+    <table id="roleTable" class="table table-bordered" style="width:100%">
+        <thead>
             <tr>
-                <th># id</th>
-                <th>user_id</th>
-                <th>role</th>
+                <th># Id</th>
+                <th>Role</th>
+                <th>User Id</th>
+                <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            {% for role in roles %}
-            <tr>
-                <td>{{role.id}}</td>
-                <td>{{ role.user_id }}</td>
-                <td>{{ role.role }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        var table = $('#roleTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('role_bp.get_role_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "role" },
+                { "data": "user_id" },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">Deactivate</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            console.log("Edit record with ID:", id);
+        };
+
+        window.deactivateRecord = function (id) {
+            console.log("Deactivate record with ID:", id);
+        };
+    });
+</script>
 
 {% endblock %}

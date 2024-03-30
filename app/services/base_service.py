@@ -15,10 +15,20 @@ class BaseService:
         sort_column = columns[order_column_index]
 
         # Base query
-        query = self.model.query.filter(
-            self.model.first_name.ilike(f"%{search_value}%")
-            | self.model.email.ilike(f"%{search_value}%")
-        )
+        query = self.model.query
+
+        # query = self.model.query.filter(
+        #     self.model.first_name.ilike(f"%{search_value}%")
+        #     | self.model.email.ilike(f"%{search_value}%")
+        # )
+
+        str = self.model.__table__.columns[columns[1]].type
+        print(str)
+        for column in columns:
+            if "VARCHAR" in str:
+                query = query.filter(
+                    getattr(self.model, column).ilike(f"%{search_value}%")
+                )
 
         if order_dir == "desc":
             query = query.order_by(getattr(self.model, sort_column).desc())
