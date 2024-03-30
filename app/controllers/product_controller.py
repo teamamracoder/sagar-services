@@ -45,6 +45,7 @@ class ProductController:
         categories=category_service.get_active()
         form = UpdateProductForm(obj=product)
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
+
         if form.validate_on_submit():
             updated_data = {
                 'category_id': form.category_id.data,

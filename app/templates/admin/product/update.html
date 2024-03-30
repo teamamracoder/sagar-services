@@ -38,10 +38,10 @@
                 {{ form.stock(class="form-control form-control-sm", value=product.stock) }}
             </div>
             <div class="col-12">
-                {% for img_url in form.product_img_urls %}
-                    {{ img_url.label(class="form-label") }}
-                    {{ img_url(class="form-control form-control-sm") }}
-                {% endfor %}
+                {# for img_url in form.product_img_urls #}
+                    {# img_url.label(class="form-label") #}
+                    {# img_url(class="form-control form-control-sm") #}
+                {# endfor #}
             </div>
             <div class="col-12">
                 {{ form.specifications.label(class="form-label") }}

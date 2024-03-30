@@ -18,7 +18,7 @@
             <tr>
                 <th># id</th>
                 <th>Name</th>
-                <th>Images</th>
+<!--                <th>Images</th>-->
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Price</th>
@@ -36,13 +36,13 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.product_name }}</td>
-                <td>
-                    {% if product.product_img_urls: %}
-                        {% for img in product.product_img_urls: %}
-                        <img src="{{ url_for('static', filename='img/products/'+img) }}" class="adminTableImg">
-                        {% endfor %}
-                    {% endif %}
-                </td>
+<!--                <td>-->
+                    {# if product.product_img_urls: #}
+                        {# for img in product.product_img_urls: #}
+<!--                        <img src="{# url_for('static', filename='img/products/'+img) #}" class="adminTableImg">-->
+                        {# endfor #}
+                    {# endif #}
+<!--                </td>-->
                 <td>{{ product.brand }}</td>
                 <td>{{ product.model }}</td>
                 <td>{{ product.price }}</td>

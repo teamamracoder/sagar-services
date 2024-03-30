@@ -18,7 +18,7 @@
             <tr>
                 <th># id</th>
                 <th>category</th>
-                <th>image</th>
+<!--                <th>image</th>-->
                 <th>created by</th>
                 <th>created at</th>
                 <th>updated by</th>
@@ -32,11 +32,11 @@
             <tr>
                 <td>{{category.id}}</td>
                 <td>{{ category.category_name }}</td>
-                <td>
-                    {% if category.category_img_url: %}
-                        <img src="{{ url_for('static', filename='img/products/'+category.category_img_url) }}" class="adminTableImg">
-                    {% endif %}
-                </td>
+<!--                <td>-->
+                    {# if category.category_img_url: #}
+<!--                        <img src="{# url_for('static', filename='img/products/'+category.category_img_url) #}" class="adminTableImg">-->
+                    {# endif #}
+<!--                </td>-->
                 <td>{{ category.created_by }}</td>
                 <td>
                     {{ category.created_at.strftime('%Y-%m-%d') }}

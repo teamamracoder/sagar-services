@@ -9,20 +9,20 @@ class ProductService:
     def create(self, **kwargs):
         prev_product = ProductModel.query.filter_by(product_name=kwargs['product_name']).first()
         if prev_product is None:
-            img_urls=kwargs['product_img_urls']
-            new_img_urls = []
-            for img_url in img_urls:
-                if img_url:
-                    print(type(img_url))
-                    num = str(random.random())
-                    filename = num + secure_filename(img_url.filename)
+            # img_urls=kwargs['product_img_urls']
+            # new_img_urls = []
+            # for img_url in img_urls:
+            #     if img_url:
+            #         print(type(img_url))
+            #         num = str(random.random())
+            #         filename = num + secure_filename(img_url.filename)
+            #
+            #         custom_path = os.path.join(os.getcwd(), 'app\\static\\img\\products\\')
+            #         img_url.save(os.path.join(custom_path, filename))
+            #
+            #         new_img_urls.append(filename)
 
-                    custom_path = os.path.join(os.getcwd(), 'app\\static\\img\\products\\')
-                    img_url.save(os.path.join(custom_path, filename))
-
-                    new_img_urls.append(filename)
-
-            kwargs['product_img_urls'] = new_img_urls
+            # kwargs['product_img_urls'] = new_img_urls
 
             product = ProductModel(**kwargs)
             db.session.add(product)
@@ -34,25 +34,23 @@ class ProductService:
         return ProductModel.query.get(product_id)
 
     def update_product(self, product, **kwargs):
-        existing_img_urls = product.product_img_urls
-        img_urls = kwargs['product_img_urls']
-        new_img_urls = []
-        for img_url in img_urls:
-            if not isinstance(img_url, str) and img_url is not None:
-                num = str(random.random())
-                filename = num + secure_filename(img_url.filename)
-
-                custom_path = os.path.join(os.getcwd(), 'app\\static\\img\\products\\')
-                img_url.save(os.path.join(custom_path, filename))
-
-                new_img_urls.append(filename)
-
-        existing_img_urls+=new_img_urls
-        kwargs['product_img_urls']=existing_img_urls
-        print(kwargs['product_img_urls'])
+        # existing_img_urls = product.product_img_urls
+        # img_urls = kwargs['product_img_urls']
+        # new_img_urls = []
+        # for img_url in img_urls:
+        #     if not isinstance(img_url, str) and img_url is not None:
+        #         num = str(random.random())
+        #         filename = num + secure_filename(img_url.filename)
+        #
+        #         custom_path = os.path.join(os.getcwd(), 'app\\static\\img\\products\\')
+        #         img_url.save(os.path.join(custom_path, filename))
+        #
+        #         new_img_urls.append(filename)
+        #
+        # existing_img_urls+=new_img_urls
+        # kwargs['product_img_urls']=existing_img_urls
+        # print(kwargs['product_img_urls'])
         for key, value in kwargs.items():
-            print(key)
-            print(value)
             setattr(product, key, value)
         db.session.commit()
 
