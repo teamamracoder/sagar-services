@@ -12,16 +12,20 @@
 }
 
 #sidebarLinks .accordion-button:not(.collapse),
-#navLinks .accordion-button:not(.collapse){
-    box-shadow:none;
+#navLinks .accordion-button:not(.collapse) {
+  box-shadow: none;
 }
 #sidebarLinks .accordion-button:not(.collapsed),
-#navLinks .accordion-button:not(.collapsed){
-    background-color:transparent;
-    color:#339999;
+#navLinks .accordion-button:not(.collapsed) {
+  background-color: transparent;
+  color: #339999;
 }
-.adminTableImg{
-    height:50px;
-    width:50px;
-    object-fit:contain;
+.adminTableImg {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+}
+
+.error {
+  color: rgb(161, 0, 0);
 }

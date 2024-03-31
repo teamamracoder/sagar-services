@@ -24,43 +24,40 @@
         </thead>
         <tbody></tbody>
     </table>
-
-    <link href="https://cdn.datatables.net/v/bs5/dt-2.0.3/datatables.min.css" rel="stylesheet">
-
-    <script src="https://cdn.datatables.net/v/bs5/dt-2.0.3/datatables.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            var table = $('#userTable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{url_for('user_bp.get_user_data')}}",
-                    "type": "GET"
-                },
-                "columns": [
-                    { "data": "id" },
-                    { "data": "first_name" },
-                    { "data": "email" },
-                    {
-                        "data": null,
-                        "render": function (data, type, row) {
-                            return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
-                                '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">Deactivate</button>';
-                        }
-                    }
-                ]
-            });
-
-            window.editRecord = function (id) {
-                console.log("Edit record with ID:", id);
-            };
-
-            window.deactivateRecord = function (id) {
-                console.log("Deactivate record with ID:", id);
-            };
-        });
-    </script>
-
 </div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#userTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('user_bp.get_user_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "first_name" },
+                { "data": "email" },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">Deactivate</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            console.log("Edit record with ID:", id);
+        };
+
+        window.deactivateRecord = function (id) {
+            console.log("Deactivate record with ID:", id);
+        };
+    });
+</script>
+
 
 {% endblock %}
