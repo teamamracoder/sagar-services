@@ -15,7 +15,7 @@ class RoleService(BaseService):
 
     def get_roles_by_user_id(self, user_id: int) -> list:
         query = (
-            RoleModel.query.filter_by(user_id=user_id)
+            RoleModel.query.filter_by(user_id=user_id,is_active=True)
             .with_entities(RoleModel.role)
             .all()
         )
