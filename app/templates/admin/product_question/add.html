@@ -1,20 +1,20 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Add Category{% endblock %}
+{% block title %}Add Product Question{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h3 class="text-center my-3">Add Category</h3>
-    <form method="POST" action="{{ url_for('category.add') }}" enctype="multipart/form-data"  id="addCategoryForm">
+    <h3 class="text-center my-3">Add Product Questions</h3>
+    <form method="POST" action="{{ url_for('product_question.add') }}" enctype="multipart/form-data"  id="addProductQuestionForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
-                {{ form.category_name.label(class="form-label") }}
-                {{ form.category_name(class="form-control form-control-sm") }}
+                {{ form.question.label(class="form-label") }}
+                {{ form.question(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('category.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                <a href="{{ url_for('product_question.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>
@@ -22,19 +22,19 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('#addCategoryForm').validate({
+        $('#addProductQuestionForm').validate({
             rules: {
-                category_name: {
+                question: {
                     required: true,
-                    minlength: 3,
-                    maxlength: 40
+                    minlength: 5,
+                    maxlength: 100
                 }
             },
             messages: {
-                category_name: {
-                    required: "Please enter category name",
-                    minlength: "Name must be at least 3 characters long",
-                    maxlength: "Name must not exceed 20 characters"
+                question: {
+                    required: "Please enter Question",
+                    minlength: "Question must be at least 5 characters long",
+                    maxlength: "Question must not exceed 100 characters"
                 }
             },
             submitHandler: function (form) {

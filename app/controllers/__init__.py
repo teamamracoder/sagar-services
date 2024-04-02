@@ -5,4 +5,5 @@ from .role_controller import RoleController
 from .home_controller import HomeController
 from .category_controller import CategoryController
 from .product_controller import ProductController
+from .product_question_controller import ProductQuestionController
 from .dashboard_controller import DashboardController

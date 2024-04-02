@@ -1,51 +1,58 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateCategoryForm, UpdateCategoryForm
-from app.services import CategoryService
+from app.forms import CreateProductQuestionForm, UpdateProductQuestionForm
+from app.services import ProductQuestionService, ProductService
 from datetime import datetime
 
-class CategoryController:
+class ProductQuestionController:
     def __init__(self) -> None:
-        self.category_service = CategoryService()
+        self.product_question_service = ProductQuestionService()
+        self.product_service = ProductService()
 
     def get(self):
-        return render_template("admin/category/index.html")
+        return render_template("admin/product_question/index.html")
 
-    def get_category_data(self):
-        columns = ["id", "category_name","created_by","created_at","updated_by","updated_by","is_active"]
-        data = self.category_service.get(request, columns)
-        return jsonify(data)
+    def get_product_question_data(self):
+        columns = ["id", "question","created_by","created_at","updated_by","updated_by","is_active", "product_id"]
+        data = self.product_question_service.get(request, columns)
+        combined_data = self.product_service.add_product_with_questions(data)
+        return jsonify(combined_data)
 
     def create(self):
-        form = CreateCategoryForm()
+        form = CreateProductQuestionForm()
         if form.validate_on_submit():
-            self.category_service.create(
+            self.product_question_service.create(
                 created_by=1,
                 created_at=datetime.now(),
-                category_name=form.category_name.data,
+                question=form.question.data,
+                product_id=2,
+                user_id=1
             )
-            return redirect(url_for("category.index"))
-            # return render_template("admin/category/add.html", form=form, error="category already exists")
-        return render_template("admin/category/add.html", form=form)
+            return redirect(url_for("product_question.index"))
+            # return render_template("admin/product_question/add.html", form=form, error="product_question already exists")
+        return render_template("admin/product_question/add.html", form=form)
 
     def update(self, id):
-        category = self.category_service.get_by_id(id)
-        if category is None:
+        product_question = self.product_question_service.get_by_id(id)
+        if product_question is None:
             return render_template("admin/error/something_went_wrong.html")
-        form = UpdateCategoryForm(obj=category)
+        form = UpdateProductQuestionForm(obj=product_question)
         
         if form.validate_on_submit():
             updated_data = {
-                'category_name': form.category_name.data,
+                'question': form.question.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1
+                'updated_by': 1,
+                'product_id' : 1,
+                'user_id' : 1
+
             }
-            self.category_service.update(category.id, **updated_data)
-            return redirect(url_for("category.index"))
-        return render_template("admin/category/update.html", form=form, category=category)
+            self.product_question_service.update(product_question.id, **updated_data)
+            return redirect(url_for("product_question.index"))
+        return render_template("admin/product_question/update.html", form=form, product_question=product_question)
 
     def status(self, id):
-        category = self.category_service.get_by_id(id)
-        if category is None:
+        product_question = self.product_question_service.get_by_id(id)
+        if product_question is None:
             return render_template("admin/error/something_went_wrong.html")
-        self.category_service.status(id)
-        return redirect(url_for("category.index"))
+        self.product_question_service.status(id)
+        return redirect(url_for("product_question.index"))

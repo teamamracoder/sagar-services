@@ -1,23 +1,24 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Categories{% endblock %}
+{% block title %}Product Questions{% endblock %}
 
 {% block content %}
 
 <div class="container">
-    <h3 class="text-center my-3">Categories</h3>
+    <h3 class="text-center my-3">Product Questions</h3>
 
     <div class="row">
         <div class="col text-end">
-            <a href="{{url_for('category.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+            <a href="{{url_for('product_question.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
         </div>
     </div>
 
-    <table id="categoryTable" class="table table-bordered" style="width:100%">
+    <table id="productQuestionTable" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th># id</th>
-                <th>Name</th>
+                <th>Question</th>
+                <th>Product Name</th>
                 <th>created by</th>
                 <th>created at</th>
                 <th>updated by</th>
@@ -31,16 +32,17 @@
 
 <script>
     $(document).ready(function () {
-        var table = $('#categoryTable').DataTable({
+        var table = $('#productQuestionTable').DataTable({
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{url_for('category.get_category_data')}}",
+                "url": "{{url_for('product_question.get_product_question_data')}}",
                 "type": "GET"
             },
             "columns": [
                 { "data": "id" },
-                { "data": "category_name"},
+                { "data": "question"},
+                { "data": "product_name"},
                 { "data": "created_by"},
                 { "data": "created_at"},
                 { "data": "updated_by"},
@@ -56,11 +58,11 @@
         });
 
         window.editRecord = function (id) {
-            window.location.href= "/admin/categories/update/" + id;
+            window.location.href= "/admin/product_questions/update/" + id;
         };
 
         window.deactivateRecord = function (id) {
-            window.location.href= "/admin/categories/status/" + id;
+            window.location.href= "/admin/product_questions/status/" + id;
         };
     });
 </script>
