@@ -14,9 +14,10 @@ class ProductController:
         return render_template("admin/product/index.html")
 
     def get_product_data(self):
-        columns = ["id", "product_name", "brand","model","price","stock","created_by","created_at","updated_by","updated_by","is_active"]
+        columns = ["id", "product_name", "brand","model","price","stock","created_by","created_at","updated_by","updated_by","is_active", "category_id"]
         data = self.product_service.get(request, columns)
-        return jsonify(data)
+        combined_data = self.category_service.add_category_with_products(data)
+        return jsonify(combined_data)
     
     def create(self):
         form = CreateProductForm()

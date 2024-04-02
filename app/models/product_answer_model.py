@@ -17,7 +17,7 @@ class ProductAnswerModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.Date,default=datetime.now)
+    created_at=db.Column(db.Date)
 
     updated_by = db.Column(
         db.Integer,
@@ -27,7 +27,7 @@ class ProductAnswerModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
