@@ -75,3 +75,19 @@ class BaseService:
 
     def get_by_id(self, id):
         return self.model.query.get(id)
+
+    def update(self, id, **kwargs):
+        entity=self.get_by_id(id)
+        for key, value in kwargs.items():
+            setattr(entity, key, value)
+        db.session.commit()
+        return entity
+
+    def status(self,id):
+        entity=self.get_by_id(id)
+        if not entity.is_active:
+            entity.is_active=True
+        else:
+            entity.is_active=False
+        db.session.commit()
+        return entity.is_active

@@ -44,19 +44,20 @@
                 {
                     "data": null,
                     "render": function (data, type, row) {
+                    console.log(row.is_active)
                         return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
-                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">Deactivate</button>';
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
                     }
                 }
             ]
         });
 
         window.editRecord = function (id) {
-            console.log("Edit record with ID:", id);
+            window.location.href= "/admin/users/update/" + id;
         };
 
         window.deactivateRecord = function (id) {
-            console.log("Deactivate record with ID:", id);
+            window.location.href= "/admin/users/status/" + id;
         };
     });
 </script>

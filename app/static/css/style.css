@@ -17,8 +17,8 @@
 }
 #sidebarLinks .accordion-button:not(.collapsed),
 #navLinks .accordion-button:not(.collapsed) {
-  background-color: transparent;
-  color: #339999;
+  background-color: black;
+  color: white;
 }
 .adminTableImg {
   height: 50px;
@@ -28,4 +28,18 @@
 
 .error {
   color: rgb(161, 0, 0);
+}
+
+.active > .page-link {
+  background-color: black !important;
+  color: white !important;
+  border: none !important;
+}
+
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/%3E%3C/svg%3E");
+}
+
+.accordion-button:not(.collapsed)::after {
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-dash' viewBox='0 0 16 16'%3E%3Cpath d='M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm2.5 7.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1'/%3E%3C/svg%3E");
 }
