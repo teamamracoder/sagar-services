@@ -13,60 +13,57 @@
         </div>
     </div>
 
-    <table class="table table-bordered">
-        <thead class="table-dark">
+    <table id="categoryTable" class="table table-bordered" style="width:100%">
+        <thead>
             <tr>
                 <th># id</th>
-                <th>category</th>
-<!--                <th>image</th>-->
+                <th>Name</th>
                 <th>created by</th>
                 <th>created at</th>
                 <th>updated by</th>
                 <th>updated at</th>
-                <th>Manage</th>
-                <th>Status</th>
+                <th style="width:160px;">Action</th>
             </tr>
         </thead>
-        <tbody>
-            {% for category in categories %}
-            <tr>
-                <td>{{category.id}}</td>
-                <td>{{ category.category_name }}</td>
-<!--                <td>-->
-                    {# if category.category_img_url: #}
-<!--                        <img src="{# url_for('static', filename='img/products/'+category.category_img_url) #}" class="adminTableImg">-->
-                    {# endif #}
-<!--                </td>-->
-                <td>{{ category.created_by }}</td>
-                <td>
-                    {{ category.created_at.strftime('%Y-%m-%d') }}
-                    <span class="text-secondary"> {{ category.created_at.strftime('%I:%M %p') }}</span>
-                </td>
-                <td>{{ category.updated_by }}</td>
-                <td>
-                    {% if category.updated_at: %}
-                        {{ category.updated_at.strftime('%Y-%m-%d') }}
-                        <span class="text-secondary"> {{ category.updated_at.strftime('%I:%M %p') }}</span>
-                    {% endif %}
-
-                </td>
-
-                <td>
-                    <a href="{{url_for('category.update',id=category.id)}}" class="btn btn-outline-dark btn-sm my-2">Edit</a>
-                </td>
-                <td>
-                    <a href="{{url_for('category.status',id=category.id)}}" class="btn btn-outline-dark btn-sm my-2">
-                        {% if not category.is_active %}
-                            Deactivated
-                        {% else %}
-                            Activated
-                        {% endif %}
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#categoryTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('category.get_category_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "category_name"},
+                { "data": "created_by"},
+                { "data": "created_at"},
+                { "data": "updated_by"},
+                { "data": "updated_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/categories/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/categories/status/" + id;
+        };
+    });
+</script>
+
 
 {% endblock %}

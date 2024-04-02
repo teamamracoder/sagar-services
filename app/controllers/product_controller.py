@@ -16,7 +16,6 @@ class ProductController:
     def get_product_data(self):
         columns = ["id", "product_name", "brand","model","price","stock","created_by","created_at","updated_by","updated_by","is_active"]
         data = self.product_service.get(request, columns)
-        print(data)
         return jsonify(data)
     
     def create(self):
