@@ -11,11 +11,10 @@ class CreateProductForm(FlaskForm):
     price = FloatField("price", validators=[DataRequired()])
     discount = FloatField("discount")
     stock = IntegerField("stock", validators=[DataRequired()])
-    # product_img_urls = FieldList(FileField("product_img_urls"),min_entries=3, max_entries=5)
     product_img_urls = FieldList(StringField("product_img_urls"))
     specifications = TextAreaField("specifications", validators=[DataRequired()])
-    payment_methods = FieldList(IntegerField("payment_methods", validators=[DataRequired()]))
-    available_area_pincodes = FieldList(StringField("available_area_pincodes", validators=[DataRequired()]))
+    payment_methods = SelectMultipleField("payment_methods", validators=[DataRequired()], coerce=int)
+    available_area_pincodes = StringField("Available Area Pincode(use comma separated)", validators=[DataRequired()])
     return_policy = TextAreaField("return_policy", validators=[DataRequired()])
 
 
@@ -30,6 +29,6 @@ class UpdateProductForm(FlaskForm):
     # product_img_urls = FieldList(FileField("product_img_urls"),min_entries=5, max_entries=8)
     product_img_urls = FieldList(StringField("product_img_urls"))
     specifications = TextAreaField("specifications", validators=[DataRequired()])
-    payment_methods = FieldList(IntegerField("payment_methods", validators=[DataRequired()]))
-    available_area_pincodes = FieldList(StringField("available_area_pincodes", validators=[DataRequired()]))
+    payment_methods = SelectMultipleField("payment_methods", validators=[DataRequired()], coerce=int)
+    available_area_pincodes = StringField("Available Area Pincode(use comma separated)", validators=[DataRequired()])
     return_policy = TextAreaField("return_policy", validators=[DataRequired()])

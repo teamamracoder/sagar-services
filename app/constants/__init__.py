@@ -12,6 +12,9 @@ class Constant:
 
     def get_value(self, key: int) -> str:
         return self.data.get(key)
+    
+    def get_all_items(self) -> list:
+        return list(self.data.items())
 
 
 # constant data

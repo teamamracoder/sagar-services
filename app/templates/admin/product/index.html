@@ -13,12 +13,11 @@
         </div>
     </div>
 
-    <table class="table table-bordered">
-        <thead class="table-dark">
+    <table id="productTable" class="table table-bordered" style="width:100%">
+        <thead>
             <tr>
                 <th># id</th>
                 <th>Name</th>
-<!--                <th>Images</th>-->
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Price</th>
@@ -27,46 +26,52 @@
                 <th>created at</th>
                 <th>updated by</th>
                 <th>updated at</th>
-                <th>Manage</th>
-                <th>Status</th>
+                <th style="width:160px;">Action</th>
             </tr>
         </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.product_name }}</td>
-<!--                <td>-->
-                    {# if product.product_img_urls: #}
-                        {# for img in product.product_img_urls: #}
-<!--                        <img src="{# url_for('static', filename='img/products/'+img) #}" class="adminTableImg">-->
-                        {# endfor #}
-                    {# endif #}
-<!--                </td>-->
-                <td>{{ product.brand }}</td>
-                <td>{{ product.model }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.stock }}</td>
-                <td>{{ product.created_by }}</td>
-                <td>{{ product.created_at }}</td>
-                <td>{{ product.updated_by }}</td>
-                <td>{{ product.updated_at }}</td>
-                <td>
-                    <a href="{{url_for('product.update',id=product.id)}}" class="btn btn-outline-dark btn-sm my-2">Edit</a>
-                </td>
-                <td>
-                    <a href="{{url_for('product.status',id=product.id)}}" class="btn btn-outline-dark btn-sm my-2">
-                        {% if not product.is_active %}
-                            Deactivated
-                        {% else %}
-                            Activated
-                        {% endif %}
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#productTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('product.get_product_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "product_name"},
+                { "data": "brand"},
+                { "data": "model"},
+                { "data": "price"},
+                { "data": "stock"},
+                { "data": "created_by"},
+                { "data": "created_at"},
+                { "data": "updated_by"},
+                { "data": "updated_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/products/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/products/status/" + id;
+        };
+    });
+</script>
+
 
 {% endblock %}

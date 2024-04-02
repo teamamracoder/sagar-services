@@ -49,11 +49,11 @@
             </div>
             <div class="col-12">
                 {{ form.payment_methods.label(class="form-label") }}
-                {{ form.payment_methods(class="form-control form-control-sm", value=product.payment_methods) }}
+                {{ form.payment_methods(class="form-control", multiple="multiple",value=product.payment_methods) }}
             </div>
             <div class="col-12">
                 {{ form.available_area_pincodes.label(class="form-label") }}
-                {{ form.available_area_pincodes(class="form-control form-control-sm", value=product.available_area_pincodes) }}
+                {{ form.available_area_pincodes(class="form-control form-control-sm", value=form.available_area_pincodes.data) }}
             </div>
             <div class="col-12">
                 {{ form.return_policy.label(class="form-label") }}

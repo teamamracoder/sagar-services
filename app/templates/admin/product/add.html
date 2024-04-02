@@ -6,7 +6,7 @@
 <div class="container">
     <h3 class="text-center my-3">Add Product</h3>
 
-    <form method="POST" action="{{ url_for('product.add') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ url_for('product.add') }}" enctype="multipart/form-data"  id="addProductForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -48,22 +48,12 @@
                 {{ form.specifications(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
-                <label class="form-label">Payment Methods</label>
-                {% for field in form.payment_methods %}
-                <div class="input-group mb-3">
-                    {{ field(class="form-control") }}
-                    <button class="btn btn-outline-secondary" type="button" onclick="addInputField(this)">Add</button>
-                </div>
-                {% endfor %}
+                {{ form.payment_methods.label(class="form-label") }}
+                {{ form.payment_methods(class="form-control", multiple="multiple") }}
             </div>
             <div class="col-12">
-                <label class="form-label">Available Area Pincodes</label>
-                {% for field in form.available_area_pincodes %}
-                <div class="input-group mb-3">
-                    {{ field(class="form-control") }}
-                    <button class="btn btn-outline-secondary" type="button" onclick="addInputField(this)">Add</button>
-                </div>
-                {% endfor %}
+                {{ form.available_area_pincodes.label(class="form-label") }}
+                {{ form.available_area_pincodes(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.return_policy.label(class="form-label") }}
@@ -77,4 +67,82 @@
     </form>
 
 </div>
+<script>
+    $(document).ready(function () {
+        $('#addProductForm').validate({
+            rules: {
+                product_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 40
+                },
+                brand: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                model: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 40,
+                },
+                price: {
+                    required: true,
+                    digits:true,
+                },
+                discount: {
+                    required: true,
+                    digits:true,
+                },
+                stock: {
+                    required: true,
+                    digits:true,
+                },
+                specifications: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 200
+                }
+            },
+            messages: {
+                product_name: {
+                    required: "Please enter product name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 40 characters"
+                },
+                brand: {
+                    required: "Please enter brand",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                model: {
+                    required: "Please enter model",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                price: {
+                    required: "Please enter price",
+                    digits: "Price must be in digits",
+                },
+                stock: {
+                    required: "Please enter stock quantity",
+                    digits: "Stock must be in digits",
+                },
+                discount: {
+                    required: "Please enter stock quantity",
+                    digits: "Stock must be in digits",
+                },
+                specifications: {
+                    required: "Please enter Specifications",
+                    minlength: "Specifications must be at least 10 characters long",
+                    maxlength: "Specifications must not exceed 200 characters"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
 {% endblock %}
