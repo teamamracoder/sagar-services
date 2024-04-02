@@ -6,10 +6,10 @@ from flask_wtf.file import FileField, FileRequired
 class CreateProductQuestionForm(FlaskForm):
     question = StringField("Question", validators=[DataRequired()])
     # category_img_url = FileField("Image",validators=[FileRequired()])
-    category_img_url = StringField("Image")
+    # category_img_url = StringField("Image")
 
 
 class UpdateProductQuestionForm(FlaskForm):
     question = StringField("Question", validators=[DataRequired()])
     # category_img_url = FileField("Image")
-    category_img_url = StringField("Image")
+    # category_img_url = StringField("Image")

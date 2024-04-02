@@ -1,0 +1,85 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Product QnA's{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Product QnA's</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('product_qna.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table id="productAnswerTable" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>Question</th>
+                <th>Product Name</th>
+                <th>Answer</th>
+                <th>Questioned By</th>
+                <th>Questioned At</th>
+                <th>Answered By</th>
+                <th>Answered at</th>
+                <th style="width:160px;">Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#productAnswerTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('product_qna.get_product_qna_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { 
+                    "data": "question",
+                    "render": function (data, type, row) {
+                        return '<p>'+data+'</p><button class="btn btn-outline-dark btn-sm me-1" onclick="editQuestion(' + row.id + ')">Edit</button>';
+                    }
+                },
+                { "data": "product_name"},
+                { 
+                    "data": "answer",
+                    "render": function (data, type, row) {
+                        return '<p>'+data+'</p><button class="btn btn-outline-dark btn-sm me-1" onclick="editAnswer(' + row.answer_id + ')">Edit</button>';
+                    }
+                },
+                { "data": "created_by"},
+                { "data": "created_at"},
+                { "data": "answered_by"},
+                { "data": "answered_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editQuestion = function (id) {
+            window.location.href= "/admin/product_questions/update/" + id;
+        };
+        window.editAnswer = function (id) {
+            window.location.href= "/admin/product_answers/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/product_qnas/status/" + id;
+        };
+    });
+</script>
+
+
+{% endblock %}

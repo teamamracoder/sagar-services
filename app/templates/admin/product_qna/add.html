@@ -1,0 +1,65 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Add Product QnA{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="text-center my-3">Add Product QnA's</h3>
+    <form method="POST" action="{{ url_for('product_qna.add') }}" enctype="multipart/form-data"  id="addProductQnAForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.product_id.label(class="form-label") }}
+                {{ form.product_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.question.label(class="form-label") }}
+                {{ form.question(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.answer.label(class="form-label") }}
+                {{ form.answer(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('product_qna.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#addProductQnAForm').validate({
+            rules: {
+                question: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 200
+                }
+                // answer: {
+                //     required: true,
+                //     minlength: 10,
+                //     maxlength: 200
+                // }
+            },
+            messages: {
+                question: {
+                    required: "Please enter Question",
+                    minlength: "Question must be at least 5 characters long",
+                    maxlength: "Question must not exceed 100 characters"
+                }
+                // answer: {
+                //     required: "Please enter Answer",
+                //     minlength: "Answer must be at least 10 characters long",
+                //     maxlength: "Answer must not exceed 200 characters"
+                // }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

@@ -17,7 +17,7 @@ class ProductAnswerModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.Date)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -47,6 +47,7 @@ class ProductAnswerModel(db.Model):
         ),
         nullable=False
     )
+    
     answer = db.Column(db.Text, nullable=False)
 
     users = db.relationship('UserModel', foreign_keys=[staff_id], backref="product_answers")

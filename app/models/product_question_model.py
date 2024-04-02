@@ -15,7 +15,7 @@ class ProductQuestionModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.Date)
+    created_at=db.Column(db.DateTime)
     updated_by = db.Column(
         db.Integer,
         db.ForeignKey(
