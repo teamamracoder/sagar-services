@@ -25,3 +25,17 @@ def get_user_data():
 @role_required([roles.get_key("ADMIN")])
 def add():
     return user_controller.create()
+
+
+@user_bp.route("/admin/users/update/<int:id>", methods=["GET", "POST"])
+@login_required
+@role_required([roles.get_key("ADMIN")])
+def update(id):
+    return user_controller.update(id)
+
+
+@user_bp.route("/admin/users/status/<int:id>", methods=["GET", "POST"])
+@login_required
+@role_required([roles.get_key("ADMIN")])
+def status(id):
+    return user_controller.status(id)
