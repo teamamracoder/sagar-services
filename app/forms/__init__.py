@@ -8,3 +8,5 @@ from .product_froms import UpdateProductForm
 from .auth_forms import LoginForm
 from .product_question_froms import CreateProductQuestionForm
 from .product_question_froms import UpdateProductQuestionForm
+from .product_answer_froms import CreateProductAnswerForm
+from .product_answer_froms import UpdateProductAnswerForm

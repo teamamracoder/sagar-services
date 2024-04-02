@@ -41,10 +41,7 @@ class ProductQuestionController:
             updated_data = {
                 'question': form.question.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1,
-                'product_id' : 1,
-                'user_id' : 1
-
+                'updated_by': 1
             }
             self.product_question_service.update(product_question.id, **updated_data)
             return redirect(url_for("product_question.index"))

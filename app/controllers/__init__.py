@@ -6,4 +6,5 @@ from .home_controller import HomeController
 from .category_controller import CategoryController
 from .product_controller import ProductController
 from .product_question_controller import ProductQuestionController
+from .product_answer_controller import ProductAnswerController
 from .dashboard_controller import DashboardController
