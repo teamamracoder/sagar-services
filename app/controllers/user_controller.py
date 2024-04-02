@@ -18,7 +18,7 @@ class UserController:
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
             )
-            return redirect(url_for("user_bp.index"))
+            return redirect(url_for("user.index"))
         return render_template("admin/user/add.html", form=form)
 
     def get(self):
@@ -43,7 +43,7 @@ class UserController:
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
             )
-            return redirect(url_for("user_bp.index"))
+            return redirect(url_for("user.index"))
         return render_template("admin/user/update.html", id=id,form=form)
 
     def status(self,id):
@@ -51,4 +51,4 @@ class UserController:
         if user is None:
             return render_template("admin/error/something_went_wrong.html")
         self.user_service.status(id)
-        return redirect(url_for("user_bp.index"))
+        return redirect(url_for("user.index"))

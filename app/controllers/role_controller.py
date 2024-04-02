@@ -12,7 +12,7 @@ class RoleController:
         form = CreateRoleForm()
         if form.validate_on_submit():
             self.role_service.create(user_id=form.user_id.data, role=form.role.data)
-            return redirect(url_for("role_bp.index"))
+            return redirect(url_for("role.index"))
         return render_template("admin/role/add.html", form=form)
 
     def get(self):
