@@ -16,7 +16,7 @@ class ProductQnAController:
     def get_product_qna_data(self):
         columns = ["id", "question","created_by","created_at","is_active", "product_id"]
         data = self.product_question_service.get(request, columns)
-        product_combined_data = self.product_service.add_product_with_questions(data)
+        product_combined_data = self.product_service.add_product_with_this(data)
         qna_data = self.product_answer_service.add_product_question_with_answer(data)
         return jsonify(qna_data)
     

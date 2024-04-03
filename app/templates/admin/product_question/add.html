@@ -9,6 +9,10 @@
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
+                {{ form.product_id.label(class="form-label") }}
+                {{ form.product_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
                 {{ form.question.label(class="form-label") }}
                 {{ form.question(class="form-control form-control-sm") }}
             </div>

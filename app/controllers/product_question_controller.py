@@ -1,12 +1,13 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateProductQuestionForm, UpdateProductQuestionForm
-from app.services import ProductQuestionService, ProductService
+from app.services import ProductAnswerService, ProductQuestionService, ProductService
 from datetime import datetime
 
 class ProductQuestionController:
     def __init__(self) -> None:
         self.product_question_service = ProductQuestionService()
         self.product_service = ProductService()
+        self.product_answer_service = ProductAnswerService()
 
     def get(self):
         return render_template("admin/product_question/index.html")
@@ -19,13 +20,22 @@ class ProductQuestionController:
 
     def create(self):
         form = CreateProductQuestionForm()
+        products = self.product_service.get_active()
+        form.product_id.choices = [(product.id, product.product_name) for product in products]
         if form.validate_on_submit():
-            self.product_question_service.create(
+            question=self.product_question_service.create(
                 created_by=1,
                 created_at=datetime.now(),
                 question=form.question.data,
-                product_id=2,
+                product_id=form.product_id.data,
                 user_id=1
+            )
+            self.product_answer_service.create(
+                created_by=1,
+                created_at=datetime.now(),
+                answer="",
+                staff_id=1,
+                question_id=question.id
             )
             return redirect(url_for("product_question.index"))
             # return render_template("admin/product_question/add.html", form=form, error="product_question already exists")
@@ -36,10 +46,12 @@ class ProductQuestionController:
         if product_question is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateProductQuestionForm(obj=product_question)
-        
+        products = self.product_service.get_active()
+        form.product_id.choices = [(product.id, product.product_name) for product in products]
         if form.validate_on_submit():
             updated_data = {
                 'question': form.question.data,
+                'product_id': form.product_id.data,
                 'updated_at': datetime.now(),
                 'updated_by': 1
             }

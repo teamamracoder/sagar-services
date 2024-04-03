@@ -9,9 +9,14 @@
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
+                {{ form.question_id.label(class="form-label") }}
+                {{ form.question_id(class="form-control form-control-sm", value=product_answer.question, disabled=true) }}
+            </div>
+            <div class="col-12">
                 {{ form.answer.label(class="form-label") }}
                 {{ form.answer(class="form-control form-control-sm", value=product_answer.answer) }}
             </div>
+
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
                 <a href="{{ url_for('product_answer.index') }}" class="btn btn-outline-dark btn-sm">Back</a>

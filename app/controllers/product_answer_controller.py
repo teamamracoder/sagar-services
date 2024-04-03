@@ -19,13 +19,15 @@ class ProductAnswerController:
 
     def create(self):
         form = CreateProductAnswerForm()
+        questions = self.product_question_service.get_active()
+        form.question_id.choices = [(question.id, question.question) for question in questions]
         if form.validate_on_submit():
             self.product_answer_service.create(
                 created_by=1,
                 created_at=datetime.now(),
                 answer=form.answer.data,
                 staff_id=1,
-                question_id=1
+                question_id=form.question_id.data
             )
             return redirect(url_for("product_answer.index"))
             # return render_template("admin/product_answer/add.html", form=form, error="product_answer already exists")
@@ -36,12 +38,15 @@ class ProductAnswerController:
         if product_answer is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateProductAnswerForm(obj=product_answer)
-        
+        questions = self.product_question_service.get_active()
+        form.question_id.choices = [(question.id, question.question) for question in questions]
+
         if form.validate_on_submit():
             updated_data = {
                 'answer': form.answer.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1
+                'updated_by': 1,
+                'question_id' : form.question_id.data
             }
             self.product_answer_service.update(product_answer.id, **updated_data)
             return redirect(url_for("product_answer.index"))

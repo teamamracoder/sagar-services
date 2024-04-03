@@ -6,7 +6,6 @@ from .product_question_froms import CreateProductQuestionForm, UpdateProductQues
 from .product_answer_froms import CreateProductAnswerForm, UpdateProductAnswerForm
 
 class CreateProductQnAForm(CreateProductQuestionForm,CreateProductAnswerForm):
-    product_id = SelectField('Product', coerce=int, validators=[DataRequired()])
-
+    pass
 class UpdateProductQnAForm(UpdateProductQuestionForm,UpdateProductAnswerForm):
-    product_id = SelectField('Product', coerce=int, validators=[DataRequired()])
+    pass

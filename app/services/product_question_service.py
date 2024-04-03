@@ -16,3 +16,6 @@ class ProductQuestionService(BaseService):
     
     def get_product_name_by_id(self,question_id):
         return ProductQuestionModel.query.filter_by(id=question_id).first().question
+
+    def get_active(self):
+        return ProductQuestionModel.query.filter_by(is_active=True).order_by(ProductQuestionModel.question).all()
