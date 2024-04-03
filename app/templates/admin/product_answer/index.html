@@ -44,9 +44,19 @@
                 { "data": "answer"},
                 { "data": "question"},
                 { "data": "created_by"},
-                { "data": "created_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return getFormattedDateTime(row.created_at);
+                    }
+                },
                 { "data": "updated_by"},
-                { "data": "updated_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return getFormattedDateTime(row.updated_at);
+                    }
+                },
                 {
                     "data": null,
                     "render": function (data, type, row) {

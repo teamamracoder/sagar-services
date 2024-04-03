@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateProductQnAForm, UpdateProductQnAForm
+from app.forms import CreateProductQnAForm
 from app.services import ProductAnswerService, ProductQuestionService, ProductService
 from datetime import datetime
 
@@ -23,10 +23,10 @@ class ProductQnAController:
 
     def create(self):
         form = CreateProductQnAForm()
-        products=self.product_service.get_active()
+        products = self.product_service.get_active()
         form.product_id.choices = [(product.id, product.product_name) for product in products]
         if form.validate_on_submit():
-            question=self.product_question_service.create(
+            question = self.product_question_service.create(
                 created_by=1,
                 created_at=datetime.now(),
                 question=form.question.data,

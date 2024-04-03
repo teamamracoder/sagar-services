@@ -48,9 +48,9 @@ class ProductAnswerController:
                 'updated_by': 1,
                 'question_id' : form.question_id.data
             }
-            self.product_answer_service.update(product_answer.id, **updated_data)
+            self.product_answer_service.update(id, **updated_data)
             return redirect(url_for("product_qna.index"))
-        return render_template("admin/product_answer/update.html", form=form, product_answer=product_answer)
+        return render_template("admin/product_answer/update.html", id=id, form=form)
 
     def status(self, id):
         product_answer = self.product_answer_service.get_by_id(id)

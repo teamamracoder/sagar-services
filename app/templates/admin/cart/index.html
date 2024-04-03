@@ -42,7 +42,12 @@
                 { "data": "id" },
                 { "data": "product_name"},
                 { "data": "created_by"},
-                { "data": "created_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return getFormattedDateTime(row.created_at);
+                    }
+                },
                 { "data": "user_id"},
                 {
                 "data": "statuses",

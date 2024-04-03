@@ -5,21 +5,21 @@
 {% block content %}
 <div class="container">
     <h3 class="text-center my-3">Add Product Answers</h3>
-    <form method="POST" action="{{ url_for('product_answer.update', id=product_answer.id) }}" enctype="multipart/form-data"  id="addProductAnswerForm">
+    <form method="POST" action="{{ url_for('product_answer.update', id=id) }}" enctype="multipart/form-data"  id="addProductAnswerForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
                 {{ form.question_id.label(class="form-label") }}
-                {{ form.question_id(class="form-control form-control-sm", value=product_answer.question, disabled=true) }}
+                {{ form.question_id(class="form-control form-control-sm", disabled=true) }}
             </div>
             <div class="col-12">
                 {{ form.answer.label(class="form-label") }}
-                {{ form.answer(class="form-control form-control-sm", value=product_answer.answer) }}
+                {{ form.answer(class="form-control form-control-sm") }}
             </div>
 
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('product_answer.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                <a href="{{ url_for('product_qna.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>

@@ -12,7 +12,6 @@
             <a href="{{url_for('product.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
         </div>
     </div>
-
     <table id="productTable" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -52,9 +51,19 @@
                 { "data": "price"},
                 { "data": "stock"},
                 { "data": "created_by"},
-                { "data": "created_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return getFormattedDateTime(row.created_at);
+                    }
+                },
                 { "data": "updated_by"},
-                { "data": "updated_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return getFormattedDateTime(row.updated_at);
+                    }
+                },
                 {
                     "data": null,
                     "render": function (data, type, row) {
