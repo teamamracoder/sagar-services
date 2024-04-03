@@ -6,3 +6,5 @@ from .category_froms import UpdateCategoryForm
 from .product_froms import CreateProductForm
 from .product_froms import UpdateProductForm
 from .auth_forms import LoginForm
+from .conversation_forms import CreateConversationForm
+from .conversation_forms import UpdateConversationForm
