@@ -16,6 +16,12 @@ class Constant:
     def get_all_items(self) -> list:
         return list(self.data.items())
 
+    def get_all_keys(self) -> list:
+        return list(self.data.keys())
+
+    def get_all_values(self) -> list:
+        return list(self.data.values())
+
 
 # constant data
 

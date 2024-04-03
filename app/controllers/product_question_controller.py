@@ -56,7 +56,7 @@ class ProductQuestionController:
                 'updated_by': 1
             }
             self.product_question_service.update(product_question.id, **updated_data)
-            return redirect(url_for("product_question.index"))
+            return redirect(url_for("product_qna.index"))
         return render_template("admin/product_question/update.html", form=form, product_question=product_question)
 
     def status(self, id):

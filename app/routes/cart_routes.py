@@ -31,7 +31,7 @@ def add_to_cart(product_id):
     return cart_controller.add_to_cart(product_id)
 
 
-@cart_bp.route("/admin/carts/update/<int:id>", methods=["GET", "POST"])
+@cart_bp.route("/admin/carts/update/<int:cart_id>/<string:status>", methods=["GET", "POST"])
 @login_required
 def update(cart_id, status):
     return cart_controller.cart_status(cart_id, status)

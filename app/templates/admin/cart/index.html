@@ -44,7 +44,26 @@
                 { "data": "created_by"},
                 { "data": "created_at"},
                 { "data": "user_id"},
-                { "data": "status_name"},
+                {
+                "data": "statuses",
+                "render": function(data, type, row) {
+                    var dropdown = $('<div>').addClass('dropdown');
+                    var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle')
+                                                .attr({
+                                                    'href': '#',
+                                                    'role': 'button',
+                                                    'data-bs-toggle': 'dropdown',
+                                                    'aria-expanded': 'false'
+                                                }).text(row.status_name);
+                    var dropdownMenu = $('<ul>').addClass('dropdown-menu');
+                    $.each(data, function(index, status) {
+                        dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item').attr('href', '/admin/carts/update/' + row.id + '/' + status).text(status)));
+                    });
+                    dropdown.append(dropdownToggle);
+                    dropdown.append(dropdownMenu);
+                    return dropdown.prop('outerHTML');
+                }
+            },
                 {
                     "data": null,
                     "render": function (data, type, row) {
