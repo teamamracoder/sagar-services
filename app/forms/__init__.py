@@ -14,3 +14,5 @@ from .product_qna_froms import CreateProductQnAForm
 from .product_qna_froms import UpdateProductQnAForm
 from .cart_forms import CreateCartForm
 from .wishlist_forms import CreateWishlistForm
+from .product_review_forms import CreateProductReviewForm
+from .product_review_forms import UpdateProductReviewForm

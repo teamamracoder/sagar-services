@@ -1,0 +1,77 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Product Reviews{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Product Reviews</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('product_review.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table id="productReviewTable" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>Product Name</th>
+                <th>user_id</th>
+                <th>review_title</th>
+                <th>description</th>
+                <th>rating</th>
+                <th>created by</th>
+                <th>created at</th>
+                <th>updated by</th>
+                <th>updated at</th>
+                <th style="width:180px;">Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#productReviewTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('product_review.get_product_review_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "product_name"},
+                { "data": "user_id" },
+                { "data": "review_title"},
+                { "data": "description"},
+                { "data": "rating"},
+                { "data": "created_by"},
+                { "data": "created_at"},
+                { "data": "updated_by"},
+                { "data": "updated_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/product_reviews/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/product_reviews/status/" + id;
+        };
+    });
+</script>
+
+
+{% endblock %}

@@ -11,3 +11,4 @@ from .product_qna_controller import ProductQnAController
 from .dashboard_controller import DashboardController
 from .cart_controller import CartController
 from .wishlist_controller import WishlistController
+from .product_review_controller import ProductReviewController
