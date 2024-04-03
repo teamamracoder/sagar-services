@@ -14,7 +14,7 @@ class ProductQuestionController:
     def get_product_question_data(self):
         columns = ["id", "question","created_by","created_at","updated_by","updated_by","is_active", "product_id"]
         data = self.product_question_service.get(request, columns)
-        combined_data = self.product_service.add_product_with_questions(data)
+        combined_data = self.product_service.add_product_with_this(data)
         return jsonify(combined_data)
 
     def create(self):

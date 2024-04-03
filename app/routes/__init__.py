@@ -9,9 +9,11 @@ from .dashboard_routes import dashboard_bp
 from .product_question_routes import product_question_bp
 from .product_answer_routes import product_answer_bp
 from .product_qna_routes import product_qna_bp
+from .cart_routes import cart_bp
+from .wishlist_routes import wishlist_bp
 
 # register blueprints
-blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, product_question_bp, product_answer_bp, product_qna_bp]
+blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, product_question_bp, product_answer_bp, product_qna_bp, cart_bp, wishlist_bp]
 
 
 def register_blueprints(app):

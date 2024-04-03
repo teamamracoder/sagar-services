@@ -9,7 +9,7 @@ class ProductService(BaseService):
     def __init__(self) -> None:
         super().__init__(ProductModel)
 
-    def add_product_with_questions(self, items: list) -> list:
+    def add_product_with_this(self, items: dict) -> dict:
         for item in items["data"]:
             item["product_name"] = self.get_product_name_by_id(item["product_id"])
         return items
