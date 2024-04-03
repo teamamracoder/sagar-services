@@ -6,3 +6,12 @@ from .category_froms import UpdateCategoryForm
 from .product_froms import CreateProductForm
 from .product_froms import UpdateProductForm
 from .auth_forms import LoginForm
+
+from .service_froms import CreateServiceForm
+from .service_froms import UpdateServiceForm
+from .service_type_froms import CreateServiceTypeForm
+from .service_type_froms import UpdateServiceTypeForm
+from .service_answer_froms import CreateServiceAnswerForm
+from .service_answer_froms import UpdateServiceAnswerForm
+from .service_question_froms import CreateServiceQuestionForm
+from .service_question_froms import UpdateServiceQuestionForm

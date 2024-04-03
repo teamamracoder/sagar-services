@@ -7,8 +7,13 @@ from .category_routes import category_bp
 from .product_routes import product_bp
 from .dashboard_routes import dashboard_bp
 
+from .service_routes import service_bp
+from .service_type_routes import service_type_bp
+from .service_answer_routes import service_answer_bp
+from .service_question_routes import service_question_bp
+
 # register blueprints
-blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp]
+blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, service_bp, service_type_bp, service_answer_bp, service_question_bp]
 
 
 def register_blueprints(app):
