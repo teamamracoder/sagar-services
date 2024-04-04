@@ -4,7 +4,7 @@ from app.services import ProductService
 from app.services import CategoryService
 from datetime import datetime
 from app.constants import payment_methods
-
+from app.auth import get_current_user
 class ProductController:
     def __init__(self) -> None:
         self.product_service = ProductService()
@@ -29,7 +29,7 @@ class ProductController:
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             self.product_service.create(
-                created_by=1,
+                created_by=get_current_user().id,
                 created_at=datetime.now(),
                 product_name=form.product_name.data,
                 brand=form.brand.data,
@@ -74,7 +74,7 @@ class ProductController:
                 'available_area_pincodes': pincode_list,
                 'return_policy': form.return_policy.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1
+                'updated_by': get_current_user().id
             }
             self.product_service.update(product.id, **updated_data)
             return redirect(url_for("product.index"))

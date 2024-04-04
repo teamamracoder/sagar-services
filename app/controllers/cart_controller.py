@@ -3,6 +3,7 @@ from app.forms import CreateCartForm
 from app.services import CartService, ProductService
 from datetime import datetime
 from app.constants import cart_statuses
+from app.auth import get_current_user
 
 class CartController:
     def __init__(self) -> None:
@@ -24,7 +25,7 @@ class CartController:
         form = CreateCartForm()
         if form.validate_on_submit():
             self.cart_service.create(
-                created_by=1,   #logged in user id
+                created_by=get_current_user().id,   #logged in user id
                 created_at=datetime.now(),
                 user_id=form.user_id.data,
                 product_id=form.product_id.data,
@@ -42,7 +43,7 @@ class CartController:
         status_key=cart_statuses.get_key(status)
         self.cart_service.update(
             cart_id,
-            updated_by=1,   #logged in user
+            updated_by=get_current_user().id,   #logged in user
             updated_at=datetime.now(),
             status=status_key
         )

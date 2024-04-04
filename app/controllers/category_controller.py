@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateCategoryForm, UpdateCategoryForm
 from app.services import CategoryService
 from datetime import datetime
+from app.auth import get_current_user
 
 class CategoryController:
     def __init__(self) -> None:
@@ -19,7 +20,7 @@ class CategoryController:
         form = CreateCategoryForm()
         if form.validate_on_submit():
             self.category_service.create(
-                created_by=1,
+                created_by=get_current_user().id,
                 created_at=datetime.now(),
                 category_name=form.category_name.data,
             )
@@ -37,7 +38,7 @@ class CategoryController:
             updated_data = {
                 'category_name': form.category_name.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1
+                'updated_by': get_current_user().id
             }
             self.category_service.update(category.id, **updated_data)
             return redirect(url_for("category.index"))

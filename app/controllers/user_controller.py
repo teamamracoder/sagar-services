@@ -25,7 +25,6 @@ class UserController:
         return render_template("admin/user/index.html")
 
     def get_user_data(self):
-        # Determine the column to sort by
         columns = ["id", "first_name", "email", "is_active"]
         data = self.user_service.get(request, columns)
         user_data = self.role_service.add_roles_with_users(data)

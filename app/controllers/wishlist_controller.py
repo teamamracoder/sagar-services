@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateWishlistForm
 from app.services import WishlistService, ProductService
 from datetime import datetime
-
+from app.auth import get_current_user
 
 class WishlistController:
     def __init__(self) -> None:
@@ -23,7 +23,7 @@ class WishlistController:
         form = CreateWishlistForm()
         if form.validate_on_submit():
             self.wishlist_service.create(
-                created_by=1,   #logged in user id
+                created_by=get_current_user().id,   #logged in user id
                 created_at=datetime.now(),
                 user_id=form.user_id.data,
                 product_id=form.product_id.data
@@ -31,15 +31,6 @@ class WishlistController:
             return redirect(url_for("wishlist.index"))
             # return render_template("admin/wishlist/add.html", form=form, error="wishlist already exists")
         return render_template("admin/wishlist/add.html", form=form)
-
-    # customer's add to wishlist
-    def add_to_wishlist(self,product_id):
-        self.wishlist_service.create(
-            created_by=1,   #logged in user id
-            created_at=datetime.now(),
-            user_id=1,    # logged in user id
-            product_id=product_id
-        )
 
     # is_active will be updated as activated/deactivated
     def status(self, wishlist_id):
