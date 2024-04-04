@@ -1,4 +1,3 @@
-from db import db
 from app.models import UserModel
 from .base_service import BaseService
 

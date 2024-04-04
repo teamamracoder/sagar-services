@@ -1,4 +1,3 @@
-from app import db
 from app.models import CartModel
 from .base_service import BaseService
 from app.constants import cart_statuses
@@ -17,5 +16,4 @@ class CartService(BaseService):
             cart['statuses'].append(status_value)
             cart['statuses'].extend(item for item in cart_statuses.get_all_values() if item != status_value)
             cart['statuses'] = list(cart['statuses'])
-            # print(cart["statuses"])
         return carts

@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, FloatField, BooleanField, TextAreaField, FieldList, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, URL
-from flask_wtf.file import FileField, FileRequired
+from wtforms import StringField, IntegerField, FloatField, TextAreaField, FieldList, SelectField, SelectMultipleField
+from wtforms.validators import DataRequired
 
 class CreateProductForm(FlaskForm):
     category_id = SelectField('Category', coerce=int, validators=[DataRequired()])
@@ -26,7 +25,6 @@ class UpdateProductForm(FlaskForm):
     price = FloatField("price", validators=[DataRequired()])
     discount = FloatField("discount")
     stock = IntegerField("stock", validators=[DataRequired()])
-    # product_img_urls = FieldList(FileField("product_img_urls"),min_entries=5, max_entries=8)
     product_img_urls = FieldList(StringField("product_img_urls"))
     specifications = TextAreaField("specifications", validators=[DataRequired()])
     payment_methods = SelectMultipleField("payment_methods", validators=[DataRequired()], coerce=int)

@@ -1,4 +1,3 @@
-from db import db
 from app.models import RoleModel
 from .base_service import BaseService
 from app.constants import roles
