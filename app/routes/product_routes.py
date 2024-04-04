@@ -18,6 +18,10 @@ def index():
 def get_product_data():
     return product_controller.get_product_data()
 
+@product_bp.route("/admin/products/total_price")
+def get_total_price():
+    return product_controller.get_total_price()
+
 
 @product_bp.route("/admin/products/add/", methods=["GET", "POST"])
 @login_required

@@ -20,3 +20,23 @@ class ProductService(BaseService):
         
     def get_active(self):
         return ProductModel.query.filter_by(is_active=True).order_by(ProductModel.product_name).all()
+
+    def get_total_price(self,request):
+        product_id = int(request.args.get("product_id"))
+        quantity = int(request.args.get("quantity"))
+
+        product=self.get_by_id(product_id)
+
+        discount=product.discount
+        price=product.price
+
+        total_price=float((price-discount)*quantity)
+
+        price_calculated_data={
+            'product_id':product_id,
+            'price':price,
+            'discount':discount,
+            'quantity':quantity,
+            'total_price':total_price
+        }
+        return price_calculated_data

@@ -1,0 +1,119 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Orders</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('order.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table id="orderTable" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>product</th>
+                <th>User's Name</th>
+                <th>User's Email</th>
+                <th>quantity</th>
+                <th>price</th>
+                <th>payment_method</th>
+                <th>Order Status</th>
+                <th>shipping_address</th>
+                <th>Payment Status</th>
+                <th>area_pincode</th>
+                <th>ordered at</th>
+                <th style="width:180px;">Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#orderTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('order.get_order_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "product_name"},
+                { "data": "fullname" },
+                { "data": "email" },
+                { "data": "quantity"},
+                { "data": "price"},
+                { "data": "payment_method_name"},
+                {
+                    "data": "order_statuses",
+                    "render": function(data, type, row) {
+                        var dropdown = $('<div>').addClass('dropdown');
+                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle')
+                                                    .attr({
+                                                        'href': '#',
+                                                        'role': 'button',
+                                                        'data-bs-toggle': 'dropdown',
+                                                        'aria-expanded': 'false'
+                                                    }).text(row.order_status_name);
+                        var dropdownMenu = $('<ul>').addClass('dropdown-menu');
+                        $.each(data, function(index, status) {
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item').attr('href', '/admin/orders/statuses/' + row.id + '/order/' + status).text(status)));
+                        });
+                        dropdown.append(dropdownToggle);
+                        dropdown.append(dropdownMenu);
+                        return dropdown.prop('outerHTML');
+                    }
+                },
+                { "data": "shipping_address"},
+                {
+                    "data": "payment_statuses",
+                    "render": function(data, type, row) {
+                        var dropdown = $('<div>').addClass('dropdown');
+                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle')
+                                                    .attr({
+                                                        'href': '#',
+                                                        'role': 'button',
+                                                        'data-bs-toggle': 'dropdown',
+                                                        'aria-expanded': 'false'
+                                                    }).text(row.payment_status_name);
+                        var dropdownMenu = $('<ul>').addClass('dropdown-menu');
+                        $.each(data, function(index, status) {
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item').attr('href', '/admin/orders/statuses/' + row.id + '/payment/' + status).text(status)));
+                        });
+                        dropdown.append(dropdownToggle);
+                        dropdown.append(dropdownMenu);
+                        return dropdown.prop('outerHTML');
+                    }
+                },
+                { "data": "area_pincode"},
+                { "data": "created_at"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/orders/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/orders/status/" + id;
+        };
+    });
+</script>
+
+
+{% endblock %}

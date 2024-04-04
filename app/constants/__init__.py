@@ -54,7 +54,7 @@ service_statuses = Constant(
     }
 )
 
-cart_status = Constant({1: "REMOVED", 2: "ORDERED", 3: "ADDED"})
+cart_statuses = Constant({1: "REMOVED", 2: "ORDERED", 3: "ADDED"})
 
 departments = Constant(
     {
@@ -65,3 +65,5 @@ departments = Constant(
         # 4: "PC_BUILDING"
     }
 )
+
+payment_statuses = Constant({1: "PAID", 2:"PENDING", 3:"REFUNDED", 4:"FAILED"})

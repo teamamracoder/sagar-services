@@ -15,3 +15,5 @@ from .cart_forms import CreateCartForm
 from .wishlist_forms import CreateWishlistForm
 from .product_review_forms import CreateProductReviewForm
 from .product_review_forms import UpdateProductReviewForm
+from .order_forms import CreateOrderForm
+from .order_forms import UpdateOrderForm

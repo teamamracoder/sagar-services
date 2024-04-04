@@ -12,3 +12,4 @@ from .dashboard_controller import DashboardController
 from .cart_controller import CartController
 from .wishlist_controller import WishlistController
 from .product_review_controller import ProductReviewController
+from .order_controller import OrderController

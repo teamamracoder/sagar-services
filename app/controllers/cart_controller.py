@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateCartForm
 from app.services import CartService, ProductService
 from datetime import datetime
-from app.constants import cart_status
+from app.constants import cart_statuses
 
 class CartController:
     def __init__(self) -> None:
@@ -47,14 +47,10 @@ class CartController:
     # status will be true when added to cart, false when product ordered
 
     def cart_status(self, cart_id, status):
-        print(cart_id)
-        print(type(cart_id))
-        print(status)
-        print(type(status))
         cart = self.cart_service.get_by_id(cart_id)
         if cart is None:
             return render_template("admin/error/something_went_wrong.html")
-        status_key=cart_status.get_key(status)
+        status_key=cart_statuses.get_key(status)
         self.cart_service.update(
             cart_id,
             updated_by=1,   #logged in user
