@@ -26,12 +26,12 @@ class UserController:
 
     def get_user_data(self):
         # Determine the column to sort by
-        columns = ["id", "first_name", "email","is_active"]
+        columns = ["id", "first_name", "email", "is_active"]
         data = self.user_service.get(request, columns)
         user_data = self.role_service.add_roles_with_users(data)
         return jsonify(user_data)
 
-    def update(self,id):
+    def update(self, id):
         user = self.user_service.get_by_id(id)
         form = UpdateUserForm(obj=user)
         if form.validate_on_submit():
@@ -44,9 +44,9 @@ class UserController:
                 mobile=form.mobile.data,
             )
             return redirect(url_for("user.index"))
-        return render_template("admin/user/update.html", id=id,form=form)
+        return render_template("admin/user/update.html", id=id, form=form)
 
-    def status(self,id):
+    def status(self, id):
         user = self.user_service.get_by_id(id)
         if user is None:
             return render_template("admin/error/something_went_wrong.html")
