@@ -13,6 +13,10 @@
                 {{ form.product_id(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
+                {{ form.user_id.label(class="form-label") }}
+                {{ form.user_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
                 {{ form.question.label(class="form-label") }}
                 {{ form.question(class="form-control form-control-sm") }}
             </div>
@@ -37,11 +41,6 @@
                     minlength: 5,
                     maxlength: 200
                 }
-                // answer: {
-                //     required: true,
-                //     minlength: 10,
-                //     maxlength: 200
-                // }
             },
             messages: {
                 question: {
@@ -49,11 +48,6 @@
                     minlength: "Question must be at least 5 characters long",
                     maxlength: "Question must not exceed 100 characters"
                 }
-                // answer: {
-                //     required: "Please enter Answer",
-                //     minlength: "Answer must be at least 10 characters long",
-                //     maxlength: "Answer must not exceed 200 characters"
-                // }
             },
             submitHandler: function (form) {
                 form.submit();

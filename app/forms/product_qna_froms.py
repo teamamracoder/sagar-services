@@ -5,4 +5,11 @@ from wtforms.validators import DataRequired
 class CreateProductQnAForm(FlaskForm):
     question = StringField("Question", validators=[DataRequired()])
     product_id = IntegerField('Product', validators=[DataRequired()])
-    answer = StringField("Answer", validators=[DataRequired()])
+    answer = StringField("Answer")
+    user_id = IntegerField("user id", validators=[DataRequired()])
+
+class UpdateProductQnAForm(FlaskForm):
+    question = StringField("Question", validators=[DataRequired()])
+    product_id = IntegerField('Product', validators=[DataRequired()])
+    answer = StringField("Answer")
+    user_id = IntegerField("user id", validators=[DataRequired()])

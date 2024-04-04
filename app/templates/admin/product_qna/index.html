@@ -41,34 +41,22 @@
             "columns": [
                 { "data": "id" },
                 { "data": "product_name"},
-                { 
-                    "data": "question",
-                    "render": function (data, type, row) {
-                        return '<p>'+data+'</p><button class="btn btn-outline-dark btn-sm me-1" onclick="editQuestion(' + row.id + ')">Edit</button>';
-                    }
-                },
+                { "data": "question" },
                 { "data": "created_by"},
-                { 
-                    "data": "answer",
-                    "render": function (data, type, row) {
-                        return '<p>'+data+'</p><button class="btn btn-outline-dark btn-sm me-1" onclick="editAnswer(' + row.answer_id + ')">'+(row.answer? 'Edit' : 'Answer')+'</button>';
-                    }
-                },
+                {  "data": "answer" },
                 { "data": "answered_by"},
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>'+
+                        '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
                     }
                 }
             ]
         });
 
-        window.editQuestion = function (id) {
-            window.location.href= "/admin/product_questions/update/" + id;
-        };
-        window.editAnswer = function (id) {
-            window.location.href= "/admin/product_answers/update/" + id;
+        window.editRecord = function (id) {
+            window.location.href= "/admin/product_qnas/update/" + id;
         };
 
         window.deactivateRecord = function (id) {
