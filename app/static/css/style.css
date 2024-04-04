@@ -17,7 +17,7 @@
 }
 #sidebarLinks .accordion-button:not(.collapsed),
 #navLinks .accordion-button:not(.collapsed) {
-  background-color: black;
+  background-color: #212529;
   color: white;
 }
 .adminTableImg {
@@ -29,34 +29,24 @@
 .error {
   color: rgb(161, 0, 0);
 }
-
-.active > .page-link {
-  background-color: black !important;
-  color: white !important;
-  border: none !important;
-  outline: none !important;
-}
-.page-link:active {
-  background-color: black !important;
-  color: white !important;
-  border: none !important;
-  outline: none !important;
+.page-link {
+  background-color: white !important;
+  color:  #212529 !important;
+  border:none;
 } 
-/* .page-link:link {
-  color: blue;
+.active > .page-link {
+  background-color: #212529 !important;
+  color: white !important;
+  border:none;
 }
 
-.page-link:visited {
-  color: red;
+.pagination{
+  --bs-pagination-focus-box-shadow: none;
 }
+.pagination li{
+  border:1px solid #0003;
+} 
 
-.page-link:hover {
-  color: green;
-}
-
-.page-link:active {
-  color: orange;
-} */
 .accordion-button::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/%3E%3C/svg%3E");
 }
@@ -65,10 +55,15 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-dash' viewBox='0 0 16 16'%3E%3Cpath d='M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm2.5 7.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1'/%3E%3C/svg%3E");
 }
 
-table thead tr th, table tbody tr td{
+#adminDataTable th, #adminDataTable td{
     white-space:nowrap;
 }
 
-#productTable_wrapper .row .col-12{
+#adminDataTable_wrapper .row .col-12{
 overflow-x:scroll;
+}
+
+.dt-search input:focus{
+  box-shadow: none !important;
+  border-color: #0005;
 }
