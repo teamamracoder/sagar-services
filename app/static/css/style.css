@@ -60,7 +60,7 @@
 }
 
 #adminDataTable_wrapper .row .col-12{
-overflow-x:scroll;
+  overflow-x:scroll;
 }
 
 .dt-search input:focus{

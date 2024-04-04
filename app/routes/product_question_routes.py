@@ -8,6 +8,8 @@ product_question_controller = ProductQuestionController()
 
     
 @product_question_bp.route("/admin/product_questions/")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return product_question_controller.get()
 
@@ -18,12 +20,14 @@ def get_product_question_data():
 
 @product_question_bp.route("/admin/product_questions/add/", methods=["GET", "POST"])
 @login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def add():
     return product_question_controller.create()
 
 
 @product_question_bp.route("/admin/product_questions/update/<int:id>", methods=["GET", "POST"])
 @login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def update(id):
     return product_question_controller.update(id)
 

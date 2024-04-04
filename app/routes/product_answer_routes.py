@@ -8,6 +8,8 @@ product_answer_controller = ProductAnswerController()
 
     
 @product_answer_bp.route("/admin/product_answers/")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return product_answer_controller.get()
 

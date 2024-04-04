@@ -14,7 +14,6 @@ def index():
     return category_controller.get()
 
 @category_bp.route("/admin/categories/data")
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def get_category_data():
     return category_controller.get_category_data()
 

@@ -23,8 +23,6 @@ class ProductQnAController:
 
     def create(self):
         form = CreateProductQnAForm()
-        products = self.product_service.get_active()
-        form.product_id.choices = [(product.id, product.product_name) for product in products]
         if form.validate_on_submit():
             question = self.product_question_service.create(
                 created_by=1,

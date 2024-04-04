@@ -41,7 +41,7 @@ class CategoryController:
             }
             self.category_service.update(category.id, **updated_data)
             return redirect(url_for("category.index"))
-        return render_template("admin/category/update.html", form=form, category=category)
+        return render_template("admin/category/update.html", form=form)
 
     def status(self, id):
         category = self.category_service.get_by_id(id)

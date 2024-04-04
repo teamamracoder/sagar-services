@@ -8,6 +8,8 @@ product_review_controller = ProductReviewController()
 
     
 @product_review_bp.route("/admin/product_reviews/")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return product_review_controller.get()
 
@@ -18,12 +20,14 @@ def get_product_review_data():
 
 @product_review_bp.route("/admin/product_reviews/add/", methods=["GET", "POST"])
 @login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def add():
     return product_review_controller.create()
 
 
 @product_review_bp.route("/admin/product_reviews/update/<int:id>", methods=["GET", "POST"])
 @login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def update(id):
     return product_review_controller.update(id)
 

@@ -29,16 +29,11 @@ class OrderController:
 
     def create(self):
         form = CreateOrderForm()
-        products=self.product_service.get_active()
-        form.product_id.choices = [(product.id, product.product_name) for product in products]
-
         form.payment_method.choices = payment_methods.get_all_items()
         form.order_status.choices = order_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
 
         if form.validate_on_submit():
-
-            # form.price.data=self.product_service.get_discounted_price()
             self.order_service.create(
                 created_by=1,
                 created_at=datetime.now(),
@@ -53,7 +48,6 @@ class OrderController:
                 area_pincode=form.area_pincode.data,
             )
             return redirect(url_for("order.index"))
-            # return render_template("admin/order/add.html", form=form, error="Order already exists")
         print("submit hoynai")
         return render_template("admin/order/add.html", form=form)
 
@@ -62,8 +56,6 @@ class OrderController:
         if order is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateOrderForm(obj=order)
-        products = self.product_service.get_active()
-        form.product_id.choices = [(product.id, product.product_name) for product in products]
         form.payment_method.choices = payment_methods.get_all_items()
         form.order_status.choices = order_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()

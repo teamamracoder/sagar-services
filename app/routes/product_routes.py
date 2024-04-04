@@ -14,7 +14,6 @@ def index():
     return product_controller.get()
 
 @product_bp.route("/admin/products/data")
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def get_product_data():
     return product_controller.get_product_data()
 

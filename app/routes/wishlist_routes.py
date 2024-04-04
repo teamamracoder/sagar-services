@@ -9,6 +9,8 @@ wishlist_controller = WishlistController()
 
 
 @wishlist_bp.route("/admin/wishlists/")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return wishlist_controller.get()
 
@@ -20,6 +22,7 @@ def get_wishlist_data():
 
 @wishlist_bp.route("/admin/wishlists/add/", methods=["GET", "POST"])
 @login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def add():
     return wishlist_controller.create()
 

@@ -13,11 +13,11 @@ class CartController:
         return render_template("admin/cart/index.html")
 
     def get_cart_data(self):
-        columns = ["id", "user", "product_id", "created_by", "created_at", "updated_by","updated_at","status", "is_active"]
+        columns = ["id", "user_id", "product_id", "created_by", "created_at", "updated_by","updated_at","status", "is_active"]
         data = self.cart_service.get(request, columns)
-        product_combined_data = self.product_service.add_product_with_this(data)
-        status_combined_data = self.cart_service.add_status_with_cart(product_combined_data)
-        return jsonify(status_combined_data)
+        data = self.product_service.add_product_with_this(data)
+        data = self.cart_service.add_status_with_cart(data)
+        return jsonify(data)
 
     #admin creates cart
     def create(self):
@@ -34,17 +34,6 @@ class CartController:
             # return render_template("admin/cart/add.html", form=form, error="cart already exists")
         return render_template("admin/cart/add.html", form=form)
 
-    # customer's add to cart
-    def add_to_cart(self,product_id):
-        self.cart_service.create(
-            created_by=1,   #logged in user id
-            created_at=datetime.now(),
-            user_id=1,    # logged in user id
-            product_id=product_id,
-            status=3
-        )
-
-    # status will be true when added to cart, false when product ordered
 
     def cart_status(self, cart_id, status):
         cart = self.cart_service.get_by_id(cart_id)

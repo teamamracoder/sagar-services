@@ -10,7 +10,7 @@ role_controller = RoleController()
 
 @role_bp.route("/admin/roles/")
 @login_required
-@role_required([1, 2])
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return role_controller.get()
 
@@ -22,6 +22,6 @@ def get_role_data():
 
 @role_bp.route("/admin/roles/add/", methods=["GET", "POST"])
 @login_required
-@role_required([1])
+@role_required([roles.get_key("ADMIN")])
 def add():
     return role_controller.create()

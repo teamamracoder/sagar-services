@@ -13,7 +13,7 @@ class WishlistController:
         return render_template("admin/wishlist/index.html")
 
     def get_wishlist_data(self):
-        columns = ["id", "user", "product_id", "created_by", "created_at", "is_active"]
+        columns = ["id", "user_id", "product_id", "created_by", "created_at", "is_active"]
         data = self.wishlist_service.get(request, columns)
         combined_data = self.product_service.add_product_with_this(data)
         return jsonify(combined_data)
