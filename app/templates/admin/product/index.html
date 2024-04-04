@@ -21,11 +21,8 @@
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Price</th>
+                <th>Discount</th>
                 <th>Stock</th>
-                <th>created by</th>
-                <th>created at</th>
-                <th>updated by</th>
-                <th>updated at</th>
                 <th style="width:160px;">Action</th>
             </tr>
         </thead>
@@ -49,21 +46,8 @@
                 { "data": "brand"},
                 { "data": "model"},
                 { "data": "price"},
+                { "data": "discount"},
                 { "data": "stock"},
-                { "data": "created_by"},
-                {
-                    "data": null,
-                    "render": function (data, type, row) {
-                        return getFormattedDateTime(row.created_at);
-                    }
-                },
-                { "data": "updated_by"},
-                {
-                    "data": null,
-                    "render": function (data, type, row) {
-                        return getFormattedDateTime(row.updated_at);
-                    }
-                },
                 {
                     "data": null,
                     "render": function (data, type, row) {

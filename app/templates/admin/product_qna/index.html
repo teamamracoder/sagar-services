@@ -17,13 +17,11 @@
         <thead>
             <tr>
                 <th># id</th>
-                <th>Question</th>
                 <th>Product Name</th>
-                <th>Answer</th>
+                <th>Question</th>
                 <th>Questioned By</th>
-                <th>Questioned At</th>
+                <th>Answer</th>
                 <th>Answered By</th>
-                <th>Answered at</th>
                 <th style="width:160px;">Action</th>
             </tr>
         </thead>
@@ -42,28 +40,21 @@
             },
             "columns": [
                 { "data": "id" },
+                { "data": "product_name"},
                 { 
                     "data": "question",
                     "render": function (data, type, row) {
                         return '<p>'+data+'</p><button class="btn btn-outline-dark btn-sm me-1" onclick="editQuestion(' + row.id + ')">Edit</button>';
                     }
                 },
-                { "data": "product_name"},
+                { "data": "created_by"},
                 { 
                     "data": "answer",
                     "render": function (data, type, row) {
-                        return '<p>'+data+'</p><button class="btn btn-outline-dark btn-sm me-1" onclick="editAnswer(' + row.answer_id + ')">Edit</button>';
+                        return '<p>'+data+'</p><button class="btn btn-outline-dark btn-sm me-1" onclick="editAnswer(' + row.answer_id + ')">'+(row.answer? 'Edit' : 'Answer')+'</button>';
                     }
                 },
-                { "data": "created_by"},
-                { "data": "row.answer" ? "created_at" : ''},
                 { "data": "answered_by"},
-                {
-                    "data": null,
-                    "render": function (data, type, row) {
-                        return getFormattedDateTime(row.answered_at);
-                    }
-                },
                 {
                     "data": null,
                     "render": function (data, type, row) {
