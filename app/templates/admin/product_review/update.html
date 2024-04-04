@@ -5,16 +5,16 @@
 {% block content %}
 <div class="container">
     <h3 class="text-center my-3">Update Product Review</h3>
-    <form method="POST" action="{{ url_for('product_review.add') }}" enctype="multipart/form-data"  id="addProductReviewForm">
+    <form method="POST" action="{{ url_for('product_review.update',id=id) }}" enctype="multipart/form-data"  id="addProductReviewForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
                 {{ form.product_id.label(class="form-label") }}
-                {{ form.product_id(class="form-control form-control-sm", disabled=true) }}
+                {{ form.product_id(class="form-control form-control-sm", readonly="readonly") }}
             </div>
             <div class="col-12">
                 {{ form.user_id.label(class="form-label") }}
-                {{ form.user_id(class="form-control form-control-sm") }}
+                {{ form.user_id(class="form-control form-control-sm", readonly="readonly") }}
             </div>
             <div class="col-12">
                 {{ form.review_title.label(class="form-label") }}

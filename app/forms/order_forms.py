@@ -14,7 +14,7 @@ class CreateOrderForm(FlaskForm):
     area_pincode  = StringField("area_pincode", validators=[DataRequired()])
 
 class UpdateOrderForm(FlaskForm):
-    product_id = IntegerField('Product', validators=[DataRequired()])
+    product_id = SelectField('Product',coerce=int, validators=[DataRequired()])
     user_id = IntegerField("user_id", validators=[DataRequired()])
     quantity = IntegerField("Quantity", validators=[DataRequired()])
     price = FloatField("Price", validators=[DataRequired()])

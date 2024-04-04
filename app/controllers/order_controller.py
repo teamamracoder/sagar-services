@@ -56,6 +56,10 @@ class OrderController:
         if order is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateOrderForm(obj=order)
+
+        product = self.product_service.get_by_id(order.product_id)
+        form.product_id.choices = [(product.id, product.product_name)]
+
         form.payment_method.choices = payment_methods.get_all_items()
         form.order_status.choices = order_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()

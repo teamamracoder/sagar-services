@@ -46,7 +46,10 @@ class ProductQnAController:
         form = UpdateProductQnAForm()
         question=self.product_question_service.get_by_id(id)
         answer=self.product_answer_service.get_answer_details_by_question_id(id)
-        
+
+        product = self.product_service.get_by_id(question.product_id)
+        form.product_id.choices = [(product.id, product.product_name)]
+
         if form.validate_on_submit():
             question = self.product_question_service.update(
                 id,

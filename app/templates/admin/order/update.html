@@ -11,11 +11,11 @@
         <div class="row">
             <div class="col-12">
                 {{ form.product_id.label(class="form-label") }}
-                {{ form.product_id(class="form-control form-control-sm") }}
+                {{ form.product_id(class="form-control form-control-sm", readonly="readonly") }}
             </div>
             <div class="col-12">
                 {{ form.user_id.label(class="form-label") }}
-                {{ form.user_id(class="form-control form-control-sm") }}
+                {{ form.user_id(class="form-control form-control-sm", readonly="readonly") }}
             </div>
             <div class="col-12">
                 {{ form.price.label(class="form-label") }}
@@ -124,7 +124,7 @@
                 quantity: {
                     required: "Please enter Quantity",
                     digits: "Invalid Quantity",
-                    min: "Quantity can not be less then 0",
+                    min: "Quantity can not be 0",
                     max: "Quantity can not exceed 5"
                 },
                 shipping_address: {

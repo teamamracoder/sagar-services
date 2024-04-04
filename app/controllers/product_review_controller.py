@@ -38,6 +38,10 @@ class ProductReviewController:
         if product_review is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateProductReviewForm(obj=product_review)
+
+        product = self.product_service.get_by_id(product_review.product_id)
+        form.product_id.choices = [(product.id, product.product_name)]
+
         if form.validate_on_submit():
             updated_data = {
                 'updated_at': datetime.now(),

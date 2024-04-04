@@ -10,11 +10,11 @@
         <div class="row">
             <div class="col-12">
                 {{ form.product_id.label(class="form-label") }}
-                {{ form.product_id(class="form-control form-control-sm", value=question.product_id) }}
+                {{ form.product_id(class="form-control form-control-sm", value=question.product_id, readonly="readonly") }}
             </div>
             <div class="col-12">
                 {{ form.user_id.label(class="form-label") }}
-                {{ form.user_id(class="form-control form-control-sm", value=question.user_id) }}
+                {{ form.user_id(class="form-control form-control-sm", value=question.user_id, readonly="readonly") }}
             </div>
             <div class="col-12">
                 {{ form.question.label(class="form-label") }}

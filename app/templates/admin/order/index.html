@@ -94,7 +94,13 @@
                     }
                 },
                 { "data": "area_pincode"},
-                { "data": "created_at"},
+                { 
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return getFormattedDateTime(row.created_at);
+                    }
+                    
+                },
                 {
                     "data": null,
                     "render": function (data, type, row) {
