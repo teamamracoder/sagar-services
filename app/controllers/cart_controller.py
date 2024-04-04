@@ -29,7 +29,7 @@ class CartController:
                 created_at=datetime.now(),
                 user_id=form.user_id.data,
                 product_id=form.product_id.data,
-                status=3
+                status=1
             )
             return redirect(url_for("cart.index"))
             # return render_template("admin/cart/add.html", form=form, error="cart already exists")
