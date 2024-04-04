@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateProductAnswerForm, UpdateProductAnswerForm
 from app.services import ProductAnswerService, ProductQuestionService
 from datetime import datetime
+from app.auth import get_current_user
 
 class ProductAnswerController:
     def __init__(self) -> None:
@@ -23,10 +24,10 @@ class ProductAnswerController:
         form.question_id.choices = [(question.id, question.question) for question in questions]
         if form.validate_on_submit():
             self.product_answer_service.create(
-                created_by=1,
+                created_by=get_current_user().id,
                 created_at=datetime.now(),
                 answer=form.answer.data,
-                staff_id=1,
+                staff_id=get_current_user().id,
                 question_id=form.question_id.data
             )
             return redirect(url_for("product_answer.index"))
@@ -45,7 +46,7 @@ class ProductAnswerController:
             updated_data = {
                 'answer': form.answer.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1,
+                'updated_by': get_current_user().id,
                 'question_id' : form.question_id.data
             }
             self.product_answer_service.update(id, **updated_data)

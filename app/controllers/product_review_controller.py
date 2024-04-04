@@ -48,9 +48,9 @@ class ProductReviewController:
                 'product_id': form.product_id.data,
                 'user_id': form.user_id.data 
             }
-            self.product_review_service.update(product_review.id, **updated_data)
+            self.product_review_service.update(id, **updated_data)
             return redirect(url_for("product_review.index"))
-        return render_template("admin/product_review/update.html", form=form, product_review=product_review)
+        return render_template("admin/product_review/update.html", id=id, form=form)
 
     def status(self, id):
         product_review = self.product_review_service.get_by_id(id)

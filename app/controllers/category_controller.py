@@ -40,9 +40,9 @@ class CategoryController:
                 'updated_at': datetime.now(),
                 'updated_by': get_current_user().id
             }
-            self.category_service.update(category.id, **updated_data)
+            self.category_service.update(id, **updated_data)
             return redirect(url_for("category.index"))
-        return render_template("admin/category/update.html", form=form)
+        return render_template("admin/category/update.html", id=id, form=form)
 
     def status(self, id):
         category = self.category_service.get_by_id(id)

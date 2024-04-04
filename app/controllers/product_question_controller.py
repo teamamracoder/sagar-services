@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateProductQuestionForm, UpdateProductQuestionForm
 from app.services import ProductAnswerService, ProductQuestionService, ProductService
 from datetime import datetime
-
+from app.auth import get_current_user
 class ProductQuestionController:
     def __init__(self) -> None:
         self.product_question_service = ProductQuestionService()
@@ -29,7 +29,7 @@ class ProductQuestionController:
                 user_id=1
             )
             self.product_answer_service.create(
-                created_by=1,
+                created_by=get_current_user().id,
                 created_at=datetime.now(),
                 answer=" ",
                 staff_id=1,
@@ -51,11 +51,11 @@ class ProductQuestionController:
                 'question': form.question.data,
                 'product_id': form.product_id.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1
+                'updated_by': get_current_user().id
             }
-            self.product_question_service.update(product_question.id, **updated_data)
+            self.product_question_service.update(id, **updated_data)
             return redirect(url_for("product_qna.index"))
-        return render_template("admin/product_question/update.html", form=form, product_question=product_question)
+        return render_template("admin/product_question/update.html", id=id, form=form)
 
     def status(self, id):
         product_question = self.product_question_service.get_by_id(id)

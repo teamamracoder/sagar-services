@@ -76,11 +76,11 @@ class ProductController:
                 'updated_at': datetime.now(),
                 'updated_by': get_current_user().id
             }
-            self.product_service.update(product.id, **updated_data)
+            self.product_service.update(id, **updated_data)
             return redirect(url_for("product.index"))
         
         form.available_area_pincodes.data = ', '.join(product.available_area_pincodes)
-        return render_template("admin/product/update.html", form=form, product=product)
+        return render_template("admin/product/update.html", id=id, form=form)
 
     def status(self, id):
         product = self.product_service.get_by_id(id)

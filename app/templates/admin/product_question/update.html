@@ -5,16 +5,16 @@
 {% block content %}
 <div class="container">
     <h3 class="text-center my-3">Add Product Questions</h3>
-    <form method="POST" action="{{ url_for('product_question.update', id=product_question.id) }}" enctype="multipart/form-data"  id="addProductQuestionForm">
+    <form method="POST" action="{{ url_for('product_question.update', id=id) }}" enctype="multipart/form-data"  id="addProductQuestionForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
                 {{ form.product_id.label(class="form-label") }}
-                {{ form.product_id(class="form-control form-control-sm", value=product_question.product_name, disabled=true) }}
+                {{ form.product_id(class="form-control form-control-sm", disabled=true) }}
             </div>
             <div class="col-12">
                 {{ form.question.label(class="form-label") }}
-                {{ form.question(class="form-control form-control-sm", value=product_question.question) }}
+                {{ form.question(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>

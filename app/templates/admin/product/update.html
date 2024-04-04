@@ -6,36 +6,36 @@
 <div class="container">
     <h3 class="text-center my-3">Update Product</h3>
 
-    <form method="POST" action="{{ url_for('product.update', id=product.id) }}" enctype="multipart/form-data"  id="updateProductForm">
+    <form method="POST" action="{{ url_for('product.update', id=id) }}" enctype="multipart/form-data"  id="updateProductForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
                 {{ form.category_id.label(class="form-label") }}
-                {{ form.category_id(class="form-control form-control-sm", value=product.category_id) }}
+                {{ form.category_id(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.product_name.label(class="form-label") }}
-                {{ form.product_name(class="form-control form-control-sm", value=product.product_name) }}
+                {{ form.product_name(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.brand.label(class="form-label") }}
-                {{ form.brand(class="form-control form-control-sm", value=product.brand) }}
+                {{ form.brand(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.model.label(class="form-label") }}
-                {{ form.model(class="form-control form-control-sm", value=product.model) }}
+                {{ form.model(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.price.label(class="form-label") }}
-                {{ form.price(class="form-control form-control-sm", value=product.price) }}
+                {{ form.price(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.discount.label(class="form-label") }}
-                {{ form.discount(class="form-control form-control-sm", value=product.discount) }}
+                {{ form.discount(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.stock.label(class="form-label") }}
-                {{ form.stock(class="form-control form-control-sm", value=product.stock) }}
+                {{ form.stock(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {# for img_url in form.product_img_urls #}
@@ -45,19 +45,19 @@
             </div>
             <div class="col-12">
                 {{ form.specifications.label(class="form-label") }}
-                {{ form.specifications(class="form-control form-control-sm", value=product.specifications) }}
+                {{ form.specifications(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.payment_methods.label(class="form-label") }}
-                {{ form.payment_methods(class="form-control", multiple="multiple",value=product.payment_methods) }}
+                {{ form.payment_methods(class="form-control", multiple="multiple") }}
             </div>
             <div class="col-12">
                 {{ form.available_area_pincodes.label(class="form-label") }}
-                {{ form.available_area_pincodes(class="form-control form-control-sm", value=form.available_area_pincodes.data) }}
+                {{ form.available_area_pincodes(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.return_policy.label(class="form-label") }}
-                {{ form.return_policy(class="form-control form-control-sm", value=product.return_policy) }}
+                {{ form.return_policy(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Update</button>
