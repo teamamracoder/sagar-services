@@ -7,3 +7,4 @@ from .category_controller import CategoryController
 from .product_controller import ProductController
 from .dashboard_controller import DashboardController
 from .conversation_controller import ConversationController
+from .message_controller import MessageController

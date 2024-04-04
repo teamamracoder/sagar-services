@@ -1,0 +1,66 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Messages</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('message.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table id="messageTable" class="table table-bordered">
+        <thead >
+            <tr>
+                <th># id</th>
+                <th>Conversation id</th>
+                <th>Message text</th>
+                <th>created at</th>
+                <th>updated at</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#messageTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('message.get_message_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "conversation_id" },
+                { "data": "message_text" },
+                { "data": "created_at" },
+                { "data": "updated_at" },
+                { "data": null,
+                    "render": function (data, type, row) {
+                    console.log(row.is_active)
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }           }
+            
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/messages/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/messages/status/" + id;
+        };
+    });
+</script>
+
+{% endblock %}
