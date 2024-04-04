@@ -41,11 +41,17 @@ class CartController:
         if cart is None:
             return render_template("admin/error/something_went_wrong.html")
         status_key=cart_statuses.get_key(status)
+
+        is_active=True
+        #update is_active = false if cart_status is not 'ADDED', it can be 'REMOVED' or 'ORDERED'
+        if status_key is not 1:
+            is_active=False
         self.cart_service.update(
             cart_id,
-            updated_by=get_current_user().id,   #logged in user
+            updated_by=get_current_user().id,  
             updated_at=datetime.now(),
-            status=status_key
+            status=status_key,
+            is_active=is_active
         )
         return redirect(url_for("cart.index"))
 

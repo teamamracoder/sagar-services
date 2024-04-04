@@ -54,7 +54,7 @@ service_statuses = Constant(
     }
 )
 
-cart_statuses = Constant({1: "REMOVED", 2: "ORDERED", 3: "ADDED"})
+cart_statuses = Constant({1: "ADDED", 2: "ORDERED", 3: "REMOVED"})
 
 departments = Constant(
     {
