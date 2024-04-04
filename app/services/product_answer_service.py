@@ -9,8 +9,6 @@ class ProductAnswerService(BaseService):
         for qna in qnas["data"]:
             answer=self.get_answer_details_by_question_id(qna["id"])
             qna["answer"] = answer.answer
-            qna["answered_by"] = answer.created_by
-            qna["answered_at"] = answer.created_at
         return qnas
     
     def get_answer_details_by_question_id(self, question_id):

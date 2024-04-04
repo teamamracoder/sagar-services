@@ -45,7 +45,7 @@
                     "data": null,
                     "render": function (data, type, row) {
                         return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
-                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                        '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
