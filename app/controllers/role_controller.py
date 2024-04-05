@@ -1,5 +1,4 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateRoleForm
 from app.services import RoleService
 from app.auth import get_current_user
 from datetime import datetime
