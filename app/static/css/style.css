@@ -63,7 +63,10 @@
   overflow-x:scroll;
 }
 
-.dt-search input:focus{
+.dt-search input:focus,
+#adminForm input:focus, 
+#adminForm select:focus, 
+#adminForm textarea:focus{
   box-shadow: none !important;
   border-color: #0005;
 }

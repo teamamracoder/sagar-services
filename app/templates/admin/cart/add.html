@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
     <h3 class="text-center my-3">Add Cart</h3>
-    <form method="POST" action="{{ url_for('cart.add') }}"  id="addCartForm">
+    <form method="POST" action="{{ url_for('cart.add') }}"  id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -26,7 +26,7 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('#addCartForm').validate({
+        $('#adminForm').validate({
             rules: {
                 user_id: {
                     required: true,

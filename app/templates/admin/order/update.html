@@ -6,7 +6,7 @@
 <div class="container">
     <h3 class="text-center my-3">Update Order</h3>
 
-    <form method="POST" action="{{ url_for('order.update', id=id) }}" id="addOrderForm">
+    <form method="POST" action="{{ url_for('order.update', id=id) }}" id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -90,7 +90,7 @@
         });
 
 
-        $('#addOrderForm').validate({
+        $('#adminForm').validate({
             rules: {
                 user_id: {
                     required: true,

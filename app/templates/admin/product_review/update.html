@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
     <h3 class="text-center my-3">Update Product Review</h3>
-    <form method="POST" action="{{ url_for('product_review.update',id=id) }}" enctype="multipart/form-data"  id="addProductReviewForm">
+    <form method="POST" action="{{ url_for('product_review.update',id=id) }}" enctype="multipart/form-data"  id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -38,7 +38,7 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('#addProductReviewForm').validate({
+        $('#adminForm').validate({
             rules: {
                 review_title: {
                     required: true,

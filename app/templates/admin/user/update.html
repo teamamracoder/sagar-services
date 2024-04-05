@@ -7,7 +7,7 @@
 <div class="container">
     <h3 class="text-center my-3">Edit User</h3>
 
-    <form method="POST" action="{{ url_for('user.update',id=id) }}" id="addUserForm">
+    <form method="POST" action="{{ url_for('user.update',id=id) }}" id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -41,7 +41,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#addUserForm').validate({
+        $('#adminForm').validate({
             rules: {
                 first_name: {
                     required: true,
