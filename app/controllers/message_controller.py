@@ -3,6 +3,7 @@ from app.forms import CreateMessageForm
 from app.forms import UpdateMessageForm
 from app.services import MessageService
 from app.services import ConversationService
+from datetime import datetime
 
 
 
@@ -27,14 +28,15 @@ class MessageController:
             self.message_service.create(
                 conversation_id=form.conversation_id.data,
                 message_text=form.message_text.data,
-                created_by=form.created_by.data
+                created_by=1,
+                created_at = datetime.now()
             )
             return redirect(url_for("message.index"))
         return render_template("admin/message/add.html", form=form)
     
     def update(self,id):
-        form = UpdateMessageForm()
         message = self.message_service.get_by_id(id)
+        form = UpdateMessageForm(obj = message)
         if message is None:
             return render_template("admin/error/something_went_wrong.html")
         if form.validate_on_submit():
@@ -42,12 +44,11 @@ class MessageController:
                 id,
                 conversation_id=form.conversation_id.data,
                 message_text=form.message_text.data,
-                created_by=form.created_by.data
+                updated_by=1,
+                updated_at = datetime.now()
+
             )
             return redirect(url_for("message.index"))
-        form.conversation_id.data=message.conversation_id
-        form.message_text.data=message.message_text
-        form.created_by.data=message.created_by
         return render_template("admin/message/update.html",id=id, form=form)
 
     def status(self,id):

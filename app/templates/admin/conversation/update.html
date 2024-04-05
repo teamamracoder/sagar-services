@@ -8,7 +8,7 @@
 <div class="container">
     <h3 class="text-center my-3">Update conversation</h3>
 
-    <form method="POST" action="{{ url_for('conversation.update',id=id) }}">
+    <form id="adminForm" method="POST" action="{{ url_for('conversation.update',id=id) }}">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -27,5 +27,33 @@
     </form>
 
 </div>
+<script>
+    $(document).ready(function () {
+        $('#addUserForm').validate({
+            rules: {
+                user_id: {
+                    required: true,
+                    digits:true
+                },
+                staff_id: {
+                    required: true,
+                    digits:true
+                }
+                
+            },
+            messages: {
+                user_id: {
+                    required: "Please enter User id"
+                },
+                staff_id: {
+                    required: "Please enter User id"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
 
 {% endblock %}
