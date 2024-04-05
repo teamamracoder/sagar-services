@@ -1,0 +1,69 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Contacts</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('contact_bp.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th># Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Query message</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('contact_bp.get_contact_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "name" },
+                { "data": "email" },
+                { "data": "phone" },
+                { "data": "query_message" },
+
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        console.log(row.is_active)
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href = "/admin/contacts/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href = "/admin/contacts/status/" + id;
+        };
+    });
+</script>
+
+
+{% endblock %}
