@@ -5,5 +5,16 @@ from .role_controller import RoleController
 from .home_controller import HomeController
 from .category_controller import CategoryController
 from .product_controller import ProductController
+from .product_qna_controller import ProductQnAController
 from .dashboard_controller import DashboardController
 from .contact_controller import ContactController
+from .conversation_controller import ConversationController
+from .message_controller import MessageController
+from .service_controller import ServiceController
+from .service_type_controller import ServiceTypeController
+from .service_answer_controller import ServiceAnswerController
+from .service_question_controller import ServiceQuestionController
+from .cart_controller import CartController
+from .wishlist_controller import WishlistController
+from .product_review_controller import ProductReviewController
+from .order_controller import OrderController
