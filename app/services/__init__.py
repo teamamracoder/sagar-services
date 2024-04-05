@@ -2,6 +2,8 @@ from .user_service import UserService
 from .role_service import RoleService
 from .category_service import CategoryService
 from .product_service import ProductService
+from .conversation_service import ConversationService
+from .message_service import MessageService
 from .service_service import ServiceService
 from .service_type_service import ServiceTypeService
 from .service_answer_service import ServiceAnswerService

@@ -7,6 +7,8 @@ from .category_controller import CategoryController
 from .product_controller import ProductController
 from .product_qna_controller import ProductQnAController
 from .dashboard_controller import DashboardController
+from .conversation_controller import ConversationController
+from .message_controller import MessageController
 from .service_controller import ServiceController
 from .service_type_controller import ServiceTypeController
 from .service_answer_controller import ServiceAnswerController
