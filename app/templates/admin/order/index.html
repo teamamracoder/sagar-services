@@ -21,14 +21,14 @@
                 <th>User id</th>
                 <th>User's Name</th>
                 <th>User's Email</th>
-                <th>quantity</th>
-                <th>price</th>
-                <th>payment_method</th>
-                <th>Order Status</th>
-                <th>shipping_address</th>
+                <th>Quantity</th>
+                <th>Final Amount</th>
+                <th>Payment Method</th>
                 <th>Payment Status</th>
-                <th>area_pincode</th>
-                <th>ordered at</th>
+                <th>Shipping Address</th>
+                <th>Area Pincode</th>
+                <th>Ordered At</th>
+                <th>Order Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -55,31 +55,10 @@
                 { "data": "price"},
                 { "data": "payment_method_name"},
                 {
-                    "data": "order_statuses",
-                    "render": function(data, type, row) {
-                        var dropdown = $('<div>').addClass('dropdown');
-                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle')
-                                                    .attr({
-                                                        'href': '#',
-                                                        'role': 'button',
-                                                        'data-bs-toggle': 'dropdown',
-                                                        'aria-expanded': 'false'
-                                                    }).text(row.order_status_name);
-                        var dropdownMenu = $('<ul>').addClass('dropdown-menu');
-                        $.each(data, function(index, status) {
-                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item').attr('href', '/admin/orders/statuses/' + row.id + '/order/' + status).text(status)));
-                        });
-                        dropdown.append(dropdownToggle);
-                        dropdown.append(dropdownMenu);
-                        return dropdown.prop('outerHTML');
-                    }
-                },
-                { "data": "shipping_address"},
-                {
                     "data": "payment_statuses",
                     "render": function(data, type, row) {
                         var dropdown = $('<div>').addClass('dropdown');
-                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle')
+                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle toggleStatusButtons')
                                                     .attr({
                                                         'href': '#',
                                                         'role': 'button',
@@ -88,13 +67,14 @@
                                                     }).text(row.payment_status_name);
                         var dropdownMenu = $('<ul>').addClass('dropdown-menu');
                         $.each(data, function(index, status) {
-                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item').attr('href', '/admin/orders/statuses/' + row.id + '/payment/' + status).text(status)));
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('href', '/admin/orders/statuses/' + row.id + '/payment/' + status).text(status)));
                         });
                         dropdown.append(dropdownToggle);
                         dropdown.append(dropdownMenu);
                         return dropdown.prop('outerHTML');
                     }
                 },
+                { "data": "shipping_address"},
                 { "data": "area_pincode"},
                 { 
                     "data": null,
@@ -102,6 +82,26 @@
                         return getFormattedDateTime(row.created_at);
                     }
                     
+                },
+                {
+                    "data": "order_statuses",
+                    "render": function(data, type, row) {
+                        var dropdown = $('<div>').addClass('dropdown');
+                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle toggleStatusButtons')
+                                                    .attr({
+                                                        'href': '#',
+                                                        'role': 'button',
+                                                        'data-bs-toggle': 'dropdown',
+                                                        'aria-expanded': 'false'
+                                                    }).text(row.order_status_name);
+                        var dropdownMenu = $('<ul>').addClass('dropdown-menu');
+                        $.each(data, function(index, status) {
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('href', '/admin/orders/statuses/' + row.id + '/order/' + status).text(status)));
+                        });
+                        dropdown.append(dropdownToggle);
+                        dropdown.append(dropdownMenu);
+                        return dropdown.prop('outerHTML');
+                    }
                 },
                 {
                     "data": null,

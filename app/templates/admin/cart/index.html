@@ -7,12 +7,6 @@
 <div class="container">
     <h3 class="text-center my-3">Product Carts</h3>
 
-    <div class="row">
-        <div class="col text-end">
-            <a href="{{url_for('cart.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
-        </div>
-    </div>
-
     <table id="adminDataTable" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -44,7 +38,7 @@
                     "data": "statuses",
                     "render": function(data, type, row) {
                         var dropdown = $('<div>').addClass('dropdown');
-                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle')
+                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle toggleStatusButtons')
                                                     .attr({
                                                         'href': '#',
                                                         'role': 'button',
@@ -53,7 +47,7 @@
                                                     }).text(row.status_name);
                         var dropdownMenu = $('<ul>').addClass('dropdown-menu');
                         $.each(data, function(index, status) {
-                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item').attr('href', '/admin/carts/update/' + row.id + '/' + status).text(status)));
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('href', '/admin/carts/update/' + row.id + '/' + status).text(status)));
                         });
                         dropdown.append(dropdownToggle);
                         dropdown.append(dropdownMenu);
