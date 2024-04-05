@@ -1,6 +1,9 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateUserForm, UpdateUserForm
 from app.services import UserService, RoleService
+from app.constants import roles
+from datetime import datetime
+from app.auth import get_current_user
 
 
 class UserController:
@@ -10,14 +13,24 @@ class UserController:
 
     def create(self):
         form = CreateUserForm()
+        form.roles.choices = roles.get_all_items()
         if form.validate_on_submit():
-            self.user_service.create(
+            user=self.user_service.create(
                 email=form.email.data,
                 password=form.password.data,
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
+                created_by=get_current_user().id,
+                created_at=datetime.now()
             )
+            for role in form.roles.data:
+                self.role_service.create(
+                    role=role,
+                    user_id=user.id,
+                    created_by=get_current_user().id,
+                    created_at=datetime.now()
+                )
             return redirect(url_for("user.index"))
         return render_template("admin/user/add.html", form=form)
 
@@ -27,8 +40,8 @@ class UserController:
     def get_user_data(self):
         columns = ["id", "first_name", "email", "is_active", "mobile", "last_name"]
         data = self.user_service.get(request, columns)
-        user_data = self.role_service.add_roles_with_users(data)
-        return jsonify(user_data)
+        data = self.role_service.add_roles_with_users(data)
+        return jsonify(data)
 
     def update(self, id):
         user = self.user_service.get_by_id(id)
@@ -41,6 +54,8 @@ class UserController:
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
+                updated_by=get_current_user().id,
+                updated_at=datetime.now()
             )
             return redirect(url_for("user.index"))
         return render_template("admin/user/update.html", id=id, form=form)

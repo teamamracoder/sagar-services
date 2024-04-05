@@ -10,13 +10,23 @@ class RoleService(BaseService):
     def add_roles_with_users(self, users: list) -> list:
         for user in users["data"]:
             user["roles"] = self.get_roles_by_user_id(user["id"])
+            user["not_in_roles"] = self.excluded_roles(user["roles"])
         return users
 
-    def get_roles_by_user_id(self, user_id: int) -> list:
+    def get_roles_by_user_id(self, user_id: int) -> dict:
         query = (
             RoleModel.query.filter_by(user_id=user_id,is_active=True)
-            .with_entities(RoleModel.role)
+            .with_entities(RoleModel.id, RoleModel.role)
             .all()
         )
-        role_list = [roles.get_value(row[0]) for row in query]
-        return role_list
+        roles_dict = {key : roles.get_value(value) for key,value in query}
+        return roles_dict
+    
+    def excluded_roles(self,user_has_roles):
+        all_roles=roles.get_all_items_as_dict()
+        excluded_roles = set(user_has_roles.values())
+        result = {role: rolename for role, rolename in all_roles.items() if rolename not in excluded_roles}
+        return result
+    
+    def get_role_by_user_id_and_role_key(self,role_key,user_id):
+        return RoleModel.query.filter_by(role=role_key,user_id=user_id).first()

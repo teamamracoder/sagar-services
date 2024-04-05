@@ -30,6 +30,10 @@
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control form-control-sm") }}
             </div>
+            <div class="col-12">
+                {{ form.roles.label(class="form-label") }}
+                {{ form.roles(class="form-control form-control-sm") }}
+            </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
                 <a href="{{ url_for('user.index') }}" class="btn btn-outline-dark btn-sm">Back</a>

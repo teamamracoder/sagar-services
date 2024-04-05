@@ -8,20 +8,14 @@ role_bp = Blueprint("role", __name__)
 role_controller = RoleController()
 
 
-@role_bp.route("/admin/roles/")
-@login_required
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
-def index():
-    return role_controller.get()
-
-
-@role_bp.route("/admin/roles/data")
-def get_role_data():
-    return role_controller.get_role_data()
-
-
-@role_bp.route("/admin/roles/add/", methods=["GET", "POST"])
+@role_bp.route("/admin/roles/add/<int:role_key>/<int:user_id>", methods=["GET", "POST"])
 @login_required
 @role_required([roles.get_key("ADMIN")])
-def add():
-    return role_controller.create()
+def add(role_key,user_id):
+    return role_controller.create(role_key,user_id)
+
+@role_bp.route("/admin/roles/status/<int:id>", methods=["GET", "POST"])
+@login_required
+@role_required([roles.get_key("ADMIN")])
+def status(id):
+    return role_controller.status(id)

@@ -22,6 +22,8 @@ class Constant:
     def get_all_values(self) -> list:
         return list(self.data.values())
 
+    def get_all_items_as_dict(self) -> dict:
+        return self.data
 
 # constant data
 

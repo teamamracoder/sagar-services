@@ -44,7 +44,26 @@
                 { "data": "last_name" },
                 { "data": "email" },
                 { "data": "mobile" },
-                { "data": "roles" },
+                { 
+                    "data": null,
+                    "render": function (data, type, row) {
+                        let container = '<div>';
+
+                        for (let key in row.roles) {
+                            if (row.roles.hasOwnProperty(key)) {
+                                container += '<button class="btn btn-outline-dark btn-sm m-1">' +row.roles[key] + '<a class="text-danger fw-bold" href="/admin/roles/status/'+key+'"><i class="bi bi-x-lg ms-2"></i></a></button></br>';
+                            }
+                        }
+                        for (let key in row.not_in_roles) {
+                            if (row.not_in_roles.hasOwnProperty(key)) {
+                                container += '<button class="btn btn-outline-dark btn-sm m-1">' + row.not_in_roles[key] + '<a class="text-success" href="/admin/roles/add/'+key+'/'+row.id+'"><i class="bi bi-plus-lg ms-2"></i></a></button></br>';
+                            }
+                        }
+                        container += '</div>';
+
+                        return container;
+                    }
+                },
                 {
                     "data": null,
                     "render": function (data, type, row) {
