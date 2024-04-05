@@ -23,7 +23,7 @@ class ServiceAnswerController:
                 answer =  form.answer.data,
                 staff_id =  form.staff_id.data
                 )
-            return redirect(url_for("service_answer_bp.index"))
+            return redirect(url_for("service_answer.index"))
         return render_template("admin/service_answer/add.html", form=form)
 
     def get(self):
@@ -51,7 +51,7 @@ class ServiceAnswerController:
                                 answer = form.answer.data,
                                 staff_id = form.staff_id.data
                                )
-            return redirect(url_for("service_answer_bp.index"))
+            return redirect(url_for("service_answer.index"))
         return render_template("admin/service_answer/update.html", form=form, id=id)
 
     def status(self, id):
@@ -59,6 +59,6 @@ class ServiceAnswerController:
         if service_answer is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_answer_service.status(id)
-        return redirect(url_for("service_answer_bp.index"))
+        return redirect(url_for("service_answer.index"))
 
     

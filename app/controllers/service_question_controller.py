@@ -21,7 +21,7 @@ class ServiceQuestionController:
                 question = form.question.data,
                 user_id =  form.user_id.data
             )
-            return redirect(url_for("service_question_bp.index"))
+            return redirect(url_for("service_question.index"))
         return render_template("admin/service_question/add.html", form=form)
 
     def get(self):
@@ -47,7 +47,7 @@ class ServiceQuestionController:
                 question = form.question.data,
                 user_id = form.user_id.data
             )
-            return redirect(url_for("service_question_bp.index"))
+            return redirect(url_for("service_question.index"))
         return render_template("admin/service_question/update.html",form=form, id=id)
         
     def status(self, id):
@@ -55,6 +55,6 @@ class ServiceQuestionController:
         if service_question is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_question_service.status(id)
-        return redirect(url_for("service_question_bp.index"))
+        return redirect(url_for("service_question.index"))
 
        

@@ -9,11 +9,11 @@
 
     <div class="row">
         <div class="col text-end">
-            <a href="{{url_for('service_type_bp.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+            <a href="{{url_for('service_type.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
         </div>
     </div>
 
-    <table id="service_typeTable" class="table table-bordered" style="width:100%">
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th># Id</th>
@@ -29,11 +29,11 @@
 
 <script>
     $(document).ready(function () {
-        var table = $('#service_typeTable').DataTable({
+        var table = $('#adminDataTable').DataTable({
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{url_for('service_type_bp.get_service_type_data')}}",
+                "url": "{{url_for('service_type.get_service_type_data')}}",
                 "type": "GET"
             },
             "columns": [

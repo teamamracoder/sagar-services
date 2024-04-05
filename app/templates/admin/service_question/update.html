@@ -7,7 +7,7 @@
 <div class="container">
     <h3 class="text-center my-3">Edit ServiceQuestion</h3>
 
-    <form method="POST" action="{{ url_for('service_question_bp.update', id=id) }}" id="addServiceTypeForm">
+    <form method="POST" action="{{ url_for('service_question.update', id=id) }}" id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -29,7 +29,7 @@
             
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('service_question_bp.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                <a href="{{ url_for('service_question.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>
@@ -38,7 +38,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#addServiceTypeForm').validate({
+        $('#adminForm').validate({
             rules: {
                 question: {
                     required: true,

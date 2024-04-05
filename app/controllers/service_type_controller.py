@@ -19,7 +19,7 @@ class ServiceTypeController:
                 is_active=True,
                 type_name =  form.type_name.data
             )
-            return redirect(url_for("service_type_bp.index"))
+            return redirect(url_for("service_type.index"))
         return render_template("admin/service_type/add.html", form=form)
 
     def get(self):
@@ -44,7 +44,7 @@ class ServiceTypeController:
                 is_active=True,
                 type_name = form.type_name.data
             )
-            return redirect(url_for("service_type_bp.index"))
+            return redirect(url_for("service_type.index"))
         return render_template("admin/service_type/update.html", form=form, id=id)
         
     def status(self, id):
@@ -52,6 +52,6 @@ class ServiceTypeController:
         if service_type is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_type_service.status(id)
-        return redirect(url_for("service_type_bp.index"))
+        return redirect(url_for("service_type.index"))
 
        

@@ -25,7 +25,7 @@ class ServiceController:
                 service_img_urls=form.service_img_urls.data,
                 service_type_id=form.service_type_id.data
             )
-            return redirect(url_for("service_bp.index"))
+            return redirect(url_for("service.index"))
         return render_template("admin/service/add.html", form=form)
 
     def get(self):
@@ -38,11 +38,11 @@ class ServiceController:
         return jsonify(data)
 
     def update(self, id):
-        form = UpdateServiceForm()
         service = self.service_service.get_by_id(id)
-
+        form = UpdateServiceForm(obj=service)
         if form.validate_on_submit():
-            service_service.update(id,
+            self.service_service.update(
+                id=id,
                 created_by=service.created_by,
                 created_at=service.created_at,
                 updated_by=1,
@@ -57,7 +57,7 @@ class ServiceController:
                 service_img_urls=form.service_img_urls.data,
                 service_type_id=form.service_type_id.data
             )
-            return redirect(url_for("service_bp.index"))
+            return redirect(url_for("service.index"))
         return render_template("admin/service/update.html", form=form, id=id)
 
 
@@ -66,4 +66,4 @@ class ServiceController:
         if service is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_service.status(id)
-        return redirect(url_for("service_bp.index"))
+        return redirect(url_for("service.index"))
