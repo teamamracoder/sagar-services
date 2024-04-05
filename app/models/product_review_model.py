@@ -16,7 +16,7 @@ class ProductReviewModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.DateTime,default=datetime.now)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -26,7 +26,7 @@ class ProductReviewModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
@@ -39,11 +39,11 @@ class ProductReviewModel(db.Model):
         nullable=False
     )
 
-    review_title=db.Column(db.String(400))
+    review_title=db.Column(db.String(100))
 
-    description=db.Column(db.String(400),nullable=False)
+    description=db.Column(db.String(200),nullable=False)
 
-    img_urls=db.Column(db.ARRAY(db.String(200)))
+    img_urls=db.Column(db.ARRAY(db.Text))
 
     rating=db.Column(db.Double,nullable=False)
 

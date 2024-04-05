@@ -9,16 +9,18 @@
 
     <div class="row">
         <div class="col text-end">
-            <a href="{{url_for('user_bp.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+            <a href="{{url_for('user.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
         </div>
     </div>
 
-    <table id="userTable" class="table table-bordered" style="width:100%">
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th># Id</th>
                 <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
+                <th>Phone No.</th>
                 <th>Roles</th>
                 <th>Action</th>
             </tr>
@@ -29,24 +31,44 @@
 
 <script>
     $(document).ready(function () {
-        var table = $('#userTable').DataTable({
+        var table = $('#adminDataTable').DataTable({
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{url_for('user_bp.get_user_data')}}",
+                "url": "{{url_for('user.get_user_data')}}",
                 "type": "GET"
             },
             "columns": [
                 { "data": "id" },
                 { "data": "first_name" },
+                { "data": "last_name" },
                 { "data": "email" },
-                { "data": "roles" },
+                { "data": "mobile" },
+                { 
+                    "data": null,
+                    "render": function (data, type, row) {
+                        let container = '<div>';
+
+                        for (let key in row.roles) {
+                            if (row.roles.hasOwnProperty(key)) {
+                                container += '<button class="btn btn-outline-dark btn-sm m-1">' +row.roles[key] + '<a class="text-danger fw-bold" href="/admin/roles/status/'+key+'"><i class="bi bi-x-lg ms-2"></i></a></button></br>';
+                            }
+                        }
+                        for (let key in row.not_in_roles) {
+                            if (row.not_in_roles.hasOwnProperty(key)) {
+                                container += '<button class="btn btn-outline-dark btn-sm m-1">' + row.not_in_roles[key] + '<a class="text-success" href="/admin/roles/add/'+key+'/'+row.id+'"><i class="bi bi-plus-lg ms-2"></i></a></button></br>';
+                            }
+                        }
+                        container += '</div>';
+
+                        return container;
+                    }
+                },
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                    console.log(row.is_active)
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
-                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                        '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]

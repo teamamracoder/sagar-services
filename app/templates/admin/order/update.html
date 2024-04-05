@@ -1,0 +1,147 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Update Order{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="text-center my-3">Update Order</h3>
+
+    <form method="POST" action="{{ url_for('order.update', id=id) }}" id="adminForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.product_id.label(class="form-label") }}
+                {{ form.product_id(class="form-control form-control-sm", readonly="readonly") }}
+            </div>
+            <div class="col-12">
+                {{ form.user_id.label(class="form-label") }}
+                {{ form.user_id(class="form-control form-control-sm", readonly="readonly") }}
+            </div>
+            <div class="col-12">
+                {{ form.price.label(class="form-label") }}
+                {{ form.price(class="form-control form-control-sm", readonly="readonly") }}
+            </div>
+            <div class="col-12">
+                {{ form.quantity.label(class="form-label") }}
+                {{ form.quantity(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.payment_method.label(class="form-label") }}
+                {{ form.payment_method(class="form-control") }}
+            </div>
+            <div class="col-12">
+                {{ form.order_status.label(class="form-label") }}
+                {{ form.order_status(class="form-control") }}
+            </div>
+            <div class="col-12">
+                {{ form.payment_status.label(class="form-label") }}
+                {{ form.payment_status(class="form-control") }}
+            </div>
+            <div class="col-12">
+                {{ form.shipping_address.label(class="form-label") }}
+                {{ form.shipping_address(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.area_pincode.label(class="form-label") }}
+                {{ form.area_pincode(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('order.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function(){
+
+        function getTotalPrice(productId, quantity) {
+            $.ajax({
+                url: "{{ url_for('product.get_total_price') }}",
+                type: "GET",
+                contentType: "application/json",
+                data: {
+                    product_id: productId,
+                    quantity:quantity
+                },
+                success: function(response) {
+                    $("#price").val(response.total_price)
+                }
+            });
+        }
+
+        let initialProductId = $("#product_id").val();
+        let initialQuantity = $("#quantity").val();
+        getTotalPrice(initialProductId,initialQuantity);
+
+        $("#product_id").on("change", function() {
+            let selectedProductId = $(this).val();
+            let selectedQuantity = $("#quantity").val();
+            getTotalPrice(selectedProductId, selectedQuantity);
+        });
+
+        $("#quantity").on("change", function() {
+            if ($(this).val() !== '' && !isNaN($(this).val()) && parseInt($(this).val()) > 0) {
+                let selectedQuantity = $(this).val();
+                let selectedProductId = $("#product_id").val();
+                getTotalPrice(selectedProductId, selectedQuantity);
+            }
+        });
+
+
+        $('#adminForm').validate({
+            rules: {
+                user_id: {
+                    required: true,
+                    digits: true,
+                    min: 1,
+                },
+                quantity: {
+                    required: true,
+                    digits:true,
+                    min: 1,
+                    max: 5
+                },
+                shipping_address: {
+                    required: true,
+                    minlength: 20,
+                    maxlength: 100
+                },
+                area_pincode:{
+                    required: true,
+                    digits:true,
+                    minlength: 6,
+                    maxlength: 6
+                }
+            },
+            messages: {
+                user_id: {
+                    required: "Please enter user id",
+                    digits: "Invalid user id",
+                    min: "Invalid user id"
+                },
+                quantity: {
+                    required: "Please enter Quantity",
+                    digits: "Invalid Quantity",
+                    min: "Quantity can not be 0",
+                    max: "Quantity can not exceed 5"
+                },
+                shipping_address: {
+                    required: "Please enter shipping_address",
+                    minlength: "Incomplete Shipping address",
+                    maxlength: "Invalid Address"
+                },
+                area_pincode: {
+                    required: "Please enter area pincode",
+                    digits: "Invalid Pincode",
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

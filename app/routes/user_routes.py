@@ -4,7 +4,7 @@ from app.constants import roles
 from app.auth import role_required
 from app.controllers import UserController
 
-user_bp = Blueprint("user_bp", __name__)
+user_bp = Blueprint("user", __name__)
 user_controller = UserController()
 
 
