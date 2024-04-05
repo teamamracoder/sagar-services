@@ -9,6 +9,8 @@ message_controller = MessageController()
 
 
 @message_bp.route("/admin/messages/")
+@login_required
+@role_required([1, 2])
 def index():
     return message_controller.get()
 
@@ -23,10 +25,14 @@ def add():
     return message_controller.create()
 
 @message_bp.route("/admin/messages/update/<int:id>", methods=["GET", "POST"])
+@login_required
+@role_required([1, 2])
 def update(id):
     return message_controller.update(id)
 
 
 @message_bp.route("/admin/messages/status/<int:id>", methods=["GET", "PATCH"])
+@login_required
+@role_required([1, 2])
 def status(id):
     return message_controller.status(id)

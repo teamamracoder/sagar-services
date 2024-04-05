@@ -17,6 +17,7 @@ class MessageController:
     def get_message_data(self):
         # Determine the column to sort by
         columns = ["id", "conversation_id" "message_text","created_at","updated_at", "is_active"]
+        
         data = self.message_service.get(request, columns)
         return jsonify(data)
     
