@@ -1,0 +1,101 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Add Contact{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <h3 class="text-center my-3">Add Contact</h3>
+
+    <form method="POST" action="{{ url_for('contact_bp.add') }}" enctype="multipart/form-data" id="addContactForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control form-control-sm") }}
+            </div>
+
+            <div class="col-12">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.phone.label(class="form-label") }}
+                {{ form.phone(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.query_message.label(class="form-label") }}
+                {{ form.query_message(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {# for img_url in form.query_img_urls #}
+                {# img_url.label(class="form-label") #}
+                {# img_url(class="form-control form-control-sm") #}
+                {# endfor #}
+            </div>
+
+
+
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('contact_bp.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#addContactForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                },
+                email: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 40,
+                    email: true
+                },
+                phone: {
+                    required: true,
+                    maxlength: 10
+                },
+                query_message: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter your Name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 50 characters"
+                },
+                email: {
+                    required: "Please enter your Email Id",
+                    minlength: "Email must be at least 3 characters long",
+                    maxlength: "Email must not exceed 40 characters",
+                    email: "Please enter a valid email address"
+                },
+                phone: {
+                    required: "Please enter your Phone number",
+                },
+                query_message: {
+                    required: "Please enter your query_message",
+                    minlength: "Query message must be at least 3 characters long",
+                    maxlength: "Query message must not exceed 50 characters"
+                },
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+{% endblock %}
