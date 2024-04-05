@@ -13,9 +13,8 @@ class UserController:
 
     def create(self):
         form = CreateUserForm()
-        form.roles.choices = roles.get_all_items()
         if form.validate_on_submit():
-            user=self.user_service.create(
+            self.user_service.create(
                 email=form.email.data,
                 password=form.password.data,
                 first_name=form.first_name.data,
@@ -24,13 +23,6 @@ class UserController:
                 created_by=get_current_user().id,
                 created_at=datetime.now()
             )
-            for role in form.roles.data:
-                self.role_service.create(
-                    role=role,
-                    user_id=user.id,
-                    created_by=get_current_user().id,
-                    created_at=datetime.now()
-                )
             return redirect(url_for("user.index"))
         return render_template("admin/user/add.html", form=form)
 
