@@ -1,0 +1,42 @@
+/* For WebKit (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  height: 5px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the thumb */
+  /* Roundness of the thumb */
+  /*border-radius: 5px; */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color of the thumb on hover */
+}
+
+/* For Firefox */
+/* Note: Firefox doesn't support styling the scrollbar as extensively as WebKit */
+/* You can use only basic properties like width and color */
+/* Also, it only supports scrollbar width, not scrollbar-thumb styling */
+/* You can omit this section if you're only targeting WebKit browsers */
+/*::-moz-scrollbar {
+  width: 10px;
+}
+
+::-moz-scrollbar-thumb {
+  background-color: #888;
+}*/
+
+/* For both WebKit and Firefox */
+/* This is a generic styling for scrollbar-track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+}
+
+/* You can also style scrollbar buttons, if needed */
+/*::-webkit-scrollbar-button {
+  background: #ddd;
+}*/
+
+/*::-webkit-scrollbar-corner {
+  background: #eee;
+}*/

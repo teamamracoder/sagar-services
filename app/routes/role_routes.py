@@ -4,24 +4,18 @@ from app.auth import role_required
 from app.controllers import RoleController
 from app.constants import roles
 
-role_bp = Blueprint("role_bp", __name__)
+role_bp = Blueprint("role", __name__)
 role_controller = RoleController()
 
 
-@role_bp.route("/admin/roles/")
+@role_bp.route("/admin/roles/add/<int:role_key>/<int:user_id>", methods=["GET", "POST"])
 @login_required
-@role_required([1, 2])
-def index():
-    return role_controller.get()
+@role_required([roles.get_key("ADMIN")])
+def add(role_key,user_id):
+    return role_controller.create(role_key,user_id)
 
-
-@role_bp.route("/admin/roles/data")
-def get_role_data():
-    return role_controller.get_role_data()
-
-
-@role_bp.route("/admin/roles/add/", methods=["GET", "POST"])
+@role_bp.route("/admin/roles/status/<int:id>", methods=["GET", "POST"])
 @login_required
-@role_required([1])
-def add():
-    return role_controller.create()
+@role_required([roles.get_key("ADMIN")])
+def status(id):
+    return role_controller.status(id)

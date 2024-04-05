@@ -1,0 +1,59 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Update Product QnA{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="text-center my-3">Update Product QnA's</h3>
+    <form method="POST" action="{{ url_for('product_qna.update', id=id) }}" enctype="multipart/form-data"  id="adminForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.product_id.label(class="form-label") }}
+                {{ form.product_id(class="form-control form-control-sm", value=question.product_id, readonly="readonly") }}
+            </div>
+            <div class="col-12">
+                {{ form.user_id.label(class="form-label") }}
+                {{ form.user_id(class="form-control form-control-sm", value=question.user_id, readonly="readonly") }}
+            </div>
+            <div class="col-12">
+                {{ form.question.label(class="form-label") }}
+                {{ form.question(class="form-control form-control-sm", value=question.question) }}
+            </div>
+            <div class="col-12">
+                {{ form.answer.label(class="form-label") }}
+                {{ form.answer(class="form-control form-control-sm", value=answer.answer) }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('product_qna.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#adminForm').validate({
+            rules: {
+                question: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 200
+                }
+            },
+            messages: {
+                question: {
+                    required: "Please enter Question",
+                    minlength: "Question must be at least 5 characters long",
+                    maxlength: "Question must not exceed 100 characters"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

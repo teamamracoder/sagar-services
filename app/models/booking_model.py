@@ -15,7 +15,7 @@ class BookingModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.DateTime,default=datetime.now)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -25,7 +25,7 @@ class BookingModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
@@ -59,9 +59,9 @@ class BookingModel(db.Model):
 
     service_location=db.Column(db.Text,nullable=False)
 
-    service_status=db.Column(db.Integer,default=1)
+    service_status=db.Column(db.Integer)
 
-    payment_status=db.Column(db.Integer,default=1)
+    payment_status=db.Column(db.Integer)
 
     payment_method=db.Column(db.Integer,nullable=False)
 
