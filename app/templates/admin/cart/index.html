@@ -1,0 +1,83 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Product Carts{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Product Carts</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('cart.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>Product Name</th>
+                <th>User id</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('cart.get_cart_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "product_name"},
+                { "data": "user_id"},
+                {
+                    "data": "statuses",
+                    "render": function(data, type, row) {
+                        var dropdown = $('<div>').addClass('dropdown');
+                        var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle')
+                                                    .attr({
+                                                        'href': '#',
+                                                        'role': 'button',
+                                                        'data-bs-toggle': 'dropdown',
+                                                        'aria-expanded': 'false'
+                                                    }).text(row.status_name);
+                        var dropdownMenu = $('<ul>').addClass('dropdown-menu');
+                        $.each(data, function(index, status) {
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item').attr('href', '/admin/carts/update/' + row.id + '/' + status).text(status)));
+                        });
+                        dropdown.append(dropdownToggle);
+                        dropdown.append(dropdownMenu);
+                        return dropdown.prop('outerHTML');
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/carts/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/carts/status/" + id;
+        };
+    });
+</script>
+
+
+{% endblock %}

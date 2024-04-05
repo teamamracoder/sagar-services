@@ -16,7 +16,7 @@ class CartModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.Date,default=datetime.now)
+    created_at = db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -26,7 +26,7 @@ class CartModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
@@ -39,7 +39,7 @@ class CartModel(db.Model):
         nullable=False
     )
 
-    status = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.Integer)
 
     product_id = db.Column(
         db.Integer(),

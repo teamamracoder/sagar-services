@@ -1,0 +1,57 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Add Wishlist{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="text-center my-3">Add Wishlist</h3>
+    <form method="POST" action="{{ url_for('wishlist.add') }}"  id="adminForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.user_id.label(class="form-label") }}
+                {{ form.user_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.product_id.label(class="form-label") }}
+                {{ form.product_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('wishlist.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#adminForm').validate({
+            rules: {
+                user_id: {
+                    required: true,
+                    digits:true
+                },
+                product_id: {
+                    required: true,
+                    digits:true
+                }
+            },
+            messages: {
+                user_id: {
+                    required: "Please enter User id",
+                    digits:"User id can only be a number"
+                },
+                product_id: {
+                    required: "Please enter Product id",
+                    digits:"User id can only be a number"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}
