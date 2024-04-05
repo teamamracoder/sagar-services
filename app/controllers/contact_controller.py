@@ -39,7 +39,7 @@ class ContactController:
                 name=form.name.data,
                 email=form.email.data,
                 phone=form.phone.data,
-
+                query_message=form.query_message.data,
             )
             return redirect(url_for("contact_bp.index"))
         return render_template("admin/contact/update.html", id=id,form=form)

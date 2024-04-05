@@ -1,14 +1,15 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Add Contact{% endblock %}
+{% block title %}Update Contact{% endblock %}
 
 {% block content %}
 
 
 <div class="container">
-    <h3 class="text-center my-3">Add Contact</h3>
+    <h3 class="text-center my-3">Update Contact</h3>
 
-    <form method="POST" action="{{ url_for('contact_bp.add') }}" enctype="multipart/form-data" id="addContactForm">
+    <form method="POST" action="{{ url_for('contact_bp.update',id=id) }}" enctype="multipart/form-data"
+        id="addContactForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -34,6 +35,9 @@
                 {# img_url(class="form-control form-control-sm") #}
                 {# endfor #}
             </div>
+
+
+
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
                 <a href="{{ url_for('contact_bp.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
