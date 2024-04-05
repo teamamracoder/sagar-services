@@ -176,7 +176,7 @@
                                             <a href="#"
                                                 class="list-group-item list-group-item-action ui-bg-grey border-0 ps-4">
                                                 <i class="bi bi-chat-dots fs-6 me-2"></i>
-                                                Communications</a>
+                                                Conversations</a>
                                             <a href="#"
                                                 class="list-group-item list-group-item-action ui-bg-grey border-0 ps-4">
                                                 <i class="bi bi-telephone-inbound me-2 fs-6"></i>
@@ -191,7 +191,7 @@
                                         data-bs-toggle="collapse" data-bs-target="#user" aria-expanded="false"
                                         aria-controls="user">
                                         <i class="bi bi-people me-2 fs-5"></i>
-                                        Users & Roles
+                                        Users and Staffs
                                     </button>
                                 </h2>
                                 <div id="user" class="accordion-collapse collapse" data-bs-parent="#accordionContainer">
@@ -200,11 +200,11 @@
                                             <a href="{{ url_for('user.index') }}"
                                                 class="list-group-item list-group-item-action ui-bg-grey border-0 ps-4">
                                                 <i class="bi bi-person me-2 fs-5"></i>
-                                                Users</a>
-                                            <a href="{{ url_for('role.index') }}"
+                                                All Users</a>
+                                            <a href="{# url_for('staff.index') #}"
                                                 class="list-group-item list-group-item-action ui-bg-grey border-0 ps-4">
-                                                <i class="bi bi-person-lock me-2 fs-5"></i>
-                                                Roles</a>
+                                                <i class="bi bi-person-gear me-2 fs-5"></i>
+                                                Staffs</a>
                                         </div>
                                     </div>
                                 </div>

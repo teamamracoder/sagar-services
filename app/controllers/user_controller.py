@@ -25,7 +25,7 @@ class UserController:
         return render_template("admin/user/index.html")
 
     def get_user_data(self):
-        columns = ["id", "first_name", "email", "is_active"]
+        columns = ["id", "first_name", "email", "is_active", "mobile", "last_name"]
         data = self.user_service.get(request, columns)
         user_data = self.role_service.add_roles_with_users(data)
         return jsonify(user_data)
