@@ -19,9 +19,12 @@ class ProductService(BaseService):
 
     def get_total_price(self,request):
         product_id = int(request.args.get("product_id"))
+
         quantity = int(request.args.get("quantity"))
 
         product=self.get_by_id(product_id)
+        if product is None:
+            return {"error": "Product not found"}
 
         discount=product.discount
         price=product.price

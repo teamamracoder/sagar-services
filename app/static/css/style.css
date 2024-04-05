@@ -70,3 +70,7 @@
   box-shadow: none !important;
   border-color: #0005;
 }
+
+div.dt-processing>div:last-child>div {
+	background:black;
+}

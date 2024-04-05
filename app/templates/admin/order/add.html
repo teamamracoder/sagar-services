@@ -13,6 +13,11 @@
                 {{ form.product_id.label(class="form-label") }}
                 {{ form.product_id(class="form-control form-control-sm") }}
             </div>
+            <p id="productError" class="error">
+                {% if error %}
+                    {{ error }}
+                {% endif %}
+            </p>
             <div class="col-12">
                 {{ form.user_id.label(class="form-label") }}
                 {{ form.user_id(class="form-control form-control-sm") }}
@@ -55,41 +60,6 @@
 </div>
 <script>
     $(document).ready(function(){
-
-        function getTotalPrice(productId, quantity) {
-            $.ajax({
-                url: "{{ url_for('product.get_total_price') }}",
-                type: "GET",
-                contentType: "application/json",
-                data: {
-                    product_id: productId,
-                    quantity:quantity
-                },
-                success: function(response) {
-                    $("#price").val(response.total_price)
-                }
-            });
-        }
-
-        let initialProductId = $("#product_id").val();
-        let initialQuantity = $("#quantity").val();
-        getTotalPrice(initialProductId,initialQuantity);
-
-        $("#product_id").on("change", function() {
-            let selectedProductId = $(this).val();
-            let selectedQuantity = $("#quantity").val();
-            getTotalPrice(selectedProductId, selectedQuantity);
-        });
-
-        $("#quantity").on("change", function() {
-            if ($(this).val() !== '' && !isNaN($(this).val()) && parseInt($(this).val()) > 0) {
-                let selectedQuantity = $(this).val();
-                let selectedProductId = $("#product_id").val();
-                getTotalPrice(selectedProductId, selectedQuantity);
-            }
-        });
-
-
         $('#adminForm').validate({
             rules: {
                 user_id: {
@@ -139,6 +109,53 @@
             },
             submitHandler: function (form) {
                 form.submit();
+            }
+        });
+
+        function getTotalPrice(productId, quantity) {
+            $.ajax({
+                url: "{{ url_for('product.get_total_price') }}",
+                type: "GET",
+                contentType: "application/json",
+                data: {
+                    product_id: productId,
+                    quantity:quantity
+                },
+                success: function(response) {
+                    if (response.error) {
+                        $("#productError").text(response.error)
+                    }
+                    else{
+                        $("#price").val(response.total_price)
+                    }
+                }
+            });
+        }
+        
+        $("#product_id").on("change", function() {
+            $("#price").val(0)
+            $("#productError").text('')
+            if ($(this).val() !== '' && !isNaN($(this).val()) && parseInt($(this).val()) > 0) {
+                let selectedProductId = $(this).val();
+                let selectedQuantity = $("#quantity").val();
+                getTotalPrice(selectedProductId, selectedQuantity);
+            }
+            else{
+                $("#price").val(0)
+                $("#productError").text('Invalid Product Id')
+            }
+        });
+        
+        $("#quantity").on("change", function() {
+            $("#productError").text('')
+            $("#price").val(0)
+            if ($(this).val() !== '' && !isNaN($(this).val()) && parseInt($(this).val()) > 0) {
+                let selectedQuantity = $(this).val();
+                let selectedProductId = $("#product_id").val();
+                getTotalPrice(selectedProductId, selectedQuantity);
+            }
+            else{
+                $("#price").val(0)
             }
         });
     });

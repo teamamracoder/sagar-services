@@ -34,7 +34,7 @@ class OrderController:
         form.payment_status.choices = payment_statuses.get_all_items()
 
         if form.validate_on_submit():
-            self.order_service.create(
+            if self.order_service.create(
                 created_by=1,
                 created_at=datetime.now(),
                 product_id=form.product_id.data,
@@ -46,9 +46,8 @@ class OrderController:
                 shipping_address=form.shipping_address.data,
                 payment_status=form.payment_status.data,
                 area_pincode=form.area_pincode.data,
-            )
-            return redirect(url_for("order.index"))
-        print("submit hoynai")
+            ):
+                return redirect(url_for("order.index"))
         return render_template("admin/order/add.html", form=form)
 
     def update(self, id):
