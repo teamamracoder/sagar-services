@@ -40,3 +40,7 @@ def login(user):
 
 def logout():
     logout_user()
+
+
+def get_current_user():
+    return current_user

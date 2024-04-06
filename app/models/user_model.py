@@ -1,6 +1,5 @@
 from db import db
 from flask_login import UserMixin
-from datetime import datetime
 
 
 class UserModel(UserMixin, db.Model):
@@ -10,11 +9,11 @@ class UserModel(UserMixin, db.Model):
 
     created_by = db.Column(db.Integer)
 
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime)
 
     updated_by = db.Column(db.Integer)
 
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime)
 
     is_active = db.Column(db.Boolean, default=False)
 

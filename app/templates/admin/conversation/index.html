@@ -1,0 +1,70 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Conversations{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Conversations</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('conversation.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table id="adminDataTable" class="table table-bordered">
+        <thead >
+            <tr>
+                <th># id</th>
+                <th>Staff id</th>
+                <th>User id</th>
+                <th>created by</th>
+                <th>created at</th>
+                <th>updated by</th>
+                <th>updated at</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('conversation.get_conversation_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "staff_id" },
+                { "data": "user_id" },
+                { "data": "created_by" },
+                { "data": "created_at" },
+                { "data": "updated_by" },
+                { "data": "updated_at" },
+                { "data": null,
+                    "render": function (data, type, row) {
+                    console.log(row.is_active)
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }           }
+            
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/conversations/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/conversations/status/" + id;
+        };
+    });
+</script>
+
+{% endblock %}
