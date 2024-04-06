@@ -1,0 +1,60 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Add Product Answer{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="text-center my-3">Add Product Answers</h3>
+    <form method="POST" action="{{ url_for('product_answer.add') }}" enctype="multipart/form-data"  id="addProductAnswerForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.question_id.label(class="form-label") }}
+                {% if question_id %}
+                    {{ form.question_id(class="form-control form-control-sm", value=question_id, readonly="readonly") }}
+                {% else %}
+                    {{ form.question_id(class="form-control form-control-sm") }}
+                {% endif %}
+            </div>
+            <p class="error">
+                {% if error %}
+                    {{ error|safe }}
+                {% endif %}
+            </p>
+            <div class="col-12">
+                {{ form.answer.label(class="form-label") }}
+                {{ form.answer(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('product_questions.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#addProductAnswerForm').validate({
+            rules: {
+                answer: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 200
+                }
+            },
+            messages: {
+                answer: {
+                    required: "Please enter Answer",
+                    minlength: "Answer must be at least 5 characters long",
+                    maxlength: "Answer must not exceed 100 characters"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}
