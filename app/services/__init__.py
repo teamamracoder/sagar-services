@@ -9,6 +9,7 @@ from .service_service import ServiceService
 from .service_type_service import ServiceTypeService
 from .service_answer_service import ServiceAnswerService
 from .service_question_service import ServiceQuestionService
+from .service_review_service import ServiceReviewService
 from .product_question_service import ProductQuestionService
 from .product_answer_service import ProductAnswerService
 from .cart_service import CartService

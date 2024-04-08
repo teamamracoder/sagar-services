@@ -15,10 +15,10 @@ from .service_froms import CreateServiceForm
 from .service_froms import UpdateServiceForm
 from .service_type_froms import CreateServiceTypeForm
 from .service_type_froms import UpdateServiceTypeForm
-from .service_answer_froms import CreateServiceAnswerForm
-from .service_answer_froms import UpdateServiceAnswerForm
-from .service_question_froms import CreateServiceQuestionForm
-from .service_question_froms import UpdateServiceQuestionForm
+from .service_qna_froms import CreateServiceQnAForm
+from .service_qna_froms import UpdateServiceQnAForm
+from .service_review_froms import CreateServiceReviewForm
+from .service_review_froms import UpdateServiceReviewForm
 from .product_qna_froms import CreateProductQnAForm
 from .product_qna_froms import UpdateProductQnAForm
 from .cart_forms import CreateCartForm
