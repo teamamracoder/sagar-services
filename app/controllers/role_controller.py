@@ -28,5 +28,8 @@ class RoleController:
         return redirect(url_for("user.index"))
     
     def status(self,id):
-        self.role_service.status(id)
+        role_is_active=self.role_service.status(id)
+        if not role_is_active:
+            #update staff is_active here
+            pass
         return redirect(url_for("user.index"))

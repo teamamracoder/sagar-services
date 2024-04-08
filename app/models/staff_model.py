@@ -41,7 +41,7 @@ class StaffModel(db.Model):
     salary = db.Column(db.Double, nullable=False)
     qualification = db.Column(db.String(80), nullable=False)
     join_date = db.Column(db.DateTime, nullable=False)
-    leave_date = db.Column(db.DateTime)
+    leave_date = db.Column(db.DateTime, nullable=True)
     department = db.Column(db.Integer, nullable=False)
 
     users=db.relationship("UserModel", foreign_keys=[user_id],backref="staff",uselist=False)

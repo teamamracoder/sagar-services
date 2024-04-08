@@ -21,7 +21,6 @@ class StaffController:
         return jsonify(data)
     
     def create(self,user_id):
-        print("inside staff create")
         form = CreateStaffForm()
         form.department.choices = departments.get_all_items()
         if form.validate_on_submit():
@@ -31,18 +30,19 @@ class StaffController:
                 salary=form.salary.data,
                 qualification=form.qualification.data,
                 join_date=form.join_date.data,
-                leave_date=form.leave_date.data,
                 department=form.department.data,
-                user_id=user_id
+                user_id=user_id,
             )
-            print(staff)
-            # self.role_service.create(
-            #     user_id=user_id, 
-            #     role=2,
-            #     created_by=get_current_user().id,
-            #     created_at=datetime.now()
-            # )
+            self.role_service.create(
+                user_id=user_id, 
+                role=2,
+                created_by=get_current_user().id,
+                created_at=datetime.now()
+            )
             return redirect(url_for("staff.index"))
+        else:
+            print(form.errors)
+        
         return render_template("admin/staff/add.html", form=form, user_id=user_id)
 
     def update(self, id):
@@ -65,5 +65,7 @@ class StaffController:
         staff = self.staff_service.get_by_id(id)
         if staff is None:
             return render_template("admin/error/something_went_wrong.html")
-        self.staff_service.status(id)
+        staff_is_active=self.staff_service.status(id)
+        print(staff_is_active)
+        #update role here
         return redirect(url_for("staff.index"))
