@@ -1,0 +1,49 @@
+{% extends 'admin/base.html' %}
+
+{% block title %} {{ product.product_name }} {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="card my-2 px-0 rounded-0">
+            <div class="card-header">
+                <h5 class="text-center my-1">{{ product.product_name }}</h5>
+            </div>
+            <div class="card-body py-0">
+                <div class="row" style="min-height: 200px;">
+                    <div class="col-md-2 border-end">
+                        <div class="p-1">
+                            <img src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="..." class="card-img">
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <ul class="list-group border-0">
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                              {{ product.brand }}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                {{ product.model }}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                {{ product.specifications }}
+                            </li>
+                          </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer my-1">
+                <a href="{{ url_for('product.index') }}"  class="btn btn-outline-dark btn-sm float-end">Back</a>
+                <a href="{{ url_for('product.update',id=product.id) }}"  class="btn btn-dark btn-sm me-1 float-end">Edit</a>
+
+                <!-- <button class="btn btn-outline-dark btn-sm float-end"><a href="{{ url_for('product.index') }}"  class="btn btn-outline-dark btn-sm my-2">Back</a></button> -->
+                <!-- <button class="btn btn-dark me-1 btn-sm float-end"><a href="{{ url_for('product.update',id=product.id) }}"  class="btn btn-outline-dark btn-sm my-2">Edit</a></button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
