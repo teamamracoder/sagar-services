@@ -19,11 +19,13 @@ from .service_answer_froms import CreateServiceAnswerForm
 from .service_answer_froms import UpdateServiceAnswerForm
 from .service_question_froms import CreateServiceQuestionForm
 from .service_question_froms import UpdateServiceQuestionForm
-from .product_qna_froms import CreateProductQnAForm
-from .product_qna_froms import UpdateProductQnAForm
 from .cart_forms import CreateCartForm
 from .wishlist_forms import CreateWishlistForm
 from .product_review_forms import CreateProductReviewForm
 from .product_review_forms import UpdateProductReviewForm
 from .order_forms import CreateOrderForm
 from .order_forms import UpdateOrderForm
+from .product_question_forms import CreateProductQuestionForm
+from .product_question_forms import UpdateProductQuestionForm
+from .product_answer_forms import CreateProductAnswerForm
+from .product_answer_forms import UpdateProductAnswerForm
