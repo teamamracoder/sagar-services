@@ -15,3 +15,4 @@ from .cart_service import CartService
 from .wishlist_service import WishlistService
 from .product_review_service import ProductReviewService
 from .order_service import OrderService
+from .staff_service import StaffService

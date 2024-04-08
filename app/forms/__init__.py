@@ -29,3 +29,5 @@ from .product_question_forms import CreateProductQuestionForm
 from .product_question_forms import UpdateProductQuestionForm
 from .product_answer_forms import CreateProductAnswerForm
 from .product_answer_forms import UpdateProductAnswerForm
+from .staff_forms import CreateStaffForm
+from .staff_forms import UpdateStaffForm

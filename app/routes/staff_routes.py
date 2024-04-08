@@ -18,11 +18,11 @@ def get_staff_data():
     return staff_controller.get_staff_data()
 
 
-@staff_bp.route("/admin/staffs/add/", methods=["GET", "POST"])
+@staff_bp.route("/admin/staffs/add/<int:user_id>", methods=["GET", "POST"])
 @login_required
 @role_required([roles.get_key("ADMIN")])
-def add():
-    return staff_controller.create()
+def add(user_id):
+    return staff_controller.create(user_id)
 
 
 @staff_bp.route("/admin/staffs/update/<int:id>", methods=["GET", "POST"])

@@ -60,11 +60,11 @@ cart_statuses = Constant({1: "ADDED", 2: "ORDERED", 3: "REMOVED"})
 
 departments = Constant(
     {
-        # 1: "SALES",
-        # 2: "MARKETING",
-        # 3: "ACCOUNTING"
-        # 3: "REPAIRING",
-        # 4: "PC_BUILDING"
+        1: "SALES",
+        2: "MARKETING",
+        3: "ACCOUNTING",
+        3: "REPAIRING",
+        4: "PC_BUILDING"
     }
 )
 
