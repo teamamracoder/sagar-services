@@ -87,11 +87,11 @@
                 },
                 price: {
                     required: true,
-                    digits:true,
+                    number:true,
                 },
                 discount: {
                     required: true,
-                    digits:true,
+                    number:true,
                 },
                 stock: {
                     required: true,
@@ -99,8 +99,7 @@
                 },
                 specifications: {
                     required: true,
-                    minlength: 10,
-                    maxlength: 200
+                    minlength: 10
                 }
             },
             messages: {
@@ -121,7 +120,7 @@
                 },
                 price: {
                     required: "Please enter price",
-                    digits: "Price must be in digits",
+                    number: "Invalid Price",
                 },
                 stock: {
                     required: "Please enter stock quantity",
@@ -129,7 +128,7 @@
                 },
                 discount: {
                     required: "Please enter stock quantity",
-                    digits: "Stock must be in digits",
+                    number: "Invalid Discount",
                 },
                 specifications: {
                     required: "Please enter Specifications",

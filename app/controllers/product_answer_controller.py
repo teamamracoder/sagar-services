@@ -49,7 +49,7 @@ class ProductAnswerController:
                 created_at=datetime.now(),
                 answer=form.answer.data,
                 staff_id=get_current_user().id,
-                question_id=form.question_id.data
+                question_id=question_id
             )
             return redirect(url_for("product_question.index"))
         return render_template("admin/product_answer/add.html", form=form, question_id=question_id)
