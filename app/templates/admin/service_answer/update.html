@@ -1,0 +1,64 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Edit ServiceAnswer{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <h3 class="text-center my-3">Edit ServiceAnswer</h3>
+
+    <form id="adminForm" method="POST" action="{{ url_for('service_answer.update', id=id) }}">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.created_by.label(class="form-label") }}
+                {{ form.created_by(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+              {{ form.question_id.label(class="form-label") }}
+              {{ form.question_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.answer.label(class="form-label") }}
+                {{ form.answer(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.staff_id.label(class="form-label") }}
+                {{ form.staff_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('service_answer.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#adminForm').validate({
+            rules: {
+                answer: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 200
+                }
+            },
+            messages: {
+                answer: {
+                    required: "Enter answer...!",
+                    minlength: "Input must be at least 3 characters long",
+                    maxlength: "Input must not exceed 200 characters"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

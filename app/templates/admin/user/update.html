@@ -1,0 +1,102 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Add User{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Edit User</h3>
+
+    <form method="POST" action="{{ url_for('user.update',id=id) }}" id="adminForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.first_name.label(class="form-label") }}
+                {{ form.first_name(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.last_name.label(class="form-label") }}
+                {{ form.last_name(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.mobile.label(class="form-label") }}
+                {{ form.mobile(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Update</button>
+                <a href="{{ url_for('user.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#adminForm').validate({
+            rules: {
+                first_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                last_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                email: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 40,
+                    email: true
+                },
+                mobile: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 40
+                }
+            },
+            messages: {
+                first_name: {
+                    required: "Please enter your first name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                last_name: {
+                    required: "Please enter your last name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                email: {
+                    required: "Please enter your first name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 40 characters",
+                    email: "Please enter a valid email address"
+                },
+                mobile: {
+                    required: "Please enter your mobile number",
+                },
+                password: {
+                    required: "password should be minimum 4 character",
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

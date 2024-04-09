@@ -9,28 +9,55 @@
 
     <div class="row">
         <div class="col text-end">
-            <a href="{{url_for('category_bp.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+            <a href="{{url_for('category.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
         </div>
     </div>
 
-    <table class="table table-bordered">
-        <thead class="table-dark">
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
+        <thead>
             <tr>
                 <th># id</th>
-                <th>category</th>
-                <th>created at</th>
+                <th>Name</th>
+                <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            {% for category in categories %}
-            <tr>
-                <td>{{category.id}}</td>
-                <td>{{ category.category_name }}</td>
-                <td>{{ category.created_at }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('category.get_category_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "category_name"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/categories/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/categories/status/" + id;
+        };
+
+
+    });
+</script>
+
 
 {% endblock %}

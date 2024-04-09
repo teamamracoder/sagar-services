@@ -1,13 +1,17 @@
-from db import db
 from app.models import CategoryModel
+from .base_service import BaseService
 
+class CategoryService(BaseService):
+    def __init__(self) -> None:
+        super().__init__(CategoryModel)
 
-class CategoryService:
-    def create(self,category):
-        category = CategoryModel(category_name=category, created_by=1)
-        db.session.add(category)
-        db.session.commit()
-        return category
+    def get_active(self):
+        return CategoryModel.query.filter_by(is_active=True).order_by(CategoryModel.category_name).all()
 
-    def get(self):
-        return CategoryModel.query.all()
+    def add_category_with_products(self, products: list) -> list:
+        for product in products["data"]:
+            product["category_name"] = self.get_category_name_by_id(product["category_id"])
+        return products
+    
+    def get_category_name_by_id(self,category_id):
+        return CategoryModel.query.filter_by(id=category_id).first().category_name

@@ -17,7 +17,7 @@ class ProductAnswerModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.Date,default=datetime.now)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -27,7 +27,7 @@ class ProductAnswerModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
@@ -47,6 +47,7 @@ class ProductAnswerModel(db.Model):
         ),
         nullable=False
     )
+    
     answer = db.Column(db.Text, nullable=False)
 
     users = db.relationship('UserModel', foreign_keys=[staff_id], backref="product_answers")

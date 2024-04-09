@@ -1,0 +1,81 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Conversations{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Conversations</h3>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Launch demo modal
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+            
+    <table id="adminDataTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>Conversation With</th>
+                <th>Started at</th>
+                <th>Last messaged at</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('conversation.get_conversation_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "user_id" },
+                { "data": "created_at" },
+                { "data": "updated_at" },
+                {   
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-success btn-sm me-1" onclick="viewRecord(' + row.id + ')"><i class="bi bi-file-text"></i></button>' +
+                            '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                    }       
+                }
+            
+            ]
+        });
+
+        window.viewRecord = function (id) {
+            window.location.href= "/admin/messages/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/conversations/status/" + id;
+        };
+    });
+</script>
+
+{% endblock %}

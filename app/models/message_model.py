@@ -15,7 +15,7 @@ class MessageModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.DateTime,default=datetime.now)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -25,7 +25,7 @@ class MessageModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
@@ -38,9 +38,9 @@ class MessageModel(db.Model):
         nullable=False
     )
 
-    message_text=db.Column(db.String(400),nullable=False)
+    message=db.Column(db.Text,nullable=False)
     attachament_url=db.Column(db.String(200))
-    read_status=db.Column(db.Boolean,default=False)
+    
 
     conversations = db.relationship("ConversationModel", back_populates="messages")
     created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="message_created")
