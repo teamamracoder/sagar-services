@@ -65,7 +65,8 @@ class StaffController:
         staff = self.staff_service.get_by_id(id)
         if staff is None:
             return render_template("admin/error/something_went_wrong.html")
-        staff_is_active=self.staff_service.status(id)
-        print(staff_is_active)
-        #update role here
+        self.staff_service.status(id)
+        role=self.role_service.get_role_by_user_id_and_role_key(staff.user_id,2)
+        self.role_service.status(role.id)
         return redirect(url_for("staff.index"))
+    

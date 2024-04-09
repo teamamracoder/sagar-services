@@ -7,3 +7,6 @@ class StaffService(BaseService):
 
     def get_active(self):
         return StaffModel.query.filter_by(is_active=True).all()
+
+    def get_by_user_id(self,user_id):
+        return StaffModel.query.filter_by(user_id=user_id).first()
