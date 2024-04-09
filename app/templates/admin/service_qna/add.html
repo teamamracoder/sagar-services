@@ -1,19 +1,13 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Add ServiceQuestion{% endblock %}
+{% block title %}Add Service QnA{% endblock %}
 
 {% block content %}
-
 <div class="container">
-    <h3 class="text-center my-3">Add ServiceQuestion</h3>
-
-    <form method="POST" action="{{ url_for('service_question.add') }}" id="adminForm">
+    <h3 class="text-center my-3">Add Service QnA's</h3>
+    <form method="POST" action="{{ url_for('service_qna.add') }}" enctype="multipart/form-data"  id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.created_by.label(class="form-label") }}
-                {{ form.created_by(class="form-control form-control-sm") }}
-            </div>
             <div class="col-12">
                 {{ form.service_id.label(class="form-label") }}
                 {{ form.service_id(class="form-control form-control-sm") }}
@@ -22,35 +16,29 @@
                 {{ form.question.label(class="form-label") }}
                 {{ form.question(class="form-control form-control-sm") }}
             </div>
-            <div class="col-12">
-                {{ form.user_id.label(class="form-label") }}
-                {{ form.user_id(class="form-control form-control-sm") }}
-            </div>
-            
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('service_question.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                <a href="{{ url_for('service_qna.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>
 
 </div>
-
 <script>
     $(document).ready(function () {
         $('#adminForm').validate({
             rules: {
                 question: {
                     required: true,
-                    minlength: 3,
-                    maxlength: 100
+                    minlength: 5,
+                    maxlength: 200
                 }
             },
             messages: {
                 question: {
-                    required: "Enter you query..?",
-                    minlength: "Input must be at least 3 characters long",
-                    maxlength: "Input must not exceed 100 characters"
+                    required: "Please enter Question",
+                    minlength: "Question must be at least 5 characters long",
+                    maxlength: "Question must not exceed 100 characters"
                 }
             },
             submitHandler: function (form) {

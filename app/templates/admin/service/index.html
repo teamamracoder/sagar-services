@@ -17,13 +17,11 @@
         <thead>
             <tr>
                 <th>#Id</th>
-                <th>created_by</th>
-                <th>created_at</th>
-                <th>service_name</th>
-                <th>service_charge</th>
-                <th>available_area_pincode</th>
-                <th>discount</th>
-                <th>service_type_id</th>
+                <th>Service Type id</th>
+                <th>Service Name</th>
+                <th>Service Charge</th>
+                <th>Discount</th>
+                <th>Available Areas</th>
                 <th style="width: 180px;">Action</th>
             </tr>
         </thead>
@@ -42,19 +40,16 @@
             },
             "columns": [
                 { "data": "id" },
-                { "data": "created_by" },
-                { "data": "created_at" },
+                { "data": "service_type_id"},
                 { "data": "service_name"},
                 { "data": "service_charge" },
-                { "data": "available_area_pincode"},
                 { "data": "discount" },
-                { "data": "service_type_id"},
+                { "data": "available_area_pincodes"},
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                    console.log(row.is_active)
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
-                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]

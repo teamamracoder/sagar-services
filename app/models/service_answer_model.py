@@ -50,3 +50,4 @@ class ServiceAnswerModel(db.Model):
     )
     service_questions = db.relationship("ServiceQuestionModel", back_populates="service_answers", uselist=False)
     users = db.relationship('UserModel', foreign_keys=[staff_id], backref="service_answers")
+    

@@ -1,63 +1,82 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateServiceForm, UpdateServiceForm
-from app.services import ServiceService
+from app.services import ServiceService, ServiceTypeService
 from datetime import datetime
-
+from app.constants import payment_methods
+from app.auth import get_current_user
 
 
 class ServiceController:
     def __init__(self) -> None:
         self.service_service = ServiceService()
-
-    def create(self):
-        form = CreateServiceForm()
-        if form.validate_on_submit():
-            self.service_service.create(
-                created_by=form.created_by.data,
-                created_at=datetime.now(),
-                is_active=True,
-                service_name=form.service_name.data,
-                description=form.description.data,
-                service_charge=form.service_charge.data,
-                available_area_pincode=form.available_area_pincode.data,
-                payment_methods=form.payment_methods.data,
-                discount=form.discount.data,
-                service_img_urls=form.service_img_urls.data,
-                service_type_id=form.service_type_id.data
-            )
-            return redirect(url_for("service.index"))
-        return render_template("admin/service/add.html", form=form)
+        self.service_type_service = ServiceTypeService()
 
     def get(self):
         return render_template("admin/service/index.html")
 
     def get_service_data(self):
         # Determine the column to sort by
-        columns = ["id", "created_by", "created_at", "updated_by", "updated_at", "is_active", "service_name", "description", "service_charge", "available_area_pincode", "payment_methods", "discount", "service_img_urls", "service_type_id"]
+        columns = ["id", "created_by", "created_at", "updated_by", "updated_at", "is_active", "service_name", "description", "service_charge", "available_area_pincodes", "payment_methods", "discount", "service_img_urls", "service_type_id"]
         data = self.service_service.get(request, columns)
-        return jsonify(data)
+        combined_data = self.service_type_service.add_service_type_with_services(data)
+        return jsonify(combined_data)
+
+    def create(self):
+        form = CreateServiceForm()
+        service_types=self.service_type_service.get_active()
+        form.service_type_id.choices = [(service_type.id, service_type.type_name) for service_type in service_types]
+        form.payment_methods.choices = payment_methods.get_all_items()
+
+        if form.validate_on_submit():
+            pincode_string = form.available_area_pincodes.data
+            pincode_list = [pin.strip() for pin in pincode_string.split(',')]
+            
+            self.service_service.create(
+                created_by=get_current_user().id,
+                created_at=datetime.now(),
+                service_name=form.service_name.data,
+                service_type_id=form.service_type_id.data,
+                description=form.description.data,
+                service_charge=form.service_charge.data,
+                available_area_pincodes=pincode_list,
+                payment_methods=form.payment_methods.data,
+                discount=form.discount.data,
+                service_img_urls=form.service_img_urls.data
+            )
+            return redirect(url_for("service.index"))
+        return render_template("admin/service/add.html", form=form)
+
+
 
     def update(self, id):
         service = self.service_service.get_by_id(id)
+        if service is None:
+            return render_template("admin/error/something_went_wrong.html")
+
+        service_types=self.service_type_service.get_active()
         form = UpdateServiceForm(obj=service)
+        form.service_type_id.choices = [(service_type.id, service_type.type_name) for service_type in service_types]
+        form.payment_methods.choices = payment_methods.get_all_items()
+        
         if form.validate_on_submit():
+            pincode_string = form.available_area_pincodes.data
+            pincode_list = [pin.strip() for pin in pincode_string.split(',')]
+
             self.service_service.update(
                 id=id,
-                created_by=service.created_by,
-                created_at=service.created_at,
-                updated_by=1,
+                updated_by=get_current_user().id,
                 updated_at=datetime.now(),
-                is_active=True,
                 service_name=form.service_name.data,
                 description=form.description.data,
                 service_charge=form.service_charge.data,
-                available_area_pincode=form.available_area_pincode.data,
+                available_area_pincodes=pincode_list,
                 payment_methods=form.payment_methods.data,
                 discount=form.discount.data,
                 service_img_urls=form.service_img_urls.data,
                 service_type_id=form.service_type_id.data
             )
             return redirect(url_for("service.index"))
+        form.available_area_pincodes.data = ', '.join(service.available_area_pincodes)
         return render_template("admin/service/update.html", form=form, id=id)
 
 
@@ -67,3 +86,11 @@ class ServiceController:
             return render_template("admin/error/something_went_wrong.html")
         self.service_service.status(id)
         return redirect(url_for("service.index"))
+
+    def get_total_price(self):
+        service_charge_calculated_data=self.service_service.get_total_price(request)
+        return jsonify(service_charge_calculated_data)
+    
+    def details(self,id):
+        service=self.service_service.get_by_id(id)
+        return render_template("admin/service/details.html",service=service)

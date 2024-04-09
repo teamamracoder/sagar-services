@@ -4,10 +4,10 @@ from app.controllers import ServiceTypeController
 from app.constants import roles
 from app.auth import role_required
 
-service_type_controller = ServiceTypeController()
 
 service_type_bp = Blueprint("service_type", __name__)
 
+service_type_controller = ServiceTypeController()
 
 @service_type_bp.route("/admin/service_types/")
 @login_required

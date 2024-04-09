@@ -11,10 +11,6 @@
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
-                {{ form.created_by.label(class="form-label") }}
-                {{ form.created_by(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
                 {{ form.type_name.label(class="form-label") }}
                 {{ form.type_name(class="form-control form-control-sm") }}
             </div>
@@ -35,7 +31,7 @@
                 type_name: {
                     required: true,
                     minlength: 3,
-                    maxlength: 30
+                    maxlength: 50
                 }
             },
             messages: {
