@@ -8,10 +8,21 @@
     <h3 class="text-center my-3">Messages</h3>
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card rounded-0">
-                <div class="card-body p-2">
+            <div class="card rounded-0" style="overflow-y: scroll; height:500px;" id="messageBox">
+                <div class="card-body p-1">
                     {% for message in messages %}
-                    <p class="">{{ message.sent_by }} : {{ message.message }} </p>
+                    <div class="card border-0">
+                        <div class="card-header">
+                            {{ message.sent_by }} - <span id="time_{{ loop.index }}"></span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ message.message }}</p>
+                        </div>
+                    </div>
+                    <script>
+                        var time=getFormattedTime("{{ message.created_at }}")
+                        $("#time_{{ loop.index }}").text(time);
+                    </script>
                     {% endfor %}
                 </div>
                 <div class="card-footer">
@@ -36,6 +47,7 @@
 
 <script>
     $(document).ready(function () {
+        $('#messageBox').scrollTop($('#messageBox')[0].scrollHeight);
         window.editRecord = function (id) {
             window.location.href= "/admin/messages/update/" + id;
         };

@@ -15,3 +15,15 @@ const getFormattedDateTime = (datetime)=>{
     let formattedDate = date.toLocaleString('en-GB', options);
     return(formattedDate);
 }
+
+const getFormattedTime = (datetime) =>{
+    var dt = new Date(datetime);
+    var timeOnly = dt.toLocaleTimeString(
+        [], {
+            hour: 'numeric', 
+            minute: '2-digit', 
+            hour12: true
+        }
+    );
+    return timeOnly;
+}
