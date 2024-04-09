@@ -18,10 +18,8 @@ from .service_froms import CreateServiceForm
 from .service_froms import UpdateServiceForm
 from .service_type_froms import CreateServiceTypeForm
 from .service_type_froms import UpdateServiceTypeForm
-from .service_answer_froms import CreateServiceAnswerForm
-from .service_answer_froms import UpdateServiceAnswerForm
-from .service_question_froms import CreateServiceQuestionForm
-from .service_question_froms import UpdateServiceQuestionForm
+from .service_qna_froms import CreateServiceQnAForm
+from .service_qna_froms import UpdateServiceQnAForm
 from .cart_forms import CreateCartForm
 from .wishlist_forms import CreateWishlistForm
 from .product_review_forms import CreateProductReviewForm
@@ -32,5 +30,9 @@ from .product_question_forms import CreateProductQuestionForm
 from .product_question_forms import UpdateProductQuestionForm
 from .product_answer_forms import CreateProductAnswerForm
 from .product_answer_forms import UpdateProductAnswerForm
+from .service_review_froms import CreateServiceReviewForm
+from .service_review_froms import UpdateServiceReviewForm
+from .booking_froms import CreateBookingForm
+from .booking_froms import UpdateBookingForm
 from .staff_forms import CreateStaffForm
 from .staff_forms import UpdateStaffForm

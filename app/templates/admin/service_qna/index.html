@@ -1,23 +1,19 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}ServiceTypes{% endblock %}
+{% block title %}Service QnA's{% endblock %}
 
 {% block content %}
 
 <div class="container">
-    <h3 class="text-center my-3">ServiceTypes</h3>
-
-    <div class="row">
-        <div class="col text-end">
-            <a href="{{url_for('service_type.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
-        </div>
-    </div>
+    <h3 class="text-center my-3">Service QnA's</h3>
 
     <table id="adminDataTable" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th># id</th>
-                <th>ServiceTypes</th>
+                <th>Service Name</th>
+                <th>Question</th>
+                <th>Answer</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -31,31 +27,32 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{url_for('service_type.get_service_type_data')}}",
+                "url": "{{ url_for('service_qna.get_service_qna_data') }}",  // Fixed AJAX URL
                 "type": "GET"
             },
             "columns": [
                 { "data": "id" },
-                { "data": "type_name" },
+                { "data": "service_name" },
+                { "data": "question" },
+                { "data": "answer" },
                 {
                     "data": null,
                     "render": function (data, type, row) {
                         return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
-                            '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                            '<button class="btn border-' + (row.is_active ? 'danger' : 'success') + ' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
         });
 
         window.editRecord = function (id) {
-            window.location.href= "/admin/service_types/update/" + id;
+            window.location.href = "/admin/service_qnas/update/" + id;
         };
 
         window.deactivateRecord = function (id) {
-            window.location.href= "/admin/service_types/status/" + id;
+            window.location.href = "/admin/service_qnas/status/" + id;
         };
     });
 </script>
-
 
 {% endblock %}
