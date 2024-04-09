@@ -42,7 +42,12 @@
                 { "data": "id" },
                 { "data": "first_name" },
                 { "data": "last_name" },
-                { "data": "email" },
+                { 
+                    "data": null,
+                    "render":function(data,type,row){
+                        return `<a href="mailto:${row.email}" class="text-dark text-decoration-none"><i class="bi bi-envelope-at"></i> ${row.email}</a>`
+                    }
+                },
                 { "data": "mobile" },
                 { 
                     "data": null,
@@ -67,7 +72,8 @@
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                        return '<button class="btn btn-outline-success btn-sm me-1" onclick="viewRecord(' + row.id + ')"><i class="bi bi-file-text"></i></button>' +
+                        '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
                         '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
@@ -76,6 +82,9 @@
 
         window.editRecord = function (id) {
             window.location.href= "/admin/users/update/" + id;
+        };
+        window.viewRecord = function (id) {
+            window.location.href= "/admin/users/details/" + id;
         };
 
         window.deactivateRecord = function (id) {

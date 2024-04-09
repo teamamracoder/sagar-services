@@ -39,3 +39,10 @@ def update(id):
 @role_required([roles.get_key("ADMIN")])
 def status(id):
     return user_controller.status(id)
+
+
+@user_bp.route("/admin/users/details/<int:id>", methods=["GET", "PATCH"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def details(id):
+    return user_controller.details(id)

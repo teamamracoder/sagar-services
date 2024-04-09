@@ -44,3 +44,9 @@ def status(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def statuses(id,status_type,status):
     return order_controller.order_status(id,status_type,status)
+
+@order_bp.route("/admin/orders/details/<int:id>", methods=["GET", "PATCH"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def details(id):
+    return order_controller.details(id)

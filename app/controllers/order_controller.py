@@ -111,3 +111,7 @@ class OrderController:
             }
         self.order_service.update(id, **updated_data)
         return redirect(url_for("order.index"))
+
+    def details(self,id):
+        order=self.order_service.get_by_id(id)
+        return render_template("admin/order/details.html",order=order)

@@ -76,3 +76,6 @@ class StaffController:
         self.role_service.status(role.id)
         return redirect(url_for("staff.index"))
     
+    def details(self,id):
+        staff=self.staff_service.get_by_id(id)
+        return render_template("admin/staff/details.html",staff=staff)
