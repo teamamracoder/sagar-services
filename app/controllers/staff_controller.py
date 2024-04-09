@@ -18,20 +18,21 @@ class StaffController:
         columns = ["id", "user_id","name","email","salary","qualification","join_date","leave_date","department","is_active"]
         data = self.staff_service.get(request, columns)
         data = self.user_service.add_user_with_this(data)
+        data = self.staff_service.add_departments_with_this(data)
         return jsonify(data)
     
     def create(self,user_id):
         form = CreateStaffForm()
         form.department.choices = departments.get_all_items()
         if form.validate_on_submit():
-            staff=self.staff_service.create(
+            self.staff_service.create(
                 created_by=get_current_user().id,
                 created_at=datetime.now(),
                 salary=form.salary.data,
                 qualification=form.qualification.data,
                 join_date=form.join_date.data,
                 department=form.department.data,
-                user_id=user_id,
+                user_id=user_id
             )
             self.role_service.create(
                 user_id=user_id, 
@@ -50,16 +51,21 @@ class StaffController:
         if staff is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateStaffForm(obj=staff)
-        
+        form.department.choices = departments.get_all_items()
+
         if form.validate_on_submit():
             updated_data = {
-                'staff_name': form.staff_name.data,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': get_current_user().id,
+                'salary':form.salary.data,
+                'qualification':form.qualification.data,
+                'join_date':form.join_date.data,
+                'leave_date':form.leave_date.data,
+                'department':form.department.data
             }
             self.staff_service.update(id, **updated_data)
             return redirect(url_for("staff.index"))
-        return render_template("admin/staf/update.html", id=id, form=form)
+        return render_template("admin/staff/update.html", id=id, form=form)
 
     def status(self, id):
         staff = self.staff_service.get_by_id(id)

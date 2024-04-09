@@ -34,7 +34,7 @@ class OrderController:
         form.payment_status.choices = payment_statuses.get_all_items()
 
         if form.validate_on_submit():
-            if self.order_service.create(
+            order=self.order_service.create(
                 created_by=1,
                 created_at=datetime.now(),
                 product_id=form.product_id.data,
@@ -46,8 +46,11 @@ class OrderController:
                 shipping_address=form.shipping_address.data,
                 payment_status=form.payment_status.data,
                 area_pincode=form.area_pincode.data,
-            ):
-                return redirect(url_for("order.index"))
+            )
+            ordered_product=self.product_service.get_by_id(order.product_id)
+            quantity=ordered_product.quantity-1
+            self.product_service.update(ordered_product.id, quantity=quantity)
+            return redirect(url_for("order.index"))
         return render_template("admin/order/add.html", form=form)
 
     def update(self, id):
