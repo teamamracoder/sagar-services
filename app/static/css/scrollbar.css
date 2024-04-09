@@ -13,6 +13,10 @@
   background-color: #555; /* Color of the thumb on hover */
 }
 
+#messageBox {
+  scrollbar-width: none; /* "thin" or "auto" */
+  scrollbar-color: #f1f1f1 #888; /* Track color Thumb color */
+}
 /* For Firefox */
 /* Note: Firefox doesn't support styling the scrollbar as extensively as WebKit */
 /* You can use only basic properties like width and color */
