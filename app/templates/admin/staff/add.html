@@ -5,16 +5,28 @@
 {% block content %}
 <div class="container">
     <h3 class="text-center my-3">Add Category</h3>
-    <form method="POST" action="{{ url_for('category.add') }}" enctype="multipart/form-data"  id="adminForm">
+    <form method="POST" action="{{ url_for('staff.add',user_id=user_id) }}" enctype="multipart/form-data"  id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
-                {{ form.category_name.label(class="form-label") }}
-                {{ form.category_name(class="form-control form-control-sm") }}
+                {{ form.salary.label(class="form-label") }}
+                {{ form.salary(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.qualification.label(class="form-label") }}
+                {{ form.qualification(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.join_date.label(class="form-label") }}
+                {{ form.join_date(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.department.label(class="form-label") }}
+                {{ form.department(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('category.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                <a href="{{ url_for('staff.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>
@@ -22,6 +34,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        /*
         $('#adminForm').validate({
             rules: {
                 category_name: {
@@ -41,6 +54,7 @@
                 form.submit();
             }
         });
+        */
     });
 </script>
 

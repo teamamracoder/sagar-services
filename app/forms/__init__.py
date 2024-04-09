@@ -31,3 +31,5 @@ from .service_review_froms import CreateServiceReviewForm
 from .service_review_froms import UpdateServiceReviewForm
 from .booking_froms import CreateBookingForm
 from .booking_froms import UpdateBookingForm
+from .staff_forms import CreateStaffForm
+from .staff_forms import UpdateStaffForm

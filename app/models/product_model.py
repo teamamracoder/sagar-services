@@ -51,7 +51,7 @@ class ProductModel(db.Model):
 
     product_img_urls=db.Column(db.ARRAY(db.Text),default=[])
 
-    specifications=db.Column(db.String(2000),nullable=False)
+    specifications=db.Column(db.Text,nullable=False)
 
     payment_methods=db.Column(db.ARRAY(db.Integer),nullable=False)
 

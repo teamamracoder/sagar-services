@@ -6,53 +6,48 @@
 
 <div class="container">
     <h3 class="text-center my-3">Messages</h3>
-
-    <div class="row">
-        <div class="col text-end">
-            <a href="{{url_for('message.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card rounded-0" style="overflow-y: scroll; height:500px;" id="messageBox">
+                <div class="card-body p-1">
+                    {% for message in messages %}
+                    <div class="card border-0">
+                        <div class="card-header">
+                            {{ message.sent_by }} - <span id="time_{{ loop.index }}"></span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ message.message }}</p>
+                        </div>
+                    </div>
+                    <script>
+                        var time=getFormattedTime("{{ message.created_at }}")
+                        $("#time_{{ loop.index }}").text(time);
+                    </script>
+                    {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <form method="POST" action="{{ url_for('message.add',conversation_id=conversation_id) }}" enctype="multipart/form-data"  id="adminForm">
+                        {{ form.csrf_token }}
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form.message(class="form-control form-control-sm") }}
+                            </div>
+                            <div class="col-12 my-2">
+                                <button type="submit" class="btn btn-dark btn-sm float-end">Send</button>
+                                <a href="{{ url_for('conversation.index') }}" class="btn btn-outline-dark btn-sm float-end me-2">Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    <table id="adminDataTable" class="table table-bordered">
-        <thead >
-            <tr>
-                <th># id</th>
-                <th>Conversation id</th>
-                <th>Message text</th>
-                <th>created at</th>
-                <th>updated at</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    
 </div>
 
 <script>
     $(document).ready(function () {
-        var table = $('#adminDataTable').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": {
-                "url": "{{url_for('message.get_message_data')}}",
-                "type": "GET"
-            },
-            "columns": [
-                { "data": "id" },
-                { "data": "conversation_id" },
-                { "data": "message_text" },
-                { "data": "created_at" },
-                { "data": "updated_at" },
-                { "data": null,
-                    "render": function (data, type, row) {
-                    console.log(row.is_active)
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
-                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
-                    }           }
-            
-            ]
-        });
-
+        $('#messageBox').scrollTop($('#messageBox')[0].scrollHeight);
         window.editRecord = function (id) {
             window.location.href= "/admin/messages/update/" + id;
         };

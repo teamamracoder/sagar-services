@@ -16,3 +16,4 @@ from .wishlist_service import WishlistService
 from .product_review_service import ProductReviewService
 from .order_service import OrderService
 from .booking_service import BookingService
+from .staff_service import StaffService
