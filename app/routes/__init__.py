@@ -4,6 +4,7 @@ from .user_routes import user_bp
 from .role_routes import role_bp
 from .home_routes import home_bp
 from .category_routes import category_bp
+from .coupon_routes import coupon_bp
 from .product_routes import product_bp
 from .dashboard_routes import dashboard_bp
 from .contact_routes import contact_bp
@@ -22,7 +23,7 @@ from .product_answer_routes import product_answer_bp
 from .staff_routes import staff_bp
 
 # register blueprints
-blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, service_bp, service_type_bp, service_answer_bp, service_question_bp, cart_bp, wishlist_bp, product_review_bp, order_bp, conversation_bp, message_bp, contact_bp,product_question_bp,product_answer_bp, staff_bp]
+blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, service_bp, service_type_bp, service_answer_bp, service_question_bp, cart_bp, wishlist_bp, product_review_bp, order_bp, conversation_bp, message_bp, contact_bp,product_question_bp,product_answer_bp, staff_bp, coupon_bp]
 
 def register_blueprints(app):
     for blueprint in blueprints:
