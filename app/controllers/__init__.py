@@ -4,6 +4,7 @@ from .user_controller import UserController
 from .role_controller import RoleController
 from .home_controller import HomeController
 from .category_controller import CategoryController
+from .coupon_controller import CouponController
 from .product_controller import ProductController
 from .dashboard_controller import DashboardController
 from .contact_controller import ContactController
