@@ -4,13 +4,11 @@ from wtforms.validators import DataRequired
 
 
 class CreateServiceQnAForm(FlaskForm):
+    service_id = SelectField("Services", validators=[DataRequired()])
     question = StringField("Question", validators=[DataRequired()])
-    service_id = SelectField("Service", validators=[DataRequired()])
-    answer = TextAreaField("Answer")
-    user_id = IntegerField("User Id", validators=[DataRequired()])
 
 class UpdateServiceQnAForm(FlaskForm):
+    service_id = SelectField("Services", validators=[DataRequired()])
     question = StringField("Question", validators=[DataRequired()])
-    service_id = SelectField("Service", validators=[DataRequired()])
     answer = TextAreaField("Answer")
-    user_id = IntegerField("User Id", validators=[DataRequired()])
+    

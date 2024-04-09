@@ -7,8 +7,7 @@ from .conversation_service import ConversationService
 from .message_service import MessageService
 from .service_service import ServiceService
 from .service_type_service import ServiceTypeService
-from .service_answer_service import ServiceAnswerService
-from .service_question_service import ServiceQuestionService
+from .service_qna_service import ServiceQnAService
 from .service_review_service import ServiceReviewService
 from .product_question_service import ProductQuestionService
 from .product_answer_service import ProductAnswerService

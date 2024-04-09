@@ -15,6 +15,30 @@ class ServiceService(BaseService):
                 data["service_name"] = "Unknown"
         return datas
 
+    def get_service_name_by_id(self,service_id):
+        return ServiceModel.query.filter_by(id=service_id).first().service_name
+    
+    def get_active(self):
+        return ServiceModel.query.filter_by(is_active=True).order_by(ServiceModel.service_name).all()
+
+    def get_total_price(self,request):
+        service_id = int(request.args.get("service_id"))
+
+        service=self.get_by_id(service_id)
+        if service is None:
+            return {"error": "Product not found"}
+
+        discount=service.discount
+        service_charge=service.service_charge
+        total_charge=float((service_charge - discount))
+
+        service_charge_calculated_data={
+            'service_id' : service_id,
+            'service_charge' : service_charge,
+            'discount' : discount,
+            'total_charge' : total_charge
+        }
+        return service_charge_calculated_data
     def get_service_by_id(self, id):
         service = ServiceModel.query.filter_by(id=id).first()
         if service:
