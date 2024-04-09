@@ -7,3 +7,6 @@ class ConversationService(BaseService):
     def __init__(self) -> None:
         super().__init__(ConversationModel)
 
+    def get_by_user_id(self,user_id):
+        return self.model.query.filter_by(user_id=user_id).first()
+

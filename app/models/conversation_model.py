@@ -39,16 +39,7 @@ class ConversationModel(db.Model):
         nullable=False
     )
 
-    staff_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            "users.id",
-            name="fk_users_converations_staff"
-        ),
-        nullable=False
-    )
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="conversation_users")
-    staffs = db.relationship('UserModel', foreign_keys=[staff_id], backref="conversation_staffs")
     messages = db.relationship("MessageModel", back_populates="conversations")
     created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="conversation_created")
     updated_by_id = db.relationship("UserModel", foreign_keys=[updated_by], backref="conversation_updated")

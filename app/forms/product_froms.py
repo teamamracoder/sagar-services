@@ -12,8 +12,8 @@ class CreateProductForm(FlaskForm):
     stock = IntegerField("stock", validators=[DataRequired()])
     product_img_urls = FieldList(StringField("product_img_urls"))
     specifications = TextAreaField("specifications", validators=[DataRequired()])
-    payment_methods = SelectMultipleField("payment_methods", validators=[DataRequired()], coerce=int)
-    available_area_pincodes = StringField("Available Area Pincode(use comma separated)", validators=[DataRequired()])
+    payment_methods = SelectMultipleField("payment_methods (hold ctrl and select)", validators=[DataRequired()], coerce=int)
+    available_area_pincodes = StringField("Available Area Pincode (use comma separated)", validators=[DataRequired()])
     return_policy = TextAreaField("return_policy", validators=[DataRequired()])
 
 
@@ -27,6 +27,6 @@ class UpdateProductForm(FlaskForm):
     stock = IntegerField("stock", validators=[DataRequired()])
     product_img_urls = FieldList(StringField("product_img_urls"))
     specifications = TextAreaField("specifications", validators=[DataRequired()])
-    payment_methods = SelectMultipleField("payment_methods", validators=[DataRequired()], coerce=int)
-    available_area_pincodes = StringField("Available Area Pincode(use comma separated)", validators=[DataRequired()])
+    payment_methods = SelectMultipleField("payment_methods (hold ctrl and select)", validators=[DataRequired()], coerce=int)
+    available_area_pincodes = StringField("Available Area Pincode (use comma separated)", validators=[DataRequired()])
     return_policy = TextAreaField("return_policy", validators=[DataRequired()])

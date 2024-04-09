@@ -18,11 +18,11 @@ def get_staff_data():
     return staff_controller.get_staff_data()
 
 
-@staff_bp.route("/admin/staffs/add/", methods=["GET", "POST"])
+@staff_bp.route("/admin/staffs/add/<int:user_id>", methods=["GET", "POST"])
 @login_required
 @role_required([roles.get_key("ADMIN")])
-def add():
-    return staff_controller.create()
+def add(user_id):
+    return staff_controller.create(user_id)
 
 
 @staff_bp.route("/admin/staffs/update/<int:id>", methods=["GET", "POST"])
@@ -37,3 +37,9 @@ def update(id):
 @role_required([roles.get_key("ADMIN")])
 def status(id):
     return staff_controller.status(id)
+
+@staff_bp.route("/admin/staffs/details/<int:id>", methods=["GET", "PATCH"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def details(id):
+    return staff_controller.details(id)

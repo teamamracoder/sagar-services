@@ -16,4 +16,8 @@ class UserService(BaseService):
             item["email"] = user.email
         return items
 
+    def add_message_with_this(self,messages:dict)->dict:
+        for message in messages:
+            message.sent_by=self.get_by_id(message.created_by).first_name
+        return messages
 

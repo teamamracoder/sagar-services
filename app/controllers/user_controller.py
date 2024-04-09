@@ -58,3 +58,7 @@ class UserController:
             return render_template("admin/error/something_went_wrong.html")
         self.user_service.status(id)
         return redirect(url_for("user.index"))
+
+    def details(self,id):
+        user=self.user_service.get_by_id(id)
+        return render_template("admin/user/details.html",user=user)
