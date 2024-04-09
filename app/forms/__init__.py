@@ -29,3 +29,5 @@ from .product_answer_forms import CreateProductAnswerForm
 from .product_answer_forms import UpdateProductAnswerForm
 from .service_review_froms import CreateServiceReviewForm
 from .service_review_froms import UpdateServiceReviewForm
+from .booking_froms import CreateBookingForm
+from .booking_froms import UpdateBookingForm

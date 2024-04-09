@@ -19,9 +19,10 @@ from .product_question_routes import product_question_bp
 from .product_answer_routes import product_answer_bp
 from .service_qna_routes import service_qna_bp
 from .service_review_routes import service_review_bp
+from .booking_routes import booking_bp
 
 # register blueprints
-blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, service_bp, service_type_bp, cart_bp, wishlist_bp, product_review_bp, order_bp, conversation_bp, message_bp, contact_bp,product_question_bp,product_answer_bp,service_qna_bp,service_review_bp]
+blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, service_bp, service_type_bp, cart_bp, wishlist_bp, product_review_bp, order_bp, conversation_bp, message_bp, contact_bp,product_question_bp,product_answer_bp,service_qna_bp,service_review_bp, booking_bp]
 
 def register_blueprints(app):
     for blueprint in blueprints:

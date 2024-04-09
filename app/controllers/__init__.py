@@ -19,3 +19,4 @@ from .product_review_controller import ProductReviewController
 from .order_controller import OrderController
 from .product_question_controller import ProductQuestionController
 from .product_answer_controller import ProductAnswerController
+from .booking_controller import BookingController
