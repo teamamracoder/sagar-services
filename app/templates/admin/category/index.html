@@ -27,6 +27,9 @@
 
 <script>
     $(document).ready(function () {
+
+        
+
         var table = $('#adminDataTable').DataTable({
             "processing": true,
             "serverSide": true,
@@ -40,21 +43,70 @@
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
-                            '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                        return '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="custom-tooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? 'title="Deactivate"' : 'title="Activate"')+' onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
         });
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
         window.editRecord = function (id) {
             window.location.href= "/admin/categories/update/" + id;
         };
+        
+        window.deactivateRecord = function (id, is_active) {
+            const title = is_active ? "Deactivate Category" : "Activate Category";
+            const icon = is_active ? "warning" : "success";
+            const confirmButtonColor = is_active ? "#d33" : "#0D0";
+            const cancelButtonColor = is_active ? "#2D0" : "#d33";
 
-        window.deactivateRecord = function (id) {
-            window.location.href= "/admin/categories/status/" + id;
+            Swal.fire({
+                title: "Are you sure?",
+                text: title,
+                icon: icon,
+                showCancelButton: true,
+                confirmButtonColor: confirmButtonColor,
+                cancelButtonColor: cancelButtonColor,
+                confirmButtonText: is_active ? "Deactivate" : "Activate"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log("inside confirm")
+                    // window.location.href = "/admin/categories/status/" + id;
+                    $.ajax({
+                        // url:"/admin/categories/status/"+id,
+                        url:"{{url_for('category.status',id=0)}}".replace('0',id),
+                        method:"GET",
+                        complete:res=>{
+                            responseData=res.responseJSON
+                            if (responseData.status === 'success') {
+                                toastr.success(responseData.message);
+                                console.log($(this))
+                                $("#disable_btn_"+id).replaceWith(
+                                    '<button id="disable_btn_'+id+'" class="btn  btn-sm me-1 border-'
+                                    +(responseData.data ? 'danger' : 'success')
+                                    +'" data-toggle="tooltip"  data-bs-placement="bottom"'
+                                    + (responseData.data ? 'title="Deactivate"' : 'title="Activate"')
+                                    +' onclick="deactivateRecord(' + id+','+responseData.data+')" >' 
+                                    + (responseData.data ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') 
+                                    + '</button>')
+                            }
+                            else{
+                                toastr.error(responseData.message);
+                            }
+                            
+                            // console.log("{{url_for('category.status',id=2)}}")
+                            
+                        }
+                    });
+                    console.log("{{ url_for('category.status', id=0) }}".replace('0',id))
+                    // console.log("{{url_for('category.status',id=2)}}")
+                    console.log("{{url_for('category.status',id=0)}}")
+                }
+            });
         };
-
+        
 
     });
 </script>

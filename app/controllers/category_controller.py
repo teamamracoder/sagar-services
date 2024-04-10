@@ -9,6 +9,8 @@ class CategoryController:
         self.category_service = CategoryService()
 
     def get(self):
+        # toaster = request.args.get('toaster')
+        # toaster_type = request.args.get('toaster_type')
         return render_template("admin/category/index.html")
 
     def get_category_data(self):
@@ -24,8 +26,7 @@ class CategoryController:
                 created_at=datetime.now(),
                 category_name=form.category_name.data,
             )
-            return redirect(url_for("category.index"))
-            # return render_template("admin/category/add.html", form=form, error="category already exists")
+            return redirect(url_for("category.index", toaster="Category Updated", toaster_type="info"))
         return render_template("admin/category/add.html", form=form)
 
     def update(self, id):
@@ -47,6 +48,10 @@ class CategoryController:
     def status(self, id):
         category = self.category_service.get_by_id(id)
         if category is None:
-            return render_template("admin/error/something_went_wrong.html")
-        self.category_service.status(id)
-        return redirect(url_for("category.index"))
+            return {"status":"error","message":"item not found","data":None}
+        is_active=self.category_service.status(id)
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
+        #     return redirect(url_for("category.index", toaster="Category Activated", toaster_type="success"))
+        # return redirect(url_for("category.index", toaster="Category Deactivated", toaster_type="error"))
