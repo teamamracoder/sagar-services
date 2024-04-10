@@ -1,0 +1,97 @@
+
+{% extends 'admin/base.html' %}
+
+{% block title %}Update Coupon{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <h3 class="text-center my-3">Update Coupon</h3>
+
+    <form method="POST" action="{{ url_for('coupon_bp.update',id=id) }}" id="AddCouponForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.coupon_code.label(class="form-label") }}
+                {{ form.coupon_code(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.expiry_date.label(class="form-label") }}
+                {{ form.expiry_date(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.discount_type.label(class="form-label") }}
+                {{ form.discount_type(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.discount.label(class="form-label") }}
+                {{ form.discount(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.coupon_img_url.label(class="form-label") }}
+                {{ form.coupon_img_url(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.count.label(class="form-label") }}
+                {{ form.count(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Update</button>
+                <a href="{{ url_for('coupon_bp.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#AddCouponForm').validate({
+            rules: {
+                coupon_code: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 20
+                },
+                expiry_date: {
+                    required: true
+                },
+                discount_type: {
+                    required: true
+                },
+                discount: {
+                    required: true,
+                },
+                coupon_img_url: {
+                    required: false
+                }
+            },
+            messages: {
+                expiry_date: {
+                    required: "Please enter coupon expiry date"
+                },
+                discount_type: {
+                    required: "Please enter your coupon discount type"
+                },
+                discount: {
+                    required: "Please enter discount amount"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+{% endblock %}
+

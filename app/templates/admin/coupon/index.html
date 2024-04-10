@@ -1,0 +1,73 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Coupons{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Coupons</h3>
+
+    <div class="row">
+        <div class="col text-end">
+            <a href="{{url_for('coupon_bp.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered" id="adminDataTable">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>Coupon Code</th>
+                <th>Expiry Date</th>
+                <th>Discount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+    </table>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('coupon_bp.get_coupon_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "coupon_code" },
+                { "data": "expiry_date" },
+                { "data": "discount" },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                    console.log(row.is_active)
+                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/coupons/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+             window.location.href= "/admin/coupons/status/" + id;
+        };
+    });
+</script>
+
+
+
+
+{% endblock %}
