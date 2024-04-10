@@ -9,8 +9,6 @@ from .product_froms import UpdateProductForm
 from .auth_forms import LoginForm
 from .contact_froms import CreateContactForm
 from .contact_froms import UpdateContactForm
-from .conversation_forms import CreateConversationForm
-from .conversation_forms import UpdateConversationForm
 from .message_forms import CreateMessageForm
 from .message_forms import UpdateMessageForm
 from .service_froms import CreateServiceForm

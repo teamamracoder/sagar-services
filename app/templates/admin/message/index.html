@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-body p-1" style="overflow-y: scroll; height:500px;" id="messageBox">
                     {% for message in messages %}
-                        {% if user_id==message.created_by %}
+                        {% if conversation.user_id==message.created_by %}
                         <div class="card border-0 w-75">
                             <div class="card-body">
                                 <p class="small text-muted">
@@ -48,7 +48,7 @@
                     {% endfor %}
                 </div>
                 <div class="card-footer">
-                    <form method="POST" action="{{ url_for('message.add',conversation_id=conversation_id) }}" enctype="multipart/form-data"  id="adminForm">
+                    <form method="POST" action="{{ url_for('message.add',conversation_id=conversation.id) }}" enctype="multipart/form-data"  id="adminForm">
                         {{ form.csrf_token }}
                         <div class="row">
                             <div class="col-11">
