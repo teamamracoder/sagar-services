@@ -1,0 +1,56 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Product Wishlists{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Product Wishlists</h3>
+
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>Product Name</th>
+                <th>User id</th>
+                <th style="width:160px;">Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('wishlist.get_wishlist_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "product_name"},
+                { "data": "user_id"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/wishlists/update/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/wishlists/status/" + id;
+        };
+    });
+</script>
+
+
+{% endblock %}

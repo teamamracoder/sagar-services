@@ -7,7 +7,7 @@
 <div class="container">
     <h3 class="text-center my-3">Add User</h3>
 
-    <form method="POST" action="{{ url_for('user_bp.add') }}" id="addUserForm">
+    <form method="POST" action="{{ url_for('user.add') }}" id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -32,7 +32,7 @@
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('user_bp.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                <a href="{{ url_for('user.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>
@@ -41,7 +41,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#addUserForm').validate({
+        $('#adminForm').validate({
             rules: {
                 first_name: {
                     required: true,

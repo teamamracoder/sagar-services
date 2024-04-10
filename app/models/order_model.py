@@ -16,7 +16,7 @@ class OrderModel(db.Model):
         nullable=False
     )
 
-    created_at = db.Column(db.DateTime,default=datetime.now)
+    created_at = db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -26,7 +26,7 @@ class OrderModel(db.Model):
         )
     )
 
-    updated_at = db.Column(db.DateTime,default=datetime.now)
+    updated_at = db.Column(db.DateTime)
 
     is_active = db.Column(db.Boolean,default=True)
 
@@ -54,11 +54,11 @@ class OrderModel(db.Model):
 
     payment_method=db.Column(db.Integer,nullable=False)
 
-    order_status=db.Column(db.Integer,default=1)
+    order_status=db.Column(db.Integer)
 
     shipping_address=db.Column(db.String(200),nullable=False)
 
-    payment_status=db.Column(db.Integer,default=1)
+    payment_status=db.Column(db.Integer)
 
     area_pincode=db.Column(db.Integer,nullable=False)
 

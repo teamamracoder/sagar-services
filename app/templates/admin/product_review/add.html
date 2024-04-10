@@ -1,0 +1,89 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Add Product Review{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="text-center my-3">Add Product Reviews</h3>
+    <form method="POST" action="{{ url_for('product_review.add') }}" enctype="multipart/form-data"  id="adminForm">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.product_id.label(class="form-label") }}
+                {{ form.product_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.user_id.label(class="form-label") }}
+                {{ form.user_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.review_title.label(class="form-label") }}
+                {{ form.review_title(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.rating.label(class="form-label") }}
+                {{ form.rating(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('product_review.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#adminForm').validate({
+            rules: {
+                review_title: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 50
+                },
+                description: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 100
+                },
+                rating: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max: 5,
+                    minlength: 1,
+                    maxlength: 3
+                }
+            },
+            messages: {
+                review_title: {
+                    required: "Please enter Review",
+                    minlength: "Title must be at least 5 characters long",
+                    maxlength: "Title must not exceed 50 characters"
+                },
+                description: {
+                    required: "Please enter Description",
+                    minlength: "Description must be at least 5 characters long",
+                    maxlength: "Description must not exceed 50 characters"
+                },
+                rating: {
+                    required: "Please provide a Rating",
+                    number: "Rating must be a number",
+                    min: "Rating must be a at least 0",
+                    max: "Rating must be a at most 5",
+                    minlength: "Please provide a Rating",
+                    maxlength: "Rating must not exceed 2 digits, e,g: 4.9"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

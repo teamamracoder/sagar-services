@@ -1,0 +1,124 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Edit Service{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <h3 class="text-center my-3">Edit Service</h3>
+
+    <form id="adminForm" method="POST" action="{{ url_for('service.update', id=id) }}">
+        <!-- {{ form.hidden_tag() }} -->
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.service_type_id.label(class="form-label") }}
+                {{ form.service_type_id(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.service_name.label(class="form-label") }}
+                {{ form.service_name(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.service_charge.label(class="form-label") }}
+                {{ form.service_charge(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.available_area_pincodes.label(class="form-label") }}
+                {{ form.available_area_pincodes(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.payment_methods.label(class="form-label") }}
+                {{ form.payment_methods(class="form-control form-control-sm", multiple="multiple") }}
+            </div>
+            <div class="col-12">
+                {{ form.discount.label(class="form-label") }}
+                {{ form.discount(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.service_img_urls.label(class="form-label") }}
+                {{ form.service_img_urls(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2">
+                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <a href="{{ url_for('service.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#adminForm').validate({
+            rules: {
+                service_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 200
+                }
+            },
+            messages: {
+                service_name: {
+                    required: "Enter service name",
+                    minlength: "Input must be at least 3 characters long",
+                    maxlength: "Input must not exceed 200 characters"
+                }
+            },
+            rules: {
+                description: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 400
+                }
+            },
+            messages: {
+                description: {
+                    required: "Enter service description",
+                    minlength: "Input must be at least 3 characters long",
+                    maxlength: "Input must not exceed 400 characters"
+                }
+            },
+            rules: {
+                service_charge: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 7
+                }
+            },
+            messages: {
+                service_charge: {
+                    required: "Enter service charge in digits...!",
+                    minlength: "Input must be at least 2 characters long",
+                    maxlength: "Input must not exceed 7 characters"
+                }
+            },
+            rules: {
+                payment_methods: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 5
+                }
+            },
+            messages: {
+                payment_methods: {
+                    required: "Enter payment methods...!(comma separeted int)",
+                    minlength: "Input must be at least 1 characters long",
+                    maxlength: "Input must not exceed 5 characters"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+
+

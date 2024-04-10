@@ -9,6 +9,7 @@
     <h3 class="text-center my-3">Add Coupon</h3>
 
     <form method="POST" action="{{ url_for('coupon_bp.add') }}" id="AddCouponForm">
+
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -43,9 +44,6 @@
     </form>
 
 </div>
-
-
-
 
 <script>
     $(document).ready(function () {
@@ -86,10 +84,5 @@
         });
     });
 </script>
-
-
-
-
-
 
 {% endblock %}

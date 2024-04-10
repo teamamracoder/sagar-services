@@ -11,7 +11,6 @@ def index():
     return coupon_controller.get()
 
 
-
 @coupon_bp.route("/admin/coupons/data")
 def get_coupon_data():
     return coupon_controller.get_coupon_data()
@@ -35,3 +34,4 @@ def update(id):
 @coupon_bp.route("/admin/coupons/status/<int:id>", methods=["GET"])
 def status(id):
     return coupon_controller.status(id)
+

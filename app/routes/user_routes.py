@@ -4,7 +4,7 @@ from app.constants import roles
 from app.auth import role_required
 from app.controllers import UserController
 
-user_bp = Blueprint("user_bp", __name__)
+user_bp = Blueprint("user", __name__)
 user_controller = UserController()
 
 
@@ -39,3 +39,10 @@ def update(id):
 @role_required([roles.get_key("ADMIN")])
 def status(id):
     return user_controller.status(id)
+
+
+@user_bp.route("/admin/users/details/<int:id>", methods=["GET", "PATCH"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def details(id):
+    return user_controller.details(id)

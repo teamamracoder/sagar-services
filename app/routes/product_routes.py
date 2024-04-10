@@ -6,12 +6,20 @@ from app.auth import role_required
 product_bp = Blueprint("product", __name__)
 product_controller = ProductController()
 
-
+    
 @product_bp.route("/admin/products/")
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return product_controller.get()
+
+@product_bp.route("/admin/products/data")
+def get_product_data():
+    return product_controller.get_product_data()
+
+@product_bp.route("/admin/products/total_price")
+def get_total_price():
+    return product_controller.get_total_price()
 
 
 @product_bp.route("/admin/products/add/", methods=["GET", "POST"])
@@ -33,3 +41,9 @@ def update(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def status(id):
     return product_controller.status(id)
+
+@product_bp.route("/admin/products/details/<int:id>", methods=["GET", "PATCH"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def details(id):
+    return product_controller.details(id)

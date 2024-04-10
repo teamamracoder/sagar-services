@@ -12,61 +12,65 @@
             <a href="{{url_for('product.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
         </div>
     </div>
-
-    <table class="table table-bordered">
-        <thead class="table-dark">
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
+        <thead>
             <tr>
                 <th># id</th>
                 <th>Name</th>
-<!--                <th>Images</th>-->
+                <th>Category</th>
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Price</th>
+                <th>Discount</th>
                 <th>Stock</th>
-                <th>created by</th>
-                <th>created at</th>
-                <th>updated by</th>
-                <th>updated at</th>
-                <th>Manage</th>
-                <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.product_name }}</td>
-<!--                <td>-->
-                    {# if product.product_img_urls: #}
-                        {# for img in product.product_img_urls: #}
-<!--                        <img src="{# url_for('static', filename='img/products/'+img) #}" class="adminTableImg">-->
-                        {# endfor #}
-                    {# endif #}
-<!--                </td>-->
-                <td>{{ product.brand }}</td>
-                <td>{{ product.model }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.stock }}</td>
-                <td>{{ product.created_by }}</td>
-                <td>{{ product.created_at }}</td>
-                <td>{{ product.updated_by }}</td>
-                <td>{{ product.updated_at }}</td>
-                <td>
-                    <a href="{{url_for('product.update',id=product.id)}}" class="btn btn-outline-dark btn-sm my-2">Edit</a>
-                </td>
-                <td>
-                    <a href="{{url_for('product.status',id=product.id)}}" class="btn btn-outline-dark btn-sm my-2">
-                        {% if not product.is_active %}
-                            Deactivated
-                        {% else %}
-                            Activated
-                        {% endif %}
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('product.get_product_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "product_name"},
+                { "data": "category_name"},
+                { "data": "brand"},
+                { "data": "model"},
+                { "data": "price"},
+                { "data": "discount"},
+                { "data": "stock"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return '<button class="btn btn-outline-success btn-sm me-1" onclick="viewRecord(' + row.id + ')"><i class="bi bi-file-text"></i></button>' +
+                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (id) {
+            window.location.href= "/admin/products/update/" + id;
+        };
+         window.viewRecord = function (id) {
+            window.location.href= "/admin/products/details/" + id;
+        };
+
+        window.deactivateRecord = function (id) {
+            window.location.href= "/admin/products/status/" + id;
+        };
+    });
+</script>
+
 
 {% endblock %}

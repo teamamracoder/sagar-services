@@ -1,4 +1,3 @@
-
 from db import db
 from datetime import datetime
 
@@ -17,7 +16,7 @@ class WishlistModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.Date,default=datetime.now)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -26,7 +25,7 @@ class WishlistModel(db.Model):
             name="fk_wishlist_users_updated_by"
         )
     )
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     user_id = db.Column(
         db.Integer,
@@ -44,6 +43,7 @@ class WishlistModel(db.Model):
         ),
         nullable=False,
     )
+    is_active = db.Column(db.Boolean, default=True)
 
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="wishlist")
     products = db.relationship("ProductModel")

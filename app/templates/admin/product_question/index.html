@@ -1,0 +1,72 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Product QnA's{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center my-3">Product QnA's</h3>
+
+    <table id="adminDataTable" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th># id</th>
+                <th>Question</th>
+                <th>Product Name</th>
+                <th>Questioned By</th>
+                <th>Answer</th>
+                <th>Answered By</th>
+                <th style="width:160px;">Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#adminDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{url_for('product_question.get_product_question_data')}}",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "question"},
+                { "data": "product_name"},
+                { "data": "created_by"},
+                { "data":"answer" },
+                { "data":"answered_by" },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        if(row.answered_by == "" || row.answered_by==null){
+                            button='<button class="btn btn-outline-dark btn-sm me-1" onclick="createRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>';
+                        }
+                        else{
+                            button='<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.answer_id + ')"><i class="bi bi-pencil"></i></button>';
+
+                        }
+                        return button+='<button class="btn border-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                    }
+                }
+            ]
+        });
+
+        window.editRecord = function (answer_id) {
+            window.location.href= "/admin/product_answers/update/" + answer_id;
+        };
+        window.createRecord = function (question_id) {
+            window.location.href= "/admin/product_answers/add/" + question_id;  
+        };
+
+        window.deactivateRecord = function (question_id) {
+            window.location.href= "/admin/product_questions/status/" + question_id;
+        };
+    });
+</script>
+
+
+{% endblock %}

@@ -15,7 +15,7 @@ class ServiceModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.DateTime,default=datetime.now)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -25,7 +25,7 @@ class ServiceModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
@@ -35,7 +35,7 @@ class ServiceModel(db.Model):
 
     service_charge = db.Column(db.Double, nullable=False)
 
-    available_area_pincode = db.Column(db.ARRAY(db.Integer),default=[])
+    available_area_pincodes = db.Column(db.ARRAY(db.String),default=[])
 
     payment_methods = db.Column(db.ARRAY(db.Integer),default=[])
 
@@ -56,5 +56,5 @@ class ServiceModel(db.Model):
     # updated_by_id = db.relationship("UserModel", foreign_keys=[updated_by], backref="service_updated")
     bookings = db.relationship("BookingModel", back_populates="services")
     service_reviews = db.relationship("ServiceReviewModel", back_populates="services")
-    service_questions = db.relationship("ServiceQuestionModel", back_populates="services")
+    service_qnas = db.relationship("ServiceQnAModel", back_populates="services")
 

@@ -2,7 +2,6 @@ from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateCouponForm, UpdateCouponForm
 from app.services import CouponService
 
-
 class CouponController:
 
     def __init__(self) -> None:
@@ -26,7 +25,6 @@ class CouponController:
         return render_template("admin/coupon/add.html", form=form)
         
   
-        
     def get(self):
         # coupons = self.coupon_service.get()
         return render_template("admin/coupon/index.html")

@@ -12,7 +12,18 @@ class Constant:
 
     def get_value(self, key: int) -> str:
         return self.data.get(key)
+    
+    def get_all_items(self) -> list:
+        return list(self.data.items())
 
+    def get_all_keys(self) -> list:
+        return list(self.data.keys())
+
+    def get_all_values(self) -> list:
+        return list(self.data.values())
+
+    def get_all_items_as_dict(self) -> dict:
+        return self.data
 
 # constant data
 
@@ -45,14 +56,16 @@ service_statuses = Constant(
     }
 )
 
-cart_status = Constant({1: "REMOVED", 2: "ORDERED", 3: "ADDED"})
+cart_statuses = Constant({1: "ADDED", 2: "ORDERED", 3: "REMOVED"})
 
 departments = Constant(
     {
-        # 1: "SALES",
-        # 2: "MARKETING",
-        # 3: "ACCOUNTING"
-        # 3: "REPAIRING",
-        # 4: "PC_BUILDING"
+        1: "SALES",
+        2: "MARKETING",
+        3: "ACCOUNTING",
+        3: "REPAIRING",
+        4: "PC_BUILDING"
     }
 )
+
+payment_statuses = Constant({1: "PAID", 2:"PENDING", 3:"REFUNDED", 4:"FAILED"})
