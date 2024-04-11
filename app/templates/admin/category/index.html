@@ -27,9 +27,6 @@
 
 <script>
     $(document).ready(function () {
-
-        
-
         var table = $('#adminDataTable').DataTable({
             "processing": true,
             "serverSide": true,
@@ -43,8 +40,8 @@
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="custom-tooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
-                            '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? 'title="Deactivate"' : 'title="Activate"')+' onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                        return '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="editTooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? ' title="Deactivate" ' : ' title="Activate"')+' data-bs-custom-class="deactivateTooltip" onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
@@ -59,30 +56,30 @@
         window.deactivateRecord = function (id, is_active) {
             const title = is_active ? "Deactivate Category" : "Activate Category";
             const icon = is_active ? "warning" : "success";
-            const confirmButtonColor = is_active ? "#d33" : "#0D0";
-            const cancelButtonColor = is_active ? "#2D0" : "#d33";
+            const confirmButtonColor = is_active ? "#d7504D" : "#5FA052";
+            const cancelButtonColor = is_active ? "#5FA052" : "#d7504D";
 
             Swal.fire({
                 title: "Are you sure?",
                 text: title,
                 icon: icon,
                 showCancelButton: true,
-                confirmButtonColor: confirmButtonColor,
-                cancelButtonColor: cancelButtonColor,
-                confirmButtonText: is_active ? "Deactivate" : "Activate"
+                confirmButtonText: is_active ? "Deactivate" : "Activate",
+                confirmButtonColor:confirmButtonColor,
+                cancelButtonColor:cancelButtonColor,
+                customClass: {
+                    confirmButton: 'btn btn-sm rounded-0',
+                    cancelButton: 'btn btn-sm rounded-0'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log("inside confirm")
-                    // window.location.href = "/admin/categories/status/" + id;
                     $.ajax({
-                        // url:"/admin/categories/status/"+id,
                         url:"{{url_for('category.status',id=0)}}".replace('0',id),
                         method:"GET",
                         complete:res=>{
                             responseData=res.responseJSON
                             if (responseData.status === 'success') {
                                 toastr.success(responseData.message);
-                                console.log($(this))
                                 $("#disable_btn_"+id).replaceWith(
                                     '<button id="disable_btn_'+id+'" class="btn  btn-sm me-1 border-'
                                     +(responseData.data ? 'danger' : 'success')
@@ -95,19 +92,11 @@
                             else{
                                 toastr.error(responseData.message);
                             }
-                            
-                            // console.log("{{url_for('category.status',id=2)}}")
-                            
                         }
                     });
-                    console.log("{{ url_for('category.status', id=0) }}".replace('0',id))
-                    // console.log("{{url_for('category.status',id=2)}}")
-                    console.log("{{url_for('category.status',id=0)}}")
                 }
             });
         };
-        
-
     });
 </script>
 

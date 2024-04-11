@@ -23,13 +23,11 @@ from .product_review_forms import CreateProductReviewForm
 from .product_review_forms import UpdateProductReviewForm
 from .order_forms import CreateOrderForm
 from .order_forms import UpdateOrderForm
-from .product_question_forms import CreateProductQuestionForm
-from .product_question_forms import UpdateProductQuestionForm
-from .product_answer_forms import CreateProductAnswerForm
-from .product_answer_forms import UpdateProductAnswerForm
 from .service_review_froms import CreateServiceReviewForm
 from .service_review_froms import UpdateServiceReviewForm
 from .booking_froms import CreateBookingForm
 from .booking_froms import UpdateBookingForm
 from .staff_forms import CreateStaffForm
 from .staff_forms import UpdateStaffForm
+from .product_qna_forms import CreateProductQnAForm
+from .product_qna_forms import UpdateProductQnAForm

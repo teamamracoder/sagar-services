@@ -10,11 +10,10 @@ from .service_type_model import ServiceTypeModel
 from .booking_model import BookingModel
 from .conversation_model import ConversationModel
 from .message_model import MessageModel
-from .product_question_model import ProductQuestionModel
-from .product_answer_model import ProductAnswerModel
 from .service_qna_model import ServiceQnAModel
 from .cart_model import CartModel
 from .staff_model import StaffModel
 from .wishlist_model import WishlistModel
 from .contact_model import ContactModel
 from .coupon_model import CouponModel
+from .product_qna_model import ProductQnAModel

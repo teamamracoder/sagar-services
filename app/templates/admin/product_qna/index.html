@@ -1,36 +1,19 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Staffs{% endblock %}
+{% block title %}Product QnA's{% endblock %}
 
 {% block content %}
 
 <div class="container">
-    <h3 class="text-center my-3">Staffs</h3>
-
-    <div class="row">
-        <div class="col text-end">
-            <div class="dropdown">
-                <a class="btn btn-outline-dark btn-sm my-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    New
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{url_for('user.index')}}">Existing User</a></li>
-                    <li><a class="dropdown-item" href="{{url_for('user.add')}}">New User</a></li>
-                </ul>
-              </div>
-        </div>
-    </div>
+    <h3 class="text-center my-3">Product QnA's</h3>
 
     <table id="adminDataTable" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th># id</th>
-                <th># user id</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Email</th>
-                <th>Salary</th>
-                <th>Qualification</th>
+                <th>Product Name</th>
+                <th>Question</th>
+                <th>Answer</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -44,43 +27,33 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{url_for('staff.get_staff_data')}}",
+                "url": "{{ url_for('product_qna.get_product_qna_data') }}",  // Fixed AJAX URL
                 "type": "GET"
             },
             "columns": [
                 { "data": "id" },
-                { "data": "user_id"},
-                { "data": "fullname"},
-                { "data": "department_name"},
-                { 
-                    "data": null,
-                    "render":function(data,type,row){
-                        return `<a href="mailto:${row.email}" class="text-dark text-decoration-none"><i class="bi bi-envelope-at"></i> ${row.email}</a>`
-                    }
-                },
-                { "data": "salary"},
-                { "data": "qualification"},
+                { "data": "product_name" },
+                { "data": "question" },
+                { "data": "answer" },
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<button class="btn btn-outline-success btn-sm me-1" data-bs-placement="bottom" title="View" data-bs-custom-class="custom-tooltip" onclick="viewRecord(' + row.id + ')"><i class="bi bi-file-text"></i></button>' +
-                        '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip"  data-bs-placement="bottom" title="Edit" data-bs-custom-class="custom-tooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
-                        '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? 'title="Deactivate"' : 'title="Activate"')+' onclick="deactivateRecord(' + row.id+','+row.is_active+'" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                        return '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="editTooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? ' title="Deactivate" ' : ' title="Activate"')+' data-bs-custom-class="deactivateTooltip" onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
         });
 
-        window.editRecord = function (id) {
-            window.location.href= "/admin/staffs/update/" + id;
-        };
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
-        window.viewRecord = function (id) {
-            window.location.href= "/admin/staffs/details/" + id;
+        window.editRecord = function (id) {
+            window.location.href = "/admin/product_qnas/update/" + id;
         };
 
         window.deactivateRecord = function (id, is_active) {
-            const title = is_active ? "Deactivate Staff" : "Activate Staff";
+            const title = is_active ? "Deactivate QnA" : "Activate QnA";
             const icon = is_active ? "warning" : "success";
             const confirmButtonColor = is_active ? "#d7504D" : "#5FA052";
             const cancelButtonColor = is_active ? "#5FA052" : "#d7504D";
@@ -100,7 +73,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url:"{{url_for('staff.status',id=0)}}".replace('0',id),
+                        url:"{{url_for('product_qna.status',id=0)}}".replace('0',id),
                         method:"GET",
                         complete:res=>{
                             responseData=res.responseJSON
@@ -123,10 +96,7 @@
                 }
             });
         };
-
-
     });
 </script>
-
 
 {% endblock %}

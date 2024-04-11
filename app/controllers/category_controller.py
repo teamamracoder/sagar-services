@@ -9,8 +9,6 @@ class CategoryController:
         self.category_service = CategoryService()
 
     def get(self):
-        # toaster = request.args.get('toaster')
-        # toaster_type = request.args.get('toaster_type')
         return render_template("admin/category/index.html")
 
     def get_category_data(self):
@@ -53,5 +51,3 @@ class CategoryController:
         if is_active:
             return {"status":"success","message":"Category Activated","data":is_active}
         return {"status":"success","message":"Category Deactivated","data":is_active}
-        #     return redirect(url_for("category.index", toaster="Category Activated", toaster_type="success"))
-        # return redirect(url_for("category.index", toaster="Category Deactivated", toaster_type="error"))

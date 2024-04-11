@@ -37,5 +37,7 @@ class WishlistController:
         wishlist = self.wishlist_service.get_by_id(wishlist_id)
         if wishlist is None:
             return render_template("admin/error/something_went_wrong.html")
-        self.wishlist_service.status(wishlist_id)
-        return redirect(url_for("wishlist.index"))
+        is_active=self.wishlist_service.status(wishlist_id)
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
