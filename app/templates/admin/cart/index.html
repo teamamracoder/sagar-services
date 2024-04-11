@@ -47,7 +47,7 @@
                                                     }).text(row.status_name);
                         var dropdownMenu = $('<ul>').addClass('dropdown-menu');
                         $.each(data, function(index, status) {
-                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('href', '/admin/carts/update/' + row.id + '/' + status).text(status)));
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('onclick', "updateCart(" + row.id + ", '" + status + "')").text(status)));
                         });
                         dropdown.append(dropdownToggle);
                         dropdown.append(dropdownMenu);
@@ -114,6 +114,22 @@
                 }
             });
         };
+
+        window.updateCart = function (id, status){
+            $.ajax({
+                url:"{{url_for('cart.update',id=cart_id,status=cart_status)}}".replace('cart_id',id).replace('cart_status',status),
+                method:"GET",
+                complete:res=>{
+                    responseData=res.responseJSON
+                    if (responseData.status === 'success') {
+                        toastr.success(responseData.message);
+                    }
+                    else{
+
+                    }
+                }
+            });
+        }
     });
 </script>
 

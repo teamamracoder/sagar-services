@@ -14,7 +14,7 @@ class RoleController:
         #no role found, create a role
         if role is None:
             if role_key==2:
-                return redirect(url_for("staff.add",user_id=2))
+                return redirect(url_for("staff.add",user_id=user_id))
             
             self.role_service.create(
                 user_id=user_id, 

@@ -59,7 +59,7 @@ class CartController:
     def status(self, id):
         cart = self.cart_service.get_by_id(id)
         if cart is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"Category Not Found"}
         is_active=self.cart_service.status(id)
         if is_active:
             return {"status":"success","message":"Category Activated","data":is_active}
