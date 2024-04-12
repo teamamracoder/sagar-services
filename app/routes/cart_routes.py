@@ -31,12 +31,12 @@ def add():
 
 
 # update will be used to update the cart statue as added/ordered/removed
-@cart_bp.route("/admin/carts/update/<int:cart_id>/<string:status>", methods=["GET", "POST"])
+@cart_bp.route("/admin/carts/update/<int:id>/<string:status>", methods=["GET", "POST"])
 @login_required
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
-def update(cart_id, status):
-    return cart_controller.cart_status(cart_id, status)
+def update(id, status):
+    return cart_controller.cart_status(id, status)
 
 
 @cart_bp.route("/admin/carts/status/<int:id>", methods=["GET", "PATCH"])

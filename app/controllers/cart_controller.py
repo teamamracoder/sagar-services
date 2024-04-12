@@ -39,7 +39,7 @@ class CartController:
     def cart_status(self, cart_id, status):
         cart = self.cart_service.get_by_id(cart_id)
         if cart is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"Cart Not Found"}
         status_key=cart_statuses.get_key(status)
 
         is_active=True
@@ -53,7 +53,7 @@ class CartController:
             status=status_key,
             is_active=is_active
         )
-        return redirect(url_for("cart.index"))
+        return {"status":"success","message":f"Cart Status Changed to {status}","data":status}
 
     # is_active will be updated as activated/deactivated
     def status(self, id):
