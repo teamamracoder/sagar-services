@@ -41,6 +41,7 @@
                         var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle toggleStatusButtons')
                                                     .attr({
                                                         'href': '#',
+                                                        'id':'cart_status_'+row.id,
                                                         'role': 'button',
                                                         'data-bs-toggle': 'dropdown',
                                                         'aria-expanded': 'false'
@@ -116,16 +117,18 @@
         };
 
         window.updateCart = function (id, status){
+            console.log(("{{url_for('cart.update',id=0,status=1)}}").replace('0',id).replace('1',status))
             $.ajax({
-                url:"{{url_for('cart.update',id=cart_id,status=cart_status)}}".replace('cart_id',id).replace('cart_status',status),
+                url:"{{url_for('cart.update',id=0,status=1)}}".replace('0',id).replace('1',status),
                 method:"GET",
                 complete:res=>{
                     responseData=res.responseJSON
                     if (responseData.status === 'success') {
                         toastr.success(responseData.message);
+                        $("#cart_status_"+id).text(responseData.data)
                     }
                     else{
-
+                        toastr.error(responseData.message);
                     }
                 }
             });
