@@ -4,10 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <title>404 page not found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "poppins";
+        }
+
+        .page_404 {
+            padding: 40px 0;
+            background: #fff;
+            font-family: 'Poppins';
+        }
+
+
+        .four_zero_four_bg {
+            background: url('../../static/img/PageNotFound.gif');
+            height: 400px;
+            width: 60%;
+            background-position: center;
+            justify-content: center;
+            margin: 10px auto 0px auto;
+        }
+
+        h1 {
+            font-size: 80px;
+        }
+
+        h3 {
+            font-size: 80px;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: #39ac31;
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        .content_box_404 {
+            margin-top: -50px;
+        }
+
+        a:hover {
+            border-radius: 5px;
+            text-decoration: none;
+            background: #28a020;
+            opacity: 0.9;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>404 page not found</h1>
+    <div class="page_404">
+        <div class="container">
+            <div class="row">
+                <div class="four_zero_four_bg">
+                    <h1 class="text-center">404</h1>
+                </div>
+                <div class="content_box_404 text-center">
+                    <h2>Oops !! Page Not found.</h2>
+                    <p>The page you are looking for not available</p>
+                    <a href="/admin/">Go to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
