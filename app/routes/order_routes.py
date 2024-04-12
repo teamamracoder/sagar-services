@@ -39,11 +39,14 @@ def update(id):
 def status(id):
     return order_controller.status(id)
 
-@order_bp.route("/admin/orders/statuses/<int:id>/<string:status_type>/<string:status>", methods=["GET", "PATCH"])
+@order_bp.route("/admin/orders/statuses/<string:status_type>/<string:status>/<string:id>", methods=["GET", "PATCH"])
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def statuses(id,status_type,status):
-    return order_controller.order_status(id,status_type,status)
+    print(id)
+    print(status_type)
+    print(status)
+    return order_controller.order_status(int(id),status_type,status)
 
 @order_bp.route("/admin/orders/details/<int:id>", methods=["GET", "PATCH"])
 @login_required

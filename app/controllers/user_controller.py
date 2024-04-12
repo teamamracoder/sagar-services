@@ -55,11 +55,11 @@ class UserController:
     def status(self, id):
         user = self.user_service.get_by_id(id)
         if user is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"User Not Found"}
         is_active=self.user_service.status(id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"User Activated","data":is_active}
+        return {"status":"success","message":"User Deactivated","data":is_active}
 
     def details(self,id):
         user=self.user_service.get_by_id(id)
