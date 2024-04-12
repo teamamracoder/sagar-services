@@ -85,7 +85,10 @@ class ServiceController:
         if service is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_service.status(id)
-        return redirect(url_for("service.index"))
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
+
 
     def get_total_price(self):
         service_charge_calculated_data=self.service_service.get_total_price(request)

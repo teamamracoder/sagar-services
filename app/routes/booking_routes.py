@@ -45,3 +45,9 @@ def status(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def statuses(id,status_type,status):
     return booking_controller.service_status(id,status_type,status)
+
+@booking_bp.route("/admin/bookings/details/<int:id>", methods=["GET", "PATCH"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def details(id):
+    return booking_controller.details(id)

@@ -72,4 +72,8 @@ class ServiceReviewController:
         if service_review is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_review_service.status(id)
-        return redirect(url_for("service_review.index"))
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
+
+        # return redirect(url_for("service_review.index"))

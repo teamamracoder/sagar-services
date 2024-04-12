@@ -62,6 +62,10 @@ class ServiceQnAController:
         if service_qna is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_qna_service.status(id)
-        return redirect(url_for("service_qna.index"))
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
+
+        # return redirect(url_for("service_qna.index"))
 
        

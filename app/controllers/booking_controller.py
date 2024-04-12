@@ -88,7 +88,11 @@ class BookingController:
         if booking is None:
             return render_template("admin/error/something_went_wrong.html")
         self.booking_service.status(id)
-        return redirect(url_for("booking.index"))
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
+
+        # return redirect(url_for("booking.index"))
 
     def service_status(self,id,status_type,status):
         booking = self.booking_service.get_by_id(id)
@@ -110,3 +114,7 @@ class BookingController:
             }
         self.booking_service.update(id, **updated_data)
         return redirect(url_for("booking.index"))
+
+    def details(self,id):
+        booking=self.booking_service.get_by_id(id)
+        return render_template("admin/booking/details.html",booking=booking)
