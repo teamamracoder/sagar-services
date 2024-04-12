@@ -117,9 +117,8 @@
         };
 
         window.updateCart = function (id, status){
-            console.log(("{{url_for('cart.update',id=0,status=1)}}").replace('0',id).replace('1',status))
             $.ajax({
-                url:"{{url_for('cart.update',id=0,status=1)}}".replace('0',id).replace('1',status),
+                url:"{{url_for('cart.update',id=1,status=0)}}".replace('1',id).replace('0',status),
                 method:"GET",
                 complete:res=>{
                     responseData=res.responseJSON

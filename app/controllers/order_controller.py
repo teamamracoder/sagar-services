@@ -87,16 +87,16 @@ class OrderController:
     def status(self, id):
         order = self.order_service.get_by_id(id)
         if order is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"Order Not Found"}
         is_active=self.order_service.status(id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"Order Activated","data":is_active}
+        return {"status":"success","message":"Order Deactivated","data":is_active}
 
     def order_status(self,id,status_type,status):
         order = self.order_service.get_by_id(id)
         if order is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"Order Not Found"}
         if status_type == 'payment':
             status_key = payment_statuses.get_key(status)
             updated_data = {
@@ -112,7 +112,7 @@ class OrderController:
                 'updated_by': 1
             }
         self.order_service.update(id, **updated_data)
-        return redirect(url_for("order.index"))
+        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
 
     def details(self,id):
         order=self.order_service.get_by_id(id)

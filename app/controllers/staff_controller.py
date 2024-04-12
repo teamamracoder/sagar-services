@@ -70,13 +70,13 @@ class StaffController:
     def status(self, id):
         staff = self.staff_service.get_by_id(id)
         if staff is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"Staff Not Found"}
         is_active=self.staff_service.status(id)
         role=self.role_service.get_role_by_user_id_and_role_key(staff.user_id,2)
         self.role_service.status(role.id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"Staff Activated","data":is_active}
+        return {"status":"success","message":"Staff Deactivated","data":is_active}
     
     def details(self,id):
         staff=self.staff_service.get_by_id(id)

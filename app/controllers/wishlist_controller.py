@@ -36,8 +36,8 @@ class WishlistController:
     def status(self, wishlist_id):
         wishlist = self.wishlist_service.get_by_id(wishlist_id)
         if wishlist is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"Wishlist Deactivated"}
         is_active=self.wishlist_service.status(wishlist_id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"Wishlist Activated","data":is_active}
+        return {"status":"success","message":"Wishlist Deactivated","data":is_active}

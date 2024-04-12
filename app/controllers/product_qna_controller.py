@@ -56,10 +56,10 @@ class ProductQnAController:
     def status(self, id):
         product_qna = self.product_qna_service.get_by_id(id)
         if product_qna is None:
-            return render_template("admin/error/something_went_wrong.html")
+            return {"status":"error","message":"QnA Not Found"}
         is_active=self.product_qna_service.status(id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"QnA Activated","data":is_active}
+        return {"status":"success","message":"QnA Deactivated","data":is_active}
 
        
