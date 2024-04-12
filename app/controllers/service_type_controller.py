@@ -48,10 +48,10 @@ class ServiceTypeController:
     def status(self, id):
         service_type = self.service_type_service.get_by_id(id)
         if service_type is None:
-            return render_template("admin/error/something_went_wrong.html")
-        self.service_type_service.status(id)
+            return {"status":"error","message":"Service-type not found"}
+        is_active = self.service_type_service.status(id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"Service-type Activated","data":is_active}
+        return {"status":"success","message":"Service-type Deactivated","data":is_active}
 
        
