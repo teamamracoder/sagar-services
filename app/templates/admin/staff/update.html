@@ -1,10 +1,10 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Update Category{% endblock %}
+{% block title %}Update Staff{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h3 class="text-center my-3">Update Category</h3>
+    <h3 class="text-center my-3">Update Staff</h3>
 
     <form method="POST" action="{{ url_for('staff.update', id=id) }}" enctype="multipart/form-data"  id="adminForm">
         {{ form.csrf_token }}
@@ -38,27 +38,57 @@
 </div>
 <script>
     $(document).ready(function () {
-        /*
+        $.validator.addMethod("notInPast", function(value, element) {
+            var inputDate = new Date(value);
+            var today = new Date();
+            return inputDate >= today;
+        }, "Please enter a date that's not in the past.");
+        
         $('#adminForm').validate({
             rules: {
-                category_name: {
+                salary: {
                     required: true,
-                    minlength: 3,
-                    maxlength: 40
-                }
+                    number: true,
+                    min: 0,
+                    max: 100000
+                },
+                qualification: {
+                    required: true,
+                    minlength:3
+                },
+                join_date: {
+                    required: true,
+                    date: true,
+                    notInPast: true
+                },
+                leave_date: {
+                    date: true,
+                    notInPast: true
+                },
             },
             messages: {
-                category_name: {
-                    required: "Please enter category name",
-                    minlength: "Name must be at least 3 characters long",
-                    maxlength: "Name must not exceed 20 characters"
+                salary: {
+                    required: "Please enter your salary",
+                    number: "Please enter a valid number",
+                    min: "Salary cannot be negative",
+                    max: "Salary must be less than or equal to ₹100,000" 
+                },
+                qualification: {
+                    required: "Please enter your qualification",
+                    minlength: "Qualification must be at least 3 characters long" 
+                },
+                join_date: {
+                    required: "Please enter your join date",
+                    date: "Please enter a valid date"
+                },
+                leave_date: {
+                    date: "Please enter a valid date"
                 }
             },
             submitHandler: function (form) {
                 form.submit();
             }
         });
-        */
     });
 </script>
 {% endblock %}

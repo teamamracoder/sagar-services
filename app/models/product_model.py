@@ -60,15 +60,12 @@ class ProductModel(db.Model):
     return_policy=db.Column(db.String())
 
     # user = db.relationship("UserModel", back_populates="products")
-
     categories = db.relationship("CategoryModel",uselist=False,back_populates="products")
     # created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="product_created")
     # updated_by_id = db.relationship("UserModel", foreign_keys=[updated_by], backref="product_updated")
     orders = db.relationship("OrderModel",back_populates="products")
     product_reviews = db.relationship("ProductReviewModel",back_populates="products")
-    product_questions = db.relationship("ProductQuestionModel", back_populates="products")
+    product_qnas = db.relationship("ProductQnAModel",back_populates="products")
     # product_reviews = db.relationship("ProductReviewModel", back_populates="products")
-    # orders = db.relationship("OrderModel", back_populates="products")
     # carts = db.relationship("CartModel", back_populates="products")
     # wishlists = db.relationship("WishlistModel", back_populates="products")
-    # product_questions = db.relationship("ProductQuestionModel", back_populates="products")

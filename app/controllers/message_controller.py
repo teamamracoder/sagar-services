@@ -13,9 +13,10 @@ class MessageController:
 
     def get(self,conversation_id):
         form = CreateMessageForm()
+        conversation=self.conversation_service.get_by_id(conversation_id)
         messages=self.message_service.get_by_conversation_id(conversation_id)
         messages=self.user_service.add_message_with_this(messages)
-        return render_template("admin/message/index.html",messages=messages,conversation_id=conversation_id, form=form)
+        return render_template("admin/message/index.html",messages=messages,conversation=conversation, form=form, current_user=get_current_user())
     
     
     def create(self,conversation_id):

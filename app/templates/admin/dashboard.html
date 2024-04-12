@@ -1,12 +1,88 @@
-{% extends 'admin/base.html' %}
-
-{% block title %}Dashboard{% endblock %}
-
-{% block content %}
+{% extends 'admin/base.html' %} {% block title %}Dashboard{% endblock %} {%block content %}
 
 <div class="container">
-    <h3 class="text-center my-3">Dashboard</h3>
-
+  <div class="row mt-3 mb-1">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body fs-5">item-1</div>
+        <div class="card-footer">count-0</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">item-2</div>
+        <div class="card-footer">count-0</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">item-3</div>
+        <div class="card-footer">count-0</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">item-4</div>
+        <div class="card-footer">count-0</div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4" style="height: 400px">
+    <div class="col-md-8">
+        <canvas id="barChart"></canvas>
+    </div>
+    <div class="col-md-4">
+        <canvas id="donoughtChart"></canvas>
+    </div>
+  </div>
 </div>
+<script>
+  //bar chart
+  const barChart = document.getElementById("barChart");
+  new Chart(barChart, {
+    type: "bar",
+    data: {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "# of Sales",
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 
+  //donought chart
+  const donoughtData = {
+    labels: ["Red", "Blue", "Yellow"],
+    datasets: [
+      {
+        label: "My First Dataset",
+        data: [50, 50, 20, 100, 70, 70],
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  };
+  const donoughtConfig = {
+    type: "doughnut",
+    data: donoughtData,
+  };
+  const donoughtChart = document.getElementById("donoughtChart");
+  new Chart(donoughtChart, donoughtConfig);
+
+ 
+</script>
 {% endblock %}
