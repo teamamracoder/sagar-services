@@ -11,6 +11,18 @@ class CreateCouponForm(FlaskForm):
     discount_type=IntegerField("discount_type",validators=[DataRequired()])
     discount=FloatField("discount",validators=[DataRequired()])
    # coupon_img_url=StringField("coupon_img_url",validators=[DataRequired()])
-    coupon_img_url = FileField("coupon_img_url", validators=[DataRequired()])
+    coupon_img_url = FileField("coupon_img_url")
+    count=IntegerField("count",validators=[DataRequired()])
+    
+
+    
+
+class UpdateCouponForm(FlaskForm):
+    coupon_code=StringField("coupon_code",validators=[DataRequired()])
+    expiry_date=DateField("expiry_date",validators=[DataRequired()])
+    discount_type=IntegerField("discount_type",validators=[DataRequired()])
+    discount=FloatField("discount",validators=[DataRequired()])
+   # coupon_img_url=StringField("coupon_img_url",validators=[DataRequired()])
+    coupon_img_url = FileField("coupon_img_url")
     count=IntegerField("count",validators=[DataRequired()])
     
