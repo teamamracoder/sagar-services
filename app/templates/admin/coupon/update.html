@@ -1,15 +1,15 @@
+
 {% extends 'admin/base.html' %}
 
-{% block title %}Add Coupon{% endblock %}
+{% block title %}Update Coupon{% endblock %}
 
 {% block content %}
 
 
 <div class="container">
-    <h3 class="text-center my-3">Add Coupon</h3>
+    <h3 class="text-center my-3">Update Coupon</h3>
 
-    <form method="POST" action="{{ url_for('coupon_bp.add') }}" id="AddCouponForm">
-
+    <form method="POST" action="{{ url_for('coupon_bp.update',id=id) }}" id="AddCouponForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -37,13 +37,16 @@
                 {{ form.count(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                <button type="submit" class="btn btn-dark btn-sm">Update</button>
                 <a href="{{ url_for('coupon_bp.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>
 
 </div>
+
+
+
 
 <script>
     $(document).ready(function () {
@@ -85,4 +88,10 @@
     });
 </script>
 
+
+
+
+
+
 {% endblock %}
+
