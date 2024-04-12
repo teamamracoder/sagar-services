@@ -5,36 +5,57 @@
 {% block content %}
 
 <div class="container">
-    <h3 class="text-center my-3">Messages</h3>
-    <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card rounded-0" style="overflow-y: scroll; height:500px;" id="messageBox">
-                <div class="card-body p-1">
+    <div class="row justify-content-center mt-1">
+        <div class="col-md-6 col-sm-12">
+            <div class="card rounded-0">
+                <div class="card-header">
+                    <a href="{{ url_for('conversation.index') }}" class="btn btn-light btn-sm float-start">Back</a>
+                    <h5 class="text-center">Messages</h5>
+                </div>
+                <div class="card-body p-1" style="overflow-y: scroll; height:500px;" id="messageBox">
                     {% for message in messages %}
-                    <div class="card border-0">
-                        <div class="card-header">
-                            {{ message.sent_by }} - <span id="time_{{ loop.index }}"></span>
+                        {% if conversation.user_id==message.created_by %}
+                        <div class="card border-0 w-75">
+                            <div class="card-body">
+                                <p class="small text-muted">
+                                    <i class="bi bi-person me-1"></i>{{ message.sent_by }} - <span id="time_{{ loop.index }}"></span>
+                                </p>
+                                <p class="card-text">
+                                    <span style="padding: 3px 4px; background-color: #0002; width: fit-content; border-radius: 0px 8px 8px 8px; ">
+                                        {{ message.message }}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <p class="card-text">{{ message.message }}</p>
+                        {% else %}
+                        <div class="card border-0 w-75 ms-auto">
+                            <div class="card-body">
+                                <p class="small text-end text-muted">
+                                    <i class="bi bi-person me-1"></i>sagar services - <span id="time_{{ loop.index }}"></span>
+                                </p>
+                                <p class="card-text text-end">
+                                    <span style="padding: 3px 4px; background-color: #0009; color:#fff; width: fit-content; border-radius: 8px 0px 8px 8px;">
+                                        {{ message.message }}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <script>
-                        var time=getFormattedTime("{{ message.created_at }}")
-                        $("#time_{{ loop.index }}").text(time);
-                    </script>
+                        {% endif %}
+                        <script>
+                            var time=getFormattedTime("{{ message.created_at }}")
+                            $("#time_{{ loop.index }}").text(time);
+                        </script>
                     {% endfor %}
                 </div>
                 <div class="card-footer">
-                    <form method="POST" action="{{ url_for('message.add',conversation_id=conversation_id) }}" enctype="multipart/form-data"  id="adminForm">
+                    <form method="POST" action="{{ url_for('message.add',conversation_id=conversation.id) }}" enctype="multipart/form-data"  id="adminForm">
                         {{ form.csrf_token }}
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-11">
                                 {{ form.message(class="form-control form-control-sm") }}
                             </div>
-                            <div class="col-12 my-2">
-                                <button type="submit" class="btn btn-dark btn-sm float-end">Send</button>
-                                <a href="{{ url_for('conversation.index') }}" class="btn btn-outline-dark btn-sm float-end me-2">Back</a>
+                            <div class="col-1">
+                                <button type="submit" class="btn btn-dark btn-sm float-end"><i class="bi bi-send"></i></button>
                             </div>
                         </div>
                     </form>

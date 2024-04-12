@@ -1,32 +1,36 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Add Product Answer{% endblock %}
+{% block title %}Update Product QnA{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h3 class="text-center my-3">Add Product Answers</h3>
-    <form method="POST" action="{{ url_for('product_answer.update', id=id) }}" enctype="multipart/form-data"  id="addProductAnswerForm">
+    <h3 class="text-center my-3">Update Product QnA's</h3>
+    <form method="POST" action="{{ url_for('product_qna.update', id=id) }}" enctype="multipart/form-data"  id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
-                {{ form.question_id.label(class="form-label") }}
-                {{ form.question_id(class="form-control form-control-sm", disabled=true) }}
+                {{ form.product_id.label(class="form-label") }}
+                {{ form.product_id(class="form-control form-control-sm", readonly="readonly") }}
+            </div>
+            <div class="col-12">
+                {{ form.question.label(class="form-label") }}
+                {{ form.question(class="form-control form-control-sm", readonly="readonly") }}
             </div>
             <div class="col-12">
                 {{ form.answer.label(class="form-label") }}
                 {{ form.answer(class="form-control form-control-sm") }}
             </div>
-
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('product_question.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                <a href="{{ url_for('product_qna.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
     </form>
+
 </div>
 <script>
     $(document).ready(function () {
-        $('#addProductAnswerForm').validate({
+        $('#adminForm').validate({
             rules: {
                 answer: {
                     required: true,
@@ -38,7 +42,7 @@
                 answer: {
                     required: "Please enter Answer",
                     minlength: "Answer must be at least 5 characters long",
-                    maxlength: "Answer must not exceed 100 characters"
+                    maxlength: "Answer must not exceed 200 characters"
                 }
             },
             submitHandler: function (form) {

@@ -60,5 +60,7 @@ class ProductReviewController:
         product_review = self.product_review_service.get_by_id(id)
         if product_review is None:
             return render_template("admin/error/something_went_wrong.html")
-        self.product_review_service.status(id)
-        return redirect(url_for("product_review.index"))
+        is_active=self.product_review_service.status(id)
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}

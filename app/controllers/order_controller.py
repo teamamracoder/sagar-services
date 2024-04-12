@@ -88,8 +88,10 @@ class OrderController:
         order = self.order_service.get_by_id(id)
         if order is None:
             return render_template("admin/error/something_went_wrong.html")
-        self.order_service.status(id)
-        return redirect(url_for("order.index"))
+        is_active=self.order_service.status(id)
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
 
     def order_status(self,id,status_type,status):
         order = self.order_service.get_by_id(id)
