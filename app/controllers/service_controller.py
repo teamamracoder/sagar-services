@@ -83,11 +83,11 @@ class ServiceController:
     def status(self, id):
         service = self.service_service.get_by_id(id)
         if service is None:
-            return render_template("admin/error/something_went_wrong.html")
-        self.service_service.status(id)
+            return {"status":"error","message":"Service not found"}
+        is_active = self.service_service.status(id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"Service Activated","data":is_active}
+        return {"status":"success","message":"Service Deactivated","data":is_active}
 
 
     def get_total_price(self):

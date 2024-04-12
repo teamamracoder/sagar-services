@@ -70,10 +70,10 @@ class ServiceReviewController:
     def status(self, id):
         service_review = self.service_review_service.get_by_id(id)
         if service_review is None:
-            return render_template("admin/error/something_went_wrong.html")
-        self.service_review_service.status(id)
+            return {"status":"error","message":"Service-review not found","data":is_active}
+        is_active = self.service_review_service.status(id)
         if is_active:
-            return {"status":"success","message":"Category Activated","data":is_active}
-        return {"status":"success","message":"Category Deactivated","data":is_active}
+            return {"status":"success","message":"Service-review Activated","data":is_active}
+        return {"status":"success","message":"Service-review Deactivated","data":is_active}
 
         # return redirect(url_for("service_review.index"))

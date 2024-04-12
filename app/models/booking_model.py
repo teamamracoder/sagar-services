@@ -50,8 +50,8 @@ class BookingModel(db.Model):
     staff_id = db.Column(
         db.Integer,
         db.ForeignKey(
-            "users.id",
-            name="fk_users_bookings_staff"
+            "staffs.id",
+            name="fk_bookings_staff"
         )
     )
 
@@ -68,7 +68,7 @@ class BookingModel(db.Model):
     area_pincode=db.Column(db.Integer,nullable=False)
 
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="bookings_users")
-    staffs = db.relationship('UserModel', foreign_keys=[staff_id], backref="bookings_staffs")
+    staffs = db.relationship('StaffModel', foreign_keys=[staff_id], backref="bookings_staffs")
     services = db.relationship("ServiceModel", back_populates="bookings")
     created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="booking_created")
     updated_by_id = db.relationship("UserModel", foreign_keys=[updated_by], backref="booking_updated")
