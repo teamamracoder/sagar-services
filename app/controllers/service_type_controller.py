@@ -50,6 +50,8 @@ class ServiceTypeController:
         if service_type is None:
             return render_template("admin/error/something_went_wrong.html")
         self.service_type_service.status(id)
-        return redirect(url_for("service_type.index"))
+        if is_active:
+            return {"status":"success","message":"Category Activated","data":is_active}
+        return {"status":"success","message":"Category Deactivated","data":is_active}
 
        

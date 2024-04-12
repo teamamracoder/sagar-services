@@ -105,19 +105,68 @@
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
-                            '<button class="btn bbooking-'+(row.is_active ? 'danger' : 'success')+' btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                        return '<button class="btn btn-outline-success btn-sm me-1" data-bs-placement="bottom" title="View" data-bs-custom-class="custom-tooltip" onclick="viewRecord(' + row.id + ')"><i class="bi bi-file-text"></i></button>' +
+                        '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip"  data-bs-placement="bottom" title="Edit" data-bs-custom-class="custom-tooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                        '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? 'title="Deactivate"' : 'title="Activate"')+' onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
         });
 
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        
+        window.viewRecord = function (id) {
+            window.location.href= "/admin/bookings/details/" + id;
+        };
+
         window.editRecord = function (id) {
             window.location.href= "/admin/bookings/update/" + id;
         };
 
-        window.deactivateRecord = function (id) {
-            window.location.href= "/admin/bookings/status/" + id;
+        window.deactivateRecord = function (id, is_active) {
+            const title = is_active ? "Deactivate Booking" : "Activate Booking";
+            const icon = is_active ? "warning" : "success";
+            const confirmButtonColor = is_active ? "#d7504D" : "#5FA052";
+            const cancelButtonColor = is_active ? "#5FA052" : "#d7504D";
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: title,
+                icon: icon,
+                showCancelButton: true,
+                confirmButtonText: is_active ? "Deactivate" : "Activate",
+                confirmButtonColor:'#808080',
+                cancelButtonColor:'#273746',
+                customClass: {
+                    confirmButton: 'btn btn-sm rounded-0',
+                    cancelButton: 'btn btn-sm rounded-0'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url:"{{url_for('booking.status',id=0)}}".replace('0',id),
+                        method:"GET",
+                        complete:res=>{
+                            responseData=res.responseJSON
+                            if (responseData.status === 'success') {
+                                toastr.success(responseData.message);
+                                $("#disable_btn_"+id).replaceWith(
+                                    '<button id="disable_btn_'+id+'" class="btn  btn-sm me-1 border-'
+                                    +(responseData.data ? 'danger' : 'success')
+                                    +'" data-toggle="tooltip"  data-bs-placement="bottom"'
+                                    + (responseData.data ? 'title="Deactivate"' : 'title="Activate"')
+                                    +' onclick="deactivateRecord(' + id+','+responseData.data+')" >' 
+                                    + (responseData.data ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') 
+                                    + '</button>')
+                            }
+                            else{
+                                toastr.error(responseData.message);
+                            }
+                        }
+                    });
+                }
+            });
         };
     });
 </script>
