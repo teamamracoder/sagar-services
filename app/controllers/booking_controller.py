@@ -97,7 +97,7 @@ class BookingController:
     def service_status(self,id,status_type,status):
         booking = self.booking_service.get_by_id(id)
         if booking is None:
-            return render_template("admin/error/something_went_wrong.html")
+             return {"status":"error","message": "Booking not found"}
         if status_type == 'payment':
             status_key = payment_statuses.get_key(status)
             updated_data = {
@@ -113,7 +113,7 @@ class BookingController:
                 'updated_by': get_current_user().id
             }
         self.booking_service.update(id, **updated_data)
-        return redirect(url_for("booking.index"))
+        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
 
     def details(self,id):
         booking=self.booking_service.get_by_id(id)
