@@ -29,6 +29,7 @@ class BookingController:
         return jsonify(data)
 
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateBookingForm()
         services=self.service_service.get_active()
         form.service_id.choices = [(service.id, service.service_name) for service in services]
@@ -39,7 +40,7 @@ class BookingController:
      
         if form.validate_on_submit():
             if self.booking_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 service_id=form.service_id.data,
                 user_id=get_current_user().id,
@@ -54,6 +55,7 @@ class BookingController:
         return render_template("admin/booking/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         booking = self.booking_service.get_by_id(id)
         if booking is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -68,10 +70,10 @@ class BookingController:
         if form.validate_on_submit():
             if self.booking_service.update(
                 id=id,
-                updated_by=get_current_user().id,
+                updated_by=logged_in_user.id,
                 updated_at=datetime.now(),
                 service_id=form.service_id.data,
-                user_id=get_current_user().id,
+                user_id=logged_in_user.id,
                 staff_id=form.staff_id.data,
                 total_charges=form.total_charges.data,
                 service_location=form.service_location.data,

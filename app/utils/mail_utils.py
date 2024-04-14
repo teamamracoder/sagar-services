@@ -14,11 +14,11 @@ class MailUtils:
                 return False
 
             # sender email
-            sender_email = ""
-            sender_password = ""
+            sender_email = "team.amracoder@gmail.com"
+            sender_password = "amvh lmza omkm orrl"
 
             # Set up the SMTP server
-            smtp_server = smtplib.SMTP("smtp.example.com", 587)
+            smtp_server = smtplib.SMTP("smtp.gmail.com", 587)
 
             # Start TLS encryption
             smtp_server.starttls()
