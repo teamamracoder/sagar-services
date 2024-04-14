@@ -40,11 +40,11 @@ def update(id):
 def status(id):
     return booking_controller.status(id)
 
-@booking_bp.route("/admin/bookings/statuses/<int:id>/<string:status_type>/<string:status>", methods=["GET", "PATCH"])
+@booking_bp.route("/admin/bookings/statuses/<string:status_type>/<string:status>/<string:id>", methods=["GET", "PATCH"])
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
-def statuses(id,status_type,status):
-    return booking_controller.service_status(id,status_type,status)
+def statuses(status_type,status,id):
+    return booking_controller.service_status(int(id),status_type,status)
 
 @booking_bp.route("/admin/bookings/details/<int:id>", methods=["GET", "PATCH"])
 @login_required

@@ -59,13 +59,14 @@
                         var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle toggleStatusButtons')
                                                     .attr({
                                                         'href': '#',
+                                                        'id': 'payment_status_'+ row.id,
                                                         'role': 'button',
                                                         'data-bs-toggle': 'dropdown',
                                                         'aria-expanded': 'false'
                                                     }).text(row.payment_status_name);
                         var dropdownMenu = $('<ul>').addClass('dropdown-menu');
                         $.each(data, function(index, status) {
-                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('href', '/admin/bookings/statuses/' + row.id + '/payment/' + status).text(status)));
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('onclick', "updateStatuses(" + row.id + ", '" + status + "', 'payment')").text(status)));
                         });
                         dropdown.append(dropdownToggle);
                         dropdown.append(dropdownMenu);
@@ -87,13 +88,14 @@
                         var dropdownToggle = $('<a>').addClass('btn btn-outline-dark btn-sm dropdown-toggle toggleStatusButtons')
                                                     .attr({
                                                         'href': '#',
+                                                        'id': 'service_status_' + row.id,
                                                         'role': 'button',
                                                         'data-bs-toggle': 'dropdown',
                                                         'aria-expanded': 'false'
                                                     }).text(row.service_status_name);
                         var dropdownMenu = $('<ul>').addClass('dropdown-menu');
                         $.each(data, function(index, status) {
-                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('href', '/admin/bookings/statuses/' + row.id + '/booking/' + status).text(status)));
+                            dropdownMenu.append($('<li>').append($('<a>').addClass('dropdown-item toggleStatusButtons').attr('onclick', "updateStatuses(" + row.id + ", '" + status + "', 'booking')").text(status)));
                         });
                         dropdown.append(dropdownToggle);
                         dropdown.append(dropdownMenu);
@@ -165,7 +167,29 @@
                     });
                 }
             });
-        };
+        };        
+        
+        window.updateStatuses= function(id,status,type){
+            $.ajax({
+                url:`/admin/bookings/statuses/${type}/${status}/`+id,
+                method:"GET",
+                complete:res=>{
+                    responseData=res.responseJSON
+                    if (responseData.status === 'success') {
+                        toastr.success(responseData.message);
+                        if(type==='payment'){
+                            $("#payment_status_"+id).text(responseData.data)
+                        }
+                        else{
+                            $("#service_status_"+id).text(responseData.data)
+                        }
+                    }
+                    else{
+                        toastr.error(responseData.message);
+                    }
+                }
+            });
+        }
     });
 </script>
 
