@@ -7,14 +7,17 @@
 <div class="container">
     <h3 class="text-center my-3">Edit ServiceType</h3>
 
-    <form method="POST" action="{{ url_for('service_type.update', id=id) }}" id="adminForm">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('service_type.update', id=id) }}" id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
                 {{ form.type_name.label(class="form-label") }}
                 {{ form.type_name(class="form-control form-control-sm") }}
             </div>
-            
+            <div class="col-12">
+                {{ form.service_type_img_url.label(class="form-label") }}
+                {{ form.service_type_img_url(class="form-control form-control-sm") }}
+            </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Update</button>
                 <a href="{{ url_for('service_type.index') }}" class="btn btn-outline-dark btn-sm">Back</a>

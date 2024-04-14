@@ -32,7 +32,7 @@ class ServiceTypeModel(db.Model):
 
     type_name = db.Column(db.String(200),nullable=False)
 
-    service_img_url = db.Column(db.Text)
+    service_type_img_url = db.Column(db.Text)
 
     services = db.relationship("ServiceModel", back_populates="service_types")
     created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="service_type_created")
