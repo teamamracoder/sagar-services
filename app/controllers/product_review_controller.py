@@ -18,22 +18,24 @@ class ProductReviewController:
         return jsonify(combined_data)
 
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateProductReviewForm()
         if form.validate_on_submit():
             review=self.product_review_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 review_title=form.review_title.data,
                 description=form.description.data,
                 rating=form.rating.data,
                 product_id=form.product_id.data,
-                user_id=form.user_id.data   
+                user_id=logged_in_user.id  
             )
             return redirect(url_for("product_review.index"))
             # return render_template("admin/product_review/add.html", form=form, error="product_review already exists")
         return render_template("admin/product_review/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         product_review = self.product_review_service.get_by_id(id)
         if product_review is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -45,12 +47,12 @@ class ProductReviewController:
         if form.validate_on_submit():
             updated_data = {
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id,   
+                'updated_by': logged_in_user.id,   
                 'review_title': form.review_title.data,
                 'description': form.description.data,
                 'rating': form.rating.data,
                 'product_id': form.product_id.data,
-                'user_id': form.user_id.data 
+                'user_id': logged_in_user.id
             }
             self.product_review_service.update(id, **updated_data)
             return redirect(url_for("product_review.index"))

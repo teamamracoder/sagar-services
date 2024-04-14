@@ -1,45 +1,74 @@
 import os
 import uuid
-
+from .common_utils import CommonUtils
 
 class FileUtils:
 
     @staticmethod
-    def save(file, upload_dir: str) -> str:
+    def save(dir: str, *files) -> (list | str | None):
         try:
-            # check if file is empty
-            if file.filename == "":
-                return "No selected file"
+
+            # added default location for files
+            upload_dir=os.path.join("app","static","uploads",dir)
 
             # create dir if doesn't exist
             os.makedirs(upload_dir, exist_ok=True)
 
-            # modify file name
-            filename = FileUtils.get_unique_filename(file.filename)
+            uploaded_path_list=[]
+            for file in files:
+                # check if file is empty
+                if file.filename == "":
+                    return None
+                
+                # modify file name
+                filename = FileUtils.get_unique_filename(file.filename)
+            
+                # get full path
+                path = os.path.join(upload_dir, filename)
+                print(path)
+                # Save file
+                file.save(path)
+                
+                # adding uploaded file path to a list
+                uploaded_path_list.append(path.replace("\\","/").replace("app/",""))
 
-            # get full path
-            path = os.path.join(upload_dir, filename)
+            print(uploaded_path_list)
 
-            # Save file
-            file.save(path)
+            if len(uploaded_path_list)>1:       # multiple file inserted
+                return uploaded_path_list
+            elif len(uploaded_path_list)==1:    # single file inserted
+                return  uploaded_path_list[0]
+            else:                               # no file inserted
+                return None
 
-            # return path
-            return path
         except Exception as e:
             return None
 
     @staticmethod
-    def delete() -> bool:
+    def delete(file_path) -> bool:
         try:
+            path = os.path.join("app", *file_path.split("/"))
+            os.remove(path)
             return True
         except Exception as e:
             return False
 
     @staticmethod
     def get_unique_filename(filename):
+        # eliminate special chars (except _)
+        filename = CommonUtils.replace_special_characters_with_underscore(filename)
         # Generate a unique identifier
         unique_id = uuid.uuid4().hex
         # Split the filename and extension
         name, ext = os.path.splitext(filename)
         # Concatenate the unique identifier with the filename
         return f"{unique_id}_{name}{ext}"
+
+
+    # @staticmethod
+    # def replace_special_characters_with_underscore(text):
+    #     # Define a regular expression pattern to match special characters and spaces
+    #     pattern = r'[^a-zA-Z0-9_]+'
+    
+    #     # Replace matches with underscores
+    #     return re.sub(pattern, '_', text)

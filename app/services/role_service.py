@@ -30,3 +30,13 @@ class RoleService(BaseService):
     
     def get_role_by_user_id_and_role_key(self,role_key,user_id):
         return RoleModel.query.filter_by(role=role_key,user_id=user_id).first()
+    
+
+    def get_roles_by_user_id_list(self, user_id: int) -> list:
+        query = (
+            RoleModel.query.filter_by(user_id=user_id, is_active=True)
+            .with_entities(RoleModel.role)
+            .all()
+        )
+        roles_list = [role[0] for role in query]
+        return roles_list

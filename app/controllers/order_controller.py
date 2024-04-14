@@ -7,6 +7,7 @@ from app.constants import payment_methods
 from app.constants import order_statuses
 from app.constants import payment_statuses
 from app.services import UserService
+from app.auth import get_current_user
 
 class OrderController:
     def __init__(self) -> None:
@@ -28,14 +29,15 @@ class OrderController:
         return jsonify(data)
 
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateOrderForm()
         form.payment_method.choices = payment_methods.get_all_items()
         form.order_status.choices = order_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
-
+        
         if form.validate_on_submit():
             order=self.order_service.create(
-                created_by=1,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 product_id=form.product_id.data,
                 user_id=form.user_id.data,
@@ -48,12 +50,13 @@ class OrderController:
                 area_pincode=form.area_pincode.data,
             )
             ordered_product=self.product_service.get_by_id(order.product_id)
-            quantity=ordered_product.quantity-1
-            self.product_service.update(ordered_product.id, quantity=quantity)
+            stock=ordered_product.stock-1
+            self.product_service.update(ordered_product.id, stock=stock)
             return redirect(url_for("order.index"))
         return render_template("admin/order/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         order = self.order_service.get_by_id(id)
         if order is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -77,7 +80,7 @@ class OrderController:
                 'payment_status': form.payment_status.data,
                 'area_pincode': form.area_pincode.data,
                 'updated_at': datetime.now(),
-                'updated_by': 1
+                'updated_by': logged_in_user.id
             }
             self.order_service.update(id, **updated_data)
             return redirect(url_for("order.index"))

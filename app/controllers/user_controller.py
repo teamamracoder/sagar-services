@@ -12,6 +12,7 @@ class UserController:
         self.role_service = RoleService()
 
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateUserForm()
         if form.validate_on_submit():
             self.user_service.create(
@@ -20,7 +21,7 @@ class UserController:
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now()
             )
             return redirect(url_for("user.index"))
@@ -36,6 +37,7 @@ class UserController:
         return jsonify(data)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         user = self.user_service.get_by_id(id)
         form = UpdateUserForm(obj=user)
         if form.validate_on_submit():
@@ -46,7 +48,7 @@ class UserController:
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
-                updated_by=get_current_user().id,
+                updated_by=logged_in_user.id,
                 updated_at=datetime.now()
             )
             return redirect(url_for("user.index"))

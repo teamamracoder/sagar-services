@@ -20,6 +20,7 @@ class ProductController:
         return jsonify(combined_data)
     
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateProductForm()
         categories=self.category_service.get_active()
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
@@ -29,7 +30,7 @@ class ProductController:
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             self.product_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 product_name=form.product_name.data,
                 brand=form.brand.data,
@@ -49,6 +50,7 @@ class ProductController:
         return render_template("admin/product/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         product = self.product_service.get_by_id(id)
         if product is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -74,7 +76,7 @@ class ProductController:
                 'available_area_pincodes': pincode_list,
                 'return_policy': form.return_policy.data,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': logged_in_user.id
             }
             self.product_service.update(id, **updated_data)
             return redirect(url_for("product.index"))

@@ -3,6 +3,7 @@ from app.forms import CreateCategoryForm, UpdateCategoryForm
 from app.services import CategoryService
 from datetime import datetime
 from app.auth import get_current_user
+from app.utils import FileUtils
 
 class CategoryController:
     def __init__(self) -> None:
@@ -17,27 +18,33 @@ class CategoryController:
         return jsonify(data)
     
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateCategoryForm()
         if form.validate_on_submit():
+            filepath=FileUtils.save('categories',*form.category_img_url.data)
             self.category_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 category_name=form.category_name.data,
+                category_img_url=filepath
             )
             return redirect(url_for("category.index", toaster="Category Updated", toaster_type="info"))
         return render_template("admin/category/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         category = self.category_service.get_by_id(id)
         if category is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateCategoryForm(obj=category)
         
         if form.validate_on_submit():
+            # if file given
+            # FileUtils.delete("static/uploads/categories/66a2e39826ac4e5c93d69261db3de266_localhost_diagnostics_and_medicine_hub_doctor_profile_php_png")
             updated_data = {
                 'category_name': form.category_name.data,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': logged_in_user.id
             }
             self.category_service.update(id, **updated_data)
             return redirect(url_for("category.index"))

@@ -21,19 +21,21 @@ class ProductQnAController:
         return jsonify(combined_data)
 
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateProductQnAForm()
         if form.validate_on_submit():
             self.product_qna_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 product_id = form.product_id.data,
                 question = form.question.data,
-                user_id = get_current_user().id
+                user_id = logged_in_user.id
             )
             return redirect(url_for("product_qna.index"))
         return render_template("admin/product_qna/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         qna = self.product_qna_service.get_by_id(id)
         if qna is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -44,7 +46,7 @@ class ProductQnAController:
         if form.validate_on_submit():
             self.product_qna_service.update(
                 id=id,
-                updated_by=get_current_user().id,
+                updated_by=logged_in_user.id,
                 updated_at=datetime.now(),
                 product_id=form.product_id.data,
                 question=form.question.data,
