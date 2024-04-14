@@ -44,7 +44,7 @@ class CartController:
 
         is_active=True
         #update is_active = false if cart_status is not 'ADDED', it can be 'REMOVED' or 'ORDERED'
-        if status_key is not 1:
+        if status_key != 1:
             is_active=False
         self.cart_service.update(
             cart_id,
