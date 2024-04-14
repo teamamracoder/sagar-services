@@ -1,12 +1,12 @@
 from flask_login import LoginManager, current_user, login_user, logout_user
 from functools import wraps
 from flask import abort, redirect, url_for
-
+from app.services import RoleService
 from app.services import UserService
 
 login_manager = LoginManager()
 user_service = UserService()
-
+role_service = RoleService()
 
 def init_auth(app):
     login_manager.init_app(app)
@@ -42,5 +42,7 @@ def logout():
     logout_user()
 
 
+
 def get_current_user():
-    return current_user
+    roles=role_service.get_roles_by_user_id_list(user_id=current_user.id)
+    return {'logged_in_user':current_user,'roles':roles}

@@ -22,12 +22,13 @@ class CartController:
 
     #admin creates cart
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateCartForm()
         if form.validate_on_submit():
             self.cart_service.create(
-                created_by=get_current_user().id,   #logged in user id
+                created_by=logged_in_user.id,   #logged in user id
                 created_at=datetime.now(),
-                user_id=form.user_id.data,
+                user_id=logged_in_user.id,
                 product_id=form.product_id.data,
                 status=1
             )
@@ -37,6 +38,7 @@ class CartController:
 
 
     def cart_status(self, cart_id, status):
+        logged_in_user,roles=get_current_user().values()
         cart = self.cart_service.get_by_id(cart_id)
         if cart is None:
             return {"status":"error","message":"Cart Not Found"}
@@ -48,7 +50,7 @@ class CartController:
             is_active=False
         self.cart_service.update(
             cart_id,
-            updated_by=get_current_user().id,  
+            updated_by=logged_in_user.id,  
             updated_at=datetime.now(),
             status=status_key,
             is_active=is_active

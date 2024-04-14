@@ -15,7 +15,7 @@ class CreateProductForm(FlaskForm):
     payment_methods = SelectMultipleField("payment_methods (hold ctrl and select)", validators=[DataRequired()], coerce=int)
     available_area_pincodes = StringField("Available Area Pincode (use comma separated)", validators=[DataRequired()])
     return_policy = TextAreaField("return_policy", validators=[DataRequired()])
-
+    # category_img_url = MultipleFileField('Images', validators=[DataRequired()])
 
 class UpdateProductForm(FlaskForm):
     category_id = SelectField('Category', coerce=int, validators=[DataRequired()])
@@ -30,3 +30,4 @@ class UpdateProductForm(FlaskForm):
     payment_methods = SelectMultipleField("payment_methods (hold ctrl and select)", validators=[DataRequired()], coerce=int)
     available_area_pincodes = StringField("Available Area Pincode (use comma separated)", validators=[DataRequired()])
     return_policy = TextAreaField("return_policy", validators=[DataRequired()])
+    # category_img_url = MultipleFileField('Images', validators=[DataRequired()])

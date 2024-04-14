@@ -10,6 +10,7 @@ class RoleController:
         self.staff_service = StaffService()
 
     def create(self,role_key,user_id):
+        logged_in_user,roles=get_current_user().values()
         role=self.role_service.get_role_by_user_id_and_role_key(role_key,user_id)
         #no role found, create a role
         if role is None:
@@ -19,7 +20,7 @@ class RoleController:
             self.role_service.create(
                 user_id=user_id, 
                 role=role_key,
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now()
             )
             return redirect(url_for("user.index"))

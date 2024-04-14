@@ -20,13 +20,14 @@ class MessageController:
     
     
     def create(self,conversation_id):
+        logged_in_user,roles=get_current_user().values()
         form = CreateMessageForm()
         if form.validate_on_submit():
             
             self.message_service.create(
                 conversation_id=conversation_id,
                 message=form.message.data,
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at = datetime.now()
             )
             self.conversation_service.update(

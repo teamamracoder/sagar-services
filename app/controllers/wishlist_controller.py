@@ -20,12 +20,13 @@ class WishlistController:
 
     #admin creates wishlist
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateWishlistForm()
         if form.validate_on_submit():
             self.wishlist_service.create(
-                created_by=get_current_user().id,   #logged in user id
+                created_by=logged_in_user.id,   #logged in user id
                 created_at=datetime.now(),
-                user_id=form.user_id.data,
+                user_id=logged_in_user.id,
                 product_id=form.product_id.data
             )
             return redirect(url_for("wishlist.index"))

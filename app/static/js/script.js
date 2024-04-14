@@ -14,7 +14,7 @@ const getFormattedDateTime = (datetime)=>{
     };
     let formattedDate = date.toLocaleString('en-GB', options);
     return(formattedDate);
-}
+};
 
 const getFormattedTime = (datetime) =>{
     var dt = new Date(datetime);
@@ -26,4 +26,4 @@ const getFormattedTime = (datetime) =>{
         }
     );
     return timeOnly;
-}
+};
