@@ -28,7 +28,7 @@ class CategoryController:
                 category_name=form.category_name.data,
                 category_img_url=filepath
             )
-            return redirect(url_for("category.index", toaster="Category Updated", toaster_type="info"))
+            return redirect(url_for("category.index"))
         return render_template("admin/category/add.html", form=form)
 
     def update(self, id):
