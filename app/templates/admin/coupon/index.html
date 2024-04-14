@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col text-end">
-            <a href="{{url_for('coupon_bp.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
+            <a href="{{url_for('coupon.add')}}" class="btn btn-outline-dark btn-sm my-2">NEW</a>
         </div>
     </div>
 
@@ -18,8 +18,9 @@
             <tr>
                 <th># id</th>
                 <th>Coupon Code</th>
-                <th>Expiry Date</th>
                 <th>Discount</th>
+                <th>Discount Type</th>
+                <th>Expiry Date</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -33,31 +34,78 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{url_for('coupon_bp.get_coupon_data')}}",
+                "url": "{{url_for('coupon.get_coupon_data')}}",
                 "type": "GET"
             },
             "columns": [
                 { "data": "id" },
                 { "data": "coupon_code" },
-                { "data": "expiry_date" },
+                
                 { "data": "discount" },
+                { "data": "discount_type_name" },
+                { "data": "expiry_date" },
+                { "data": "count" },
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                    console.log(row.is_active)
-                        return '<button class="btn btn-outline-dark btn-sm me-1" onclick="editRecord(' + row.id + ')">Edit</button>' +
-                            '<button class="btn btn-outline-dark btn-sm me-1" onclick="deactivateRecord(' + row.id + ')">' + (row.is_active ? 'Activated' : 'Deactivated') + '</button>';
+                        return '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="editTooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? ' title="Deactivate" ' : ' title="Activate"')+' data-bs-custom-class="deactivateTooltip" onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
+
             ]
         });
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
         window.editRecord = function (id) {
             window.location.href= "/admin/coupons/update/" + id;
         };
 
-        window.deactivateRecord = function (id) {
-             window.location.href= "/admin/coupons/status/" + id;
+        window.deactivateRecord = function (id, is_active) {
+            const title = is_active ? "Deactivate Coupopn" : "Activate Coupopn";
+            const icon = is_active ? "warning" : "success";
+            const confirmButtonColor = is_active ? "#d7504D" : "#5FA052";
+            const cancelButtonColor = is_active ? "#5FA052" : "#d7504D";
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: title,
+                icon: icon,
+                showCancelButton: true,
+                confirmButtonText: is_active ? "Deactivate" : "Activate",
+                confirmButtonColor:confirmButtonColor,
+                cancelButtonColor:cancelButtonColor,
+                customClass: {
+                    confirmButton: 'btn btn-sm rounded-0',
+                    cancelButton: 'btn btn-sm rounded-0'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url:"{{url_for('coupon.status',id=0)}}".replace('0',id),
+                        method:"GET",
+                        complete:res=>{
+                            responseData=res.responseJSON
+                            if (responseData.status === 'success') {
+                                toastr.success(responseData.message);
+                                $("#disable_btn_"+id).replaceWith(
+                                    '<button id="disable_btn_'+id+'" class="btn  btn-sm me-1 border-'
+                                    +(responseData.data ? 'danger' : 'success')
+                                    +'" data-toggle="tooltip"  data-bs-placement="bottom"'
+                                    + (responseData.data ? 'title="Deactivate"' : 'title="Activate"')
+                                    +' onclick="deactivateRecord(' + id+','+responseData.data+')" >' 
+                                    + (responseData.data ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') 
+                                    + '</button>')
+                            }
+                            else{
+                                toastr.error(responseData.message);
+                            }
+                        }
+                    });
+                }
+            });
         };
     });
 </script>
