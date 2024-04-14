@@ -65,7 +65,7 @@
                     "render": function (data, type, row) {
                         return '<button class="btn btn-outline-success btn-sm me-1" data-bs-placement="bottom" title="View" data-bs-custom-class="custom-tooltip" onclick="viewRecord(' + row.id + ')"><i class="bi bi-file-text"></i></button>' +
                         '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip"  data-bs-placement="bottom" title="Edit" data-bs-custom-class="custom-tooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
-                        '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? 'title="Deactivate"' : 'title="Activate"')+' onclick="deactivateRecord(' + row.id+','+row.is_active+'" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                        '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? 'title="Deactivate"' : 'title="Activate"')+' onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
@@ -80,7 +80,7 @@
         };
 
         window.deactivateRecord = function (id, is_active) {
-            const title = is_active ? "Deactivate Staff" : "Activate Staff";
+            const title = is_active ? "Deactivate Wishlist" : "Activate Wishlist";
             const icon = is_active ? "warning" : "success";
             const confirmButtonColor = is_active ? "#d7504D" : "#5FA052";
             const cancelButtonColor = is_active ? "#5FA052" : "#d7504D";
@@ -123,8 +123,6 @@
                 }
             });
         };
-
-
     });
 </script>
 

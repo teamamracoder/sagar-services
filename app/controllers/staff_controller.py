@@ -22,11 +22,12 @@ class StaffController:
         return jsonify(data)
     
     def create(self,user_id):
+        logged_in_user,roles=get_current_user().values()
         form = CreateStaffForm()
         form.department.choices = departments.get_all_items()
         if form.validate_on_submit():
             self.staff_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 salary=form.salary.data,
                 qualification=form.qualification.data,
@@ -37,7 +38,7 @@ class StaffController:
             self.role_service.create(
                 user_id=user_id, 
                 role=2,
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now()
             )
             return redirect(url_for("staff.index"))
@@ -47,6 +48,7 @@ class StaffController:
         return render_template("admin/staff/add.html", form=form, user_id=user_id)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         staff = self.staff_service.get_by_id(id)
         if staff is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -56,7 +58,7 @@ class StaffController:
         if form.validate_on_submit():
             updated_data = {
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id,
+                'updated_by': logged_in_user.id,
                 'salary':form.salary.data,
                 'qualification':form.qualification.data,
                 'join_date':form.join_date.data,

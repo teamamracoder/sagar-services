@@ -4,5 +4,4 @@ from wtforms.validators import DataRequired
 
 class CreateCartForm(FlaskForm):
     product_id = IntegerField("Product Id", validators=[DataRequired()])
-    user_id = IntegerField("User Id", validators=[DataRequired()])
 

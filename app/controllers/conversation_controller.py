@@ -19,13 +19,14 @@ class ConversationController:
         return jsonify(data)
     
     def create(self):
-        prev_conversation=self.conversation_service.get_by_user_id(get_current_user().id)
+        logged_in_user,roles=get_current_user().values()
+        prev_conversation=self.conversation_service.get_by_user_id(logged_in_user.id)
         if prev_conversation:
             my_conversation=prev_conversation
         else:
             my_conversation=self.conversation_service.create(
-                user_id=get_current_user().id,
-                created_by= get_current_user().id,
+                user_id=logged_in_user.id,
+                created_by= logged_in_user.id,
                 created_at = datetime.now()
             )
         return redirect(url_for("conversation.index",my_conversation=my_conversation))

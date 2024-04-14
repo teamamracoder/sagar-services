@@ -17,10 +17,11 @@ class CategoryController:
         return jsonify(data)
     
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateCategoryForm()
         if form.validate_on_submit():
             self.category_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 category_name=form.category_name.data,
             )
@@ -28,6 +29,7 @@ class CategoryController:
         return render_template("admin/category/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         category = self.category_service.get_by_id(id)
         if category is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -37,7 +39,7 @@ class CategoryController:
             updated_data = {
                 'category_name': form.category_name.data,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': logged_in_user.id
             }
             self.category_service.update(id, **updated_data)
             return redirect(url_for("category.index"))
