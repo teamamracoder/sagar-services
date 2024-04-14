@@ -21,7 +21,7 @@ class CategoryController:
         logged_in_user,roles=get_current_user().values()
         form = CreateCategoryForm()
         if form.validate_on_submit():
-            filepath=FileUtils.save('categories',*form.category_img_url.data)
+            filepath=FileUtils.save('categories',form.category_img_url.data)
             self.category_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
@@ -39,12 +39,14 @@ class CategoryController:
         form = UpdateCategoryForm(obj=category)
         
         if form.validate_on_submit():
+            filepath=FileUtils.save('categories',form.category_img_url.data)
             # if file given
             # FileUtils.delete("static/uploads/categories/66a2e39826ac4e5c93d69261db3de266_localhost_diagnostics_and_medicine_hub_doctor_profile_php_png")
             updated_data = {
                 'category_name': form.category_name.data,
                 'updated_at': datetime.now(),
-                'updated_by': logged_in_user.id
+                'updated_by': logged_in_user.id,
+                'category_img_url':filepath
             }
             self.category_service.update(id, **updated_data)
             return redirect(url_for("category.index"))
