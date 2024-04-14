@@ -3,11 +3,12 @@ from app.forms import CreateServiceTypeForm, UpdateServiceTypeForm
 from app.services import ServiceTypeService
 from datetime import datetime
 from app.auth import get_current_user
-
+from app.utils import FileUtils 
 
 class ServiceTypeController:
     def __init__(self) -> None:
         self.service_type_service = ServiceTypeService()
+        
         
 
     def get(self):
@@ -23,10 +24,12 @@ class ServiceTypeController:
         logged_in_user,roles=get_current_user().values()
         form = CreateServiceTypeForm()
         if form.validate_on_submit():
+            filepath=FileUtils.save('service_types',*form.service_type_img_url.data)
             self.service_type_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
-                type_name =  form.type_name.data
+                type_name =  form.type_name.data,
+                service_type_img_url = filepath
             )
             return redirect(url_for("service_type.index"))
         return render_template("admin/service_type/add.html", form=form)
@@ -39,11 +42,13 @@ class ServiceTypeController:
         form = UpdateServiceTypeForm(obj=service_type)
 
         if form.validate_on_submit():
+            filepath=FileUtils.save('service_types',*form.service_type_img_url.data)
             self.service_type_service.update(
                 id=id,
                 updated_by=logged_in_user.id,
                 updated_at=datetime.now(),
-                type_name = form.type_name.data
+                type_name = form.type_name.data,
+                service_type_img_url = filepath
             )
             return redirect(url_for("service_type.index"))
         return render_template("admin/service_type/update.html", form=form, id=id)
