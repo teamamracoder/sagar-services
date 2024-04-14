@@ -7,7 +7,7 @@
 <div class="container">
     <h3 class="text-center my-3">Add ServiceType</h3>
 
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for('service_type.add') }}" id="adminForm"> 
+    <form method="POST" action="{{ url_for('service_type.add') }}" id="adminForm" enctype="multipart/form-data"> 
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
