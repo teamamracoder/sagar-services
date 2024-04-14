@@ -3,4 +3,4 @@ venv
 .idea
 __pycache__
 /migrations
-/app/static/img/products
+/app/static/uploads
