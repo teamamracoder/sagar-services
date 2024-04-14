@@ -8,6 +8,7 @@ from app.auth import get_current_user
 class ServiceTypeController:
     def __init__(self) -> None:
         self.service_type_service = ServiceTypeService()
+        
 
     def get(self):
         return render_template("admin/service_type/index.html")
@@ -19,10 +20,11 @@ class ServiceTypeController:
         return jsonify(data)
 
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateServiceTypeForm()
         if form.validate_on_submit():
             self.service_type_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 type_name =  form.type_name.data
             )
@@ -30,6 +32,7 @@ class ServiceTypeController:
         return render_template("admin/service_type/add.html", form=form)
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         service_type = self.service_type_service.get_by_id(id)
         if service_type is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -38,7 +41,7 @@ class ServiceTypeController:
         if form.validate_on_submit():
             self.service_type_service.update(
                 id=id,
-                updated_by=get_current_user().id,
+                updated_by=logged_in_user.id,
                 updated_at=datetime.now(),
                 type_name = form.type_name.data
             )

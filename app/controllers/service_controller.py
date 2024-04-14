@@ -22,6 +22,7 @@ class ServiceController:
         return jsonify(combined_data)
 
     def create(self):
+        logged_in_user,roles=get_current_user().values()
         form = CreateServiceForm()
         service_types=self.service_type_service.get_active()
         form.service_type_id.choices = [(service_type.id, service_type.type_name) for service_type in service_types]
@@ -32,7 +33,7 @@ class ServiceController:
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             
             self.service_service.create(
-                created_by=get_current_user().id,
+                created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 service_name=form.service_name.data,
                 service_type_id=form.service_type_id.data,
@@ -49,6 +50,7 @@ class ServiceController:
 
 
     def update(self, id):
+        logged_in_user,roles=get_current_user().values()
         service = self.service_service.get_by_id(id)
         if service is None:
             return render_template("admin/error/something_went_wrong.html")
@@ -64,7 +66,7 @@ class ServiceController:
 
             self.service_service.update(
                 id=id,
-                updated_by=get_current_user().id,
+                updated_by=logged_in_user.id,
                 updated_at=datetime.now(),
                 service_name=form.service_name.data,
                 description=form.description.data,
@@ -73,7 +75,7 @@ class ServiceController:
                 payment_methods=form.payment_methods.data,
                 discount=form.discount.data,
                 service_img_urls=form.service_img_urls.data,
-                service_type_id=form.service_type_id.data
+                service_type_id=form.service_type_id.data,
             )
             return redirect(url_for("service.index"))
         form.available_area_pincodes.data = ', '.join(service.available_area_pincodes)
