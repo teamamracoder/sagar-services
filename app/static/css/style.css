@@ -81,3 +81,7 @@ div.dt-processing>div:last-child>div {
   width:100%;
   margin:auto;
 }
+.adminTableImg{
+  width: 60px;
+  object-fit: contain;
+}

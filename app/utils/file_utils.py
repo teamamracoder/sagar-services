@@ -25,14 +25,11 @@ class FileUtils:
             
                 # get full path
                 path = os.path.join(upload_dir, filename)
-                print(path)
                 # Save file
                 file.save(path)
                 
                 # adding uploaded file path to a list
                 uploaded_path_list.append(path.replace("\\","/").replace("app/",""))
-
-            print(uploaded_path_list)
 
             if len(uploaded_path_list)>1:       # multiple file inserted
                 return uploaded_path_list
@@ -63,12 +60,3 @@ class FileUtils:
         name, ext = os.path.splitext(filename)
         # Concatenate the unique identifier with the filename
         return f"{unique_id}_{name}{ext}"
-
-
-    # @staticmethod
-    # def replace_special_characters_with_underscore(text):
-    #     # Define a regular expression pattern to match special characters and spaces
-    #     pattern = r'[^a-zA-Z0-9_]+'
-    
-    #     # Replace matches with underscores
-    #     return re.sub(pattern, '_', text)
