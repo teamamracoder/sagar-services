@@ -13,7 +13,7 @@ class CategoryController:
         return render_template("admin/category/index.html")
 
     def get_category_data(self):
-        columns = ["id", "category_name","created_by","created_at","updated_by","updated_by","is_active"]
+        columns = ["id", "category_name","created_by","created_at","updated_by","updated_by","is_active", "category_img_url"]
         data = self.category_service.get(request, columns)
         return jsonify(data)
     
@@ -37,7 +37,6 @@ class CategoryController:
         if category is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateCategoryForm(obj=category)
-        
         if form.validate_on_submit():
             filepath=FileUtils.save('categories',form.category_img_url.data)
             # if file given

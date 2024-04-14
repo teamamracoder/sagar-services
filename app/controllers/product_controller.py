@@ -5,6 +5,10 @@ from app.services import CategoryService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
+from app.utils import FileUtils
+
+
+
 class ProductController:
     def __init__(self) -> None:
         self.product_service = ProductService()
@@ -14,7 +18,7 @@ class ProductController:
         return render_template("admin/product/index.html")
 
     def get_product_data(self):
-        columns = ["id", "product_name", "brand","model","price","discount","stock","created_by","created_at","updated_by", "updated_at", "is_active", "category_id"]
+        columns = ["id", "product_name", "brand","model","price","discount","stock","created_by","created_at","updated_by", "updated_at", "is_active", "category_id", "product_img_urls"]
         data = self.product_service.get(request, columns)
         combined_data = self.category_service.add_category_with_products(data)
         return jsonify(combined_data)
@@ -27,6 +31,7 @@ class ProductController:
         form.payment_methods.choices = payment_methods.get_all_items()
 
         if form.validate_on_submit():
+            filepath=FileUtils.save('products',*form.product_img_urls.data)
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             self.product_service.create(
@@ -38,7 +43,7 @@ class ProductController:
                 price=form.price.data,
                 discount=form.discount.data,
                 stock=form.stock.data,
-                product_img_urls=form.product_img_urls.data,
+                product_img_urls=filepath,
                 specifications=form.specifications.data,
                 payment_methods=form.payment_methods.data,
                 available_area_pincodes=pincode_list,
@@ -59,7 +64,13 @@ class ProductController:
         form = UpdateProductForm(obj=product)
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
         form.payment_methods.choices = payment_methods.get_all_items()
+
         if form.validate_on_submit():
+            filepath=product.product_img_urls
+            if not filepath:
+                filepath=[]
+            new_filepath=FileUtils.save('products',*form.product_img_urls.data)
+            filepath.extend(new_filepath) if isinstance(new_filepath, list) else filepath.append(new_filepath)
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             updated_data = {
@@ -70,7 +81,7 @@ class ProductController:
                 'price': form.price.data,
                 'discount': form.discount.data,
                 'stock': form.stock.data,
-                'product_img_urls': form.product_img_urls.data,
+                'product_img_urls': filepath,
                 'specifications': form.specifications.data,
                 'payment_methods': form.payment_methods.data,
                 'available_area_pincodes': pincode_list,
