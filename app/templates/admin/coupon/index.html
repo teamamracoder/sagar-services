@@ -40,7 +40,15 @@
             "columns": [
                 { "data": "id" },
                 { "data": "coupon_code" },
-                
+                { 
+                    "data": "coupon_img_url",
+                    "render": function (data, type, row) {
+                        if(row.coupon_img_url != null){
+                            return `<img src="../../${row.coupon_img_url}" class="adminTableImg">` ;
+                        }
+                        return null
+                    }
+                },
                 { "data": "discount" },
                 { "data": "discount_type_name" },
                 { "data": "expiry_date" },

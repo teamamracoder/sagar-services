@@ -4,6 +4,7 @@ from app.services import CouponService
 from app.auth import get_current_user
 from datetime import datetime
 from app.constants import discount_types
+from app.utils import FileUtils
 
 class CouponController:
 
@@ -15,6 +16,7 @@ class CouponController:
         form = CreateCouponForm()
         form.discount_type.choices = discount_types.get_all_items()
         if form.validate_on_submit():
+            filepath=FileUtils.save('coupons',[form.coupon_img_url.data])
             self.coupon_service.create(
                 created_at=datetime.now(),
                 created_by=logged_in_user.id,
@@ -22,7 +24,7 @@ class CouponController:
                 expiry_date=form.expiry_date.data,
                 discount_type=form.discount_type.data,
                 discount=form.discount.data,
-                coupon_img_url=form.coupon_img_url.data,
+                coupon_img_url=filepath,
                 count=form.count.data
             )
             return redirect(url_for("coupon.index"))
@@ -35,7 +37,7 @@ class CouponController:
 
     def get_coupon_data(self):
         # Determine the column to sort by
-        columns = ["id", "coupon_code", "expiry_date", "discount", "discount_type", "count"]
+        columns = ["id", "coupon_code", "expiry_date", "discount", "discount_type", "count", "coupon_img_url"]
         # Create a dictionary containing the sorted data
         data = self.coupon_service.get(request, columns)
         data = self.coupon_service.add_discount_type_with_this(data)
@@ -50,6 +52,11 @@ class CouponController:
         form = UpdateCouponForm(obj=coupon)
         form.discount_type.choices = discount_types.get_all_items()
         if form.validate_on_submit():
+            filepath=coupon.coupon_img_url
+            new_filepath=FileUtils.save('coupons',[form.coupon_img_url.data])
+            if new_filepath:
+                FileUtils.delete(filepath)
+                filepath=new_filepath
             self.coupon_service.update(
                 id=id,
                 updated_by=logged_in_user.id,
@@ -58,7 +65,7 @@ class CouponController:
                 expiry_date=form.expiry_date.data,
                 discount_type=form.discount_type.data,
                 discount=form.discount.data,
-                coupon_img_url=form.coupon_img_url.data,
+                coupon_img_url=filepath,
                 count=form.count.data
             )
             return redirect(url_for("coupon.index"))

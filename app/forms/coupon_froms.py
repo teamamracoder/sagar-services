@@ -4,19 +4,19 @@ from wtforms.validators import DataRequired
 from wtforms import FileField
 
 class CreateCouponForm(FlaskForm):
-    coupon_code=StringField("coupon_code",validators=[DataRequired()])
-    expiry_date=DateField("expiry_date",validators=[DataRequired()])
-    discount_type=SelectField("discount_type",coerce=int, validators=[DataRequired()])
-    discount=FloatField("discount",validators=[DataRequired()])
-    coupon_img_url = FileField("coupon_img_url")
-    count=IntegerField("count",validators=[DataRequired()])
+    coupon_code=StringField("coupon Code",validators=[DataRequired()])
+    expiry_date=DateField("Expiry Date",validators=[DataRequired()])
+    discount=FloatField("Discount",validators=[DataRequired()])
+    discount_type=SelectField("Discount Type",coerce=int, validators=[DataRequired()])
+    coupon_img_url = FileField("Image")
+    count=IntegerField("Count",validators=[DataRequired()])
     
 
 class UpdateCouponForm(FlaskForm):
-    coupon_code=StringField("coupon_code",validators=[DataRequired()])
-    expiry_date=DateField("expiry_date",validators=[DataRequired()])
-    discount_type=SelectField("discount_type",coerce=int,validators=[DataRequired()])
-    discount=FloatField("discount",validators=[DataRequired()])
-    coupon_img_url = FileField("coupon_img_url")
-    count=IntegerField("count",validators=[DataRequired()])
+    coupon_code=StringField("Coupon Code",validators=[DataRequired()])
+    expiry_date=DateField("Expiry Date",validators=[DataRequired()])
+    discount_type=SelectField("Discount Type",coerce=int,validators=[DataRequired()])
+    discount=FloatField("Discount",validators=[DataRequired()])
+    coupon_img_url = FileField("Image")
+    count=IntegerField("Count",validators=[DataRequired()])
     
