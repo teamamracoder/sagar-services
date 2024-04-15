@@ -13,7 +13,7 @@ class CategoryController:
         return render_template("admin/category/index.html")
 
     def get_category_data(self):
-        columns = ["id", "category_name","created_by","created_at","updated_by","updated_by","is_active"]
+        columns = ["id", "category_name","created_by","created_at","updated_by","updated_by","is_active", "category_img_url"]
         data = self.category_service.get(request, columns)
         return jsonify(data)
     
@@ -21,7 +21,7 @@ class CategoryController:
         logged_in_user,roles=get_current_user().values()
         form = CreateCategoryForm()
         if form.validate_on_submit():
-            filepath=FileUtils.save('categories',form.category_img_url.data)
+            filepath=FileUtils.save('categories',[form.category_img_url.data])
             self.category_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
@@ -37,11 +37,12 @@ class CategoryController:
         if category is None:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateCategoryForm(obj=category)
-        
         if form.validate_on_submit():
-            filepath=FileUtils.save('categories',form.category_img_url.data)
-            # if file given
-            # FileUtils.delete("static/uploads/categories/66a2e39826ac4e5c93d69261db3de266_localhost_diagnostics_and_medicine_hub_doctor_profile_php_png")
+            filepath=category.category_img_url
+            new_filepath=FileUtils.save('categories',[form.category_img_url.data])
+            if new_filepath:
+                FileUtils.delete(filepath)
+                filepath=new_filepath 
             updated_data = {
                 'category_name': form.category_name.data,
                 'updated_at': datetime.now(),

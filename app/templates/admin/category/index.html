@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th># id</th>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Action</th>
             </tr>
@@ -36,6 +37,12 @@
             },
             "columns": [
                 { "data": "id" },
+                { 
+                    "data": "category_img_url",
+                    "render": function (data, type, row) {
+                        return `<img src="../../${row.category_img_url}" class="adminTableImg">` ;
+                    }
+                },
                 { "data": "category_name"},
                 {
                     "data": null,
