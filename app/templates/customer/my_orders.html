@@ -1,0 +1,46 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Orders</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col">      
+            <div >
+                <table class="table table-bordered">
+                    <thead class="table table-dark table-sm">          
+                        <tr>
+                            <td>Image</td>
+                            <td>Product</td>
+                            <td>Quantity</td>               
+                            <td>Shipping Address</td>
+                            <td>Total</td>
+                            <td>Payment Status</td>
+                            <td>Order Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="{{ url_for('static', filename='img/flask-icon.png') }}" class="adminTableImg"></td>
+                            <td>Monitor LED</td>
+                            <td><span>1</span></td>
+                            <td>Tallitala ,Coochbehar,736101 12/04/2024</td>
+                            <td><i class="bi bi-currency-rupee"></i>10000 </td>
+                            <td>COD</td>
+                            <td>Shipped</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>       
+        </div>   
+    </div>
+</div>
+
+{% endblock %}

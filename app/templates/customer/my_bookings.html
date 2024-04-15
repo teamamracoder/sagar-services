@@ -1,0 +1,46 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Bookings</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col">
+            <div>
+                <table class="table table-bordered">
+                    <thead class="table table-dark table-sm">
+                        <tr>
+                            <td>Image</td>
+                            <td>Service</td>
+                            <td>Booking Address</td>
+                            <td>Booking Date</td>
+                            <td>Total</td>
+                            <td>Payment Status</td>
+                            <td>Booking Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="{{ url_for('static', filename='img/flask-icon.png') }}" class="adminTableImg"></td>
+                            <td>Monitor LED</td>
+                            <td>Tallitala ,Coochbehar,736101</td>
+                            <td>12-04-24</td>
+                            <td><i class="bi bi-currency-rupee"></i>10000</td>
+                            <td>COD</td>
+                            <td>Confirmd</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

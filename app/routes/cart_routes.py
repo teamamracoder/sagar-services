@@ -44,3 +44,14 @@ def update(id, status):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def status(id):
     return cart_controller.status(id)
+
+
+
+
+## customer routes ##
+
+@cart_bp.route("/cart/")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF"), roles.get_key("CUSTOMER")])
+def customer_index():
+    return cart_controller.customer_get()
