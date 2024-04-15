@@ -44,7 +44,7 @@
                 { 
                     "data": "profile_photo_url",
                     "render": function (data, type, row) {
-                        if(row.profile_photo_url != null){
+                        if(row.profile_photo_url != null && row.profile_photo_url != ""){
                             return `<img src="../../${row.profile_photo_url}" class="adminTableImg">` ;
                         }
                         return null

@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField,StringField,DateField,FloatField, SelectField
+from wtforms import IntegerField,StringField,FloatField, SelectField, DateTimeLocalField
 from wtforms.validators import DataRequired
 from wtforms import FileField
 
 class CreateCouponForm(FlaskForm):
     coupon_code=StringField("coupon Code",validators=[DataRequired()])
-    expiry_date=DateField("Expiry Date",validators=[DataRequired()])
+    expiry_date=DateTimeLocalField("Expiry Date",validators=[DataRequired()])
     discount=FloatField("Discount",validators=[DataRequired()])
     discount_type=SelectField("Discount Type",coerce=int, validators=[DataRequired()])
     coupon_img_url = FileField("Image")
@@ -14,7 +14,7 @@ class CreateCouponForm(FlaskForm):
 
 class UpdateCouponForm(FlaskForm):
     coupon_code=StringField("Coupon Code",validators=[DataRequired()])
-    expiry_date=DateField("Expiry Date",validators=[DataRequired()])
+    expiry_date=DateTimeLocalField("Expiry Date",validators=[DataRequired()])
     discount_type=SelectField("Discount Type",coerce=int,validators=[DataRequired()])
     discount=FloatField("Discount",validators=[DataRequired()])
     coupon_img_url = FileField("Image (Selecting an Image will replace the previous Image)")
