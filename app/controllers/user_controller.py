@@ -4,7 +4,7 @@ from app.services import UserService, RoleService
 from app.constants import roles
 from datetime import datetime
 from app.auth import get_current_user
-
+from app.utils import FileUtils
 
 class UserController:
     def __init__(self) -> None:
@@ -15,6 +15,7 @@ class UserController:
         logged_in_user,roles=get_current_user().values()
         form = CreateUserForm()
         if form.validate_on_submit():
+            filepath=FileUtils.save('users',[form.profile_photo_url.data])
             self.user_service.create(
                 email=form.email.data,
                 password=form.password.data,
@@ -22,7 +23,8 @@ class UserController:
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
                 created_by=logged_in_user.id,
-                created_at=datetime.now()
+                created_at=datetime.now(),
+                profile_photo_url=filepath
             )
             return redirect(url_for("user.index"))
         return render_template("admin/user/add.html", form=form)
@@ -31,7 +33,7 @@ class UserController:
         return render_template("admin/user/index.html")
 
     def get_user_data(self):
-        columns = ["id", "first_name", "email", "is_active", "mobile", "last_name"]
+        columns = ["id", "first_name", "email", "is_active", "mobile", "last_name", "profile_photo_url"]
         data = self.user_service.get(request, columns)
         data = self.role_service.add_roles_with_users(data)
         return jsonify(data)
@@ -41,6 +43,11 @@ class UserController:
         user = self.user_service.get_by_id(id)
         form = UpdateUserForm(obj=user)
         if form.validate_on_submit():
+            filepath=user.profile_photo_url
+            new_filepath=FileUtils.save('users',[form.profile_photo_url.data])
+            if new_filepath:
+                FileUtils.delete(filepath)
+                filepath=new_filepath
             self.user_service.update(
                 id=id,
                 email=form.email.data,
@@ -49,7 +56,8 @@ class UserController:
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
                 updated_by=logged_in_user.id,
-                updated_at=datetime.now()
+                updated_at=datetime.now(),
+                profile_photo_url=filepath
             )
             return redirect(url_for("user.index"))
         return render_template("admin/user/update.html", id=id, form=form)
