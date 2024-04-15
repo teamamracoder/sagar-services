@@ -13,6 +13,7 @@
                 <th># id</th>
                 <th>Product Name</th>
                 <th>User Id</th>
+                <th>Images</th>
                 <th>Review Title</th>
                 <th>Description</th>
                 <th>Rating</th>
@@ -36,6 +37,22 @@
                 { "data": "id" },
                 { "data": "product_name"},
                 { "data": "user_id" },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        if(row.product_review_img_urls!=null){
+                            let images='<span>';
+                            for (image of row.product_review_img_urls){
+                                if(image != ''){
+                                    images+=`<img src="../../${image}" class="adminTableImg">`;
+                                }
+                            }
+                            images+='</span>';
+                            return images;
+                        }
+                        return null
+                    }
+                },
                 { "data": "review_title"},
                 { "data": "description"},
                 { "data": "rating"},
