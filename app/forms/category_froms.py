@@ -9,4 +9,4 @@ class CreateCategoryForm(FlaskForm):
 
 class UpdateCategoryForm(FlaskForm):
     category_name = StringField("Name", validators=[DataRequired()])
-    category_img_url = FileField('Image')
+    category_img_url = FileField('Image (selecting an Image will replace previous One)')
