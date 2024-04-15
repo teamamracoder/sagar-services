@@ -120,3 +120,12 @@ class BookingController:
     def details(self,id):
         booking=self.booking_service.get_by_id(id)
         return render_template("admin/booking/details.html",booking=booking)
+
+
+    
+
+
+    ## customer controllers ##
+
+    def customer_get(self):
+        return render_template("customer/my_bookings.html")

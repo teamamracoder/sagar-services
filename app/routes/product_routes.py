@@ -47,3 +47,12 @@ def status(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def details(id):
     return product_controller.details(id)
+
+
+
+
+## customer routes ##
+
+@product_bp.route("/products/")
+def customer_index():
+    return product_controller.customer_get()
