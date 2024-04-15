@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th># Id</th>
+                <td>Profile Picture</td>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -40,6 +41,15 @@
             },
             "columns": [
                 { "data": "id" },
+                { 
+                    "data": "profile_photo_url",
+                    "render": function (data, type, row) {
+                        if(row.profile_photo_url != null){
+                            return `<img src="../../${row.profile_photo_url}" class="adminTableImg">` ;
+                        }
+                        return null
+                    }
+                },
                 { "data": "first_name" },
                 { "data": "last_name" },
                 { 

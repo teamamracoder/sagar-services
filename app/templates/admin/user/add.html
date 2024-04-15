@@ -7,7 +7,7 @@
 <div class="container">
     <h3 class="text-center my-3">Add User</h3>
 
-    <form method="POST" action="{{ url_for('user.add') }}" id="adminForm">
+    <form method="POST" action="{{ url_for('user.add') }}" id="adminForm" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">
@@ -29,6 +29,10 @@
             <div class="col-12">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.profile_photo_url.label(class="form-label") }}
+                {{ form.profile_photo_url(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
