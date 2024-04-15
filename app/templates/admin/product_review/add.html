@@ -27,7 +27,7 @@
             <div class="col-12">
                 {{ form.hidden_tag() }}
                 {{ form.product_review_img_urls.label(class="form-label") }}
-                {{ form.product_review_img_urls(class="form-control form-control-sm") }}
+                {{ form.product_review_img_urls(class="form-control form-control-sm", multiple="multiple" ,class="multi with-preview", accept="gif|jpg|png|jpeg|webp") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
