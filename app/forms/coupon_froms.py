@@ -17,6 +17,6 @@ class UpdateCouponForm(FlaskForm):
     expiry_date=DateField("Expiry Date",validators=[DataRequired()])
     discount_type=SelectField("Discount Type",coerce=int,validators=[DataRequired()])
     discount=FloatField("Discount",validators=[DataRequired()])
-    coupon_img_url = FileField("Image")
+    coupon_img_url = FileField("Image (Selecting an Image will replace the previous Image)")
     count=IntegerField("Count",validators=[DataRequired()])
     
