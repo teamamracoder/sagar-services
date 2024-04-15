@@ -1,8 +1,9 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateServiceReviewForm, UpdateServiceReviewForm
+from app.forms import CreateServiceReviewForm
 from app.services import ServiceReviewService, ServiceService
 from datetime import datetime
 from app.auth import get_current_user
+from app.utils import FileUtils
 
 
 class ServiceReviewController:
@@ -27,13 +28,14 @@ class ServiceReviewController:
         form.service_id.choices = [(service.id, service.service_name) for service in services]
        
         if form.validate_on_submit():
+            filepath=FileUtils.save('service_reviews',*form.service_review_img_urls.data)
             self.service_review_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 user_id=logged_in_user.id,   
                 review_title=form.review_title.data,
                 description=form.description.data,
-                # img_urls=form. img_urls.data,
+                service_review_img_urls=filepath,
                 rating=form.rating.data,
                 service_id=form.service_id.data,
             )
@@ -41,33 +43,34 @@ class ServiceReviewController:
             # return render_template("admin/service_review/add.html", form=form, error="product_review already exists")
         return render_template("admin/service_review/add.html", form=form)
 
-    def update(self, id):
-        logged_in_user,roles=get_current_user().values()
-        service_review = self.service_review_service.get_by_id(id)
-        if service_review is None:
-            return render_template("admin/error/something_went_wrong.html")
+    # def update(self, id):
+    #     logged_in_user,roles=get_current_user().values()
+    #     service_review = self.service_review_service.get_by_id(id)
+    #     if service_review is None:
+    #         return render_template("admin/error/something_went_wrong.html")
             
 
-        service = self.service_service.get_by_id(service_review.service_id)
-        print(service.id, service.service_name)
-        form = UpdateServiceReviewForm(obj=service_review)
-        form.service_id.choices = [(service.id, service.service_name)]
+    #     service = self.service_service.get_by_id(service_review.service_id)
+    #     print(service.id, service.service_name)
+    #     form = UpdateServiceReviewForm(obj=service_review)
+    #     form.service_id.choices = [(service.id, service.service_name)]
 
-        if form.validate_on_submit():
-            self.service_review_service.create(
-                id=id,
-                updated_by=logged_in_user.id,
-                updated_at=datetime.now(),
-                user_id=logged_in_user.id,   
-                review_title=form.review_title.data,
-                description=form.description.data,
-                # img_urls=form. img_urls.data,
-                rating=form.rating.data,
-                service_id=form.service_id.data,
-            )
+    #     if form.validate_on_submit():
+    #         filepath=FileUtils.save('service_reviews',*form.service_review_img_urls.data)
+    #         self.service_review_service.create(
+    #             id=id,
+    #             updated_by=logged_in_user.id,
+    #             updated_at=datetime.now(),
+    #             user_id=logged_in_user.id,   
+    #             review_title=form.review_title.data,
+    #             description=form.description.data,
+    #             service_review_img_urls=filepath,
+    #             rating=form.rating.data,
+    #             service_id=form.service_id.data,
+    #         )
             
-            return redirect(url_for("service_review.index"))
-        return render_template("admin/service_review/update.html", id=id, form=form)
+    #         return redirect(url_for("service_review.index"))
+    #     return render_template("admin/service_review/update.html", id=id, form=form)
 
     def status(self, id):
         service_review = self.service_review_service.get_by_id(id)

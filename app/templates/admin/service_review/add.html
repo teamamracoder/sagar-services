@@ -24,6 +24,11 @@
                 {{ form.rating.label(class="form-label") }}
                 {{ form.rating(class="form-control form-control-sm") }}
             </div>
+            <div class="col-12">
+                {{ form.hidden_tag() }}
+                {{ form.service_review_img_urls.label(class="form-label") }}
+                {{ form.service_review_img_urls(class="form-control form-control-sm") }}
+            </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
                 <a href="{{ url_for('service_review.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
@@ -39,7 +44,7 @@
                 review_title: {
                     required: true,
                     minlength: 5,
-                    maxlength: 50
+                    maxlength: 30
                 },
                 description: {
                     required: true,
@@ -59,12 +64,12 @@
                 review_title: {
                     required: "Please enter Review",
                     minlength: "Title must be at least 5 characters long",
-                    maxlength: "Title must not exceed 50 characters"
+                    maxlength: "Title must not exceed 30 characters"
                 },
                 description: {
                     required: "Please enter Description",
-                    minlength: "Description must be at least 5 characters long",
-                    maxlength: "Description must not exceed 50 characters"
+                    minlength: "Description must be at least 10 characters long",
+                    maxlength: "Description must not exceed 100 characters"
                 },
                 rating: {
                     required: "Please provide a Rating",

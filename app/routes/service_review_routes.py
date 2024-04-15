@@ -23,14 +23,7 @@ def get_service_review_data():
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def add():
     return service_review_controller.create()
-
-
-@service_review_bp.route("/admin/service_reviews/update/<int:id>", methods=["GET", "POST"])
-@login_required
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
-def update(id):
-    return service_review_controller.update(id)
-
+    
 
 @service_review_bp.route("/admin/service_reviews/status/<int:id>", methods=["GET", "PATCH"])
 @login_required
