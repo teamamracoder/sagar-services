@@ -5,9 +5,8 @@ from .common_utils import CommonUtils
 class FileUtils:
 
     @staticmethod
-    def save(dir: str, *files) -> (list | str | None):
+    def save(dir: str, files) -> (list | str | None):
         try:
-
             # added default location for files
             upload_dir=os.path.join("app","static","uploads",dir)
 
@@ -18,7 +17,7 @@ class FileUtils:
             for file in files:
                 # check if file is empty
                 if file.filename == "":
-                    return None
+                    return ""
                 
                 # modify file name
                 filename = FileUtils.get_unique_filename(file.filename)

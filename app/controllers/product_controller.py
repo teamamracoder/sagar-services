@@ -29,9 +29,10 @@ class ProductController:
         categories=self.category_service.get_active()
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
         form.payment_methods.choices = payment_methods.get_all_items()
-
         if form.validate_on_submit():
-            filepath=FileUtils.save('products',*form.product_img_urls.data)
+            filepath=FileUtils.save('products',form.product_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             self.product_service.create(
@@ -67,10 +68,10 @@ class ProductController:
 
         if form.validate_on_submit():
             filepath=product.product_img_urls
-            if not filepath:
-                filepath=[]
-            new_filepath=FileUtils.save('products',*form.product_img_urls.data)
-            filepath.extend(new_filepath) if isinstance(new_filepath, list) else filepath.append(new_filepath)
+            new_filepath=FileUtils.save('products',form.product_img_urls.data)
+            if isinstance(new_filepath,str):
+                new_filepath=[new_filepath]
+            all_filepath=filepath+new_filepath
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             updated_data = {
@@ -81,7 +82,7 @@ class ProductController:
                 'price': form.price.data,
                 'discount': form.discount.data,
                 'stock': form.stock.data,
-                'product_img_urls': filepath,
+                'product_img_urls': all_filepath,
                 'specifications': form.specifications.data,
                 'payment_methods': form.payment_methods.data,
                 'available_area_pincodes': pincode_list,
