@@ -114,7 +114,12 @@ class ProductController:
         return render_template("admin/product/details.html",product=product)
 
 
-    # customer product-details
+    
+     ## customer controllers ##
+
+    def customer_get(self):
+        return render_template("customer/products.html")
+
     def product_details_customer_get(self):
         # product = self.product_service.get_by_id(id)
         return render_template("customer/product_details.html")

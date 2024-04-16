@@ -9,7 +9,7 @@
 <div class="container">
     <h3 class="text-center my-3">Update Coupon</h3>
 
-    <form method="POST" action="{{ url_for('coupon.update',id=id) }}" id="AddCouponForm">
+    <form method="POST" action="{{ url_for('coupon.update',id=id) }}" id="AddCouponForm" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="row">
             <div class="col-12">

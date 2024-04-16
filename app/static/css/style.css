@@ -43,7 +43,7 @@
 .pagination{
   --bs-pagination-focus-box-shadow: none;
 }
-.pagination li{
+.dt-paging-button{
   border:1px solid #0003;
 } 
 
@@ -84,4 +84,152 @@ div.dt-processing>div:last-child>div {
 .adminTableImg{
   width: 60px;
   object-fit: contain;
+}
+
+.MultiFile-title{
+  display: none;
+}
+.MultiFile-remove{
+  color: black;
+  text-decoration: none;
+  font-size: larger;
+}
+
+
+/**************************************************************************************
+customer page buttons
+**************************************************************************************/
+
+.link-blue{
+  color: #318CE7;
+}
+.dropdown-sort .dropdown-item:hover{
+  color: white;
+}
+.btn-blue{
+  background:linear-gradient(to top left, #8fbfef, #2178cf);
+  color: white;
+  border-radius: 0;
+  text-transform: uppercase;
+  border: 1px solid #318CE7;
+  text-decoration: none;
+}
+.btn-blue:hover{
+  border: 1px solid #1c66b1;
+  background-color: #1c66b1;
+  color: white;
+}
+.btn-outline-blue{
+  text-decoration: none;
+  background-color: #FFF;
+  color: #318CE7;
+  border-radius: 0;
+  border: 1px solid #318CE7;
+  text-transform: uppercase;
+  transition: background 0.5s, color 0.5s;
+}
+.btn-outline-blue:hover{
+  background:linear-gradient(to top left, #6baae8, #2178cf);
+  border: 1px solid #318CE7;
+  color: white;
+}
+
+
+/**************************************************************************************
+products (product list) page 
+**************************************************************************************/
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.product-item {
+  transition: .5s;
+}
+
+.product-action {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .5s;
+}
+
+.product-action a.btn {
+  position: relative;
+  margin: 0 3px;
+  margin-top: 100px;
+  opacity: 0;
+}
+
+.product-item:hover {
+  box-shadow: 0 0 30px #DDDDDD;
+}
+
+.product-item:hover .product-action {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.product-item:hover .product-action a.btn:first-child {
+  opacity: 1;
+  margin-top: 0;
+  transition: .3s 0s;
+}
+
+.product-item:hover .product-action a.btn:nth-child(2) {
+  opacity: 1;
+  margin-top: 0;
+  transition: .3s .05s;
+}
+
+.product-item:hover .product-action a.btn:nth-child(3) {
+  opacity: 1;
+  margin-top: 0;
+  transition: .3s .1s;
+}
+
+.product-item:hover .product-action a.btn:nth-child(4) {
+  opacity: 1;
+  margin-top: 0;
+  transition: .3s .15s;
+}
+
+.product-item .product-img img {
+  transition: .5s;
+}
+
+.product-item:hover .product-img img {
+  transform: scale(1.2);
+}
+
+.custom-control {
+  position: relative;
+  z-index: 1;
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.custom-control-input {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  width: 1rem;
+  height: 1.25rem;
+  opacity: 1;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #2178cf;
+  background: linear-gradient(to top left, #8fbfef, #2178cf);
+}
+
+.custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+  vertical-align: top;
 }

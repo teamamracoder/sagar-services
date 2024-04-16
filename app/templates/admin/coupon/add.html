@@ -8,7 +8,7 @@
 <div class="container">
     <h3 class="text-center my-3">Add Coupon</h3>
 
-    <form method="POST" action="{{ url_for('coupon.add') }}" id="AddCouponForm">
+    <form method="POST" action="{{ url_for('coupon.add') }}" id="AddCouponForm" enctype="multipart/form-data">
 
         {{ form.csrf_token }}
         <div class="row">

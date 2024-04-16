@@ -42,3 +42,9 @@ class WishlistController:
         if is_active:
             return {"status":"success","message":"Wishlist Activated","data":is_active}
         return {"status":"success","message":"Wishlist Deactivated","data":is_active}
+    
+
+
+
+    def customer_get(self):
+        return render_template("customer/wishlist.html")

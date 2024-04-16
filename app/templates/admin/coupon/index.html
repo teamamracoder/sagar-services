@@ -18,9 +18,11 @@
             <tr>
                 <th># id</th>
                 <th>Coupon Code</th>
+                <th>Image</th>
                 <th>Discount</th>
                 <th>Discount Type</th>
                 <th>Expiry Date</th>
+                <th>Count</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -40,10 +42,24 @@
             "columns": [
                 { "data": "id" },
                 { "data": "coupon_code" },
-                
+                { 
+                    "data": "coupon_img_url",
+                    "render": function (data, type, row) {
+                        if(row.coupon_img_url != null){
+                            return `<img src="../../${row.coupon_img_url}" class="adminTableImg">` ;
+                        }
+                        return null
+                    }
+                },
                 { "data": "discount" },
                 { "data": "discount_type_name" },
-                { "data": "expiry_date" },
+                { 
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return getFormattedDateTime(row.expiry_date);
+                    }
+                    
+                },
                 { "data": "count" },
                 {
                     "data": null,

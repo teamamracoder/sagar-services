@@ -40,7 +40,10 @@
                 { 
                     "data": "category_img_url",
                     "render": function (data, type, row) {
-                        return `<img src="../../${row.category_img_url}" class="adminTableImg">` ;
+                        if(row.category_img_url != null){
+                            return `<img src="../../${row.category_img_url}" class="adminTableImg">` ;
+                        }
+                        return null
                     }
                 },
                 { "data": "category_name"},
