@@ -13,6 +13,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/scrollbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sujit.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/subhasis.css') }}">
+    <!-- Owl carousel css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+        integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+        integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+        crossorigin="anonymous" />
 
     <!-- js -->
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
@@ -24,39 +34,214 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/jquery.MultiFile.min.js') }}"></script>
+   
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('home.index') }}">Sagar Services</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top "  id="nav">
+        <div class="container-fluid" id="navContent">
+            <a class="navbar-brand" href="#"><img class="companyLogo" src="../../static/img/" alt="Logo">Sagar Services</a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#NavBarForSagarservice" aria-controls="NavBarForSagarservice" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url_for('home.index') }}">Home</a>
+
+            <div class="collapse navbar-collapse ">
+                <ul class="navbar-nav stroke ms-auto">
+                    <li class="nav-item navtext">
+                        <a class="nav-link " aria-current="page" href="#Home">Home</a>
+                    </li>
+                    <li class="nav-item navtext">
+                        <a class="nav-link " href="#Product">Product</a>
+                    </li>
+                    <li class="nav-item navtext">
+                        <a class="nav-link " href="#ServiceSection">Services</a>
+                    </li>
+
+                    <li class="nav-item navtext">
+                        <a class="nav-link " href="#CategorySection">Category</a>
+                    </li>
+
+                    <li class="nav-item navtext">
+                        <a class="nav-link " href="#About">About</a>
+                    </li>
+                    <li class="nav-item navtext">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                <div class="dropdown-center navbar-nav ms-auto px-1">
+                    <img src="../../static/img/AVTAR.jpg" style="object-fit: contain;" class="nav-item" height="50px" alt="Login" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">My Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    </ul>
+                </div>
+
+
+                <ul class="navbar-nav ">
+                    <li class="nav-item navtext">
+                        <a class="nav-link " aria-current="page" href="#Home"><i class="bi bi-cart4"></i></a>
+                    </li>
+                    <li class="nav-item navtext">
+                        <a class="nav-link " href="#Product"><i class="bi bi-heart"></i></a>
                     </li>
                 </ul>
             </div>
+
         </div>
     </nav>
+
+    <div class="offcanvas offcanvas-start ps-5 d-lg-none" data-bs-scroll="true" tabindex="-1" id="NavBarForSagarservice"
+        aria-labelledby="sidebarBarLabel">
+        <div class="offcanvas-header">
+            <a class="navbar-brand" href="#">Sagar Services</a>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav stroke ms-auto">
+                <li class="nav-item navtext">
+                    <a class="nav-link " aria-current="page" href="#Home"><i
+                            class="bi bi-house-door-fill me-2 fs-5"></i>Home</a>
+                </li>
+                <li class="nav-item navtext">
+                    <a class="nav-link " href="#Product"><i class="bi bi-cpu me-2 fs-5"></i>Product</a>
+                </li>
+                <li class="nav-item navtext">
+                    <a class="nav-link " href="#Services"><i
+                            class="bi bi-gear-wide-connected me-2 fs-5"></i>Services</a>
+                </li>
+                <li class="nav-item navtext">
+                    <a class="nav-link " href="#Product">Product</a>
+                </li>
+                <li class="nav-item navtext">
+                    <a class="nav-link " href="#Category">Category</a>
+                </li>
+
+                <li class="nav-item navtext">
+                    <a class="nav-link " href="#About">About</a>
+                </li>
+                <li class="nav-item navtext">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+            </ul>
+            <div class="dropdown-center navbar-nav ms-auto pe-3">
+                <img src="/img/AVTAR.jpg" height="50px" width="50px" alt="Login" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">My Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Wishlist</a></li>
+                    <li><a class="dropdown-item" href="#">Card</a></li>
+                </ul>
+            </div>
+            <ul class="navbar-nav ">
+                <li class="nav-item navtext">
+                    <a class="nav-link" href="#"><i class="bi bi-cart4 me-2 fs-5"></i>Cart</a>
+                </li>
+                <li class="nav-item navtext">
+                    <a class="nav-link" href="#Product"><i class="bi bi-heart  me-2 fs-5"></i>WishList</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Navbar End -->
 
     <div class="container-fluid" style="min-height: 600px;">
         {% block content %}{% endblock %}
     </div>
 
-    <footer>
-        <div class="bg-dark text-white text-center">all rights are reserved &copy; {{'2024'}}</div>
+    <!-- Footer section -->
+    <footer id="footer" class="pt-4 pb-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 col-sm-6 footer-contact mb-3 col-12 ">
+                    <h3>Sagar Services</h3>
+                    <p>
+                        Sagar Services | DurgaBari, Cooch Behar–736172
+                        <br><br>
+                        <strong>Phone:</strong> +91 7362264320, +91 7361564320<br>
+                        <strong>Email:</strong> sagar@services.com<br>
+                    </p>
+                </div>
+                <div class="col-md-3 col-lg-2 col-sm-6 col-6 footer-links mb-3">
+                    <h5><strong>Information</strong></h5>
+                    <ul class="change-text px-2">
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Discounts</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#AboutSection">Brands</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#ServiceSection">FAQ</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Products Types</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-lg-2 col-sm-6 col-6 footer-links mb-3">
+                    <h5><strong>My Account</strong></h5>
+                    <ul class="change-text px-2">
+                        <li><i class="bi bi-caret-right"></i> <a href="#">My Account</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Track Order</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Wish List</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-lg-2 col-sm-6 col-6 footer-links mb-3">
+                    <h5><strong>Useful Links</strong></h5>
+                    <ul class="change-text px-2">
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Home</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">About us</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Products</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Privacy policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-lg-2 col-sm-6 col-6 footer-links mb-3">
+                    <h5><strong>Our Services</strong></h5>
+                    <ul class="change-text">
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Assemble Computer</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Order Products</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Repair Products</a></li>
+                        <li><i class="bi bi-caret-right"></i> <a href="#">Exchange Products</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container pb-4 pt-2">
+            <div class="social-links text-center pt-md-0">
+                <a href="#" class="twitter social-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="facebook social-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instragram social-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Instargaam"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="email social-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Email"><i
+                        class="bi bi-envelope-paper"></i></a>
+
+            </div>
+            <div class="text-center pt-2">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>Sagar Services</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </div>
     </footer>
+    <!-- Footer section -->
+
+        <!-- ScrollButton -->
+        <div onclick="scrollToTop()" id="scrollDiv">
+            <span class="material-symbols-outlined" id="scrollButton"><i class="bi bi-caret-up"></i></i></span>
+        </div>
+        <!-- ScrollButton End -->
 
     <!-- tooltip -->
     <script>
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
+
+
+
+    <script src="{{ url_for('static', filename='js/sujit.js') }}"></script>
+    
 
 </body>
 
