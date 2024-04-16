@@ -134,6 +134,15 @@ customer page buttons
   color: white;
 }
 
+/* nav position */
+#nav{
+  background-color: #fffd;
+  box-shadow: 4px 0px 4px #0002;
+}
+
+
+
+
 
 /**************************************************************************************
 products (product list) page 

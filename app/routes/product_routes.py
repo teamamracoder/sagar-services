@@ -56,3 +56,9 @@ def details(id):
 @product_bp.route("/products/")
 def customer_index():
     return product_controller.customer_get()
+
+@product_bp.route("/product_details/", methods=["GET", "PATCH"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF"), roles.get_key("CUSTOMER")])
+def product_details():
+    return product_controller.product_details_customer_get()
