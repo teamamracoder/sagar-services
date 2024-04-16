@@ -17,42 +17,21 @@ for (var i = 0; i < SmallImg.length; i++) {
 var cursor = document.querySelector("#cursor");
 var images = document.querySelectorAll(".img-container");
 
-document.addEventListener("mousemove", function(event) {
-  var x = event.clientX;
-  var y = event.clientY;
-  cursor.style.left = x + "px";
-  cursor.style.top = y + "px";
-});
-
-images.forEach(function(image) {
-  image.addEventListener("mouseenter", function() {
-    cursor.style.display = "block";
-  });
-
-  image.addEventListener("mouseleave", function() {
+images.forEach(image => {
+  image.addEventListener("mouseenter", () => cursor.style.display = "block");
+  image.addEventListener("mouseleave", () => {
     cursor.style.display = "none";
-    image.querySelector("img").style.transform = ""; // Reset image transformation
+    image.querySelector("img").style.transform = "";
   });
-
-  image.addEventListener("mousemove", function(event) {
-    var rect = image.getBoundingClientRect();
-    var offsetX = event.clientX - rect.left;
-    var offsetY = event.clientY - rect.top;
-    var containerWidth = image.offsetWidth;
-    var containerHeight = image.offsetHeight;
-    var imageWidth = image.querySelector("img").naturalWidth;
-    var imageHeight = image.querySelector("img").naturalHeight;
-    var scale = 1.2; // Zoom factor
-    var zoomedWidth = imageWidth * scale;
-    var zoomedHeight = imageHeight * scale;
-    var translateX = (zoomedWidth - containerWidth) / 2;
-    var translateY = (zoomedHeight - containerHeight) / 2;
-    var backgroundPositionX = -(offsetX * scale - offsetX - translateX);
-    var backgroundPositionY = -(offsetY * scale - offsetY - translateY);
-    image.querySelector("img").style.transform = `translate(${backgroundPositionX}px, ${backgroundPositionY}px) scale(${scale})`;
+  image.addEventListener("mousemove", event => {
+    var rect = image.getBoundingClientRect(),
+        offsetX = event.clientX - rect.left,
+        offsetY = event.clientY - rect.top,
+        scale = 1.2,
+        translateX = (image.offsetWidth * scale - image.offsetWidth) / 2,
+        translateY = (image.offsetHeight * scale - image.offsetHeight) / 2;
+    image.querySelector("img").style.transform = `translate(${-(offsetX * scale - offsetX - translateX)}px, ${-(offsetY * scale - offsetY - translateY)}px) scale(${scale})`;
+    cursor.style.left = event.clientX + "px";
+    cursor.style.top = event.clientY + "px";
   });
 });
-
-
-
-

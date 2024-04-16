@@ -27,3 +27,17 @@ const getFormattedTime = (datetime)=>{
     let formattedTime = date.toLocaleString('en-GB', options);
     return(formattedTime);
 };
+
+
+// nav transparent
+// $(document).ready(function(){
+//     $(window).scroll(function(){
+//       if($(this).scrollTop() > 50){
+//         $('#nav').css('background', 'linear-gradient(to top left, #8fbfef, #2178cf)');
+//         $('.nav-link').css('color', '#fff');
+//       } else {
+//         $('.nav-link').css('color', '#000');
+//         $('#nav').css('background', 'transparent');
+//       }
+//     });
+//   });
