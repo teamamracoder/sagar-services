@@ -108,7 +108,13 @@ class ProductController:
     def get_total_price(self):
         price_calculated_data=self.product_service.get_total_price(request)
         return jsonify(price_calculated_data)
-    
+    # admin product details
     def details(self,id):
         product=self.product_service.get_by_id(id)
         return render_template("admin/product/details.html",product=product)
+
+
+    # customer product-details
+    def product_details_customer_get(self):
+        # product = self.product_service.get_by_id(id)
+        return render_template("customer/product_details.html")

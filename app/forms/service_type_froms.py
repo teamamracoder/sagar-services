@@ -11,4 +11,4 @@ class CreateServiceTypeForm(FlaskForm):
 
 class UpdateServiceTypeForm(FlaskForm):
     type_name = StringField("Service Type Name", validators=[DataRequired()])
-    service_type_img_url = FileField("Service Image")
+    service_type_img_url = FileField("Image [selecting an Image will replace previous One]")

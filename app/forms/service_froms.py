@@ -20,7 +20,7 @@ class UpdateServiceForm(FlaskForm):
     available_area_pincodes = StringField("Available Area Pincode(use comma separated)", validators=[DataRequired()])
     payment_methods = SelectMultipleField("Payment Methods", validators=[DataRequired()], coerce=int)
     discount = FloatField("Discount")
-    service_img_urls = MultipleFileField("Image")
+    service_img_urls = MultipleFileField("Image [Selecting image or images will add with previous images]")
 
 
 

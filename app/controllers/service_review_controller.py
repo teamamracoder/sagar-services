@@ -28,7 +28,9 @@ class ServiceReviewController:
         form.service_id.choices = [(service.id, service.service_name) for service in services]
        
         if form.validate_on_submit():
-            filepath=FileUtils.save('service_reviews',*form.service_review_img_urls.data)
+            filepath=FileUtils.save('service_reviews',form.service_review_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
             self.service_review_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),

@@ -31,8 +31,8 @@ class ServiceController:
 
         if form.validate_on_submit():
             filepath=FileUtils.save('services',form.service_img_urls.data)
-            if(filepath,str):
-                filepath = [filepath]
+            if isinstance(filepath,str):
+                filepath=[filepath]
 
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
@@ -66,9 +66,15 @@ class ServiceController:
         form.payment_methods.choices = payment_methods.get_all_items()
         
         if form.validate_on_submit():
-            filepath=FileUtils.save('services',*form.service_img_urls.data)
-            if(filepath,str):
-                filepath = [filepath]
+            filepath = service.service_img_urls
+            print(filepath)
+            print(type(filepath))
+            
+            new_filepath=FileUtils.save('services',form.service_img_urls.data)
+            if isinstance(new_filepath,str):
+                new_filepath=[new_filepath]
+            all_filepath=filepath+new_filepath
+
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             
@@ -82,7 +88,7 @@ class ServiceController:
                 available_area_pincodes=pincode_list,
                 payment_methods=form.payment_methods.data,
                 discount=form.discount.data,
-                service_img_urls=filepath,
+                service_img_urls=all_filepath,
                 service_type_id=form.service_type_id.data,
             )
             return redirect(url_for("service.index"))

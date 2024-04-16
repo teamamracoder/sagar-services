@@ -24,7 +24,7 @@ class ServiceTypeController:
         logged_in_user,roles=get_current_user().values()
         form = CreateServiceTypeForm()
         if form.validate_on_submit():
-            filepath=FileUtils.save('service_types',*form.service_type_img_url.data)
+            filepath=FileUtils.save('service_types',[form.service_type_img_url.data])
             self.service_type_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
@@ -42,8 +42,12 @@ class ServiceTypeController:
         form = UpdateServiceTypeForm(obj=service_type)
 
         if form.validate_on_submit():
-            filepath=FileUtils.save('service_types',*form.service_type_img_url.data)
-            self.service_type_service.update(
+            filepath=service_type.service_type_img_url
+            new_filepath=FileUtils.save('service_types',[form.service_type_img_url.data])
+            if new_filepath:
+                FileUtils.delete(filepath)
+                filepath=new_filepath
+                self.service_type_service.update(
                 id=id,
                 updated_by=logged_in_user.id,
                 updated_at=datetime.now(),
