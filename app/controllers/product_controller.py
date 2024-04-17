@@ -120,6 +120,6 @@ class ProductController:
     def customer_get(self):
         return render_template("customer/products.html")
 
-    def product_details_customer_get(self):
+    def product_details(self):
         # product = self.product_service.get_by_id(id)
         return render_template("customer/product_details.html")

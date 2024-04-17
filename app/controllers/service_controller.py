@@ -113,3 +113,9 @@ class ServiceController:
     def details(self,id):
         service=self.service_service.get_by_id(id)
         return render_template("admin/service/details.html",service=service)
+
+
+
+    # customer section
+    def service_details(self):
+        return render_template("customer/service_details.html")
