@@ -39,6 +39,5 @@ def status(id):
 
 @wishlist_bp.route("/wishlist/")
 @login_required
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF"), roles.get_key("CUSTOMER")])
-def customer_index():
-    return wishlist_controller.customer_get()
+def wishlist_page():
+    return wishlist_controller.wishlist_page()

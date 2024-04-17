@@ -59,6 +59,5 @@ def details(id):
 
 @booking_bp.route("/my_bookings/")
 @login_required
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF"), roles.get_key("CUSTOMER")])
-def customer_index():
-    return booking_controller.customer_get()
+def booking_page():
+    return booking_controller.booking_page()

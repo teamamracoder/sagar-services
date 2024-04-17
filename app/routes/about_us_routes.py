@@ -6,5 +6,5 @@ about_us_controller = AboutUsController()
 
 
 @about_us_bp.route("/about_us/")
-def index():
-    return about_us_controller.customer_get()
+def about_us_page():
+    return about_us_controller.about_us_page()

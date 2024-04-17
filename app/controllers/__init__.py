@@ -22,3 +22,4 @@ from .booking_controller import BookingController
 from .staff_controller import StaffController
 from .product_qna_controller import ProductQnAController
 from .about_us_controller import AboutUsController
+from .privacy_policy_controller import PrivacyPolicyController
