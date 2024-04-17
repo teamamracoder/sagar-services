@@ -59,5 +59,10 @@ def details(id):
 
 @booking_bp.route("/my_bookings/")
 @login_required
-def booking_page():
-    return booking_controller.booking_page()
+def bookings_page():
+    return booking_controller.bookings_page()
+
+@booking_bp.route("/checkout/")
+@login_required
+def checkouts_page():
+    return booking_controller.checkout_page()

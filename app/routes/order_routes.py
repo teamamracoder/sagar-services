@@ -62,3 +62,9 @@ def details(id):
 @login_required
 def orders_page():
     return order_controller.orders_page()
+
+
+@order_bp.route("/checkout/")
+@login_required
+def checkouts_page():
+    return order_controller.checkout_page()

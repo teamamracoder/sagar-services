@@ -125,5 +125,8 @@ class OrderController:
 
     ## customer controllers ##
 
-    def customer_get(self):
+    def orders_page(self):
         return render_template("customer/my_orders.html")
+    
+    def checkout_page(self):
+        return render_template("customer/checkout.html")

@@ -129,3 +129,6 @@ class BookingController:
 
     def bookings_page(self):
         return render_template("customer/my_bookings.html")
+    
+    def checkout_page(self):
+        return render_template("customer/checkout.html")
