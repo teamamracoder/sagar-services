@@ -127,5 +127,8 @@ class BookingController:
 
     ## customer controllers ##
 
-    def customer_get(self):
+    def bookings_page(self):
         return render_template("customer/my_bookings.html")
+    
+    def checkout_page(self):
+        return render_template("customer/checkout.html")

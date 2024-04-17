@@ -74,3 +74,15 @@ class UserController:
     def details(self,id):
         user=self.user_service.get_by_id(id)
         return render_template("admin/user/details.html",user=user)
+    
+
+
+
+
+
+
+    ## customer controllers ##
+
+
+    def my_profile_page(self):
+        return render_template("customer/my_profile.html")

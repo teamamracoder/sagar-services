@@ -60,6 +60,11 @@ def details(id):
 
 @order_bp.route("/my_orders/")
 @login_required
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF"), roles.get_key("CUSTOMER")])
-def customer_index():
-    return order_controller.customer_get()
+def orders_page():
+    return order_controller.orders_page()
+
+
+@order_bp.route("/checkout/")
+@login_required
+def checkouts_page():
+    return order_controller.checkout_page()

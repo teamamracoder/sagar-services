@@ -45,6 +45,7 @@ class WishlistController:
     
 
 
+    ## customer controllers ##
 
-    def customer_get(self):
+    def wishlist_page(self):
         return render_template("customer/wishlist.html")

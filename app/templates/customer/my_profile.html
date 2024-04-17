@@ -1,0 +1,117 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<style>
+    
+</style>
+<div class="container">
+    <div class="row">
+        <div class="card my-2 px-0 rounded-0">
+            <div class="card-header">
+                <h5 class="text-center my-1">My Profile</h5>
+            </div>
+            <div class="card-body py-0">
+                <div class="row" style="min-height: 200px;">
+                    <div class="col-md-2 border-end">
+                        <div class="p-1">
+                            <div class="img mb-4">
+                                <img src="{{ url_for('static', filename='img/about_us.jpg') }}" alt="Photo" class=""style="width: 150px; height: 150px; border-radius: 100%;">
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  User Name  
+                                </button>
+                                <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item" href="#">Logout</a></li>
+                                  <li><a class="dropdown-item" href="#">Edit</a></li>
+                                </ul>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 my-profile-section">
+                        <div class="row mb-3 mt-3">
+                            <h5>Name</h5>
+                            <div class="col-xs-12 col-sm-6 d-flex">
+                                <input readonly type="text" value="First Name" class="form-control w-50 m-1">
+                                <input readonly type="text" value="Last Name" class="form-control w-50 m-1">
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <h5>Mobile</h5>
+                           
+                            <div class="col-xs-12 col-sm-6 d-flex">
+                                <input readonly type="text" value="7846762323" class="form-control w-50 m-1">
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <h5>Email</h5>
+                           
+                            <div class="col-xs-12 col-sm-6 d-flex">
+                                <input readonly type="email" value="example@gmail.com" class="form-control w-50 m-1">
+                                <a href="#" class="btn ms-4">Change Password</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <h5>Address</h5>
+                         
+                            <div class="col-xs-12 col-sm-6 d-flex">
+                                <textarea readonly class="form-control" rows="5">dfasdf</textarea>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">                            
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <h5>Gender</h5>
+                        
+                            <div class="col-xs-12 col-sm-6 d-flex">
+                                <select name="gender" disabled class="form-control">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer my-1">
+                <a href="#"  class="btn btn-outline-dark btn-sm float-end">Back</a>
+                <a href="#" id="myProfileEditButton" class="btn btn-dark btn-sm me-1 float-end">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#myProfileEditButton").click(function () {
+            if ($("input").prop("readonly")) {
+                $("input, textarea").prop("readonly", false);
+                $("select").prop("disabled", false);
+                $(this).text("Save"); 
+            } else {
+                $("input, textarea").prop("readonly", true);
+                $("select").prop("disabled", true);
+                $(this).text("Edit");
+            }
+        });
+    });
+</script>
+
+{% endblock %}

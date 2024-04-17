@@ -39,3 +39,10 @@ def update(id):
 @role_required([roles.get_key("ADMIN")])
 def status(id):
     return contact_controller.status(id)
+
+
+
+
+@contact_bp.route("/contact_us/")
+def contact_us_page():
+    return contact_controller.contact_us_page()
