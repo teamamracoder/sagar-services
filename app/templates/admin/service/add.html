@@ -8,7 +8,7 @@
 <div class="container">
     <h3 class="text-center my-3">Add Service</h3>
 
-    <form id="adminForm" method="POST" action="{{ url_for('service.add') }}">
+    <form id="adminForm" method="POST" action="{{ url_for('service.add') }}" enctype="multipart/form-data">
         <!-- {{ form.hidden_tag() }} -->
         {{ form.csrf_token }}
         <div class="row">
@@ -41,8 +41,9 @@
                 {{ form.discount(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
+                {{ form.hidden_tag() }}
                 {{ form.service_img_urls.label(class="form-label") }}
-                {{ form.service_img_urls(class="form-control form-control-sm") }}
+                {{ form.service_img_urls(class="form-control form-control-sm", class="multi with-preview", accept="gif|jpg|png|jpeg|webp") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
@@ -60,7 +61,7 @@
                 service_name: {
                     required: true,
                     minlength: 3,
-                    maxlength: 200
+                    maxlength: 50
                 }
             },
             messages: {
@@ -88,28 +89,33 @@
                 service_charge: {
                     required: true,
                     minlength: 2,
-                    maxlength: 7
+                    maxlength: 7,
+                    digits: true
                 }
             },
             messages: {
                 service_charge: {
                     required: "Enter service charge in digits...!",
                     minlength: "Input must be at least 2 characters long",
-                    maxlength: "Input must not exceed 7 characters"
+                    maxlength: "Input must not exceed 7 characters",
+                    digits: "Input must be number"
                 }
             },
             rules: {
                 payment_methods: {
                     required: true,
                     minlength: 1,
-                    maxlength: 5
+                    maxlength: 3,
+                    digits:true
                 }
             },
             messages: {
                 payment_methods: {
                     required: "Enter payment methods...!(comma separeted int)",
                     minlength: "Input must be at least 1 characters long",
-                    maxlength: "Input must not exceed 5 characters"
+                    maxlength: "Input must not exceed 3 characters",
+                    digits: "Input must be number"
+                
                 }
             },
             submitHandler: function (form) {

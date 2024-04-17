@@ -1,0 +1,68 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">About Us</li>
+        </ol>
+    </nav>
+    <div class="section about-bg-img">
+        <div class="p-5">
+            <div class="head text-center">
+                <h1 class="mb-5 ">About Us</h1>
+            </div>
+
+            <div class="row mt-5 mb-5 align-items-end">
+                <div class="col-md-6">
+                    <div class="about-page-small-img">
+                        <img src="{{ url_for('static', filename='img/about_us.jpg') }}" alt="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="about-text">
+                        <h3>Our Company</h3>
+                        <p>
+                            <b>Welcome to Sagar-service, your ultimate destination for all things related to computer
+                                parts and accessories! At Sagar-service, we understand the importance of having reliable
+                                and
+                                high-quality components to build and upgrade your computer. Whether you're a seasoned PC
+                                enthusiast, a professional.</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 mb-5 align-items-end">
+                <div class="col-md-6 order-md-2">
+                    <div class="about-page-small-img">
+                        <img src="{{ url_for('static', filename='img/about_us.jpg') }}" alt="">
+                    </div>
+                </div>
+                <div class="col-md-6 order-md-1">
+                    <div class="about-text">
+                        <h3>Our Mission</h3>
+                        <p><b> Welcome to Sagar-service, your ultimate destination for all things related to computer
+                                parts and accessories! At Sagar-service, we understand the importance of having reliable
+                                and
+                                high-quality components to build and upgrade your computer. Whether you're a seasoned PC
+                                enthusiast, a professional.</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 p-2 d-flex justify-content-start">
+                <div class=""><a href="" class="btn"><i style="font-size: 30px;"
+                            class="bi bi-whatsapp social-link me-3"></i></a></div>
+                <div class=""><a href="" class="btn"><i style="font-size: 30px;"
+                            class="bi bi-instagram social-link me-3"></i> </a></div>
+                <div class=""><a href="" class="btn"><i style="font-size: 30px;"
+                            class="bi bi-facebook social-link me-3"></i></a></div>
+                <div class=""><a href="" class="btn"><i style="font-size: 30px;"
+                            class="bi bi-twitter-x social-link me-3"></i></a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

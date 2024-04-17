@@ -1,0 +1,47 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col">      
+            <div>
+                <table class="table table-bordered">
+                    <thead class="table table-dark table-sm">      
+                        <tr>
+                            <td>Image</td>
+                            <td>Product Name</td>
+                            <td>Model</td>               
+                            <td>Unit Price</td>
+                            <td>Total</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="{{ url_for('static', filename='img/flask-icon.png') }}" class="adminTableImg"></td>
+                            <td>Monitor LED</td>
+                            <td>LLLLLL JUHUH JNJ</td>
+                            <td><i class="bi bi-currency-rupee"></i>10000</td>
+                            <td><i class="bi bi-currency-rupee"></i>10009 </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-blue border-0 " data-toggle="tooltip"  data-bs-placement="bottom"  title="remove"><i class="bi bi-trash3"></i></button> 
+                                <button class="btn btn-sm btn-outline-blue border-0 " data-toggle="tooltip"  data-bs-placement="bottom"  title="add to cart"><i class="bi bi-cart-plus"></i></button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>       
+        </div>   
+    </div>
+</div>
+
+{% endblock %}

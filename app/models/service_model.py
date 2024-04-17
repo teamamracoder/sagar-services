@@ -41,7 +41,7 @@ class ServiceModel(db.Model):
 
     discount = db.Column(db.Double)
 
-    service_img_urls = db.Column(db.ARRAY(db.Text),default=[])
+    service_img_urls = db.Column(db.ARRAY(db.Text))
 
     service_type_id = db.Column(
         db.Integer(),

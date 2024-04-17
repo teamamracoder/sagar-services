@@ -51,3 +51,18 @@ def statuses(status_type,status,id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def details(id):
     return booking_controller.details(id)
+
+
+
+
+## customer routes ##
+
+@booking_bp.route("/my_bookings/")
+@login_required
+def bookings_page():
+    return booking_controller.bookings_page()
+
+@booking_bp.route("/checkout/")
+@login_required
+def checkouts_page():
+    return booking_controller.checkout_page()

@@ -1,0 +1,65 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}Privacy Policy{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Privacy Policy</li>
+        </ol>
+    </nav>
+    <div class="head text-center">
+        <h1 class="text-dark mb-5">Privacy Policy</h1>
+    </div>
+    <div class="policies d-flex justify-content-center">
+        <div class="w-75 p-3">
+            <h4>Collection of Personal Information:</h4>
+            <p>We collect personal information such as your name, email address, mailing address, phone number, and
+                payment details when you place an order on our website. We may also collect information about your
+                browsing behavior, IP address, and device information to improve our website's functionality and
+                user experience.</p>
+            <h4>Use of Personal Information:</h4>
+            <p>We use the personal information we collect to process and fulfill your orders, communicate with you
+                about your purchases, provide customer support, and improve our products and services. We may also
+                use your information to send you promotional offers and updates about our products and promotions,
+                but you can opt out of these communications at any time.</p>
+
+            <h4>Disclosure of Personal Information:</h4>
+            <p>We may share your personal information with trusted third-party service providers who assist us in
+                operating our website, conducting our business, or servicing you. These service providers are
+                contractually obligated to use your information only for the purposes specified by us and to keep
+                your information confidential.</p>
+
+            <h4>Data Security:</h4>
+            <p>We implement a variety of security measures to maintain the safety of your personal information when
+                you place an order or enter, submit, or access your personal information. We use encryption
+                technology to protect sensitive information transmitted online and restrict access to your
+                information to only those employees who need it to perform specific tasks.</p>
+
+            <h4>Cookies:</h4>
+            <p>We use cookies, which are small files stored on your computer's hard drive, to help us improve your
+                shopping experience and understand how you interact with our website. You can choose to disable
+                cookies through your browser settings, but please note that disabling cookies may affect the
+                functionality of our website.</p>
+
+            <h4>Third-Party Links:</h4>
+            <p>Our website may contain links to third-party websites, products, or services. These third-party sites
+                have separate and independent privacy policies, and we have no responsibility or liability for the
+                content and activities of these linked sites.</p>
+
+            <h4>Changes to Privacy Policy:</h4>
+            <p>We reserve the right to update or modify this Privacy Policy at any time without prior notice. Any
+                changes will be effective immediately upon posting on this page. We encourage you to review this
+                Privacy Policy periodically to stay informed about how we are protecting your information.</p>
+
+            <h4>Contact Us:</h4>
+            <p>If you have any questions or concerns about our Privacy Policy, please contact us at [Your Contact
+                Information].</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

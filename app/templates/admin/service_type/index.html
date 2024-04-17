@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th># id</th>
+                <th>Image</th>
                 <th>ServiceTypes</th>
                 <th>Action</th>
             </tr>
@@ -37,6 +38,15 @@
             "columns": [
                 { "data": "id" },
                 { "data": "type_name" },
+                { 
+                    "data": null,
+                    "render": function (data, type, row) {
+                        if(row.service_type_img_url != null){
+                            return `<img src="../../${row.service_type_img_url}" class="adminTableImg">` ;
+                        }
+                        return null
+                    }
+                },
                 {
                     "data": null,
                     "render": function (data, type, row) {

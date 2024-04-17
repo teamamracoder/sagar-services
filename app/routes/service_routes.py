@@ -48,3 +48,8 @@ def details(id):
     return service_controller.details(id)
 
 
+# customer routes
+@service_bp.route("/service_details/", methods=["GET", "PATCH"])
+def service_details():
+    return service_controller.service_details()
+

@@ -3,11 +3,12 @@ from app.forms import CreateServiceTypeForm, UpdateServiceTypeForm
 from app.services import ServiceTypeService
 from datetime import datetime
 from app.auth import get_current_user
-
+from app.utils import FileUtils 
 
 class ServiceTypeController:
     def __init__(self) -> None:
         self.service_type_service = ServiceTypeService()
+        
         
 
     def get(self):
@@ -15,7 +16,7 @@ class ServiceTypeController:
 
     def get_service_type_data(self):
         # Determine the column to sort by
-        columns = ["id", "created_by", "created_at", "updated_by", "updated_at", "is_active", "type_name", "service_img_url"]
+        columns = ["id", "created_by", "created_at", "updated_by", "updated_at", "is_active", "type_name", "service_type_img_url"]
         data = self.service_type_service.get(request, columns)
         return jsonify(data)
 
@@ -23,10 +24,12 @@ class ServiceTypeController:
         logged_in_user,roles=get_current_user().values()
         form = CreateServiceTypeForm()
         if form.validate_on_submit():
+            filepath=FileUtils.save('service_types',[form.service_type_img_url.data])
             self.service_type_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
-                type_name =  form.type_name.data
+                type_name =  form.type_name.data,
+                service_type_img_url = filepath
             )
             return redirect(url_for("service_type.index"))
         return render_template("admin/service_type/add.html", form=form)
@@ -39,11 +42,17 @@ class ServiceTypeController:
         form = UpdateServiceTypeForm(obj=service_type)
 
         if form.validate_on_submit():
-            self.service_type_service.update(
+            filepath=service_type.service_type_img_url
+            new_filepath=FileUtils.save('service_types',[form.service_type_img_url.data])
+            if new_filepath:
+                FileUtils.delete(filepath)
+                filepath=new_filepath
+                self.service_type_service.update(
                 id=id,
                 updated_by=logged_in_user.id,
                 updated_at=datetime.now(),
-                type_name = form.type_name.data
+                type_name = form.type_name.data,
+                service_type_img_url = filepath
             )
             return redirect(url_for("service_type.index"))
         return render_template("admin/service_type/update.html", form=form, id=id)

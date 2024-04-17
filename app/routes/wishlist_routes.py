@@ -32,3 +32,12 @@ def add():
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def status(id):
     return wishlist_controller.status(id)
+
+
+
+## customer routes ##
+
+@wishlist_bp.route("/wishlist/")
+@login_required
+def wishlist_page():
+    return wishlist_controller.wishlist_page()

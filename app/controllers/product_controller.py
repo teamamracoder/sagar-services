@@ -1,20 +1,26 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateProductForm,UpdateProductForm
 from app.services import ProductService
-from app.services import CategoryService
+from app.services import CategoryService,ProductQnAService,ProductReviewService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
+from app.utils import FileUtils
+
+
+
 class ProductController:
     def __init__(self) -> None:
         self.product_service = ProductService()
         self.category_service = CategoryService()
+        self.product_qna_service = ProductQnAService()
+        self.product_review_service = ProductReviewService()
 
     def get(self):
         return render_template("admin/product/index.html")
 
     def get_product_data(self):
-        columns = ["id", "product_name", "brand","model","price","discount","stock","created_by","created_at","updated_by", "updated_at", "is_active", "category_id"]
+        columns = ["id", "product_name", "brand","model","price","discount","stock","created_by","created_at","updated_by", "updated_at", "is_active", "category_id", "product_img_urls"]
         data = self.product_service.get(request, columns)
         combined_data = self.category_service.add_category_with_products(data)
         return jsonify(combined_data)
@@ -25,8 +31,10 @@ class ProductController:
         categories=self.category_service.get_active()
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
         form.payment_methods.choices = payment_methods.get_all_items()
-
         if form.validate_on_submit():
+            filepath=FileUtils.save('products',form.product_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             self.product_service.create(
@@ -38,7 +46,7 @@ class ProductController:
                 price=form.price.data,
                 discount=form.discount.data,
                 stock=form.stock.data,
-                product_img_urls=form.product_img_urls.data,
+                product_img_urls=filepath,
                 specifications=form.specifications.data,
                 payment_methods=form.payment_methods.data,
                 available_area_pincodes=pincode_list,
@@ -59,7 +67,13 @@ class ProductController:
         form = UpdateProductForm(obj=product)
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
         form.payment_methods.choices = payment_methods.get_all_items()
+
         if form.validate_on_submit():
+            filepath=product.product_img_urls
+            new_filepath=FileUtils.save('products',form.product_img_urls.data)
+            if isinstance(new_filepath,str):
+                new_filepath=[new_filepath]
+            all_filepath=filepath+new_filepath
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             updated_data = {
@@ -70,7 +84,7 @@ class ProductController:
                 'price': form.price.data,
                 'discount': form.discount.data,
                 'stock': form.stock.data,
-                'product_img_urls': form.product_img_urls.data,
+                'product_img_urls': all_filepath,
                 'specifications': form.specifications.data,
                 'payment_methods': form.payment_methods.data,
                 'available_area_pincodes': pincode_list,
@@ -96,7 +110,19 @@ class ProductController:
     def get_total_price(self):
         price_calculated_data=self.product_service.get_total_price(request)
         return jsonify(price_calculated_data)
-    
+    # admin product details
     def details(self,id):
         product=self.product_service.get_by_id(id)
         return render_template("admin/product/details.html",product=product)
+
+
+    
+     ## customer controllers ##
+
+    def products_page(self):
+        return render_template("customer/products.html")
+
+    def product_details_page(self,product_id):
+        product = self.product_service.get_by_id(product_id)
+        product_reviews = self.product_review_service.get_review_by_product_id(product_id)
+        return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)

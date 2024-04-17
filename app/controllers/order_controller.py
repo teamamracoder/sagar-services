@@ -120,3 +120,13 @@ class OrderController:
     def details(self,id):
         order=self.order_service.get_by_id(id)
         return render_template("admin/order/details.html",order=order)
+    
+
+
+    ## customer controllers ##
+
+    def orders_page(self):
+        return render_template("customer/my_orders.html")
+    
+    def checkout_page(self):
+        return render_template("customer/checkout.html")
