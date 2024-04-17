@@ -28,7 +28,7 @@ class FileUtils:
                 file.save(path)
                 
                 # adding uploaded file path to a list
-                uploaded_path_list.append(path.replace("\\","/").replace("app/",""))
+                uploaded_path_list.append(path.replace("\\","/").replace("app/static/",""))
 
             if len(uploaded_path_list)>1:       # multiple file inserted
                 return uploaded_path_list

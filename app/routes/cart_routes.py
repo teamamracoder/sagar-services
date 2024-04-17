@@ -52,6 +52,5 @@ def status(id):
 
 @cart_bp.route("/cart/")
 @login_required
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF"), roles.get_key("CUSTOMER")])
-def customer_index():
-    return cart_controller.customer_get()
+def cart_page():
+    return cart_controller.cart_page()

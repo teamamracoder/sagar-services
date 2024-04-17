@@ -117,9 +117,9 @@ class ProductController:
     
      ## customer controllers ##
 
-    def customer_get(self):
+    def products_page(self):
         return render_template("customer/products.html")
 
-    def product_details(self):
+    def product_details_page(self):
         # product = self.product_service.get_by_id(id)
         return render_template("customer/product_details.html")

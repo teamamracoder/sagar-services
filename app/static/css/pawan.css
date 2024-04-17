@@ -1,0 +1,16 @@
+.about-bg-img {
+    background-image: url('../../static/img/back.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    background-position: center;
+}
+
+.about-page-small-img img {
+    max-width: 300px;
+    max-height: 200px;
+}
+.my-profile-section input[readonly],.my-profile-section textarea[readonly],.my-profile-section select[disabled] {
+    border: none;
+    background-color: transparent;
+}

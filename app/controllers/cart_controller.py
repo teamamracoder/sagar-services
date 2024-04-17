@@ -71,5 +71,5 @@ class CartController:
 
 ## customer controllers ##
 
-    def customer_get(self):
+    def cart_page(self):
         return render_template("customer/cart.html")

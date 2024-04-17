@@ -54,9 +54,9 @@ def details(id):
 ## customer routes ##
 
 @product_bp.route("/products/")
-def customer_index():
-    return product_controller.customer_get()
+def products_page():
+    return product_controller.products_page()
 
 @product_bp.route("/product_details/", methods=["GET", "PATCH"])
-def product_details():
-    return product_controller.product_details()
+def product_details_page():
+    return product_controller.product_details_page()

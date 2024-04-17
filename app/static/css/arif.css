@@ -1,0 +1,52 @@
+.checkout-accordian{
+    --bs-accordion-btn-bg: rgb(255, 217, 217);
+    --bs-accordion-active-color: rgb(255, 255, 255);
+    --bs-accordion-active-bg: rgb(149, 154, 150);
+    --bs-accordion-border-color: rgb(255, 0, 0);
+    --bs-accordion-btn-focus-box-shadow: rgb(5, 255, 126);
+  }
+
+/* body{
+  overflow-x: hidden;
+} */
+
+@media (min-width: 768px) {
+    .div-style {
+        border: 1px solid #313131;
+        border-right: 0;
+    }
+    .div-img, .div-pro{
+      height: 100px;
+      width: 200px;
+    }
+    .div-qnt{
+      height: 100px; width: 130px;
+    }
+    .div-price{
+      height: 100px; width: 170px;
+      border-right: 1px solid #000000;
+    }
+    .div-emt{
+      height: 50px; width: 200px;
+    }
+    .div-emt-qnt{
+      height: 50px; width: 130px;
+    }
+    .div-total{
+      height: 50px; width: 170px;
+      border-right: 1px solid #313131;
+      border-top: 0;
+    }
+  }
+
+@media (max-width: 575.98px) {
+    .div-style {
+        border: none;
+    }
+    .div-qnt{
+      width: 100px;
+    }
+    .div-pro, .div-qnt{
+      margin-bottom: 10px;
+    }
+}

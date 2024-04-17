@@ -50,3 +50,10 @@ class ContactController:
             return render_template("admin/error/something_went_wrong.html")
         self.contact_service.status(id)
         return redirect(url_for("contact_bp.index"))
+    
+
+
+    ## customer controller ##
+
+    def contact_us_page(self):
+        return render_template("customer/contact_us.html")

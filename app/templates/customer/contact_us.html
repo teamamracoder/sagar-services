@@ -1,0 +1,49 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+        </ol>
+    </nav>
+    <div class="section about-bg-img" style="height: 100vh;">
+        <div class="head text-center">
+            <h1 class="text-dark mb-5">Contact Us</h1>
+        </div>
+        <div class="container contact-form d-flex justify-content-center">
+            <form action="" style="width: 700px; padding: 20px;" class="bg-light">
+                <div class="mb-3">
+                    <input required type="text" placeholder="User Name" class="form-control rounded-0"
+                        aria-describedby="exampleInputUsername">
+                </div>
+                <div class="mb-3">
+                    <input required type="email" placeholder="Email address" class="form-control rounded-0"
+                        aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <input required type="tel" placeholder="Phone No" class="form-control  rounded-0"
+                        aria-describedby="exampleInputUsername">
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control rounded-0" rows="5"></textarea>
+                </div>
+                <input required type="submit" class="btn btn-primary w-100" value="Submit">
+
+                <!-- <div class="d-flex justify-content-start mt-5  p-2 ">
+                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-whatsapp social-link me-3"></i></a></div>
+                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-instagram social-link me-3"></i> </a></div>
+                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-facebook social-link me-3"></i></a></div>
+                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-twitter-x social-link me-3"></i></a></div>
+                </div> -->
+            </form>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
