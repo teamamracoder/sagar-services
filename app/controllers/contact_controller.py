@@ -56,4 +56,13 @@ class ContactController:
     ## customer controller ##
 
     def contact_us_page(self):
-        return render_template("customer/contact_us.html")
+        form = CreateContactForm()
+        if form.validate_on_submit():
+            self.contact_service.create(
+                email=form.email.data,
+                name=form.name.data,
+                phone=form.phone.data,
+                query_message=form.query_message.data,
+            )
+            return redirect(url_for("home.index"))
+        return render_template("customer/contact_us.html", form=form)
