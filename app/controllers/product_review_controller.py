@@ -3,6 +3,10 @@ from app.forms import CreateProductReviewForm, UpdateProductReviewForm
 from app.services import ProductReviewService, ProductService
 from datetime import datetime
 from app.auth import get_current_user
+from app.utils import FileUtils
+
+
+
 class ProductReviewController:
     def __init__(self) -> None:
         self.product_review_service = ProductReviewService()
@@ -21,14 +25,18 @@ class ProductReviewController:
         logged_in_user,roles=get_current_user().values()
         form = CreateProductReviewForm()
         if form.validate_on_submit():
-            review=self.product_review_service.create(
+            filepath=FileUtils.save('product_reviews',form.product_review_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
+            self.product_review_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 review_title=form.review_title.data,
                 description=form.description.data,
                 rating=form.rating.data,
                 product_id=form.product_id.data,
-                user_id=logged_in_user.id  
+                user_id=logged_in_user.id,
+                product_review_img_urls=filepath
             )
             return redirect(url_for("product_review.index"))
             # return render_template("admin/product_review/add.html", form=form, error="product_review already exists")

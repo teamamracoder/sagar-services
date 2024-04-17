@@ -39,7 +39,7 @@ class MessageModel(db.Model):
     )
 
     message=db.Column(db.Text,nullable=False)
-    attachament_url=db.Column(db.String(200))
+    attachement_url=db.Column(db.String(200))
     
 
     conversations = db.relationship("ConversationModel", back_populates="messages")

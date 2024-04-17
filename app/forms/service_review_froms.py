@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, TextAreaField, IntegerField, SelectField
+from wtforms import *
 from wtforms.validators import DataRequired
 
 class CreateServiceReviewForm(FlaskForm):
@@ -7,9 +7,4 @@ class CreateServiceReviewForm(FlaskForm):
     review_title=StringField('Title', validators=[DataRequired()])
     description=TextAreaField('Description', validators=[DataRequired()])
     rating=FloatField('Rating', validators=[DataRequired()])
-
-class UpdateServiceReviewForm(FlaskForm):
-    service_id = SelectField('Service', validators=[DataRequired()])
-    review_title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    rating = FloatField('Rating', validators=[DataRequired()])
+    service_review_img_urls = MultipleFileField("Images")

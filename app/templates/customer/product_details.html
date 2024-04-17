@@ -1,0 +1,467 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}Products Details{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="container-fluid single-product">
+    <p>Home>SSD>Details</p>
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-5">
+        <div id="cursor"></div>
+        <div class="img-container">
+        <img
+          src="../../static/img/product-5.jpg"
+          width="100%"
+          id="ProductImg"
+          alt=""
+        />
+        </div>
+        <div class="small-img-row">
+          <div class="small-img-col img-hover-zoom--colorize">
+            <img
+              src="../../static/img/product-6.jpg"
+              width="70%"
+              class="small-img"
+              alt=""
+            />
+          </div>
+          <div class="small-img-col img-hover-zoom--colorize">
+            <img
+              src="../../static/img/product-1.jpg"
+              width="70%"
+              class="small-img"
+              alt=""
+            />
+          </div>
+          <div class="small-img-col img-hover-zoom--colorize">
+            <img
+              src="../../static/img/product-3.jpg"
+              width="70%"
+              class="small-img"
+              alt=""
+            />
+          </div>
+          <div class="small-img-col img-hover-zoom--colorize">
+            <img
+              src="../../static/img/product-5.jpg"
+              width="70%"
+              class="small-img"
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="booking-btn d-flex justify-content-evenly my-2">
+          <a href="" class="btn btn-blue" style="width: 45%">Add to Cart</a>
+          <a href="" class="btn btn-outline-blue" style="width: 45%">Buy Now</a>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-7">
+        <div class="row">
+          <div class="col-12">
+            <div class="row align-items-start">
+              <div class="">
+                <h3>{{product.product_name}}</h3>
+                <h6><a class="text-primary" href="">By Cursial</a></h6>
+              </div>
+              <div class="gy-0">
+                <p class="text-success">₹{{product.price - product.discount}}<br/>
+                <span class="">Save ₹{{product.discount}} <strike style="font-size: 12px;">MSRP ₹{{product.price}}</strike></span></p>
+              </div>
+              <div class="ms-0">
+                <span style="font-size: 12px;">Reviews</span><br/>
+                
+                {% for review in product_reviews %}
+                   {{review.rating}}
+                {% endfor %}
+               
+                
+                <div id="rating" class="rating"></div>
+              </div>
+
+                <div>
+                <h6>Product Model: {{product.model}}</h6>
+                <div class="">
+                  <span>Check Availability:</span>
+                  <input
+                    class="form-control-sm "
+                    type="text"
+                    value=""
+                    placeholder="Pin"
+                    id="pincode"
+                  />
+                  <span onclick="checkAvailability()" style="margin-left: -40px;"><i class="bi bi-search"></i></span>
+                  <p class="" id="show-availability"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col"></div>
+              <div class="col"></div>
+            </div>
+          </div>
+          <div class="col-12">
+            <h3>Product Details<i class="bi bi-cpu"></i></h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+              sed fuga, quod alias eaque fugit ab impedit tempore. Itaque
+              repellat nesciunt non velit expedita voluptatibus, porro aut
+              eveniet quos vitae! Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Quibusdam, voluptatibus distinctio in iste
+              accusamus voluptate ipsa, magni doloremque natus qui, ducimus
+              eveniet? Quisquam quasi, voluptates facilis porro illo ipsum
+              commodi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <div class="bg-light">
+            <ul
+              class="nav d-flex nav-tabs mb-4"
+              id="tablist-header"
+              role="tablist"
+            >
+              <li class="nav-item" role="presentation">
+                <a
+                  class="nav-link active text-dark"
+                  data-bs-toggle="tab"
+                  href="#tab-pane-1"
+                  >Description</a
+                >
+              </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  class="nav-link text-dark"
+                  data-bs-toggle="tab"
+                  href="#tab-pane-2"
+                  >Reviews</a
+                >
+              </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  class="nav-link text-dark"
+                  data-bs-toggle="tab"
+                  href="#tab-pane-3"
+                  >QnA's</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="tab-pane-1">
+                <h4 class="mb-3">Product Description</h4>
+                <p>
+                  Eos no lorem eirmod diam diam, eos elitr et gubergren diam
+                  sea. Consetetur vero aliquyam invidunt duo dolores et duo
+                  sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
+                  consetetur invidunt sed sed et, lorem duo et eos elitr,
+                  sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed
+                  tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing,
+                  eos dolores sit no ut diam consetetur duo justo est, sit
+                  sanctus diam tempor aliquyam eirmod nonumy rebum dolor
+                  accusam, ipsum kasd eos consetetur at sit rebum, diam kasd
+                  invidunt tempor lorem, ipsum lorem elitr sanctus eirmod
+                  takimata dolor ea invidunt.
+                </p>
+                <p>
+                  Dolore magna est eirmod sanctus dolor, amet diam et eirmod
+                  et ipsum. Amet dolore tempor consetetur sed lorem dolor sit
+                  lorem tempor. Gubergren amet amet labore sadipscing clita
+                  clita diam clita. Sea amet et sed ipsum lorem elitr et, amet
+                  et labore voluptua sit rebum. Ea erat sed et diam takimata
+                  sed justo. Magna takimata justo et amet magna et.
+                </p>
+              </div>
+              <div class="tab-pane fade" id="tab-pane-2">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h4 class="mb-4">1 review for "Product Name"</h4>
+                    <div class="media mb-4">
+                      <img
+                        src="img/user.jpg"
+                        alt="Image"
+                        class="img-fluid me-3 mt-1"
+                        style="width: 45px"
+                      />
+                      <div class="media-body">
+                        <h6>
+                          John Doe<small> - <i>01 Jan 2045</i></small>
+                        </h6>
+                        <div class="text-primary mb-2">
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star-half-alt"></i>
+                          <i class="far fa-star"></i>
+                        </div>
+                        <p>
+                          Diam amet duo labore stet elitr ea clita ipsum,
+                          tempor labore accusam ipsum et no at. Kasd diam
+                          tempor rebum magna dolores sed sed eirmod ipsum.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <h4 class="mb-4">Leave a review</h4>
+                    <small
+                      >Your email address will not be published. Required
+                      fields are marked *</small
+                    >
+                    <div class="d-flex my-3">
+                      <p class="mb-0 me-2">Your Rating * :</p>
+                      <div class="text-primary">
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                    <form>
+                      <div class="form-group">
+                        <label for="message">Your Review *</label>
+                        <textarea
+                          id="message"
+                          cols="30"
+                          rows="5"
+                          class="form-control"
+                        ></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" class="form-control" id="name" />
+                      </div>
+                      <div class="form-group">
+                        <label for="email">Your Email *</label>
+                        <input type="email" class="form-control" id="email" />
+                      </div>
+                      <div class="form-group mb-0">
+                        <input
+                          type="submit"
+                          value="Leave Your Review"
+                          class="btn btn-primary px-3"
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="tab-pane-3">
+                <h4 class="mb-3">Additional Information</h4>
+                <p>
+                  Eos no lorem eirmod diam diam, eos elitr et gubergren diam
+                  sea. Consetetur vero aliquyam invidunt duo dolores et duo
+                  sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
+                  consetetur invidunt sed sed et, lorem duo et eos elitr,
+                  sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed
+                  tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing,
+                  eos dolores sit no ut diam consetetur duo justo est, sit
+                  sanctus diam tempor aliquyam eirmod nonumy rebum dolor
+                  accusam, ipsum kasd eos consetetur at sit rebum, diam kasd
+                  invidunt tempor lorem, ipsum lorem elitr sanctus eirmod
+                  takimata dolor ea invidunt.
+                </p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item px-0">
+                        Sit erat duo lorem duo ea consetetur, et eirmod
+                        takimata.
+                      </li>
+                      <li class="list-group-item px-0">
+                        Amet kasd gubergren sit sanctus et lorem eos
+                        sadipscing at.
+                      </li>
+                      <li class="list-group-item px-0">
+                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
+                      </li>
+                      <li class="list-group-item px-0">
+                        Takimata ea clita labore amet ipsum erat justo
+                        voluptua. Nonumy.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item px-0">
+                        Sit erat duo lorem duo ea consetetur, et eirmod
+                        takimata.
+                      </li>
+                      <li class="list-group-item px-0">
+                        Amet kasd gubergren sit sanctus et lorem eos
+                        sadipscing at.
+                      </li>
+                      <li class="list-group-item px-0">
+                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
+                      </li>
+                      <li class="list-group-item px-0">
+                        Takimata ea clita labore amet ipsum erat justo
+                        voluptua. Nonumy.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="tab-pane-3">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h4 class="mb-4">1 review for "Product Name"</h4>
+                    <div class="media mb-4">
+                      <img
+                        src="img/user.jpg"
+                        alt="Image"
+                        class="img-fluid me-3 mt-1"
+                        style="width: 45px"
+                      />
+                      <div class="media-body">
+                        <h6>
+                          John Doe<small> - <i>01 Jan 2045</i></small>
+                        </h6>
+                        <div class="text-primary mb-2">
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star-half-alt"></i>
+                          <i class="far fa-star"></i>
+                        </div>
+                        <p>
+                          Diam amet duo labore stet elitr ea clita ipsum,
+                          tempor labore accusam ipsum et no at. Kasd diam
+                          tempor rebum magna dolores sed sed eirmod ipsum.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <h4 class="mb-4">Leave a review</h4>
+                    <small
+                      >Your email address will not be published. Required
+                      fields are marked *</small
+                    >
+                    <div class="d-flex my-3">
+                      <p class="mb-0 me-2">Your Rating * :</p>
+                      <div class="text-primary">
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                    <form>
+                      <div class="form-group">
+                        <label for="message">Your Review *</label>
+                        <textarea
+                          id="message"
+                          cols="30"
+                          rows="5"
+                          class="form-control"
+                        ></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" class="form-control" id="name" />
+                      </div>
+                      <div class="form-group">
+                        <label for="email">Your Email *</label>
+                        <input type="email" class="form-control" id="email" />
+                      </div>
+                      <div class="form-group mb-0">
+                        <input
+                          type="submit"
+                          value="Leave Your Review"
+                          class="btn btn-primary px-3"
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+
+  var pincodes = '{{product.available_area_pincodes}}'
+
+  pinCodesString = pincodes.replace(/&#39;/g, "'");
+  pinCodesString = pinCodesString.replace(/'/g, '"'); 
+  var pinCodesArray = JSON.parse(pinCodesString);
+  console.log(pinCodesArray)
+
+function checkAvailability(){
+  let pincode = document.getElementById('pincode').value;
+  let get_availability = document.getElementById('show-availability');
+  
+  // Flag to indicate if the pin code is found
+  let found = false;
+
+  for(var i = 0; i < pinCodesArray.length; i++){
+    if(pinCodesArray[i] === pincode){
+      found = true;
+      break; // No need to continue searching once found
+    }
+  }
+
+  if (found) {
+    get_availability.textContent = "Available..!";
+    get_availability.style.color="green"
+  } else {
+    get_availability.textContent = "Not Available..!";
+    get_availability.style.color="red"
+  }
+}
+
+
+function setStarRating(rating) {
+  var ratingContainer = document.getElementById("rating");
+  ratingContainer.innerHTML = ""; // Clear previous content
+
+  // Calculate full stars
+  var fullStars = Math.floor(rating);
+  for (var i = 0; i < fullStars; i++) {
+    var star = document.createElement("i");
+    star.className = "bi bi-star-fill";
+    ratingContainer.appendChild(star);
+  }
+
+  // Calculate half star, if applicable
+  var halfStar = rating - fullStars;
+  if (halfStar >= 0.5) {
+    var halfStarElement = document.createElement("i");
+    halfStarElement.className = "bi bi-star-half";
+    ratingContainer.appendChild(halfStarElement);
+    fullStars++; // Increment fullStars to ensure the correct number of empty stars are appended
+  }
+
+  // Calculate empty stars
+  var emptyStars = 5 - fullStars;
+  for (var j = 0; j < emptyStars; j++) {
+    var emptyStar = document.createElement("i");
+    emptyStar.className = "bi bi-star";
+    ratingContainer.appendChild(emptyStar);
+  }
+}
+
+// Example usage:
+
+var userRating = 3.5; // Assume user's given rating
+setStarRating(userRating);
+
+</script>
+
+{% endblock %}

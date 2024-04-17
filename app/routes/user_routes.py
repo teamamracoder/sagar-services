@@ -46,3 +46,13 @@ def status(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def details(id):
     return user_controller.details(id)
+
+
+
+
+## customer routes ##
+
+@user_bp.route("/my_profile/")
+@login_required
+def my_profile_page():
+    return user_controller.my_profile_page()

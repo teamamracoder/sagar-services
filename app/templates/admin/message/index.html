@@ -14,32 +14,57 @@
                 </div>
                 <div class="card-body p-1" style="overflow-y: scroll; height:500px;" id="messageBox">
                     {% for message in messages %}
-                        {% if conversation.user_id==message.created_by %}
-                        <div class="card border-0 w-75">
-                            <div class="card-body">
-                                <p class="small text-muted">
-                                    <i class="bi bi-person me-1"></i>{{ message.sent_by }} - <span id="time_{{ loop.index }}"></span>
-                                </p>
-                                <p class="card-text">
-                                    <span style="padding: 3px 4px; background-color: #0002; width: fit-content; border-radius: 0px 8px 8px 8px; ">
-                                        {{ message.message }}
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                        {% else %}
+                        {% if current_user.id==message.created_by %}
                         <div class="card border-0 w-75 ms-auto">
                             <div class="card-body">
                                 <p class="small text-end text-muted">
-                                    <i class="bi bi-person me-1"></i>sagar services - <span id="time_{{ loop.index }}"></span>
+                                    <i class="bi bi-person me-1"></i>
+                                    {% if message.conversation_id==message.created_by %}
+                                    {{ message.sent_by }} -
+                                    {% else %}
+                                    sagar services - 
+                                    {% endif  %}
+                                    <span id="time_{{ loop.index }}"></span>
                                 </p>
                                 <p class="card-text text-end">
                                     <span style="padding: 3px 4px; background-color: #0009; color:#fff; width: fit-content; border-radius: 8px 0px 8px 8px;">
                                         {{ message.message }}
                                     </span>
+                                    <p class=" w-100">
+                                        {% if message.attachement_url %}
+                                            <img src="{{ url_for('static',filename=message.attachement_url) }}" class="w-100">
+                                        {% endif %}
+                                    </p>
+
                                 </p>
                             </div>
                         </div>
+                        {% else %}
+                        <div class="card border-0 w-75">
+                            <div class="card-body">
+                                <p class="small text-muted">
+                                    <i class="bi bi-person me-1"></i>
+                                    {% if message.conversation_id==message.created_by %}
+                                    {{ message.sent_by }} -
+                                    {% else %}
+                                    sagar services - 
+                                    {% endif  %}
+                                    <span id="time_{{ loop.index }}"></span>
+                                </p>
+                                <p class="card-text">
+                                    <span style="padding: 3px 4px; background-color: #0002; width: fit-content; border-radius: 0px 8px 8px 8px; ">
+                                        {{ message.message }}
+                                    </span>
+                                    <p class=" w-100">
+                                        {% if message.attachement_url %}
+                                            <img src="{{ url_for('static',filename=message.attachement_url) }}" class="w-100">
+                                        {% endif %}
+                                    </p>
+                                </p>
+                            </div>
+                        </div>
+
+                        
                         {% endif %}
                         <script>
                             var time=getFormattedTime("{{ message.created_at }}")
@@ -51,8 +76,11 @@
                     <form method="POST" action="{{ url_for('message.add',conversation_id=conversation.id) }}" enctype="multipart/form-data"  id="adminForm">
                         {{ form.csrf_token }}
                         <div class="row">
-                            <div class="col-11">
+                            <div class="col-10">
                                 {{ form.message(class="form-control form-control-sm") }}
+                            </div>
+                            <div class="col-1">
+                                {{ form.attachement_url(class="form-control form-control-sm") }}
                             </div>
                             <div class="col-1">
                                 <button type="submit" class="btn btn-dark btn-sm float-end"><i class="bi bi-send"></i></button>

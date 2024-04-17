@@ -43,7 +43,7 @@ class ServiceReviewModel(db.Model):
 
     description=db.Column(db.String(400),nullable=False)
 
-    img_urls=db.Column(db.ARRAY(db.String(200)))
+    service_review_img_urls = db.Column(db.ARRAY(db.Text))
 
     rating=db.Column(db.Double,nullable=False)
 

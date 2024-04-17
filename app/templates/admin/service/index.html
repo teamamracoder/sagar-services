@@ -17,7 +17,8 @@
         <thead>
             <tr>
                 <th>#Id</th>
-                <th>Service Type id</th>
+                <th>Img</th>
+                <th>Service Type</th>
                 <th>Service Name</th>
                 <th>Service Charge</th>
                 <th>Discount</th>
@@ -40,7 +41,23 @@
             },
             "columns": [
                 { "data": "id" },
-                { "data": "service_type_id"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        if(row.service_img_urls!=null){
+                            let images='<span>';
+                            for (image of row.service_img_urls){
+                                if(image != ""){
+                                    images+=`<img src="../../${image}" class="adminTableImg">`;
+                                }
+                            }
+                            images+='</span>';
+                            return images;
+                        }
+                        return null
+                    }
+                },
+                { "data": "type_name"},
                 { "data": "service_name"},
                 { "data": "service_charge" },
                 { "data": "discount" },

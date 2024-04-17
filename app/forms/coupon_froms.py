@@ -1,28 +1,22 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField,StringField,DateField,FloatField
+from wtforms import IntegerField,StringField,FloatField, SelectField, DateTimeLocalField
 from wtforms.validators import DataRequired
 from wtforms import FileField
 
 class CreateCouponForm(FlaskForm):
-    # created_by = IntegerField("created_by", validators=[DataRequired()])
-    # updated_by = IntegerField("updated_by")
-    coupon_code=StringField("coupon_code",validators=[DataRequired()])
-    expiry_date=DateField("expiry_date",validators=[DataRequired()])
-    discount_type=IntegerField("discount_type",validators=[DataRequired()])
-    discount=FloatField("discount",validators=[DataRequired()])
-   # coupon_img_url=StringField("coupon_img_url",validators=[DataRequired()])
-    coupon_img_url = FileField("coupon_img_url")
-    count=IntegerField("count",validators=[DataRequired()])
-    
-
+    coupon_code=StringField("coupon Code",validators=[DataRequired()])
+    expiry_date=DateTimeLocalField("Expiry Date",validators=[DataRequired()])
+    discount=FloatField("Discount",validators=[DataRequired()])
+    discount_type=SelectField("Discount Type",coerce=int, validators=[DataRequired()])
+    coupon_img_url = FileField("Image")
+    count=IntegerField("Count",validators=[DataRequired()])
     
 
 class UpdateCouponForm(FlaskForm):
-    coupon_code=StringField("coupon_code",validators=[DataRequired()])
-    expiry_date=DateField("expiry_date",validators=[DataRequired()])
-    discount_type=IntegerField("discount_type",validators=[DataRequired()])
-    discount=FloatField("discount",validators=[DataRequired()])
-   # coupon_img_url=StringField("coupon_img_url",validators=[DataRequired()])
-    coupon_img_url = FileField("coupon_img_url")
-    count=IntegerField("count",validators=[DataRequired()])
+    coupon_code=StringField("Coupon Code",validators=[DataRequired()])
+    expiry_date=DateTimeLocalField("Expiry Date",validators=[DataRequired()])
+    discount_type=SelectField("Discount Type",coerce=int,validators=[DataRequired()])
+    discount=FloatField("Discount",validators=[DataRequired()])
+    coupon_img_url = FileField("Image (Selecting an Image will replace the previous Image)")
+    count=IntegerField("Count",validators=[DataRequired()])
     

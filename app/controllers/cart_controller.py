@@ -67,3 +67,9 @@ class CartController:
             return {"status":"success","message":"Cart Activated","data":is_active}
         return {"status":"success","message":"Cart Deactivated","data":is_active}
 
+
+
+## customer controllers ##
+
+    def cart_page(self):
+        return render_template("customer/cart.html")

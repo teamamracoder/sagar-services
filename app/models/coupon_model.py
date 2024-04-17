@@ -17,7 +17,7 @@ class CouponModel(db.Model):
         nullable=False
     )
 
-    created_at=db.Column(db.Date,default=datetime.now)
+    created_at=db.Column(db.DateTime)
 
     updated_by = db.Column(
         db.Integer,
@@ -27,12 +27,12 @@ class CouponModel(db.Model):
         )
     )
 
-    updated_at=db.Column(db.DateTime,default=datetime.now)
+    updated_at=db.Column(db.DateTime)
 
     is_active=db.Column(db.Boolean,default=True)
 
     coupon_code = db.Column(db.String(50),unique=True, nullable=False)
-    expiry_date = db.Column(db.Date, nullable=False)
+    expiry_date = db.Column(db.DateTime, nullable=False)
     discount_type = db.Column(db.Integer)
     discount = db.Column(db.Float, nullable=False)
     coupon_img_url = db.Column(db.Text)

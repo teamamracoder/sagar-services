@@ -4,6 +4,7 @@ from app.services import ServiceService, ServiceTypeService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
+from app.utils import FileUtils
 
 
 class ServiceController:
@@ -29,6 +30,10 @@ class ServiceController:
         form.payment_methods.choices = payment_methods.get_all_items()
 
         if form.validate_on_submit():
+            filepath=FileUtils.save('services',form.service_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
+
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
             
@@ -42,7 +47,7 @@ class ServiceController:
                 available_area_pincodes=pincode_list,
                 payment_methods=form.payment_methods.data,
                 discount=form.discount.data,
-                service_img_urls=form.service_img_urls.data
+                service_img_urls=filepath
             )
             return redirect(url_for("service.index"))
         return render_template("admin/service/add.html", form=form)
@@ -61,9 +66,18 @@ class ServiceController:
         form.payment_methods.choices = payment_methods.get_all_items()
         
         if form.validate_on_submit():
+            filepath = service.service_img_urls
+            print(filepath)
+            print(type(filepath))
+            
+            new_filepath=FileUtils.save('services',form.service_img_urls.data)
+            if isinstance(new_filepath,str):
+                new_filepath=[new_filepath]
+            all_filepath=filepath+new_filepath
+
             pincode_string = form.available_area_pincodes.data
             pincode_list = [pin.strip() for pin in pincode_string.split(',')]
-
+            
             self.service_service.update(
                 id=id,
                 updated_by=logged_in_user.id,
@@ -74,7 +88,7 @@ class ServiceController:
                 available_area_pincodes=pincode_list,
                 payment_methods=form.payment_methods.data,
                 discount=form.discount.data,
-                service_img_urls=form.service_img_urls.data,
+                service_img_urls=all_filepath,
                 service_type_id=form.service_type_id.data,
             )
             return redirect(url_for("service.index"))
@@ -99,3 +113,9 @@ class ServiceController:
     def details(self,id):
         service=self.service_service.get_by_id(id)
         return render_template("admin/service/details.html",service=service)
+
+
+
+    # customer section
+    def service_details(self):
+        return render_template("customer/service_details.html")
