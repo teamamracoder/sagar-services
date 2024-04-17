@@ -1,6 +1,8 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateCouponForm, UpdateCouponForm
 from app.services import CouponService
+from app.utils import SMSUtils
+from app.utils import VOICEUtils
 
 class CouponController:
 
@@ -26,7 +28,14 @@ class CouponController:
         
   
     def get(self):
-        # coupons = self.coupon_service.get()
+        
+        # sms = SMSUtils()
+        # success = sms.send("9999999999,8888888888,7777777777", "5599")
+        # print(f"Message sent successfully: {success}")
+
+        voice = VOICEUtils()
+        success = voice.voice_send("9563777346", "5599")
+        print(f"Message sent successfully: {success}")
         return render_template("admin/coupon/index.html")
 
 
@@ -47,7 +56,7 @@ class CouponController:
         if form.validate_on_submit():
             self.coupon_service.update(
                 id=id,
-                 # created_by=form.created_by.data,
+                # created_by=form.created_by.data,
                 # updated_by=form.updated_by.data,
                 coupon_code=form.coupon_code.data,
                 expiry_date=form.expiry_date.data,
@@ -67,3 +76,5 @@ class CouponController:
             return render_template("admin/error/something_went_wrong.html")
         self.coupon_service.status(id)
         return redirect(url_for("coupon_bp.index"))
+    
+
