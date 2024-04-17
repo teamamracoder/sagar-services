@@ -23,7 +23,6 @@ def get_cart_data():
 
 
 @cart_bp.route("/admin/carts/add/", methods=["GET", "POST"])
-@login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 @login_required
 def add():
@@ -32,7 +31,6 @@ def add():
 
 # update will be used to update the cart statue as added/ordered/removed
 @cart_bp.route("/admin/carts/update/<int:id>/<string:status>", methods=["GET", "POST"])
-@login_required
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def update(id, status):
@@ -54,3 +52,13 @@ def status(id):
 @login_required
 def cart_page():
     return cart_controller.cart_page()
+
+@cart_bp.route("/cart/data/")
+@login_required
+def cart_page_data():
+    return cart_controller.cart_page_data()
+
+@cart_bp.route("/cart/add/<int:product_id>")
+@login_required
+def add_to_cart(product_id):
+    return cart_controller.add_to_cart(product_id)

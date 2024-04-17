@@ -59,11 +59,18 @@ class CartController:
 
     # is_active will be updated as activated/deactivated
     def status(self, id):
+        logged_in_user,roles=get_current_user().values()
         cart = self.cart_service.get_by_id(id)
         if cart is None:
             return {"status":"error","message":"Cart Not Found"}
         is_active=self.cart_service.status(id)
         if is_active:
+            self.cart_service.update(
+                cart.id,
+                updated_by=logged_in_user.id,  
+                updated_at=datetime.now(),
+                status=1
+            )
             return {"status":"success","message":"Cart Activated","data":is_active}
         return {"status":"success","message":"Cart Deactivated","data":is_active}
 
@@ -73,3 +80,68 @@ class CartController:
 
     def cart_page(self):
         return render_template("customer/cart.html")
+    
+    def cart_page_data(self):
+        logged_in_user,roles=get_current_user().values()
+        try:
+            # Get cart items for the given user id
+            cart_items = self.cart_service.get_cart_items_by_user_id(logged_in_user.id)
+    
+            # Extract product ids from cart items
+            product_ids = [cart_item.product_id for cart_item in cart_items]
+    
+            # Get product details for the product ids
+            products = self.product_service.get_product_details_by_ids(product_ids)
+    
+            # Construct response data
+            response_data = []
+            for cart_item in cart_items:
+                product = next((product for product in products if product.id == cart_item.product_id), None)
+                if product:
+                    response_data.append({
+                        'id': cart_item.id,
+                        'product_id':product.id,
+                        'product_name': product.product_name,
+                        'model': product.model,
+                        'price': product.price,
+                        'discount': product.discount,
+                        'stock': product.stock,
+                        'image': product.product_img_urls
+                        # Add more product details as needed
+                    })
+    
+            return jsonify(response_data)
+    
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 500
+        
+
+    def add_to_cart(self,product_id):
+        logged_in_user,roles=get_current_user().values()
+        cart_item = self.cart_service.get_cart_item_user_id_product_id()
+        try:
+            if cart_item:
+                if cart_item.is_active:
+                    return {"status":"error","message":"Already In Cart","data":False}
+                else:
+                    self.cart_service.update(
+                        cart_item.id,
+                        updated_by=logged_in_user.id,  
+                        updated_at=datetime.now(),
+                        status=1,
+                        is_active = True
+                    )
+                    return {"status":"error","message":"Product Added to Cart","data":True}
+            else:
+                self.cart_service.create(
+                    created_by=logged_in_user.id,   #logged in user id
+                    created_at=datetime.now(),
+                    user_id=logged_in_user.id,
+                    product_id=product_id,
+                    status=1
+                )
+                return {"status":"success","message":"Cart Activated","data":True}
+
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 500
+

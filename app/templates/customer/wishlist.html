@@ -14,29 +14,17 @@
     <div class="row">
         <div class="col">      
             <div>
-                <table class="table table-bordered">
+                <table class="table table-bordered wishlist-table">
                     <thead class="table table-dark table-sm">      
                         <tr>
                             <td>Image</td>
                             <td>Product Name</td>
                             <td>Model</td>               
-                            <td>Unit Price</td>
-                            <td>Total</td>
-                            <td></td>
+                            <td>Price</td>
+                            <td>Actions</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><img src="{{ url_for('static', filename='img/flask-icon.png') }}" class="adminTableImg"></td>
-                            <td>Monitor LED</td>
-                            <td>LLLLLL JUHUH JNJ</td>
-                            <td><i class="bi bi-currency-rupee"></i>10000</td>
-                            <td><i class="bi bi-currency-rupee"></i>10009 </td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-blue border-0 " data-toggle="tooltip"  data-bs-placement="bottom"  title="remove"><i class="bi bi-trash3"></i></button> 
-                                <button class="btn btn-sm btn-outline-blue border-0 " data-toggle="tooltip"  data-bs-placement="bottom"  title="add to cart"><i class="bi bi-cart-plus"></i></button> 
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>       
@@ -44,4 +32,100 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        // Function to fetch cart details
+        function fetchWishlistDetails() {
+            $.ajax({
+                url: "{{ url_for('wishlist.wishlist_page_data') }}",
+                type: "GET",
+                success: function (response) {
+                    // Call function to render cart details
+                    renderWishlistDetails(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching Wishlist details:', error);
+                    // Handle error, show error message, etc.
+                }
+            });
+        }
+
+        // Function to render Wishlist details on the frontend
+        function renderWishlistDetails(wishlistDetails) {
+            var wishlistTable = $('.wishlist-table tbody');
+
+            // Clear previous content
+            wishlistTable.empty();
+
+            // Iterate over wishlist details and append to the DOM
+            wishlistDetails.forEach(function (item) {
+                // Append wishlist item to the wishlist table
+                if(item.image.length>0){
+                    product_image=item.image[0]
+                }
+                else{
+                    product_image=null
+                }
+                wishlistTable.append(`
+                    <tr class="wishlist_item_${item.id}">
+                        <td>${product_image ? `<img src="../../static/${product_image}" alt="" width="50">` : ''}</td>
+                        <td>${item.product_name}</td>
+                        <td>${item.model}</td>
+                        <td>${item.price.toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="remove" onclick="removeFromWishlist(${item.id})"><i class="bi bi-trash3"></i></button> 
+                            <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="add to cart" onclick="addToCart(${item.product_id})"><i class="bi bi-cart-plus"></i></button> 
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+        // Call fetchwishlistDetails function to fetch wishlist details
+        fetchWishlistDetails();
+    });
+    window.removeFromWishlist = function(wishlist_id){
+        $.ajax({
+            url: "{{ url_for('wishlist.status',id=0) }}".replace('0',wishlist_id),
+            type: "GET",
+            complete:res=> {
+                responseData=res.responseJSON
+                    if (responseData.status === 'success') {
+                        if(!responseData.data){
+                            toastr.success("Product Removed Wishlist");
+                            $(".wishlist_item_"+wishlist_id).css("display","none")
+                        }
+                    }
+                    else{
+                        toastr.error(responseData.message);
+                    }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching wishlist details:', error);
+            }
+        });
+    }
+
+    window.addToCart = function(product_id){
+        $.ajax({
+            url: "{{ url_for('cart.add_to_cart',id=0) }}".replace('0',product_id),
+            type: "GET",
+            complete:res=> {
+                console.log(res)
+                responseData=res.responseJSON
+                    if (responseData.status === 'success') {
+                        if(!responseData.data){
+                            toastr.success("Product Added to Cart");
+                            $(".wishlist_item_"+wishlist_id).css("display","none")
+                        }
+                    }
+                    else{
+                        toastr.error(responseData.message);
+                    }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching wishlist details:', error);
+            }
+        });
+    }
+</script>
 {% endblock %}

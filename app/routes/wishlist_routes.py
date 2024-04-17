@@ -41,3 +41,8 @@ def status(id):
 @login_required
 def wishlist_page():
     return wishlist_controller.wishlist_page()
+
+@wishlist_bp.route("/wishlist/data/")
+@login_required
+def wishlist_page_data():
+    return wishlist_controller.wishlist_page_data()
