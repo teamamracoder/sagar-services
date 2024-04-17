@@ -62,23 +62,26 @@
           <div class="col-12">
             <div class="row align-items-start">
               <div class="">
-                <h3>Cursial 128 gb ssd</h3>
+                <h3>{{product.product_name}}</h3>
                 <h6><a class="text-primary" href="">By Cursial</a></h6>
               </div>
               <div class="gy-0">
-                <p class="text-success">₹1250<br/>
-                <span class="">Save ₹250 <strike style="font-size: 12px;">MSRP ₹1500</strike></span></p>
+                <p class="text-success">₹{{product.price - product.discount}}<br/>
+                <span class="">Save ₹{{product.discount}} <strike style="font-size: 12px;">MSRP ₹{{product.price}}</strike></span></p>
               </div>
-                <div class="ms-0">
-                  <span style="font-size: 12px;">Reviews</span><br/>
-                  <i class="bi bi-star"></i>
-                  <i class="bi bi-star"></i>
-                  <i class="bi bi-star"></i>
-                  <i class="bi bi-star"></i>
-                  <i class="bi bi-star"></i>
-                </div>
+              <div class="ms-0">
+                <span style="font-size: 12px;">Reviews</span><br/>
+                
+                {% for review in product_reviews %}
+                   {{review.rating}}
+                {% endfor %}
+               
+                
+                <div id="rating" class="rating"></div>
+              </div>
+
                 <div>
-                <h6>Product Model: Cgud2154</h6>
+                <h6>Product Model: {{product.model}}</h6>
                 <div class="">
                   <span>Check Availability:</span>
                   <input
@@ -86,7 +89,10 @@
                     type="text"
                     value=""
                     placeholder="Pin"
+                    id="pincode"
                   />
+                  <span onclick="checkAvailability()" style="margin-left: -40px;"><i class="bi bi-search"></i></span>
+                  <p class="" id="show-availability"></p>
                 </div>
               </div>
             </div>
@@ -385,5 +391,77 @@
     </div>
   </div>
 </div>
+
+
+<script>
+
+
+  var pincodes = '{{product.available_area_pincodes}}'
+
+  pinCodesString = pincodes.replace(/&#39;/g, "'");
+  pinCodesString = pinCodesString.replace(/'/g, '"'); 
+  var pinCodesArray = JSON.parse(pinCodesString);
+  console.log(pinCodesArray)
+
+function checkAvailability(){
+  let pincode = document.getElementById('pincode').value;
+  let get_availability = document.getElementById('show-availability');
+  
+  // Flag to indicate if the pin code is found
+  let found = false;
+
+  for(var i = 0; i < pinCodesArray.length; i++){
+    if(pinCodesArray[i] === pincode){
+      found = true;
+      break; // No need to continue searching once found
+    }
+  }
+
+  if (found) {
+    get_availability.textContent = "Available..!";
+    get_availability.style.color="green"
+  } else {
+    get_availability.textContent = "Not Available..!";
+    get_availability.style.color="red"
+  }
+}
+
+
+function setStarRating(rating) {
+  var ratingContainer = document.getElementById("rating");
+  ratingContainer.innerHTML = ""; // Clear previous content
+
+  // Calculate full stars
+  var fullStars = Math.floor(rating);
+  for (var i = 0; i < fullStars; i++) {
+    var star = document.createElement("i");
+    star.className = "bi bi-star-fill";
+    ratingContainer.appendChild(star);
+  }
+
+  // Calculate half star, if applicable
+  var halfStar = rating - fullStars;
+  if (halfStar >= 0.5) {
+    var halfStarElement = document.createElement("i");
+    halfStarElement.className = "bi bi-star-half";
+    ratingContainer.appendChild(halfStarElement);
+    fullStars++; // Increment fullStars to ensure the correct number of empty stars are appended
+  }
+
+  // Calculate empty stars
+  var emptyStars = 5 - fullStars;
+  for (var j = 0; j < emptyStars; j++) {
+    var emptyStar = document.createElement("i");
+    emptyStar.className = "bi bi-star";
+    ratingContainer.appendChild(emptyStar);
+  }
+}
+
+// Example usage:
+
+var userRating = 3.5; // Assume user's given rating
+setStarRating(userRating);
+
+</script>
 
 {% endblock %}

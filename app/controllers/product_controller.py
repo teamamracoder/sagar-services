@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateProductForm,UpdateProductForm
 from app.services import ProductService
-from app.services import CategoryService
+from app.services import CategoryService,ProductQnAService,ProductReviewService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
@@ -13,6 +13,8 @@ class ProductController:
     def __init__(self) -> None:
         self.product_service = ProductService()
         self.category_service = CategoryService()
+        self.product_qna_service = ProductQnAService()
+        self.product_review_service = ProductReviewService()
 
     def get(self):
         return render_template("admin/product/index.html")
@@ -120,6 +122,7 @@ class ProductController:
     def products_page(self):
         return render_template("customer/products.html")
 
-    def product_details_page(self):
-        # product = self.product_service.get_by_id(id)
-        return render_template("customer/product_details.html")
+    def product_details_page(self,product_id):
+        product = self.product_service.get_by_id(product_id)
+        product_reviews = self.product_review_service.get_review_by_product_id(product_id)
+        return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
