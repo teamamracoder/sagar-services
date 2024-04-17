@@ -41,7 +41,9 @@
                     "data": "category_img_url",
                     "render": function (data, type, row) {
                         if(row.category_img_url != null){
-                            return `<img src="../../${row.category_img_url}" class="adminTableImg">` ;
+                            console.log(row.category_img_url)
+                            img_src="{{ url_for('static',filename=0) }}".replace('0',row.category_img_url)
+                            return `<img src="${img_src}" class="adminTableImg">` ;
                         }
                         return null
                     }

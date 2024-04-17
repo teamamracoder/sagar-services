@@ -43,7 +43,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top "  id="nav">
         <div class="container-fluid" id="navContent">
-            <a class="navbar-brand" href="#"><img class="companyLogo" src="../../static/img/" alt="Logo">Sagar Services</a>
+            <a class="navbar-brand" href="{{ url_for('home.index') }}"><img class="companyLogo" src="{{ url_for('static', filename='img/companyLogo.png') }}" alt="Logo"></a>
             <button class="navbar-toggler bg-white" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#NavBarForSagarservice" aria-controls="NavBarForSagarservice" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -53,24 +53,24 @@
             <div class="collapse navbar-collapse ">
                 <ul class="navbar-nav stroke ms-auto">
                     <li class="nav-item navtext">
-                        <a class="nav-link " aria-current="page" href="#Home">Home</a>
+                        <a class="nav-link " aria-current="page" href="{{ url_for('home.index') }}">Home</a>
                     </li>
                     <li class="nav-item navtext">
-                        <a class="nav-link " href="#Product">Product</a>
+                        <a class="nav-link " href="{{ url_for('product.products_page') }}">Product</a>
                     </li>
                     <li class="nav-item navtext">
-                        <a class="nav-link " href="#ServiceSection">Services</a>
-                    </li>
-
-                    <li class="nav-item navtext">
-                        <a class="nav-link " href="#CategorySection">Category</a>
+                        <a class="nav-link " href="#service-section">Services</a>
                     </li>
 
                     <li class="nav-item navtext">
-                        <a class="nav-link " href="#About">About</a>
+                        <a class="nav-link " href="{# url_for('categories.get_categories') #}">Category</a>
+                    </li>
+
+                    <li class="nav-item navtext">
+                        <a class="nav-link " href="{{ url_for('about_us.about_us_page') }}">About</a>
                     </li>
                     <li class="nav-item navtext">
-                        <a class="nav-link" href="#contact">Contact</a>
+                        <a class="nav-link" href="{{ url_for('contact_bp.contact_us_page') }}">Contact</a>
                     </li>
                 </ul>
                 <div class="dropdown-center navbar-nav ms-auto px-1">
@@ -78,8 +78,8 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
 
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">My Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('user.my_profile_page') }}">My Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a></li>
                     </ul>
                 </div>
 
@@ -106,18 +106,15 @@
         <div class="offcanvas-body">
             <ul class="navbar-nav stroke ms-auto">
                 <li class="nav-item navtext">
-                    <a class="nav-link " aria-current="page" href="#Home"><i
+                    <a class="nav-link " aria-current="page" href="{{ url_for('home.index') }}"><i
                             class="bi bi-house-door-fill me-2 fs-5"></i>Home</a>
                 </li>
                 <li class="nav-item navtext">
-                    <a class="nav-link " href="#Product"><i class="bi bi-cpu me-2 fs-5"></i>Product</a>
+                    <a class="nav-link " href="{{ url_for('product.products_page') }}"><i class="bi bi-cpu me-2 fs-5"></i>Products</a>
                 </li>
                 <li class="nav-item navtext">
-                    <a class="nav-link " href="#Services"><i
+                    <a class="nav-link " href="#service-section"><i
                             class="bi bi-gear-wide-connected me-2 fs-5"></i>Services</a>
-                </li>
-                <li class="nav-item navtext">
-                    <a class="nav-link " href="#Product">Product</a>
                 </li>
                 <li class="nav-item navtext">
                     <a class="nav-link " href="#Category">Category</a>
@@ -137,7 +134,7 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">My Profile</a></li>
                     <li><a class="dropdown-item" href="#">Wishlist</a></li>
-                    <li><a class="dropdown-item" href="#">Card</a></li>
+                    <li><a class="dropdown-item" href="#">Cart</a></li>
                 </ul>
             </div>
             <ul class="navbar-nav ">

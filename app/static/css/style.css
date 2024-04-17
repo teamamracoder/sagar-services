@@ -140,7 +140,10 @@ customer page buttons
   box-shadow: 4px 0px 4px #0002;
 }
 
-
+.companyLogo{
+  height: 45px;
+  object-fit: contain;
+}
 
 
 
