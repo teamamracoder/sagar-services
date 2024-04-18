@@ -9,52 +9,31 @@
     <p>Home>SSD>Details</p>
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-5">
-        <div id="cursor"></div>
+        <div id="cursor" ></div>
         <div class="img-container">
         <img
-          src="../../static/img/product-5.jpg"
+          src="{{ url_for('static',filename=product.product_img_urls[0]) }}"
           width="100%"
           id="ProductImg"
           alt=""
         />
         </div>
         <div class="small-img-row">
+          {% for img in product.product_img_urls %}
           <div class="small-img-col img-hover-zoom--colorize">
             <img
-              src="../../static/img/product-6.jpg"
+              src="{{ url_for('static',filename=img) }}"
               width="70%"
               class="small-img"
               alt=""
             />
           </div>
-          <div class="small-img-col img-hover-zoom--colorize">
-            <img
-              src="../../static/img/product-1.jpg"
-              width="70%"
-              class="small-img"
-              alt=""
-            />
-          </div>
-          <div class="small-img-col img-hover-zoom--colorize">
-            <img
-              src="../../static/img/product-3.jpg"
-              width="70%"
-              class="small-img"
-              alt=""
-            />
-          </div>
-          <div class="small-img-col img-hover-zoom--colorize">
-            <img
-              src="../../static/img/product-5.jpg"
-              width="70%"
-              class="small-img"
-              alt=""
-            />
-          </div>
+          {% endfor %}
         </div>
         <div class="booking-btn d-flex justify-content-evenly my-2">
-          <a href="" class="btn btn-blue" style="width: 45%">Add to Cart</a>
-          <a href="" class="btn btn-outline-blue" style="width: 45%">Buy Now</a>
+          <span onclick="addToWishlist('{{product.id}}')"><i class="bi bi-heart fs-3" style="cursor:pointer;"></i></span>
+          <button type="button" onclick='addToCart("{{ product.id }}")'  class="btn btn-blue" style="width: 45%">Add to Cart</button>
+          <button type="button" onclcik='checkout("{{ product.id }}")' class="btn btn-outline-blue" style="width: 45%">Buy Now</button>
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-7">
@@ -62,8 +41,9 @@
           <div class="col-12">
             <div class="row align-items-start">
               <div class="">
+
                 <h3>{{product.product_name}}</h3>
-                <h6><a class="text-primary" href="">By Cursial</a></h6>
+                <h6><a class="text-primary" href="">By {{product.brand}}</a></h6>
               </div>
               <div class="gy-0">
                 <p class="text-success">₹{{product.price - product.discount}}<br/>
@@ -71,12 +51,6 @@
               </div>
               <div class="ms-0">
                 <span style="font-size: 12px;">Reviews</span><br/>
-                
-                {% for review in product_reviews %}
-                   {{review.rating}}
-                {% endfor %}
-               
-                
                 <div id="rating" class="rating"></div>
               </div>
 
@@ -91,7 +65,7 @@
                     placeholder="Pin"
                     id="pincode"
                   />
-                  <span onclick="checkAvailability()" style="margin-left: -40px;"><i class="bi bi-search"></i></span>
+                  <span onclick="checkAvailability()" style="margin-left: -40px;"><i class="bi bi-search" style="cursor: pointer;"></i></span>
                   <p class="" id="show-availability"></p>
                 </div>
               </div>
@@ -156,27 +130,7 @@
             <div class="tab-content">
               <div class="tab-pane fade show active" id="tab-pane-1">
                 <h4 class="mb-3">Product Description</h4>
-                <p>
-                  Eos no lorem eirmod diam diam, eos elitr et gubergren diam
-                  sea. Consetetur vero aliquyam invidunt duo dolores et duo
-                  sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
-                  consetetur invidunt sed sed et, lorem duo et eos elitr,
-                  sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed
-                  tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing,
-                  eos dolores sit no ut diam consetetur duo justo est, sit
-                  sanctus diam tempor aliquyam eirmod nonumy rebum dolor
-                  accusam, ipsum kasd eos consetetur at sit rebum, diam kasd
-                  invidunt tempor lorem, ipsum lorem elitr sanctus eirmod
-                  takimata dolor ea invidunt.
-                </p>
-                <p>
-                  Dolore magna est eirmod sanctus dolor, amet diam et eirmod
-                  et ipsum. Amet dolore tempor consetetur sed lorem dolor sit
-                  lorem tempor. Gubergren amet amet labore sadipscing clita
-                  clita diam clita. Sea amet et sed ipsum lorem elitr et, amet
-                  et labore voluptua sit rebum. Ea erat sed et diam takimata
-                  sed justo. Magna takimata justo et amet magna et.
-                </p>
+                {{product.specifications | safe}}
               </div>
               <div class="tab-pane fade" id="tab-pane-2">
                 <div class="row">
@@ -394,14 +348,11 @@
 
 
 <script>
-
-
   var pincodes = '{{product.available_area_pincodes}}'
 
   pinCodesString = pincodes.replace(/&#39;/g, "'");
   pinCodesString = pinCodesString.replace(/'/g, '"'); 
   var pinCodesArray = JSON.parse(pinCodesString);
-  console.log(pinCodesArray)
 
 function checkAvailability(){
   let pincode = document.getElementById('pincode').value;
@@ -457,10 +408,63 @@ function setStarRating(rating) {
   }
 }
 
-// Example usage:
+var rating=0
+var count=0
+"{% for review in product_reviews %}"
+  rating += parseFloat("{{review.rating}}") 
+  count ++
+"{% endfor %}"
+setStarRating((rating/count).toFixed(2));
 
-var userRating = 3.5; // Assume user's given rating
-setStarRating(userRating);
+
+$(document).ready(function () {
+  window.addToCart = function(product_id){
+        $.ajax({
+            url: "{{ url_for('cart.add',product_id=0) }}".replace('0',product_id),
+            type: "GET",
+            complete:res=> {
+                responseData=res.responseJSON
+                    if (responseData.status === 'success') {
+                        if(responseData.data){
+                            toastr.success("Product Added to Cart");
+                        }
+                    }
+                    else{
+                        toastr.error(responseData.message);
+                    }
+            },
+            error: function (xhr, status, error) {
+                toastr.error('Error fetching wishlist details:', error);
+            }
+        });
+    }
+
+    window.addToWishlist = function(product_id){
+        $.ajax({
+            url: "{{ url_for('wishlist.add',product_id=0) }}".replace('0',product_id),
+            type: "GET",
+            complete:res=> {
+                responseData=res.responseJSON
+                    if (responseData.status === 'success') {
+                        if(responseData.data){
+                            toastr.success(responseData.message);
+                        }
+                    }
+                    else{
+                        toastr.error(responseData.message);
+                    }
+            },
+            error: function (xhr, status, error) {
+                toastr.error('Error fetching wishlist details:', error);
+            }
+        });
+    }
+
+    window.checkout = function(product_id){
+      console.log(product_id)
+    }
+})
+
 
 </script>
 
