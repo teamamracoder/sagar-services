@@ -11,90 +11,75 @@
                 <div class="bg-light p-4 mb-30">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter By Categories</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="category_all" checked>
-                        <label class="custom-control-label" for="category_all">All Products</label>
+                        <input type="checkbox" class="custom-control-input" checked>
+                        <label class="custom-control-label">All Products</label>
                         <span class="badge border fw-normal text-dark rounded-0 rounded-0">1000</span>
                     </div>
+                    {% for category in categories %}
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="category_1">
-                        <label class="custom-control-label" for="category_1">CPU</label>
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">{{ category.category_name }}</label>
                         <span class="badge border fw-normal text-dark rounded-0">150</span>
                     </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="category_2">
-                        <label class="custom-control-label" for="category_2">GPU</label>
-                        <span class="badge border fw-normal text-dark rounded-0">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="category_3">
-                        <label class="custom-control-label" for="category_3">RAM</label>
-                        <span class="badge border fw-normal text-dark rounded-0">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="category_4">
-                        <label class="custom-control-label" for="category_4">SSD</label>
-                        <span class="badge border fw-normal text-dark rounded-0">145</span>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="bg-light p-4 mb-30">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter by Brand</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="brand_all" checked>
-                        <label class="custom-control-label" for="brand_all">All Brands</label>
+                        <input type="checkbox" class="custom-control-input" checked>
+                        <label class="custom-control-label">All Brands</label>
                         <span class="badge border fw-normal text-dark rounded-0">1000</span>
                     </div>
+                    {% for brand in brands %}
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="brand_1">
-                        <label class="custom-control-label" for="brand_1">Brand 1</label>
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">{{ brand }}</label>
                         <span class="badge border fw-normal text-dark rounded-0">150</span>
                     </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="brand_2">
-                        <label class="custom-control-label" for="brand_2">Brand 2</label>
-                        <span class="badge border fw-normal text-dark rounded-0">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="brand_3">
-                        <label class="custom-control-label" for="brand_3">Brand 3</label>
-                        <span class="badge border fw-normal text-dark rounded-0">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="brand_4">
-                        <label class="custom-control-label" for="brand_4">Brand 4</label>
-                        <span class="badge border fw-normal text-dark rounded-0">145</span>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="bg-light p-4 mb-30">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter by price</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price_all" checked>
-                        <label class="custom-control-label" for="price_all">All Price</label>
+                        <input type="checkbox" class="custom-control-input" checked>
+                        <label class="custom-control-label">All Price</label>
                         <span class="badge border fw-normal text-dark rounded-0">1000</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price_1">
-                        <label class="custom-control-label" for="price_1">less than ₹1000</label>
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">less than ₹1000</label>
                         <span class="badge border fw-normal text-dark rounded-0">150</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price_2">
-                        <label class="custom-control-label" for="price_2">₹1000 - ₹5000</label>
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">₹1000 - ₹5000</label>
                         <span class="badge border fw-normal text-dark rounded-0">295</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price_3">
-                        <label class="custom-control-label" for="price_3">₹5000 - ₹10000</label>
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">₹5000 - ₹10000</label>
                         <span class="badge border fw-normal text-dark rounded-0">246</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price_4">
-                        <label class="custom-control-label" for="price_4">more than ₹10000</label>
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">more than ₹10000</label>
                         <span class="badge border fw-normal text-dark rounded-0">145</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- small screen filter options -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 id="offcanvasRightLabel">Filter Products</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body" id="filter-options-phone">
+               
+            </div>
+        </div>
+        <!-- small screen filter options end -->
         <div class="col-lg-9">
             <div class="row pb-3">
                 <div class="col-12 pb-1">
@@ -116,7 +101,7 @@
                             </div>
                         </div>
                         <div class="ms-2 d-lg-none">
-                            <button class="btn btn-blue" id="filterMenuButton"><i class="bi bi-microsoft"></i></button>
+                            <button class="btn btn-blue" id="filterMenuButton" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-microsoft"></i></button>
                         </div>
                     </div>
                 </div>
@@ -377,5 +362,10 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('#filter-options-phone').html($('.filter-options').html());
 
+    })
+</script>
 {% endblock %}

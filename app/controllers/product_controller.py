@@ -120,7 +120,10 @@ class ProductController:
      ## customer controllers ##
 
     def products_page(self):
-        return render_template("customer/products.html")
+        categories = self.category_service.get_active()
+        products = self.product_service.get_active()
+        brands = self.product_service.get_all_brands()
+        return render_template("customer/products.html", categories=categories, products = products, brands = brands)
 
     def product_details_page(self,product_id):
         product = self.product_service.get_by_id(product_id)

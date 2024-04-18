@@ -1,3 +1,4 @@
+from db import db
 from app.models import ProductModel
 from .base_service import BaseService
 
@@ -52,3 +53,6 @@ class ProductService(BaseService):
 
         except Exception as e:
             raise ValueError(str(e))  # Raise an exception if an error occurs
+        
+    def get_all_brands(self):
+        return ProductModel.query(ProductModel.brand).distinct().all()
