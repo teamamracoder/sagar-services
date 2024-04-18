@@ -18,20 +18,7 @@ class WishlistController:
         combined_data = self.product_service.add_product_with_this(data)
         return jsonify(combined_data)
 
-    #admin creates wishlist
-    def create(self):
-        logged_in_user,roles=get_current_user().values()
-        form = CreateWishlistForm()
-        if form.validate_on_submit():
-            self.wishlist_service.create(
-                created_by=logged_in_user.id,   #logged in user id
-                created_at=datetime.now(),
-                user_id=logged_in_user.id,
-                product_id=form.product_id.data
-            )
-            return redirect(url_for("wishlist.index"))
-            # return render_template("admin/wishlist/add.html", form=form, error="wishlist already exists")
-        return render_template("admin/wishlist/add.html", form=form)
+
 
     # is_active will be updated as activated/deactivated
     def status(self, wishlist_id):
@@ -77,10 +64,35 @@ class WishlistController:
                         'discount': product.discount,
                         'stock': product.stock,
                         'image': product.product_img_urls
-                        # Add more product details as needed
                     })
     
             return jsonify(response_data)
     
         except ValueError as e:
             return jsonify({'error': str(e)}), 500
+        
+
+    def create(self,product_id):
+        logged_in_user,roles=get_current_user().values()
+        product=self.product_service.get_by_id(product_id)
+        if product:
+            wishlist_item=self.wishlist_service.get_wishlist_item_by_user_id_product_id(logged_in_user.id,product_id)
+            if wishlist_item:
+                is_active=self.status(wishlist_item.id)
+                if is_active['data']:
+                    return {"status":"success","message":"Product Added To Wishlist","data":is_active['data']}
+                return {"status":"success","message":"Product removed from Wishlist","data":is_active['data']}
+            
+            else:
+                wishlist_item=self.wishlist_service.create(
+                    created_by=logged_in_user.id,
+                    created_at=datetime.now(),
+                    user_id=logged_in_user.id,
+                    product_id=product_id
+                )
+                if wishlist_item:
+                    return {"status":"success","message":"Product Added To Wishlist","data":wishlist_item.is_active}
+                return {"status":"error","message":"Something went wrong"}
+
+        else:
+            return {"status":"error","message":"Something went wrong"}

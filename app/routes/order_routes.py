@@ -66,5 +66,5 @@ def orders_page():
 
 @order_bp.route("/checkout/")
 @login_required
-def checkouts_page():
+def checkout_page():
     return order_controller.checkout_page()

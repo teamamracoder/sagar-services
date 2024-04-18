@@ -37,14 +37,14 @@
             <td class="">Sub-Total:</td>
             <td class="">
               <i class="bi bi-currency-rupee"></i
-              ><span class="subtotal">123</span>
+              ><span class="subtotal"></span>
             </td>
           </tr>
           <tr class="table-light">
             <td class="">Discount:</td>
             <td class="">
               <i class="bi bi-currency-rupee"></i
-              ><span class="discount">123</span>
+              ><span class="discount"></span>
             </td>
           </tr>
           <tr class="table-secondary">
@@ -52,15 +52,15 @@
             <td>
               <b
                 ><i class="bi bi-currency-rupee"></i
-                ><span class="total-price">123</span></b
+                ><span class="total-price"></span></b
               >
             </td>
           </tr>
         </tbody>
       </table>
       <div class="d-flex justify-content-between">
-        <a href="" class="btn link-blue">Continue Shopping</a>
-        <a href="" class="btn btn-outline-blue">Checkout</a>
+        <a href="{{ url_for('product.products_page') }}" class="btn link-blue">Continue Shopping</a>
+        <a href="{{ url_for('order.checkout_page') }}" class="btn btn-outline-blue">Checkout</a>
       </div>
     </div>
   </div>
@@ -123,7 +123,7 @@
                         <td>${item.price.toFixed(2)}</td>
                         <td>
                             <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="remove" onclick="removeFromCart(${item.id})"><i class="bi bi-trash3"></i></button> 
-                            <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="checkout" onclick="buyNow(${item.product_id})"><i class="bi bi-bag"></i></button> 
+                            <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="checkout" onclick="checkout(${item.product_id})"><i class="bi bi-bag"></i></button> 
                         </td>
                     </tr>
                 `);
@@ -152,6 +152,10 @@
                     console.error('Error fetching cart details:', error);
                 }
             });
+    }
+
+    window.checkout = function (product_id){
+      console.log(product_id)
     }
 </script>
 

@@ -82,50 +82,49 @@
         }
         // Call fetchwishlistDetails function to fetch wishlist details
         fetchWishlistDetails();
+    
+        window.removeFromWishlist = function(wishlist_id){
+            $.ajax({
+                url: "{{ url_for('wishlist.status',id=0) }}".replace('0',wishlist_id),
+                type: "GET",
+                complete:res=> {
+                    responseData=res.responseJSON
+                        if (responseData.status === 'success') {
+                            if(!responseData.data){
+                                toastr.success("Product Removed From Wishlist");
+                                $(".wishlist_item_"+wishlist_id).css("display","none")
+                            }
+                        }
+                        else{
+                            toastr.error(responseData.message);
+                        }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching wishlist details:', error);
+                }
+            });
+        }
+    
+        window.addToCart = function(product_id){
+            $.ajax({
+                url: "{{ url_for('cart.add',product_id=0) }}".replace('0',product_id),
+                type: "GET",
+                complete:res=> {
+                    responseData=res.responseJSON
+                        if (responseData.status === 'success') {
+                            if(responseData.data){
+                                toastr.success("Product Added to Cart");
+                            }
+                        }
+                        else{
+                            toastr.error(responseData.message);
+                        }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error('Error fetching wishlist details:', error);
+                }
+            });
+        }
     });
-    window.removeFromWishlist = function(wishlist_id){
-        $.ajax({
-            url: "{{ url_for('wishlist.status',id=0) }}".replace('0',wishlist_id),
-            type: "GET",
-            complete:res=> {
-                responseData=res.responseJSON
-                    if (responseData.status === 'success') {
-                        if(!responseData.data){
-                            toastr.success("Product Removed Wishlist");
-                            $(".wishlist_item_"+wishlist_id).css("display","none")
-                        }
-                    }
-                    else{
-                        toastr.error(responseData.message);
-                    }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching wishlist details:', error);
-            }
-        });
-    }
-
-    window.addToCart = function(product_id){
-        $.ajax({
-            url: "{{ url_for('cart.add_to_cart',id=0) }}".replace('0',product_id),
-            type: "GET",
-            complete:res=> {
-                console.log(res)
-                responseData=res.responseJSON
-                    if (responseData.status === 'success') {
-                        if(!responseData.data){
-                            toastr.success("Product Added to Cart");
-                            $(".wishlist_item_"+wishlist_id).css("display","none")
-                        }
-                    }
-                    else{
-                        toastr.error(responseData.message);
-                    }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching wishlist details:', error);
-            }
-        });
-    }
 </script>
 {% endblock %}
