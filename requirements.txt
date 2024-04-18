@@ -6,3 +6,5 @@ psycopg2-binary
 flask-wtf
 email_validator
 flask_login
+requests
+Flask-TinyMCE

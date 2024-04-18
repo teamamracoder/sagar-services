@@ -43,6 +43,6 @@ def status(id):
 
 
 
-@contact_bp.route("/contact_us/")
+@contact_bp.route("/contact_us/", methods=["GET", "POST"])
 def contact_us_page():
     return contact_controller.contact_us_page()

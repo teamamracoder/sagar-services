@@ -17,6 +17,7 @@ class ProductService(BaseService):
     def get_active(self):
         return ProductModel.query.filter_by(is_active=True).order_by(ProductModel.product_name).all()
 
+    #order creation
     def get_total_price(self,request):
         product_id = int(request.args.get("product_id"))
 
@@ -39,3 +40,15 @@ class ProductService(BaseService):
             'total_price':total_price
         }
         return price_calculated_data
+    
+
+    def get_product_details_by_ids(self,product_ids):
+        try:
+            # Query the database to get product details for the given product ids
+            products = self.model.query.filter(self.model.id.in_(product_ids)).all()
+
+            # Return list of product details
+            return products
+
+        except Exception as e:
+            raise ValueError(str(e))  # Raise an exception if an error occurs
