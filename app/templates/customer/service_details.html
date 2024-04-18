@@ -14,7 +14,7 @@
         
         <div class="img-container">
         <img
-          src="../../static/img/product-5.jpg"
+          src="{{ url_for('static', filename='img/product-5.jpg') }}"
           width="100%"
           id="ProductImg"
           alt=""
@@ -64,11 +64,11 @@
           <div class="col-12">
             <div class="row align-items-start">
               <div class="">
-                <h3>CPU REPEARING</h3>
+                <h3>{{service.service_name}}</h3>
               </div>
               <div class="gy-0">
-                <p>Service Charge:<span class="text-success">₹1250</span> <br/>
-                <span class="">You can save ₹250 with our service</span></p>
+                <p>Service Charge:<span class="text-success">₹{{service.service_charge}}</span> <br/>
+                <span class="">You can save ₹{{service.discount}} with our service</span></p>
               </div>
                 <div class="ms-0">
                   <span style="font-size: 12px;">Reviews</span><br/>
@@ -86,7 +86,10 @@
                     type="text"
                     value=""
                     placeholder="Pin"
+                    id="pincode"
                   />
+                  <span onclick="checkAvailability()" style="margin-left: -40px;"><i class="bi bi-search"></i></span>
+                  <p class="" id="show-availability"></p>
                 </div>
               </div>
             </div>
@@ -213,6 +216,53 @@
               <div class="tab-pane fade" id="tab-pane-2">
                 <div class="row">
                   <div class="col-md-6">
+                    <h4 class="mb-4">Leave a review</h4>
+                    <small
+                      >Your email address will not be published. Required
+                      fields are marked *</small
+                    >
+                    <div class="d-flex my-3">
+                      <p class="mb-0 me-2">Your Rating * :</p>
+                      <div class="text-primary">
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                    <form method="POST" action="{{ url_for('service_review.service_details') }}" enctype="multipart/form-data"  id="adminForm">
+                      {{ form.csrf_token }}
+                      <div class="row">
+                          <div class="col-12">
+                              {{ form.service_id.label(class="form-label") }}
+                              {{ form.service_id(class="form-control form-control-sm") }}
+                          </div>
+                          <div class="col-12">
+                              {{ form.review_title.label(class="form-label") }}
+                              {{ form.review_title(class="form-control form-control-sm") }}
+                          </div>
+                          <div class="col-12">
+                              {{ form.description.label(class="form-label") }}
+                              {{ form.description(class="form-control form-control-sm") }}
+                          </div>
+                          <div class="col-12">
+                              {{ form.rating.label(class="form-label") }}
+                              {{ form.rating(class="form-control form-control-sm") }}
+                          </div>
+                          <div class="col-12">
+                              {{ form.hidden_tag() }}
+                              {{ form.service_review_img_urls.label(class="form-label") }}
+                              {{ form.service_review_img_urls(class="form-control form-control-sm", class="multi with-preview", accept="gif|jpg|png|jpeg|webp") }}
+                          </div>
+                          <div class="col-12 my-2">
+                              <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+                              <a href="{{ url_for('service_review.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                          </div>
+                      </div>
+                  </form>
+                  </div>
+                  <div class="col-md-6">
                     <h4 class="mb-4">1 review for "Service Name"</h4>
                     <div class="media mb-4">
                       <img
@@ -239,49 +289,6 @@
                         </p>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <h4 class="mb-4">Leave a review</h4>
-                    <small
-                      >Your email address will not be published. Required
-                      fields are marked *</small
-                    >
-                    <div class="d-flex my-3">
-                      <p class="mb-0 me-2">Your Rating * :</p>
-                      <div class="text-primary">
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                      </div>
-                    </div>
-                    <form>
-                      <div class="form-group">
-                        <label for="message">Your Review *</label>
-                        <textarea
-                          id="message"
-                          cols="30"
-                          rows="5"
-                          class="form-control"
-                        ></textarea>
-                      </div>
-                      <div class="form-group">
-                        <label for="name">Your Name *</label>
-                        <input type="text" class="form-control" id="name" />
-                      </div>
-                      <div class="form-group">
-                        <label for="email">Your Email *</label>
-                        <input type="email" class="form-control" id="email" />
-                      </div>
-                      <div class="form-group mb-0">
-                        <input
-                          type="submit"
-                          value="Leave Your Review"
-                          class="btn btn-primary px-3"
-                        />
-                      </div>
-                    </form>
                   </div>
                 </div>
               </div>
@@ -425,4 +432,37 @@
   </div>
 </div>
 
+
+<script>
+var pincodes = '{{service.available_area_pincodes}}'
+
+pinCodesString = pincodes.replace(/&#39;/g, "'");
+pinCodesString = pinCodesString.replace(/'/g, '"'); 
+var pinCodesArray = JSON.parse(pinCodesString);
+console.log(pinCodesArray)
+
+function checkAvailability(){
+let pincode = document.getElementById('pincode').value;
+let get_availability = document.getElementById('show-availability');
+
+// Flag to indicate if the pin code is found
+let found = false;
+
+for(var i = 0; i < pinCodesArray.length; i++){
+  if(pinCodesArray[i] === pincode){
+    found = true;
+    break; // No need to continue searching once found
+  }
+}
+
+if (found) {
+  get_availability.textContent = "Available..!";
+  get_availability.style.color="green"
+} else {
+  get_availability.textContent = "Not Available..!";
+  get_availability.style.color="red"
+}
+}
+
+</script>
 {% endblock %}

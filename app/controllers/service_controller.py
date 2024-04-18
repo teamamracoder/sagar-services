@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateServiceForm, UpdateServiceForm
-from app.services import ServiceService, ServiceTypeService
+from app.services import ServiceService, ServiceTypeService, ServiceReviewService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
@@ -11,6 +11,7 @@ class ServiceController:
     def __init__(self) -> None:
         self.service_service = ServiceService()
         self.service_type_service = ServiceTypeService()
+        self.service_review_service = ServiceReviewService()
 
     def get(self):
         return render_template("admin/service/index.html")
@@ -117,5 +118,12 @@ class ServiceController:
 
 
     # customer section
-    def service_details(self):
-        return render_template("customer/service_details.html")
+    # def service_page():
+    #     service = self.service_service.get_active()
+    #     return render_template("customer/base/#service_page", service=service)
+
+
+    def service_details_page(self,service_id):
+        service = self.service_service.get_by_id(service_id)
+        self.service_review = self.service_review_service.get_review_by_service_id(service_id)
+        return render_template("customer/service_details.html",service=service)

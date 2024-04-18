@@ -67,6 +67,7 @@ class BookingController:
         form.payment_method.choices = payment_methods.get_all_items()
         form.service_status.choices = service_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
+        
         if form.validate_on_submit():
             if self.booking_service.update(
                 id=id,
@@ -97,6 +98,7 @@ class BookingController:
         # return redirect(url_for("booking.index"))
 
     def service_status(self,id,status_type,status):
+        logged_in_user,roles=get_current_user().values()
         booking = self.booking_service.get_by_id(id)
         if booking is None:
              return {"status":"error","message": "Booking not found"}
@@ -105,14 +107,14 @@ class BookingController:
             updated_data = {
                 'payment_status': status_key,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': logged_in_user.id
             }
         if status_type == 'booking':
             status_key = service_statuses.get_key(status)
             updated_data = {
                 'service_status': status_key,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': logged_in_user.id
             }
         self.booking_service.update(id, **updated_data)
         return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
@@ -127,8 +129,12 @@ class BookingController:
 
     ## customer controllers ##
 
-    def bookings_page(self):
-        return render_template("customer/my_bookings.html")
+    def bookings_page(self,booking_id):
+        booking = self.booking_service.get_by_id(booking_id)
+        service = self.service_service.get_service_name_by_booking_id(booking.service_id)
+        payment_status = payment_statuses.get_value(booking.payment_status)
+        service_status = service_statuses.get_value(booking.service_status)
+        return render_template("customer/my_bookings.html", booking=booking, service=service, payment_status=payment_status, service_status=service_status)
     
     def checkout_page(self):
         return render_template("customer/checkout.html")

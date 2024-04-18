@@ -29,12 +29,12 @@
                     <tbody>
                         <tr>
                             <td><img src="{{ url_for('static', filename='img/flask-icon.png') }}" class="adminTableImg"></td>
-                            <td>Monitor LED</td>
-                            <td>Tallitala ,Coochbehar,736101</td>
-                            <td>12-04-24</td>
-                            <td><i class="bi bi-currency-rupee"></i>10000</td>
-                            <td>COD</td>
-                            <td>Confirmd</td>
+                            <td>{{service}}</td>
+                            <td>{{booking.service_location}}</td>
+                            <td>{{booking.created_at}}</td>
+                            <td><i class="bi bi-currency-rupee"></i>{{booking.total_charges}}</td>
+                            <td>{{payment_status}}</td>
+                            <td>{{service_status}}</td>
                         </tr>
                     </tbody>
                 </table>

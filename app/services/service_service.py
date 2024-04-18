@@ -39,9 +39,19 @@ class ServiceService(BaseService):
             'total_charge' : total_charge
         }
         return service_charge_calculated_data
+
     def get_service_by_id(self, id):
         service = ServiceModel.query.filter_by(id=id).first()
         if service:
             return service.service_name
         else:
             return None  # or raise an exception depending on your use case
+
+
+    # my_booking
+    def get_service_name_by_booking_id(self, service_id):
+        service = self.model.query.filter_by(id=service_id).first()
+        if service:
+            return service.service_name
+        else:
+            return None
