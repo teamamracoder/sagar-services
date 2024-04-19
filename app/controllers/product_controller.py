@@ -6,7 +6,8 @@ from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
 from app.utils import FileUtils
-
+from app.services import CartService
+from app.services import WishlistService
 
 
 class ProductController:
@@ -15,6 +16,8 @@ class ProductController:
         self.category_service = CategoryService()
         self.product_qna_service = ProductQnAService()
         self.product_review_service = ProductReviewService()
+        self.cart_service = CartService()
+        self.wishlist_service = WishlistService()
 
     def get(self):
         return render_template("admin/product/index.html")
@@ -125,9 +128,12 @@ class ProductController:
         return render_template("customer/products.html", categories=categories, brands = brands)
     
     def products_page_data(self):
+        logged_in_user,roles=get_current_user().values()
         columns = ["id", "product_name", "brand","model","price","discount","stock", "product_img_urls"]
         data = self.product_service.get_filtered_list(request, columns)
         data = self.product_review_service.get_reviews_by_product(data)
+        data = self.cart_service.add_cart_with_user_and_product(logged_in_user.id,data)
+        data = self.wishlist_service.add_wishlist_with_user_and_product(logged_in_user.id,data)
         return jsonify(data)
 
     def product_details_page(self,product_id):

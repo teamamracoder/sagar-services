@@ -136,9 +136,6 @@
             var category = $('input[name="category"]:checked').val();
             var brand = $('input[name="brand"]:checked').val();
             var price = $('input[name="price"]:checked').val();
-            console.log(category)
-            console.log(brand)
-            console.log(price)
             $.ajax({
                 url: "{{ url_for('product.products_page_data') }}",
                 type: "GET",
@@ -172,7 +169,6 @@
                     });
 
                     var averageRating = numberOfReviews > 0 ? totalRating / numberOfReviews : 0;
-                    console.log("Average Rating:", averageRating);
 
                     var fullStars = Math.floor(averageRating);
                     var halfStars = averageRating - fullStars >= 0.5 ? 1 : 0;
@@ -190,6 +186,15 @@
                         starsHTML += '<small class="bi bi-star text-primary me-1"></small>';
                     }
 
+                    cartTooltipTitle = product.cart ? "Added to Cart" : "Add to Cart";
+                    cartTooltipIcon = product.cart ? '<i class="bi bi-cart-check-fill"></i>' : '<i class="bi bi-cart-plus"></i>';
+
+                    wishlistTooltipTitle = product.wishlist ? "Added to Wishlist" : "Add to Wishlist";
+                    wishlistTooltipIcon = product.wishlist ? '<i class="bi bi-heart-fill"></i>' : '<i class="bi bi-heart"></i>';
+
+                    cart_button=`<button id="cart_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product.id})" data-bs-placement="bottom" title="${cartTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${cartTooltipIcon}</button>`
+                    wishlist_button=`<button id="wishlist_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product.id})" data-bs-placement="bottom" title="${wishlistTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${wishlistTooltipIcon}</button>`
+
                     // Create a new div element to hold the product information
                     var productDiv = $('<div>', { class: 'col-lg-3 col-md-3 col-sm-4 col-6 pb-1'});
                     
@@ -199,9 +204,9 @@
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt="">
                                 <div class="product-action">
-                                    <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                    <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                    <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
+                                    ${cart_button}
+                                    ${wishlist_button}
+                                    <button id="checkout_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="checkout(${product.id})" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></button>
                                 </div>
                             </div>
                             <div class="text-center py-4">
@@ -236,6 +241,78 @@
         }
 
         fetchPaginatedProducts(1);
+
+
+
+        
+        // add to cart
+        window.addToCart = function(product_id){
+            $.ajax({
+                url: "{{ url_for('cart.add',product_id=0) }}".replace('0',product_id),
+                type: "GET",
+                complete:res=> {
+                    responseData=res.responseJSON
+                        if (responseData.status == 'success') {
+                            if(responseData.data){
+                                toastr.success(responseData.message);
+                                tooltipTitle="Added to Cart"
+                                tooltipIcon='<i class="bi bi-cart-check-fill"></i>'
+                            }
+                            else{
+                                toastr.error(responseData.message);
+                                tooltipTitle="Add to Cart"
+                                tooltipIcon='<i class="bi bi-cart-plus"></i>'
+                            }
+                        }
+                        else{
+                            toastr.error(responseData.message);
+                            tooltipTitle="Add to Cart"
+                            tooltipIcon='<i class="bi bi-cart-plus"></i>'
+                        }
+                        $("#cart_icon_"+product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+                    },
+                error: function (xhr, status, error) {
+                    toastr.error('Error fetching wishlist details:', error);
+                }
+            });
+        }
+
+        window.addToWishlist = function(product_id){
+            $.ajax({
+                url: "{{ url_for('wishlist.add',product_id=0) }}".replace('0',product_id),
+                type: "GET",
+                complete:res=> {
+                    responseData=res.responseJSON
+                        if (responseData.status === 'success') {
+                            if(responseData.data){
+                                toastr.success(responseData.message);
+                                tooltipTitle="Added to Wishlist"
+                                tooltipIcon='<i class="bi bi-heart-fill"></i>'
+                            }
+                            else{
+                                toastr.error(responseData.message);
+                                tooltipTitle="Added to Wishlist"
+                                tooltipIcon='<i class="bi bi-heart"></i>'
+                            }
+                        }
+                        else{
+                            toastr.error(responseData.message);
+                            tooltipTitle="Added to Wishlist"
+                            tooltipIcon='<i class="bi bi-heart"></i>'
+                        }
+                        $("#wishlist_icon_"+product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+
+                },
+                error: function (xhr, status, error) {
+                    toastr.error('Error fetching wishlist details:', error);
+                }
+            });
+        }
+
+        window.checkout = function(product_id){
+            console.log(product_id)
+        }
+
     });
 </script>
 {% endblock %}
