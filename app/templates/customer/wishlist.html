@@ -66,6 +66,10 @@
                 else{
                     product_image=null
                 }
+                // cartTooltipTitle = product.cart ? "Added to Cart" : "Add to Cart";
+                // cartTooltipIcon = product.cart ? '<i class="bi bi-cart-check-fill"></i>' : '<i class="bi bi-cart-plus"></i>';
+                // cart_button=`<button id="cart_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product.id})" data-bs-placement="bottom" title="${cartTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${cartTooltipIcon}</button>`
+
                 wishlistTable.append(`
                     <tr class="wishlist_item_${item.id}">
                         <td>${product_image ? `<img src="../../static/${product_image}" alt="" width="50">` : ''}</td>
@@ -74,7 +78,7 @@
                         <td>${item.price.toFixed(2)}</td>
                         <td>
                             <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="remove" onclick="removeFromWishlist(${item.id})"><i class="bi bi-trash3"></i></button> 
-                            <button id="cart_icon_${item.product_id}" class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="add to cart" onclick="addToCart(${item.product_id})"><i class="bi bi-cart-plus"></i></button> 
+                            ${cart_button}
                         </td>
                     </tr>
                 `);

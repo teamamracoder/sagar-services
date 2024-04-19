@@ -17,3 +17,5 @@ from .wishlist_model import WishlistModel
 from .contact_model import ContactModel
 from .coupon_model import CouponModel
 from .product_qna_model import ProductQnAModel
+from .order_logs import OrderLogModel
+from .booking_logs import BookingLogModel

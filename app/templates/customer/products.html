@@ -17,7 +17,7 @@
                     </div>
                     {% for category in categories %}
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" name="category" class="custom-control-input" value="{{ category.id }}">
+                        <input type="checkbox" name="category" class="custom-control-input" value="{{category.id}}">
                         <label class="custom-control-label">{{ category.category_name }}</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">150</span> -->
                     </div>
@@ -133,9 +133,13 @@
         $('#filter-options-phone').html($('.filter-options').html());
 
         window.fetchPaginatedProducts = function (page) {
-            var category = $('input[name="category"]:checked').val();
+
+            var category = [...$('input[name="category"]:checked')].filter(category=>category.value != '').map(category=>Number(category.value));
             var brand = $('input[name="brand"]:checked').val();
             var price = $('input[name="price"]:checked').val();
+            console.log(category)
+            console.log(brand)
+            console.log(price)
             $.ajax({
                 url: "{{ url_for('product.products_page_data') }}",
                 type: "GET",

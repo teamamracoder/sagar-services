@@ -10,6 +10,7 @@ class ProductService(BaseService):
     def add_product_with_this(self, items: dict) -> dict:
         for item in items["data"]:
             item["product_name"] = self.get_product_name_by_id(item["product_id"])
+            item["product_img_urls"] = self.model.query.filter_by(id=item["product_id"]).first().product_img_urls
         return items
     
     def get_product_name_by_id(self,product_id):
@@ -68,7 +69,6 @@ class ProductService(BaseService):
     
         # Apply filters
         category_filter = request.args.get('category')
-        print(category_filter)
         if category_filter:
             query = query.filter(self.model.category_id == int(category_filter))
     
