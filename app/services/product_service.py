@@ -68,9 +68,10 @@ class ProductService(BaseService):
         query = self.model.query
     
         # Apply filters
-        category_filter = request.args.get('category')
-        if category_filter:
-            query = query.filter(self.model.category_id == int(category_filter))
+        category_filters = request.args.get('category')
+        if category_filters:
+            category_ids = [int(cat) for cat in category_filters]
+            query = query.filter(self.model.category_id.in_(category_ids))
     
         brand_filter = request.args.get('brand')
         if brand_filter:

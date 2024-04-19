@@ -135,8 +135,8 @@
         window.fetchPaginatedProducts = function (page) {
 
             var category = [...$('input[name="category"]:checked')].filter(category=>category.value != '').map(category=>Number(category.value));
-            var brand = $('input[name="brand"]:checked').val();
-            var price = $('input[name="price"]:checked').val();
+            var brand = [...$('input[name="brand"]:checked')].filter(brand=>brand.value != '').map(brand=>brand.value);
+            var price = [...$('input[name="price"]:checked')].filter(price=>price.value != '').map(price=>price.value);
             console.log(category)
             console.log(brand)
             console.log(price)

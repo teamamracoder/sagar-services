@@ -78,7 +78,7 @@
                         <td>${item.price.toFixed(2)}</td>
                         <td>
                             <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="remove" onclick="removeFromWishlist(${item.id})"><i class="bi bi-trash3"></i></button> 
-                            ${cart_button}
+                            <button class="btn btn-outline-blue border-0" data-toggle="tooltip"  data-bs-placement="bottom"  title="add to cart" onclick="addToCart(${item.product_id})"><i class="bi bi-cart-plus"></i></button> 
                         </td>
                     </tr>
                 `);
@@ -115,6 +115,7 @@
                 type: "GET",
                 complete:res=> {
                     responseData=res.responseJSON
+                    console.log(responseData)
                     if (responseData.status == 'success') {
                             if(responseData.data){
                                 toastr.success(responseData.message);
