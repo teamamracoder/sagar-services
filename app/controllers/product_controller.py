@@ -121,9 +121,14 @@ class ProductController:
 
     def products_page(self):
         categories = self.category_service.get_active()
-        products = self.product_service.get_active()
         brands = self.product_service.get_all_brands()
-        return render_template("customer/products.html", categories=categories, products = products, brands = brands)
+        return render_template("customer/products.html", categories=categories, brands = brands)
+    
+    def products_page_data(self):
+        columns = ["id", "product_name", "brand","model","price","discount","stock", "product_img_urls"]
+        data = self.product_service.get_filtered_list(request, columns)
+        data = self.product_review_service.get_reviews_by_product(data)
+        return jsonify(data)
 
     def product_details_page(self,product_id):
         product = self.product_service.get_by_id(product_id)

@@ -57,6 +57,10 @@ def details(id):
 def products_page():
     return product_controller.products_page()
 
+@product_bp.route("/products/data/")
+def products_page_data():
+    return product_controller.products_page_data()
+
 @product_bp.route("/product_details/<int:product_id>", methods=["GET", "PATCH"])
 def product_details_page(product_id):
     return product_controller.product_details_page(product_id)

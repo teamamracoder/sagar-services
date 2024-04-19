@@ -4,68 +4,69 @@
 
 {% block content %}
 
-<div class="container-fluid mt-4">
+<div class="container-fluid my-4">
     <div class="row px-xl-5">
         <div class="col-lg-3 filter-options-container d-none d-lg-block">
             <div class="filter-options">
                 <div class="bg-light p-4 mb-30">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter By Categories</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked>
+                        <input type="checkbox" class="custom-control-input" checked name="category" value="">
                         <label class="custom-control-label">All Products</label>
-                        <span class="badge border fw-normal text-dark rounded-0 rounded-0">1000</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0 rounded-0">1000</span> -->
                     </div>
                     {% for category in categories %}
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input">
+                        <input type="checkbox" name="category" class="custom-control-input" value="{{ category.id }}">
                         <label class="custom-control-label">{{ category.category_name }}</label>
-                        <span class="badge border fw-normal text-dark rounded-0">150</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">150</span> -->
                     </div>
                     {% endfor %}
                 </div>
                 <div class="bg-light p-4 mb-30">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter by Brand</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked>
+                        <input type="checkbox" class="custom-control-input" checked name="brand" value="">
                         <label class="custom-control-label">All Brands</label>
-                        <span class="badge border fw-normal text-dark rounded-0">1000</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">1000</span> -->
                     </div>
                     {% for brand in brands %}
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input">
+                        <input type="checkbox" class="custom-control-input" name="brand" value="{{ brand }}">
                         <label class="custom-control-label">{{ brand }}</label>
-                        <span class="badge border fw-normal text-dark rounded-0">150</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">150</span> -->
                     </div>
                     {% endfor %}
                 </div>
-                <div class="bg-light p-4 mb-30">
+                <div class="bg-light p-4 mb-4">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter by price</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked>
+                        <input type="checkbox" class="custom-control-input" name="price" value="" checked>
                         <label class="custom-control-label">All Price</label>
-                        <span class="badge border fw-normal text-dark rounded-0">1000</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">1000</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input">
+                        <input type="checkbox" class="custom-control-input" name="price" value="less_than_1000">
                         <label class="custom-control-label">less than ₹1000</label>
-                        <span class="badge border fw-normal text-dark rounded-0">150</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">150</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input">
+                        <input type="checkbox" class="custom-control-input" name="price" value="1000_to_5000">
                         <label class="custom-control-label">₹1000 - ₹5000</label>
-                        <span class="badge border fw-normal text-dark rounded-0">295</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">295</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input">
+                        <input type="checkbox" class="custom-control-input" name="price" value="5000_to_10000">
                         <label class="custom-control-label">₹5000 - ₹10000</label>
-                        <span class="badge border fw-normal text-dark rounded-0">246</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">246</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input">
+                        <input type="checkbox" class="custom-control-input" name="price" value="more_than_10000">
                         <label class="custom-control-label">more than ₹10000</label>
-                        <span class="badge border fw-normal text-dark rounded-0">145</span>
+                        <!-- <span class="badge border fw-normal text-dark rounded-0">145</span> -->
                     </div>
                 </div>
+                <button type="button" class="btn btn-outline-blue w-100" onclick="fetchPaginatedProducts(1)">Apply Filters</button>
             </div>
         </div>
 
@@ -83,281 +84,46 @@
         <div class="col-lg-9">
             <div class="row pb-3">
                 <div class="col-12 pb-1">
-                    <div class="d-flex align-items-center justify-content-end mb-4">
-                        <div class="ms-2">
+                    <div class="mb-4 d-flex justify-content-between w-100">
+                        <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item">
+                                <a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a>
+                              </li>
+                              <li class="breadcrumb-item active" aria-current="page">Products</li>
+                            </ol>
+                        </nav>
+                        <div class="ms-2 d-flex">
                             <div class="btn-group">
                                 <div class="dropdown">
-                                    <button class="btn btn-outline-blue dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      Sort By
-                                    </button>
-                                    <ul class="dropdown-menu p-0">
-                                        <li><a class="dropdown-item btn btn-outline-blue border-0 text-dark" href="#">Default</a></li>
-                                        <li><a class="dropdown-item btn btn-outline-blue border-0 text-dark" href="#">Latest </a></li>
-                                        <li><a class="dropdown-item btn btn-outline-blue border-0 text-dark" href="#">Popularity </a></li>
-                                        <li><a class="dropdown-item btn btn-outline-blue border-0 text-dark" href="#">Price : low to high</a></li>
-                                        <li><a class="dropdown-item btn btn-outline-blue border-0 text-dark" href="#">Price : high to low </a></li>
-                                    </ul>
+                                    <select class="p-0" style="height:38px; border:1px solid #318CE7; outline:#318CE7; cursor: pointer;">
+                                        <option value="default">Sort By</option>
+                                        <option value="">Latest</option>
+                                        <option value="">Popularity</option>
+                                        <option value="">Price : low to high</option>
+                                        <option value="">Price : high to low</option>
+                                    </select>
                                   </div>
                             </div>
-                        </div>
-                        <div class="ms-2 d-lg-none">
-                            <button class="btn btn-blue" id="filterMenuButton" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-microsoft"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">AMD Athlone 3000g</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small>(99)</small>
+                            <div class="ms-2 d-lg-none text-end">
+                                <button class="btn btn-blue" id="filterMenuButton" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-microsoft"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate px-1" href="" style="overflow-x: hidden;">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi bi-star-half text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi bi-star-half text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star-fill text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4 col-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
-                                <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
-                                
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">Product Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="text-success">₹123.00</h5><h6 class="text-muted ms-2"><del>₹123.00</del></h6>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small class="bi bi-star text-primary me-1"></small>
-                                <small>(99)</small>
-                            </div>
-                        </div>
-                    </div>
+
+                <!-- products -->
+                <div class="row" id="product_list">
+                    <!-- single product -->
                 </div>
                 <div class="col-12">
                     <nav>
-                      <ul class="pagination justify-content-center">
-                        <li class="page-item disabled"><a class="btn-outline-blue px-2 py-1 rounded-0 border-end-0" href="#">&lt;</span></a></li>
-                        <li class="page-item active"><a class="btn-blue px-2 py-1 rounded-0 border-end-0" href="#">1</a></li>
-                        <li class="page-item"><a class="btn-outline-blue px-2 py-1 rounded-0 border-end-0" href="#">2</a></li>
-                        <li class="page-item"><a class="btn-outline-blue px-2 py-1 rounded-0 border-end-0" href="#">3</a></li>
-                        <li class="page-item"><a class="btn-outline-blue px-2 py-1 rounded-0" href="#">&gt;</a></li>
+                      <ul class="pagination justify-content-center" id="pagination_controls">
+                        <!-- pagination  -->
                       </ul>
                     </nav>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -366,6 +132,110 @@
     $(document).ready(function () {
         $('#filter-options-phone').html($('.filter-options').html());
 
-    })
+        window.fetchPaginatedProducts = function (page) {
+            var category = $('input[name="category"]:checked').val();
+            var brand = $('input[name="brand"]:checked').val();
+            var price = $('input[name="price"]:checked').val();
+            console.log(category)
+            console.log(brand)
+            console.log(price)
+            $.ajax({
+                url: "{{ url_for('product.products_page_data') }}",
+                type: "GET",
+                data: {
+                    page: page, 
+                    page_size: 30,
+                    category: category,
+                    brand: brand,
+                    price: price
+                },
+                success: function (response) {
+                    renderProducts(response);
+                    renderPaginationControls(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching product details:', error);
+                }
+            });
+        };
+        function renderProducts(products) {
+                var productContainer = $('#product_list');
+                productContainer.empty();
+
+                // Iterate through each product in the response
+                products.data.forEach(function(product) {
+                    var totalRating = 0;
+                    var numberOfReviews = product.product_review.length;
+
+                    product.product_review.forEach(function(review) {
+                        totalRating += review.rating;
+                    });
+
+                    var averageRating = numberOfReviews > 0 ? totalRating / numberOfReviews : 0;
+                    console.log("Average Rating:", averageRating);
+
+                    var fullStars = Math.floor(averageRating);
+                    var halfStars = averageRating - fullStars >= 0.5 ? 1 : 0;
+                    var emptyStars = 5 - fullStars - halfStars;
+
+                    // Construct the HTML for the star ratings
+                    var starsHTML = '';
+                    for (var i = 0; i < fullStars; i++) {
+                        starsHTML += '<small class="bi bi-star-fill text-primary me-1"></small>';
+                    }
+                    if (halfStars === 1) {
+                        starsHTML += '<small class="bi bi-star-half text-primary me-1"></small>';
+                    }
+                    for (var j = 0; j < emptyStars; j++) {
+                        starsHTML += '<small class="bi bi-star text-primary me-1"></small>';
+                    }
+
+                    // Create a new div element to hold the product information
+                    var productDiv = $('<div>', { class: 'col-lg-3 col-md-3 col-sm-4 col-6 pb-1'});
+                    
+                    // Construct the HTML for the product
+                    var productHTML = `
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt="">
+                                <div class="product-action">
+                                    <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Cart" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-cart-plus"></i></a>
+                                    <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Add to Wishlist" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-heart"></i></a>
+                                    <a class="btn btn-outline-blue btn-square" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></a>
+                                </div>
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none link-blue" href="/product_details/${product.id}">${product.product_name}</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5 class="text-success">₹${product.price-product.discount}</h5><h6 class="text-muted ms-2"><del>₹${product.discount}</del></h6>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center mb-1">
+                                    ${starsHTML}
+                                    <small>(${numberOfReviews})</small>
+                                </div>
+                            </div> 
+                        </div>`;
+                    
+                    // Append the product HTML to the product div
+                    productDiv.html(productHTML);
+                    
+                    // Append the product div to the products container
+                    productContainer.append(productDiv);
+                });
+            }
+        function renderPaginationControls(metadata) {
+            var paginationControls = $('#pagination_controls');
+            paginationControls.empty();
+
+            var totalPages = metadata.total_pages;
+
+            for (var i = 1; i <= totalPages; i++) {
+                var pageLink = `<li class="page-item ${i === metadata.page ? 'active' : ''}"><a class="btn-outline-blue px-2 py-1 rounded-0 border-end-0" href="#" onclick="fetchPaginatedProducts(${i})">${i}</a></li>`;
+                paginationControls.append(pageLink);
+            }
+        }
+
+        fetchPaginatedProducts(1);
+    });
 </script>
 {% endblock %}
