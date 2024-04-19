@@ -139,4 +139,6 @@ class ProductController:
     def product_details_page(self,product_id):
         product = self.product_service.get_by_id(product_id)
         product_reviews = self.product_review_service.get_review_by_product_id(product_id)
-        return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
+        if product:
+            return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
+        return render_template("error/page_not_found.html")
