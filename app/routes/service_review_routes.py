@@ -30,3 +30,8 @@ def add():
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def status(id):
     return service_review_controller.status(id)
+
+
+@service_review_bp.route("/service_reviews/<int:service_id>", methods=["GET", "POST"])
+def service_review_create(service_id):
+    return service_review_controller.service_review_create(service_id)
