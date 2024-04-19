@@ -49,7 +49,13 @@ def details(id):
 
 
 # customer routes
-@service_bp.route("/service_details/", methods=["GET", "PATCH"])
-def service_details():
-    return service_controller.service_details()
+
+# @service_bp.route("/service_page/", methods=["GET", "POST"])
+# def service_page():
+#     return service_controller.service_page()
+
+
+@service_bp.route("/service_details/<int:service_id>", methods=["GET", "PATCH"])
+def service_details_page(service_id):
+    return service_controller.service_details_page(service_id)
 
