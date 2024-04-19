@@ -3,11 +3,13 @@ from app.forms import CreateWishlistForm
 from app.services import WishlistService, ProductService
 from datetime import datetime
 from app.auth import get_current_user
+from app.services import CartService
 
 class WishlistController:
     def __init__(self) -> None:
         self.wishlist_service = WishlistService()
         self.product_service = ProductService()
+        self.car_service = CartService()
 
     def get(self):
         return render_template("admin/wishlist/index.html")

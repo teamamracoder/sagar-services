@@ -20,21 +20,6 @@ class CartController:
         data = self.cart_service.add_status_with_cart(data)
         return jsonify(data)
 
-    #admin creates cart
-    # def create(self):
-    #     logged_in_user,roles=get_current_user().values()
-    #     form = CreateCartForm()
-    #     if form.validate_on_submit():
-    #         self.cart_service.create(
-    #             created_by=logged_in_user.id,   #logged in user id
-    #             created_at=datetime.now(),
-    #             user_id=logged_in_user.id,
-    #             product_id=form.product_id.data,
-    #             status=1
-    #         )
-    #         return redirect(url_for("cart.index"))
-    #         # return render_template("admin/cart/add.html", form=form, error="cart already exists")
-    #     return render_template("admin/cart/add.html", form=form)
 
 
     def cart_status(self, cart_id, status):
@@ -66,21 +51,6 @@ class CartController:
         if is_active:
             return {"status":"success","message":"Cart Activated","data":is_active}
         return {"status":"success","message":"Cart Deactivated","data":is_active}
-    # def status(self, id):
-    #     logged_in_user,roles=get_current_user().values()
-    #     cart = self.cart_service.get_by_id(id)
-    #     if cart is None:
-    #         return {"status":"error","message":"Cart Not Found"}
-    #     is_active=self.cart_service.status(id)
-    #     if is_active:
-    #         self.cart_service.update(
-    #             cart.id,
-    #             updated_by=logged_in_user.id,  
-    #             updated_at=datetime.now(),
-    #             status=1
-    #         )
-    #         return {"status":"success","message":"Cart Activated","data":is_active}
-    #     return {"status":"success","message":"Cart Deactivated","data":is_active}
 
 
 
@@ -130,7 +100,8 @@ class CartController:
         try:
             if cart_item:
                 if cart_item.is_active:
-                    return {"status":"error","message":"Product is Already In Cart","data":False}
+                    self.status(cart_item.id)
+                    return {"status":"success","message":"Product Removed From Cart","data":False}
                 else:
                     self.cart_service.update(
                         cart_item.id,
@@ -142,7 +113,7 @@ class CartController:
                     return {"status":"success","message":"Product Added to Cart","data":True}
             else:
                 self.cart_service.create(
-                    created_by=logged_in_user.id,   #logged in user id
+                    created_by=logged_in_user.id,  
                     created_at=datetime.now(),
                     user_id=logged_in_user.id,
                     product_id=product_id,

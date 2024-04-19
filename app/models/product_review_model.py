@@ -41,7 +41,7 @@ class ProductReviewModel(db.Model):
 
     review_title=db.Column(db.String(100))
 
-    description=db.Column(db.String(200),nullable=False)
+    description=db.Column(db.Text,nullable=False)
 
     product_review_img_urls=db.Column(db.ARRAY(db.Text))
 

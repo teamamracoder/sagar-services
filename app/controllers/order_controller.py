@@ -128,6 +128,14 @@ class OrderController:
     def orders_page(self):
         return render_template("customer/my_orders.html")
     
+    def orders_page_data(self):
+        logged_in_user,roles=get_current_user().values()
+        columns = ["id", "product_name", "brand","model","price","discount","stock", "product_img_urls"]
+        data = self.order_service.get_orders_by_user_id(logged_in_user.id,request, columns)
+        data = self.product_service.add_product_with_this(data)
+        print(data)
+        return jsonify(data)
+    
     def checkout_page(self,product_id):
         logged_in_user,roles=get_current_user().values()
         product = self.product_service.get_by_id(product_id)

@@ -11,7 +11,7 @@
     <p>Home>CPU-Repaile>Details</p>
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-5">
-        
+        <!-- cursor id wala element ta nai -->
         <div class="img-container">
         <img
           src="{{ url_for('static', filename='img/product-5.jpg') }}"
@@ -231,12 +231,12 @@
                         <i class="far fa-star"></i>
                       </div>
                     </div>
-                    <form method="POST" action="{{ url_for('service_review.service_details') }}" enctype="multipart/form-data"  id="adminForm">
+                    
+                    <form method="POST" action="{{ url_for('service_review.service_review_create',service_id=service.id) }}" enctype="multipart/form-data"  id="adminForm">
                       {{ form.csrf_token }}
                       <div class="row">
                           <div class="col-12">
-                              {{ form.service_id.label(class="form-label") }}
-                              {{ form.service_id(class="form-control form-control-sm") }}
+                              {{ form.service_id(class="form-control form-control-sm", value=service.id, hidden="hidden") }}
                           </div>
                           <div class="col-12">
                               {{ form.review_title.label(class="form-label") }}
@@ -259,36 +259,41 @@
                               <button type="submit" class="btn btn-dark btn-sm">Submit</button>
                               <a href="{{ url_for('service_review.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
                           </div>
+                          {% if error %}
+                            {{error}}
+                          {% endif %}
                       </div>
                   </form>
                   </div>
                   <div class="col-md-6">
-                    <h4 class="mb-4">1 review for "Service Name"</h4>
-                    <div class="media mb-4">
-                      <img
-                        src="img/user.jpg"
-                        alt="Image"
-                        class="img-fluid me-3 mt-1"
-                        style="width: 45px"
-                      />
-                      <div class="media-body">
-                        <h6>
-                          John Doe<small> - <i>01 Jan 2045</i></small>
-                        </h6>
-                        <div class="text-primary mb-2">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star-half-alt"></i>
-                          <i class="far fa-star"></i>
+                    {% for review in service_reviews %}
+                    <div>
+                      <h4 class="mb-4">1 review for {{service.service_name}}</h4>
+                      <div class="media mb-4">
+                        <img
+                          src="{{review.service_review_img_urls[0]}}"
+                          alt="Image"
+                          class="img-fluid me-3 mt-1"
+                          style="width: 45px"
+                        />
+                        <div class="media-body">
+                          <h6>
+                            John Doe<small> - <i>{{service.created_at}}</i></small>
+                          </h6>
+                          <div class="text-primary mb-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                          </div>
+                          <p>
+                            {{service.description}}
+                          </p>
                         </div>
-                        <p>
-                          Diam amet duo labore stet elitr ea clita ipsum,
-                          tempor labore accusam ipsum et no at. Kasd diam
-                          tempor rebum magna dolores sed sed eirmod ipsum.
-                        </p>
                       </div>
                     </div>
+                    {% endfor %}
                   </div>
                 </div>
               </div>

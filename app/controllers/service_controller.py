@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateServiceForm, UpdateServiceForm
+from app.forms import CreateServiceForm, UpdateServiceForm, CreateServiceReviewForm
 from app.services import ServiceService, ServiceTypeService, ServiceReviewService
 from datetime import datetime
 from app.constants import payment_methods
@@ -93,7 +93,8 @@ class ServiceController:
                 service_type_id=form.service_type_id.data,
             )
             return redirect(url_for("service.index"))
-        form.available_area_pincodes.data = ', '.join(service.available_area_pincodes)
+        if(service.available_area_pincodes):
+            form.available_area_pincodes.data = ', '.join(service.available_area_pincodes)
         return render_template("admin/service/update.html", form=form, id=id)
 
 
@@ -124,6 +125,7 @@ class ServiceController:
 
 
     def service_details_page(self,service_id):
+        form = CreateServiceReviewForm()
         service = self.service_service.get_by_id(service_id)
-        self.service_review = self.service_review_service.get_review_by_service_id(service_id)
-        return render_template("customer/service_details.html",service=service)
+        service_reviews = self.service_review_service.get_review_by_service_id(service_id)
+        return render_template("customer/service_details.html",service=service, form=form, service_reviews=service_reviews)

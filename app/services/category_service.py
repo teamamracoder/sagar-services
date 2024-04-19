@@ -5,8 +5,8 @@ class CategoryService(BaseService):
     def __init__(self) -> None:
         super().__init__(CategoryModel)
 
-    def get_active(self):
-        return CategoryModel.query.filter_by(is_active=True).order_by(CategoryModel.category_name).all()
+    # def get_active(self):
+    #     return CategoryModel.query.filter_by(is_active=True).order_by(CategoryModel.category_name).all()
 
     def add_category_with_products(self, products: list) -> list:
         for product in products["data"]:

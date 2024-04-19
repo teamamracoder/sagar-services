@@ -60,7 +60,7 @@
       </table>
       <div class="d-flex justify-content-between">
         <a href="{{ url_for('product.products_page') }}" class="btn link-blue">Continue Shopping</a>
-        <a href="{{ url_for('order.checkout_page') }}" class="btn btn-outline-blue">Checkout</a>
+        <a href="{{ url_for('order.checkout_page',product_id=0) }}" class="btn btn-outline-blue">Checkout</a>
       </div>
     </div>
   </div>
