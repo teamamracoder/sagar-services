@@ -1,16 +1,56 @@
+.Navbardropdown-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.Navbardropdown-container .dropdown-menu {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    display: none;
+}
+
+
+
 @media (min-width: 992px) {
     #navContent {
         margin-left: 5vw;
         margin-right: 1vw;
     }
+
+    .Navbardropdown-container:hover .dropdown-menu {
+        display: block;
+    }
 }
 
 @media (max-width:991px) {
     .navbar-nav {
-
         align-items: start;
     }
+
+    .bottomNavItems.active {
+        margin-top: 85px;
+    }
+
+    .Navbardropdown-container.active .dropdown-menu {
+        display: block;
+    }
+
+    .Navbardropdown-container .dropdown-menu {
+        margin-left: 45px !important;
+        text-align: start !important;
+        border: none !important;
+    }
+
 }
+
 
 @media (max-width: 768px) {
     .offcanvas {
@@ -55,7 +95,8 @@
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #ff5c00;
+    background-color: #318CE7;
+    ;
     /* background-color: #e43c5c; */
     visibility: hidden;
     transform: scaleX(0);
@@ -119,12 +160,14 @@
 }
 
 .social-icon:hover {
-    color: #ff5c00;
+    color: #318CE7;
+    ;
 }
 
 /* Change color of the icon on hover */
 .social-icon:hover i {
-    color: #ff5c00;
+    color: #318CE7;
+    ;
 }
 
 .footer-top {
@@ -153,7 +196,8 @@
 }
 
 .change-text li a:hover {
-    color: #ff5c00;
+    /* color: #318CE7;; */
+    color: #318CE7;
 }
 
 .change-text li:hover {
@@ -168,14 +212,16 @@
 
 .change-text li::before {
     content: "";
-    color: #ff5c00;
+    color: #318CE7;
+    ;
     display: inline-block;
     width: 1em;
     margin-left: -1em;
 }
 
 .change-text .bi-caret-right {
-    color: #ff5c00;
+    color: #318CE7;
+    ;
 
 }
 
@@ -273,6 +319,22 @@
 
 }
 
+.ProductOffer {
+    position: absolute;
+    left: 80%;
+    top: 0%;
+    /* background-color: #318CE7;; */
+    background-color: #318CE7;
+    color: #fff;
+    font-size: 13px;
+    height: 35px;
+    width: 40px;
+    border-radius: 3px 10px 3px 45px;
+    padding-top: 5px;
+    padding-left: 2px;
+    font-weight: 600;
+}
+
 #Team {
     font-size: 13px;
     display: inline-block;
@@ -355,7 +417,8 @@
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #ff5c00;
+    background-color: #318CE7;
+    ;
     transition: all 0.3s ease-in-out 0s;
     visibility: visible;
     transform: scaleX(0);
@@ -386,16 +449,19 @@
     padding: 4px 6px 0px 6px;
     margin: 0px 5px;
     border-radius: 100%;
-    color: #ff5c00;
+    /* color: #318CE7;; */
+    color: #318CE7;
     background: white;
-    border: 1.3px solid #ff5c00;
+    border: 1.3px solid #318CE7;
+    /* border: 1.3px solid #318CE7;; */
     transition: all 0.1s ease-in-out 0s;
 
 }
 
 .CardWishDiv span:hover {
     color: white;
-    background: #ff5c00;
+    background: #318CE7;
+    /* background: #318CE7;; */
 }
 
 .ProductCard {
@@ -407,13 +473,18 @@
     opacity: 1;
 }
 
-.tooltip,
-.tooltip-inner {
-    background: #ff5c00;
-    padding: 1px 3px;
-    border-color: #ff5c00;
-    border-radius: 5px;
+.custom-tooltip {
+    --bs-tooltip-bg: #318CE7;
+    --bs-tooltip-color: var(--bs-white);
 }
+
+/* .tooltip,
+.tooltip-inner {
+    background: #318CE7;
+    padding: 1px 3px;
+    border-color: #318CE7;
+    border-radius: 5px;
+} */
 
 /* For ProductDiv End*/
 
@@ -422,7 +493,7 @@
     position: absolute;
     left: 57%;
     top: 0%;
-    background-color: #ff5c00;
+    background-color: #318CE7;
     color: #fff;
     font-size: 13px;
     height: 50px;
@@ -449,10 +520,12 @@
     font-size: 12px;
     font-weight: 600;
     justify-content: center;
+    padding-left: 0px;
 }
 
 .ProductCategoryName {
-    background-color: #ff5c00;
+    background: linear-gradient(to top left, #6baae8, #2178cf);
+    /* background-color: #318CE7;; */
     opacity: 0.9;
     padding: 5px;
     color: #fff;
@@ -480,7 +553,8 @@
 }
 
 #NewlyAddedProductDiv:hover h6 {
-    color: #f96a05;
+    /* color: #f96a05; */
+    color: #318CE7;
 }
 
 
@@ -498,6 +572,7 @@
 #NewlyAddedProductDiv {
     cursor: pointer;
 }
+
 
 @media only screen and (max-width: 960px) {
     #NewlyAddedProductContainer {
@@ -652,7 +727,8 @@
     position: absolute;
     left: 30%;
     top: 4%;
-    background-color: #ff5c00;
+    background: linear-gradient(to top left, #6baae8, #2178cf);
+    /* background-color: #318CE7;; */
     color: #fff;
     font-size: 13px;
     border-radius: 7px;
