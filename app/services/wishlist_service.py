@@ -6,3 +6,16 @@ class WishlistService(BaseService):
     def __init__(self) -> None:
         super().__init__(WishlistModel)
 
+
+    def get_wishlist_items_by_user_id(self,user_id):
+        try:
+            # Query the database to get wishlist items for the given user id
+            return self.model.query.filter_by(user_id=user_id, is_active=True).all()
+
+        except Exception as e:
+            raise ValueError(str(e))  # Raise an exception if an error occurs
+        
+    def get_wishlist_item_by_user_id_product_id(self,user_id,product_id):
+        return self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
+        
+        

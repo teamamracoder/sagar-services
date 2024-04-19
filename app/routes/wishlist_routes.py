@@ -20,12 +20,6 @@ def get_wishlist_data():
     return wishlist_controller.get_wishlist_data()
 
 
-@wishlist_bp.route("/admin/wishlists/add/", methods=["GET", "POST"])
-@login_required
-@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
-def add():
-    return wishlist_controller.create()
-
 
 @wishlist_bp.route("/admin/wishlists/status/<int:id>", methods=["GET", "PATCH"])
 @login_required
@@ -41,3 +35,13 @@ def status(id):
 @login_required
 def wishlist_page():
     return wishlist_controller.wishlist_page()
+
+@wishlist_bp.route("/wishlist/data/")
+@login_required
+def wishlist_page_data():
+    return wishlist_controller.wishlist_page_data()
+
+@wishlist_bp.route("/wishlist/add/<int:product_id>")
+@login_required
+def add(product_id):
+    return wishlist_controller.create(product_id)
