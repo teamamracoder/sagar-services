@@ -66,6 +66,10 @@
                 else{
                     product_image=null
                 }
+                // cartTooltipTitle = product.cart ? "Added to Cart" : "Add to Cart";
+                // cartTooltipIcon = product.cart ? '<i class="bi bi-cart-check-fill"></i>' : '<i class="bi bi-cart-plus"></i>';
+                // cart_button=`<button id="cart_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product.id})" data-bs-placement="bottom" title="${cartTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${cartTooltipIcon}</button>`
+
                 wishlistTable.append(`
                     <tr class="wishlist_item_${item.id}">
                         <td>${product_image ? `<img src="../../static/${product_image}" alt="" width="50">` : ''}</td>
@@ -111,15 +115,26 @@
                 type: "GET",
                 complete:res=> {
                     responseData=res.responseJSON
-                        if (responseData.status === 'success') {
+                    console.log(responseData)
+                    if (responseData.status == 'success') {
                             if(responseData.data){
-                                toastr.success("Product Added to Cart");
+                                toastr.success(responseData.message);
+                                tooltipTitle="Added to Cart"
+                                tooltipIcon='<i class="bi bi-cart-check-fill"></i>'
+                            }
+                            else{
+                                toastr.error(responseData.message);
+                                tooltipTitle="Add to Cart"
+                                tooltipIcon='<i class="bi bi-cart-plus"></i>'
                             }
                         }
                         else{
                             toastr.error(responseData.message);
+                            tooltipTitle="Add to Cart"
+                            tooltipIcon='<i class="bi bi-cart-plus"></i>'
                         }
-                },
+                        $("#cart_icon_"+product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+                    },
                 error: function (xhr, status, error) {
                     toastr.error('Error fetching wishlist details:', error);
                 }

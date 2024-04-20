@@ -1,5 +1,7 @@
+from db import db
 from app.models import ProductModel
 from .base_service import BaseService
+from sqlalchemy import or_, and_
 
 class ProductService(BaseService):
     def __init__(self) -> None:
@@ -8,6 +10,7 @@ class ProductService(BaseService):
     def add_product_with_this(self, items: dict) -> dict:
         for item in items["data"]:
             item["product_name"] = self.get_product_name_by_id(item["product_id"])
+            item["product_img_urls"] = self.model.query.filter_by(id=item["product_id"]).first().product_img_urls
         return items
     
     def get_product_name_by_id(self,product_id):
@@ -52,3 +55,49 @@ class ProductService(BaseService):
 
         except Exception as e:
             raise ValueError(str(e))  # Raise an exception if an error occurs
+        
+    def get_all_brands(self):
+        brands= db.session.query(ProductModel.brand).distinct().all()
+        brand_names = [brand[0] for brand in brands]
+        return brand_names
+    
+    def get_filtered_list(self, request, columns):
+        page = int(request.args.get('page', 1))
+        page_size = int(request.args.get('page_size', 10))
+    
+        query = self.model.query
+    
+        # Apply filters
+        category_filters = request.args.get('category')
+        if category_filters:
+            category_ids = [int(cat) for cat in category_filters]
+            query = query.filter(self.model.category_id.in_(category_ids))
+    
+        brand_filter = request.args.get('brand')
+        if brand_filter:
+            query = query.filter(self.model.brand == brand_filter)
+    
+        price_filter = request.args.get('price')
+        if price_filter == 'less_than_1000':
+            query = query.filter(self.model.price < 1000)
+        elif price_filter == '1000_to_5000':
+            query = query.filter(and_(self.model.price >= 1000, self.model.price <= 5000))
+        elif price_filter == '5000_to_10000':
+            query = query.filter(and_(self.model.price >= 5000, self.model.price <= 10000))
+        elif price_filter == 'more_than_10000':
+            query = query.filter(self.model.price > 10000)
+    
+        # Perform pagination after filtering
+        paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
+        paginated_data = paginated_query.items
+    
+        # Format data
+        formatted_data = [{key: getattr(item, key) for key in columns} for item in paginated_data]
+    
+        return {
+            "recordsTotal": paginated_query.total,
+            "recordsFiltered": len(paginated_data),
+            "data": formatted_data,
+            "page": page,
+            "total_pages": paginated_query.pages
+        }
