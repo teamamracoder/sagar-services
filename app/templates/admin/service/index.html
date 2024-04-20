@@ -47,8 +47,8 @@
                         if(row.service_img_urls!=null){
                             let images='<span>';
                             for (image of row.service_img_urls){
-                                if(image != ""){
-                                    images+=`<img src="../../${image}" class="adminTableImg">`;
+                                if(image != ''){
+                                    images+=`<img src="../../static/${image}" class="adminTableImg">`;
                                 }
                             }
                             images+='</span>';
