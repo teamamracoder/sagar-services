@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.services import WishlistService, ProductService, CategoryService
+from app.services import WishlistService, ProductService, CategoryService, CartService
 from datetime import datetime
 from app.auth import get_current_user
 
@@ -8,6 +8,7 @@ class WishlistController:
         self.wishlist_service = WishlistService()
         self.product_service = ProductService()
         self.category_service = CategoryService()
+        self.cart_service = CartService()
 
     def get(self):
         return render_template("admin/wishlist/index.html")
@@ -54,6 +55,10 @@ class WishlistController:
             for wishlist_item in wishlist_items:
                 product = next((product for product in products if product.id == wishlist_item.product_id), None)
                 if product:
+                    cart=self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product.id)
+                    in_cart=False
+                    if cart.is_active:
+                        in_cart=True
                     response_data.append({
                         'id': wishlist_item.id,
                         'product_id': product.id,
@@ -63,7 +68,8 @@ class WishlistController:
                         'price': product.price,
                         'discount': product.discount,
                         'stock': product.stock,
-                        'image': product.product_img_urls
+                        'image': product.product_img_urls,
+                        'in_cart':in_cart
                     })
 
             return jsonify(response_data)

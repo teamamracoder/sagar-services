@@ -146,7 +146,7 @@
                     responseData=res.responseJSON
                         if (responseData.status === 'success') {
                             if(!responseData.data){
-                                toastr.success("Product Removed Cart");
+                                toastr.error("Product Removed Cart");
                                 $(".cart_item_"+cart_id).css("display","none")
                                 subtotalSpan.text(Number(subtotalSpan.text())-(Number($(".cart_price_"+cart_id).text())));
                                 discountSpan.text(Number(discountSpan.text())-Number($(".cart_discount_"+cart_id).text()));

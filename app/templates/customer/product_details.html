@@ -42,7 +42,11 @@
         </div>
         <div class="booking-btn d-flex justify-content-evenly my-2">
           <span onclick="addToWishlist('{{product.id}}')"><i class="bi bi-heart fs-3" style="cursor:pointer;"></i></span>
-          <button type="button" onclick='addToCart("{{ product.id }}")'  class="btn btn-blue" style="width: 45%">Add to Cart</button>
+          {% if cart %}
+            <a type="button" id="cart_button_{{product.id}}" href="/cart" class="btn btn-blue" style="width: 45%">View Cart</a>
+          {% else %}
+            <button type="button" id="cart_button_{{product.id}}" onclick='addToCart("{{ product.id }}")'  class="btn btn-blue" style="width: 45%">Add to Cart</button>
+          {% endif %}
           <button type="button" onclcik='checkout("{{ product.id }}")' class="btn btn-outline-blue" style="width: 45%">Buy Now</button>
         </div>
       </div>
@@ -139,7 +143,7 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="tab-pane-1">
-                <h4 class="mb-3">Product Description</h4>
+                <h4 class="mb-3">Product Specifications</h4>
                 {{product.specifications | safe}}
               </div>
               <div class="tab-pane fade" id="tab-pane-2">
@@ -428,26 +432,35 @@ setStarRating((rating/count).toFixed(2));
 
 
 $(document).ready(function () {
-  window.addToCart = function(product_id){
-        $.ajax({
-            url: "{{ url_for('cart.add',product_id=0) }}".replace('0',product_id),
-            type: "GET",
-            complete:res=> {
-                responseData=res.responseJSON
-                    if (responseData.status === 'success') {
-                        if(responseData.data){
-                            toastr.success("Product Added to Cart");
+    window.addToCart = function(product_id){
+            $.ajax({
+                url: "{{ url_for('cart.add',product_id=0) }}".replace('0',product_id),
+                type: "GET",
+                complete:res=> {
+                    responseData=res.responseJSON
+                    console.log(responseData)
+                    if (responseData.status == 'success') {
+                            if(responseData.data){
+                                toastr.success(responseData.message);
+                                $("#cart_button_"+product_id).replaceWith(`<a type="button" href="/cart" id="cart_button_{{product.id}}"  class="btn btn-blue" style="width: 45%">View Cart</a>`)
+                                
+                            }
+                            else{
+                                toastr.error(responseData.message);
+                                $("#cart_button_"+product_id).text("Add To Cart")
+                               
+                            }
                         }
-                    }
-                    else{
-                        toastr.error(responseData.message);
-                    }
-            },
-            error: function (xhr, status, error) {
-                toastr.error('Error fetching wishlist details:', error);
-            }
-        });
-    }
+                        else{
+                            toastr.error(responseData.message);
+                            
+                        }
+                    },
+                error: function (xhr, status, error) {
+                    toastr.error('Error fetching wishlist details:', error);
+                }
+            });
+        }
 
     window.addToWishlist = function(product_id){
         $.ajax({

@@ -147,8 +147,15 @@ class ProductController:
             return jsonify(data)
 
     def product_details_page(self,product_id):
+        logged_in_user,roles=get_current_user().values()
         product = self.product_service.get_by_id(product_id)
         product_reviews = self.product_review_service.get_review_by_product_id(product_id)
         if product:
-            return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
+            try:
+                cart=self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product_id)
+                if cart.is_active:
+                    return render_template("customer/product_details.html", product=product, product_reviews=product_reviews, cart=cart)
+                return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
+            except Exception as e:
+                return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
         return render_template("error/page_not_found.html")
