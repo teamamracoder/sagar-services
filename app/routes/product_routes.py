@@ -21,6 +21,10 @@ def get_product_data():
 def get_total_price():
     return product_controller.get_total_price()
 
+@product_bp.route("/admin/products/available_pincodes")
+def get_available_pincodes():
+    return product_controller.get_available_pincodes()
+
 
 @product_bp.route("/admin/products/add/", methods=["GET", "POST"])
 @login_required

@@ -113,7 +113,14 @@ class ProductController:
     def get_total_price(self):
         price_calculated_data=self.product_service.get_total_price(request)
         return jsonify(price_calculated_data)
-    # admin product details
+    
+    def get_available_pincodes(self):
+        available_pincodes=self.product_service.get_available_pincodes(request)
+        if available_pincodes:
+            return jsonify({'status': 'success', 'pincodes': available_pincodes})
+        return jsonify({'status': 'error', 'message':'Not available','pincodes': [None]})
+        
+    
     def details(self,id):
         product=self.product_service.get_by_id(id)
         return render_template("admin/product/details.html",product=product)

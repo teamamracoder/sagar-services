@@ -65,7 +65,7 @@ class ProductService(BaseService):
         page = int(request.args.get('page'))
         page_size = int(request.args.get('page_size'))
     
-        query = self.model.query
+        query = self.model.query.filter(self.model.is_active == True)
     
         category_filters = request.args.getlist('category[]')
         if category_filters:
@@ -118,3 +118,10 @@ class ProductService(BaseService):
             "page": page,
             "total_pages": paginated_query.pages
         }
+    
+    def get_available_pincodes(self,request):
+        product_id = int(request.args.get("product_id"))
+        product = self.get_by_id(product_id)
+        if product:
+            return ProductModel.query.filter_by(id=product_id).first().available_area_pincodes
+        return None       

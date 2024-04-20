@@ -33,10 +33,9 @@ order_statuses = Constant(
         1: "PROCESSING",
         2: "PACKAGING",
         3: "SHIPPING",
-        4: "DELIVERED",
-        5: "ON_THE_WAY",
-        6: "RETURNED",
-        7: "CANCELLED",
+        4: "ON_THE_WAY",
+        5: "DELIVERED",
+        6: "CANCELLED",
     }
 )
 
@@ -47,9 +46,7 @@ service_statuses = Constant(
         1: "BOOKED",
         2: "ON_THE_WAY",
         3: "PROVIDED",
-        4: "CANCELLED",
-        5: "PENDING",
-        6: "RESCHEDULED",
+        4: "CANCELLED"
     }
 )
 
