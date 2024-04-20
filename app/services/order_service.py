@@ -38,13 +38,22 @@ class OrderService(BaseService):
             item['payment_method_name']=payment_methods.get_value(item["payment_method"])
         return items
 
-    def get_orders_by_user_id(self,user_id,columns):
+    def get_orders_by_user_id(self,user_id,request,columns):
+        page = int(request.args.get('page', 1))
+        page_size = int(request.args.get('page_size', 10))
         query = self.model.query
         query = query.filter(self.model.user_id == user_id)
+        # Perform pagination after filtering
+        paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
+        paginated_data = paginated_query.items
     
         # Format data
-        formatted_data = [{key: getattr(item, key) for key in columns} for item in query]
-
+        formatted_data = [{key: getattr(item, key) for key in columns} for item in paginated_data]
+    
         return {
-            "data": formatted_data
+            "recordsTotal": paginated_query.total,
+            "recordsFiltered": len(paginated_data),
+            "data": formatted_data,
+            "page": page,
+            "total_pages": paginated_query.pages
         }
