@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, FloatField, TextAreaField, SelectField
+from wtforms import StringField, IntegerField, FloatField, TextAreaField, SelectField, DateField
 from wtforms.validators import DataRequired
 
 class CreateOrderForm(FlaskForm):
@@ -12,6 +12,7 @@ class CreateOrderForm(FlaskForm):
     shipping_address  = TextAreaField("shipping_address", validators=[DataRequired()])
     payment_status  = SelectField('payment_status', coerce=int, validators=[DataRequired()])
     area_pincode  = StringField("area_pincode", validators=[DataRequired()])
+    expected_delivery = DateField("Expected Delivery")
 
 class UpdateOrderForm(FlaskForm):
     product_id = SelectField('Product',coerce=int, validators=[DataRequired()])
@@ -23,3 +24,4 @@ class UpdateOrderForm(FlaskForm):
     shipping_address = TextAreaField("shipping_address", validators=[DataRequired()])
     payment_status = SelectField('payment_status', coerce=int, validators=[DataRequired()])
     area_pincode = StringField("area_pincode", validators=[DataRequired()])
+    expected_delivery = DateField("Expected Delivery")

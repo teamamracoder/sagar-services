@@ -23,9 +23,10 @@ from .staff_routes import staff_bp
 from .product_qna_routes import product_qna_bp
 from .about_us_routes import about_us_bp
 from .privacy_policy_routes import privacy_policy_bp
+from .checkout_routes import checkout_bp
 
 # register blueprints
-blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, service_bp, service_type_bp, cart_bp, wishlist_bp, product_review_bp, order_bp, conversation_bp, message_bp, contact_bp,service_qna_bp,service_review_bp, booking_bp, staff_bp, coupon_bp, product_qna_bp, about_us_bp, privacy_policy_bp]
+blueprints = [auth_bp, error_bp, user_bp, role_bp, home_bp, category_bp, product_bp, dashboard_bp, service_bp, service_type_bp, cart_bp, wishlist_bp, product_review_bp, order_bp, conversation_bp, message_bp, contact_bp,service_qna_bp,service_review_bp, booking_bp, staff_bp, coupon_bp, product_qna_bp, about_us_bp, privacy_policy_bp, checkout_bp]
 
 
 

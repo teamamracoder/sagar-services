@@ -44,7 +44,7 @@ class ProductController:
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 product_name=form.product_name.data,
-                brand=form.brand.data,
+                brand=form.brand.data.capitalize(),
                 model=form.model.data,
                 price=form.price.data,
                 discount=form.discount.data,
@@ -82,7 +82,7 @@ class ProductController:
             updated_data = {
                 'category_id': form.category_id.data,
                 'product_name': form.product_name.data,
-                'brand': form.brand.data,
+                'brand': form.brand.data.capitalize(),
                 'model': form.model.data,
                 'price': form.price.data,
                 'discount': form.discount.data,
@@ -113,7 +113,14 @@ class ProductController:
     def get_total_price(self):
         price_calculated_data=self.product_service.get_total_price(request)
         return jsonify(price_calculated_data)
-    # admin product details
+    
+    def get_available_pincodes(self):
+        available_pincodes=self.product_service.get_available_pincodes(request)
+        if available_pincodes:
+            return jsonify({'status': 'success', 'pincodes': available_pincodes})
+        return jsonify({'status': 'error', 'message':'Not available','pincodes': [None]})
+        
+    
     def details(self,id):
         product=self.product_service.get_by_id(id)
         return render_template("admin/product/details.html",product=product)
@@ -132,9 +139,12 @@ class ProductController:
         columns = ["id", "product_name", "brand","model","price","discount","stock", "product_img_urls"]
         data = self.product_service.get_filtered_list(request, columns)
         data = self.product_review_service.get_reviews_by_product(data)
-        data = self.cart_service.add_cart_with_user_and_product(logged_in_user.id,data)
-        data = self.wishlist_service.add_wishlist_with_user_and_product(logged_in_user.id,data)
-        return jsonify(data)
+        try:
+            data = self.cart_service.add_cart_with_user_and_product(logged_in_user.id,data)
+            data = self.wishlist_service.add_wishlist_with_user_and_product(logged_in_user.id,data)
+            return jsonify(data)
+        except Exception as e:
+            return jsonify(data)
 
     def product_details_page(self,product_id):
         product = self.product_service.get_by_id(product_id)
