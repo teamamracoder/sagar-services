@@ -56,13 +56,13 @@ def details(id):
 
 
 ## customer routes ##
-
-@booking_bp.route("/my_bookings/<int:id>", methods=["GET", "PATCH"])
+@booking_bp.route("/my_bookings/")
 @login_required
-def bookings_page(id):
-    return booking_controller.bookings_page(id)
+def bookings_page():
+    return booking_controller.bookings_page()
 
-@booking_bp.route("/checkout/")
+@booking_bp.route("/my_bookings/data")
 @login_required
-def checkouts_page():
-    return booking_controller.checkout_page()
+def bookings_page_data():
+    return booking_controller.bookings_page_data()
+

@@ -17,7 +17,6 @@
                 <table class="table table-bordered">
                     <thead class="table table-dark table-sm">
                         <tr>
-                            <td>Image</td>
                             <td>Service</td>
                             <td>Booking Address</td>
                             <td>Booking Date</td>
@@ -26,16 +25,8 @@
                             <td>Booking Status</td>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="{{ url_for('static', filename='img/flask-icon.png') }}" class="adminTableImg"></td>
-                            <td>{{service}}</td>
-                            <td>{{booking.service_location}}</td>
-                            <td>{{booking.created_at}}</td>
-                            <td><i class="bi bi-currency-rupee"></i>{{booking.total_charges}}</td>
-                            <td>{{payment_status}}</td>
-                            <td>{{service_status}}</td>
-                        </tr>
+                    <tbody id="booking_list">
+                        
                     </tbody>
                 </table>
             </div>
@@ -43,4 +34,82 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        window.fetchPaginatedBookings = function (page) {
+            $.ajax({
+                url: "{{ url_for('booking.bookings_page_data') }}",
+                type: "GET",
+                data: {
+                    page: page, 
+                    page_size: 30
+                },
+                success: function (response) {
+                    console.log(response)
+                    renderBookings(response);
+                    renderPaginationControls(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching booking details:', error);
+                }
+            });
+        };
+        function renderBookings(bookings) {
+                var bookingContainer = $('#booking_list');
+                bookingContainer.empty();
+                console.log(bookings)
+                if(bookings){
+                    bookings.data.forEach(function(booking) {
+                    // Iterate through each booking in the response
+                        // Create a new div element to hold the booking information
+                        var bookingDiv = $('<tr>');
+                        
+                        // Construct the HTML for the booking
+                        var bookingHTML = `
+                                <td>
+                                    ${booking.service_name}     
+                                </td>
+                                <td>
+                                    ${booking.service_location}     
+                                </td>
+                                <td>
+                                    ${booking.created_at}     
+                                </td>
+                                <td>
+                                    ${booking.total_charges}     
+                                </td>
+                                <td>
+                                    ${booking.payment_status_name}     
+                                </td>
+                                <td>
+                                    ${booking.service_status_name}     
+                                </td>
+                                </div>
+                            </tr>`;
+                        
+                        // Append the booking HTML to the booking div
+                        bookingDiv.html(bookingHTML);
+                        
+                        // Append the booking div to the bookings container
+                        bookingContainer.append(bookingDiv);
+                    });
+                }
+            }
+        function renderPaginationControls(metadata) {
+            var paginationControls = $('#pagination_controls');
+            paginationControls.empty();
+
+            var totalPages = metadata.total_pages;
+
+            for (var i = 1; i <= totalPages; i++) {
+                var pageLink = `<li class="page-item ${i === metadata.page ? 'active' : ''}"><a class="btn-outline-blue px-2 py-1 rounded-0 border-end-0" href="#" onclick="fetchPaginatedBookings(${i})">${i}</a></li>`;
+                paginationControls.append(pageLink);
+            }
+        }
+
+        fetchPaginatedBookings(1);
+        
+
+    });
+</script>
 {% endblock %}
