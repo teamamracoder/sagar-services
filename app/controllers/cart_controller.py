@@ -79,8 +79,9 @@ class CartController:
                     response_data.append({
                         'id': cart_item.id,
                         'product_id':product.id,
+                        'stock': product.stock,
                         'product_name': product.product_name,
-                        'model': product.model,
+                        'brand': product.brand,
                         'price': product.price,
                         'discount': product.discount,
                         'stock': product.stock,

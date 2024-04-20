@@ -67,9 +67,3 @@ def orders_page():
 @login_required
 def orders_page_data():
     return order_controller.orders_page_data()
-
-
-@order_bp.route("/checkout/<int:product_id>")
-@login_required
-def checkout_page(product_id):
-    return order_controller.checkout_page(product_id)

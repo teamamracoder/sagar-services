@@ -1,15 +1,13 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateWishlistForm
-from app.services import WishlistService, ProductService
+from app.services import WishlistService, ProductService, CategoryService
 from datetime import datetime
 from app.auth import get_current_user
-from app.services import CartService
 
 class WishlistController:
     def __init__(self) -> None:
         self.wishlist_service = WishlistService()
         self.product_service = ProductService()
-        self.car_service = CartService()
+        self.category_service = CategoryService()
 
     def get(self):
         return render_template("admin/wishlist/index.html")
@@ -51,7 +49,6 @@ class WishlistController:
     
             # Get product details for the product ids
             products = self.product_service.get_product_details_by_ids(product_ids)
-    
             # Construct response data
             response_data = []
             for wishlist_item in wishlist_items:
@@ -59,15 +56,16 @@ class WishlistController:
                 if product:
                     response_data.append({
                         'id': wishlist_item.id,
-                        'product_id':product.id,
+                        'product_id': product.id,
+                        'stock': product.stock,
                         'product_name': product.product_name,
-                        'model': product.model,
+                        'brand': product.brand,
                         'price': product.price,
                         'discount': product.discount,
                         'stock': product.stock,
                         'image': product.product_img_urls
                     })
-    
+
             return jsonify(response_data)
     
         except ValueError as e:

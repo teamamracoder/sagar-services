@@ -14,7 +14,7 @@ class CreateProductForm(FlaskForm):
     specifications = TextAreaField("specifications", validators=[DataRequired()])
     payment_methods = SelectMultipleField("payment_methods (hold ctrl and select)", validators=[DataRequired()], coerce=int)
     available_area_pincodes = StringField("Available Area Pincode (use comma separated)", validators=[DataRequired()])
-    return_policy = TextAreaField("return_policy", validators=[DataRequired()])
+    # return_policy = TextAreaField("return_policy", validators=[DataRequired()])
     product_img_urls = MultipleFileField('Images',validators=[FileRequired(),FileAllowed(['jpg', 'png', 'jpeg', 'webp','gif'])])
 
 class UpdateProductForm(FlaskForm):
@@ -28,5 +28,5 @@ class UpdateProductForm(FlaskForm):
     specifications = TextAreaField("specifications", validators=[DataRequired()])
     payment_methods = SelectMultipleField("payment_methods (hold ctrl and select)", validators=[DataRequired()], coerce=int)
     available_area_pincodes = StringField("Available Area Pincode (use comma separated)", validators=[DataRequired()])
-    return_policy = TextAreaField("return_policy", validators=[DataRequired()])
+    # return_policy = TextAreaField("return_policy", validators=[DataRequired()])
     product_img_urls = MultipleFileField('Images (Selecting image or images will add with previous images)')
