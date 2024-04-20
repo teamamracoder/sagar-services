@@ -21,29 +21,29 @@ class ServiceReviewController:
         combined_data = self.service_service.add_service_with_this(data)
         return jsonify(combined_data)
 
-    def create(self):
-        logged_in_user,roles=get_current_user().values()
-        form = CreateServiceReviewForm()
-        services=self.service_service.get_active()
-        form.service_id.choices = [(service.id, service.service_name) for service in services]
+    # def create(self):
+    #     logged_in_user,roles=get_current_user().values()
+    #     form = CreateServiceReviewForm()
+    #     services=self.service_service.get_active()
+    #     form.service_id.choices = [(service.id, service.service_name) for service in services]
        
-        if form.validate_on_submit():
-            filepath=FileUtils.save('service_reviews',form.service_review_img_urls.data)
-            if isinstance(filepath,str):
-                filepath=[filepath]
-            self.service_review_service.create(
-                created_by=logged_in_user.id,
-                created_at=datetime.now(),
-                user_id=logged_in_user.id,   
-                review_title=form.review_title.data,
-                description=form.description.data,
-                service_review_img_urls=filepath,
-                rating=form.rating.data,
-                service_id=form.service_id.data,
-            )
-            return redirect(url_for("service_review.index"))
-            # return render_template("admin/service_review/add.html", form=form, error="product_review already exists")
-        return render_template("admin/service_review/add.html", form=form)
+    #     if form.validate_on_submit():
+    #         filepath=FileUtils.save('service_reviews',form.service_review_img_urls.data)
+    #         if isinstance(filepath,str):
+    #             filepath=[filepath]
+    #         self.service_review_service.create(
+    #             created_by=logged_in_user.id,
+    #             created_at=datetime.now(),
+    #             user_id=logged_in_user.id,   
+    #             review_title=form.review_title.data,
+    #             description=form.description.data,
+    #             service_review_img_urls=filepath,
+    #             rating=form.rating.data,
+    #             service_id=form.service_id.data,
+    #         )
+    #         return redirect(url_for("service_review.index"))
+    #         # return render_template("admin/service_review/add.html", form=form, error="product_review already exists")
+    #     return render_template("admin/service_review/add.html", form=form)
 
     # def update(self, id):
     #     logged_in_user,roles=get_current_user().values()
@@ -83,4 +83,29 @@ class ServiceReviewController:
             return {"status":"success","message":"Service-review Activated","data":is_active}
         return {"status":"success","message":"Service-review Deactivated","data":is_active}
 
-        # return redirect(url_for("service_review.index"))
+    
+    def service_review_create(self):
+        logged_in_user,roles=get_current_user().values()
+        form = CreateServiceReviewForm()
+        services=self.service_service.get_active()
+        # form.service_id.choices = [(service.id, service.service_name) for service in services]
+       
+        if form.validate_on_submit():
+            filepath=FileUtils.save('service_reviews',form.service_review_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
+            self.service_review_service.service_review_create(
+                created_by=logged_in_user.id,
+                created_at=datetime.now(),
+                user_id=logged_in_user.id,   
+                review_title=form.review_title.data,
+                description=form.description.data,
+                service_review_img_urls=filepath,
+                rating=form.rating.data,
+                service_id=form.service_id.data,
+            )
+            service=self.service_service.get_by_id(form.service_id.data)
+            return render_template("customer/service_details.html", service=service)
+            # return render_template("admin/service_review/add.html", form=form, error="product_review already exists")
+        return render_template("customer/service_details.html", form=form, service=service)
+

@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateServiceForm, UpdateServiceForm
+from app.forms import CreateServiceForm, UpdateServiceForm, CreateServiceReviewForm
 from app.services import ServiceService, ServiceTypeService, ServiceReviewService
 from datetime import datetime
 from app.constants import payment_methods
@@ -124,6 +124,7 @@ class ServiceController:
 
 
     def service_details_page(self,service_id):
+        form = CreateServiceReviewForm()
         service = self.service_service.get_by_id(service_id)
         self.service_review = self.service_review_service.get_review_by_service_id(service_id)
-        return render_template("customer/service_details.html",service=service)
+        return render_template("customer/service_details.html",service=service,form=form)

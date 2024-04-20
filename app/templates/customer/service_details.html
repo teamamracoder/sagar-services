@@ -231,12 +231,12 @@
                         <i class="far fa-star"></i>
                       </div>
                     </div>
-                    <form method="POST" action="{{ url_for('service_review.service_details') }}" enctype="multipart/form-data"  id="adminForm">
+                    <form method="POST" action="{{url_for('service_review.service_review_create', service_id=service.id)}}" enctype="multipart/form-data"  id="adminForm">
                       {{ form.csrf_token }}
                       <div class="row">
                           <div class="col-12">
                               {{ form.service_id.label(class="form-label") }}
-                              {{ form.service_id(class="form-control form-control-sm") }}
+                              {{ form.service_id(class="form-control form-control-sm", value=service.id) }}
                           </div>
                           <div class="col-12">
                               {{ form.review_title.label(class="form-label") }}
@@ -257,7 +257,6 @@
                           </div>
                           <div class="col-12 my-2">
                               <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                              <a href="{{ url_for('service_review.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
                           </div>
                       </div>
                   </form>
@@ -463,6 +462,6 @@ if (found) {
   get_availability.style.color="red"
 }
 }
-
 </script>
+
 {% endblock %}
