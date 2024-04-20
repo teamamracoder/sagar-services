@@ -129,12 +129,16 @@ class BookingController:
 
     ## customer controllers ##
 
-    def bookings_page(self,booking_id):
-        booking = self.booking_service.get_by_id(booking_id)
-        service = self.service_service.get_service_name_by_booking_id(booking.service_id)
-        payment_status = payment_statuses.get_value(booking.payment_status)
-        service_status = service_statuses.get_value(booking.service_status)
-        return render_template("customer/my_bookings.html", booking=booking, service=service, payment_status=payment_status, service_status=service_status)
-    
-    def checkout_page(self):
-        return render_template("customer/checkout.html")
+    def bookings_page(self):
+        return render_template("customer/my_bookings.html")
+
+    def bookings_page_data(self):
+        logged_in_user,roles=get_current_user().values()
+        columns = ["id", "created_by", "created_at","updated_by","updated_at","is_active","service_id","user_id","staff_id","total_charges","service_location","service_status","payment_status","payment_method","area_pincode"]
+        data = self.booking_service.get_bookings_by_user_id(logged_in_user.id,request, columns)
+        data = self.service_service.add_service_with_this(data)
+        data = self.booking_service.add_service_status_with_this(data)
+        data = self.booking_service.add_payment_status_with_this(data)
+        return jsonify(data)
+
+   
