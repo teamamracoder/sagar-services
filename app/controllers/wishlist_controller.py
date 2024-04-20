@@ -76,25 +76,28 @@ class WishlistController:
 
     def create(self,product_id):
         logged_in_user,roles=get_current_user().values()
-        product=self.product_service.get_by_id(product_id)
-        if product:
-            wishlist_item=self.wishlist_service.get_wishlist_item_by_user_id_product_id(logged_in_user.id,product_id)
-            if wishlist_item:
-                is_active=self.status(wishlist_item.id)
-                if is_active['data']:
-                    return {"status":"success","message":"Product Added To Wishlist","data":is_active['data']}
-                return {"status":"success","message":"Product removed from Wishlist","data":is_active['data']}
-            
-            else:
-                wishlist_item=self.wishlist_service.create(
-                    created_by=logged_in_user.id,
-                    created_at=datetime.now(),
-                    user_id=logged_in_user.id,
-                    product_id=product_id
-                )
+        if hasattr(logged_in_user, 'id'):
+            product=self.product_service.get_by_id(product_id)
+            if product:
+                wishlist_item=self.wishlist_service.get_wishlist_item_by_user_id_product_id(logged_in_user.id,product_id)
                 if wishlist_item:
-                    return {"status":"success","message":"Product Added To Wishlist","data":wishlist_item.is_active}
-                return {"status":"error","message":"Something went wrong"}
+                    is_active=self.status(wishlist_item.id)
+                    if is_active['data']:
+                        return {"status":"success","message":"Product Added To Wishlist","data":is_active['data']}
+                    return {"status":"success","message":"Product removed from Wishlist","data":is_active['data']}
 
+                else:
+                    wishlist_item=self.wishlist_service.create(
+                        created_by=logged_in_user.id,
+                        created_at=datetime.now(),
+                        user_id=logged_in_user.id,
+                        product_id=product_id
+                    )
+                    if wishlist_item:
+                        return {"status":"success","message":"Product Added To Wishlist","data":wishlist_item.is_active}
+                    return {"status":"error","message":"Something went wrong"}
+
+            else:
+                return {"status":"error","message":"Something went wrong"}
         else:
-            return {"status":"error","message":"Something went wrong"}
+            return {"status":"error","message":"Please <a href='/login'>log in</a>","data":False}

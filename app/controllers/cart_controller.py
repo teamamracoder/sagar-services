@@ -85,7 +85,6 @@ class CartController:
                         'discount': product.discount,
                         'stock': product.stock,
                         'image': product.product_img_urls
-                        # Add more product details as needed
                     })
     
             return jsonify(response_data)
@@ -96,31 +95,35 @@ class CartController:
 
     def create(self,product_id):
         logged_in_user,roles=get_current_user().values()
-        cart_item = self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product_id)
-        try:
-            if cart_item:
-                if cart_item.is_active:
-                    self.status(cart_item.id)
-                    return {"status":"success","message":"Product Removed From Cart","data":False}
+        if hasattr(logged_in_user, 'id'):
+            cart_item = self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product_id)
+            try:
+                if cart_item:
+                    if cart_item.is_active:
+                        self.status(cart_item.id)
+                        return {"status":"success","message":"Product Removed From Cart","data":False}
+                    else:
+                        self.cart_service.update(
+                            cart_item.id,
+                            updated_by=logged_in_user.id,  
+                            updated_at=datetime.now(),
+                            status=1,
+                            is_active = True
+                        )
+                        return {"status":"success","message":"Product Added to Cart","data":True}
                 else:
-                    self.cart_service.update(
-                        cart_item.id,
-                        updated_by=logged_in_user.id,  
-                        updated_at=datetime.now(),
-                        status=1,
-                        is_active = True
+                    self.cart_service.create(
+                        created_by=logged_in_user.id,  
+                        created_at=datetime.now(),
+                        user_id=logged_in_user.id,
+                        product_id=product_id,
+                        status=1
                     )
                     return {"status":"success","message":"Product Added to Cart","data":True}
-            else:
-                self.cart_service.create(
-                    created_by=logged_in_user.id,  
-                    created_at=datetime.now(),
-                    user_id=logged_in_user.id,
-                    product_id=product_id,
-                    status=1
-                )
-                return {"status":"success","message":"Product Added to Cart","data":True}
 
-        except ValueError as e:
-            return jsonify({'error': str(e)}), 500
+            except ValueError as e:
+                return jsonify({'error': str(e)}), 500
+            
+        else:
+            return {"status":"error","message":"Please <a href='/login'>log in</a>","data":False}
 

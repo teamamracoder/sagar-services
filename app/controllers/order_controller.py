@@ -140,5 +140,5 @@ class OrderController:
         logged_in_user,roles=get_current_user().values()
         product = self.product_service.get_by_id(product_id)
         if product:
-            return render_template("customer/checkout.html", product=product,logged_in_user=logged_in_user)
+            return render_template("customer/checkout.html", product_id=product_id)
         return render_template("error/page_not_found.html")

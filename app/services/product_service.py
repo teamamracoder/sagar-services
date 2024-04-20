@@ -62,31 +62,48 @@ class ProductService(BaseService):
         return brand_names
     
     def get_filtered_list(self, request, columns):
-        page = int(request.args.get('page', 1))
-        page_size = int(request.args.get('page_size', 10))
+        page = int(request.args.get('page'))
+        page_size = int(request.args.get('page_size'))
     
         query = self.model.query
     
-        # Apply filters
-        category_filters = request.args.get('category')
+        category_filters = request.args.getlist('category[]')
         if category_filters:
             category_ids = [int(cat) for cat in category_filters]
             query = query.filter(self.model.category_id.in_(category_ids))
-    
-        brand_filter = request.args.get('brand')
-        if brand_filter:
-            query = query.filter(self.model.brand == brand_filter)
-    
-        price_filter = request.args.get('price')
-        if price_filter == 'less_than_1000':
-            query = query.filter(self.model.price < 1000)
-        elif price_filter == '1000_to_5000':
-            query = query.filter(and_(self.model.price >= 1000, self.model.price <= 5000))
-        elif price_filter == '5000_to_10000':
-            query = query.filter(and_(self.model.price >= 5000, self.model.price <= 10000))
-        elif price_filter == 'more_than_10000':
-            query = query.filter(self.model.price > 10000)
-    
+
+        # Apply brand filters
+        brand_filters = request.args.getlist('brand[]')
+        if brand_filters:
+            query = query.filter(self.model.brand.in_(brand_filters))
+
+        # Apply price filters
+        price_filters = request.args.getlist('price[]')
+        price_filter_queries = []
+        for price_filter in price_filters:
+            if price_filter == 'less_than_1000':
+                price_filter_queries.append(((self.model.price - self.model.discount) < 1000))
+            elif price_filter == '1000_to_5000':
+                price_filter_queries.append(and_((self.model.price - self.model.discount) >= 1000, (self.model.price - self.model.discount) <= 5000))
+            elif price_filter == '5000_to_10000':
+                price_filter_queries.append(and_((self.model.price - self.model.discount) >= 5000, (self.model.price - self.model.discount) <= 10000))
+            elif price_filter == 'more_than_10000':
+                price_filter_queries.append((self.model.price - self.model.discount) > 10000)
+
+        # Apply accumulated price filters using 'or_' operator
+        if price_filter_queries:
+            query = query.filter(or_(*price_filter_queries))
+
+        sorting_option = request.args.get('sort_by')
+        if sorting_option == 'latest':
+            query = query.order_by(self.model.created_at.desc())
+        if sorting_option == 'popularity':
+            query = query.order_by(self.model.created_at.desc())
+        elif sorting_option == 'price_low_to_high':
+            query = query.order_by((self.model.price - self.model.discount).asc())
+        elif sorting_option == 'price_high_to_low':
+            query = query.order_by((self.model.price - self.model.discount).desc())
+
         # Perform pagination after filtering
         paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
         paginated_data = paginated_query.items

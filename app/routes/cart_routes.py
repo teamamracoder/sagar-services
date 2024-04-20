@@ -51,11 +51,9 @@ def cart_page_data():
     return cart_controller.cart_page_data()
 
 @cart_bp.route("/cart/add/<int:product_id>")
-@login_required
 def add(product_id):
     return cart_controller.create(product_id)
 
 @cart_bp.route("/cart/status/<int:id>", methods=["GET", "PATCH"])
-@login_required
 def add_or_remove(id):
     return cart_controller.status(id)
