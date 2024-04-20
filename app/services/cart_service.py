@@ -32,7 +32,11 @@ class CartService(BaseService):
         
 
     def get_cart_item_by_user_id_product_id(self,user_id,product_id):
-        return self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
+        try:
+            cart_item=self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
+            return cart_item
+        except Exception as e:
+            return None
         
     def get_active_cart_item_by_user_id_product_id(self,user_id,product_id):
         return self.model.query.filter_by(user_id=user_id, product_id=product_id, is_active=True).first()
@@ -45,10 +49,12 @@ class CartService(BaseService):
             return None
         
     def add_cart_with_user_and_product(self, user_id, datas):
-        if user_id:
+        try:
+            user_id=user_id
             for data in datas["data"]:
                 cart_item = self.get_active_cart_item_by_user_id_product_id(user_id, data["id"])
                 serialized_cart_item = self.serialize_cart_item(cart_item)
                 data["cart"] = serialized_cart_item
             return datas
-        return datas
+        except Exception as e:
+            return datas

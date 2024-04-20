@@ -48,6 +48,7 @@ class OrderController:
                 shipping_address=form.shipping_address.data,
                 payment_status=form.payment_status.data,
                 area_pincode=form.area_pincode.data,
+                expected_delivery=form.expected_delivery.data
             )
             ordered_product=self.product_service.get_by_id(order.product_id)
             stock=ordered_product.stock-1
@@ -80,7 +81,8 @@ class OrderController:
                 'payment_status': form.payment_status.data,
                 'area_pincode': form.area_pincode.data,
                 'updated_at': datetime.now(),
-                'updated_by': logged_in_user.id
+                'updated_by': logged_in_user.id,
+                'expected_delivery':form.expected_delivery.data
             }
             self.order_service.update(id, **updated_data)
             return redirect(url_for("order.index"))
@@ -136,9 +138,3 @@ class OrderController:
         print(data)
         return jsonify(data)
     
-    def checkout_page(self,product_id):
-        logged_in_user,roles=get_current_user().values()
-        product = self.product_service.get_by_id(product_id)
-        if product:
-            return render_template("customer/checkout.html", product=product,logged_in_user=logged_in_user)
-        return render_template("error/page_not_found.html")

@@ -44,5 +44,10 @@ def logout():
 
 
 def get_current_user():
-    roles=role_service.get_roles_by_user_id_list(user_id=current_user.id)
-    return {'logged_in_user':current_user,'roles':roles}
+    try:
+        if current_user.id:
+            roles=role_service.get_roles_by_user_id_list(user_id=current_user.id)
+            return {'logged_in_user':current_user,'roles':roles}
+        
+    except Exception as e:
+        return {'logged_in_user':current_user,'roles':[]}

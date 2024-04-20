@@ -62,6 +62,8 @@ class OrderModel(db.Model):
 
     area_pincode=db.Column(db.Integer,nullable=False)
 
+    expected_delivery = db.Column(db.Date)
+
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="orders")
     products = db.relationship("ProductModel",back_populates="orders")
     # created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="orders_created")
