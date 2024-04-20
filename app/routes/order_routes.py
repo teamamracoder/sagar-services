@@ -63,7 +63,7 @@ def details(id):
 def orders_page():
     return order_controller.orders_page()
 
-@order_bp.route("/my_orders/data")
-@login_required
-def orders_page_data():
-    return order_controller.orders_page_data()
+# @order_bp.route("/my_orders/data")
+# @login_required
+# def orders_page_data():
+#     return order_controller.orders_page_data()

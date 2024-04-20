@@ -12,108 +12,62 @@
         </ol>
     </nav>
     <div class="row">
-        <div class="col">      
-            <div >
-                <table class="table table-bordered">
-                    <thead class="table table-dark table-sm">          
-                        <tr>
-                            <td>Image</td>
-                            <td>Product</td>
-                            <td>Quantity</td>               
-                            <td>Shipping Address</td>
-                            <td>Total</td>
-                            <td>Payment Status</td>
-                            <td>Order Status</td>
-                        </tr>
-                    </thead>
-                    <tbody id="order_list">
-                        
-                    </tbody>
-                </table>
-            </div>       
-        </div>   
+        single order
+        <div class="col-12">      
+            <div class="card rounded-0">
+                <div class="card-body">
+                    <div class="d-flex ">
+                        <img class="align-self-center img-fluid" src="moni.jpg" width="250">
+                        <div>
+                            <h5 class="bold">product_name</h5>
+                            <p class="text-muted"> Qt: order['quantity'] item</p>
+                            <p class="text-muted"> order['shipping_address']</p>
+                            <h4 class="mb-3"> <i class="bi bi-currency-rupee"></i>order['price'] <span class="small text-muted">(order['payment_method'])/order['payment_status'] </span></h4>
+                            <p class="text-muted">Expected Delivery on: <span class="text-body"> order['expected_delivery_date']</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
+                        <span class="dot"></span>
+                        <hr class="flex-fill track-line">
+
+                        <span class="dot"></span>
+                        <hr class="flex-fill track-line">
+
+                        <span class="dot"></span>
+                        <hr class="flex-fill track-line">
+
+                        <span class="dot"></span>
+                        <hr class="flex-fill track-line">
+
+                        <span class="d-flex justify-content-center align-items-center big-dot dot">
+                            <i class="fa fa-check text-white"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <div class="d-flex flex-column align-items-start">
+                            <span>15 Mar</span><span><strong>Processing</strong></span>
+                        </div>
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <span>15 Mar</span><span><strong>Packaging</strong></span></div>
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <span>15 Mar</span><span><strong>Shipping</strong></span>
+                        </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <span>15 Mar</span><span><strong>Out for delivery</strong></span>
+                        </div>
+                        <div class="d-flex flex-column align-items-end">
+                            <span>15 Mar</span><span><strong>Delivered</strong></span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a href="" class="btn btn-outline-blue text-center">Order Again</a>
+                        <a href="" class="btn btn-outline-blue text-center">Cancel</a>
+                    </div>
+                </div>   
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        window.fetchPaginatedOrders = function (page) {
-            $.ajax({
-                url: "{{ url_for('order.orders_page_data') }}",
-                type: "GET",
-                data: {
-                    page: page, 
-                    page_size: 30
-                },
-                success: function (response) {
-                    console.log(response)
-                    renderOrders(response);
-                    renderPaginationControls(response);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error fetching order details:', error);
-                }
-            });
-        };
-        function renderOrders(orders) {
-                var orderContainer = $('#order_list');
-                orderContainer.empty();
-                console.log(orders)
-                if(orders){
-                    orders.data.forEach(function(order) {
-                    // Iterate through each order in the response
-                        // Create a new div element to hold the order information
-                        var orderDiv = $('<tr>');
-                        
-                        // Construct the HTML for the order
-                        var orderHTML = `
-                                <td>
-                                    <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${order.product_img_urls[0]}" alt="">
-                                </td>
-                                <td>
-                                    ${order.product_name}     
-                                </td>
-                                <td>
-                                    ${order.quantity}     
-                                </td>
-                                <td>
-                                    ${order.shipping_address}     
-                                </td>
-                                <td>
-                                    ${order.price}     
-                                </td>
-                                <td>
-                                    ${order.payment_status}     
-                                </td>
-                                <td>
-                                    ${order.order_status}     
-                                </td>
-                                </div>
-                            </tr>`;
-                        
-                        // Append the order HTML to the order div
-                        orderDiv.html(orderHTML);
-                        
-                        // Append the order div to the orders container
-                        orderContainer.append(orderDiv);
-                    });
-                }
-            }
-        function renderPaginationControls(metadata) {
-            var paginationControls = $('#pagination_controls');
-            paginationControls.empty();
-
-            var totalPages = metadata.total_pages;
-
-            for (var i = 1; i <= totalPages; i++) {
-                var pageLink = `<li class="page-item ${i === metadata.page ? 'active' : ''}"><a class="btn-outline-blue px-2 py-1 rounded-0 border-end-0" href="#" onclick="fetchPaginatedOrders(${i})">${i}</a></li>`;
-                paginationControls.append(pageLink);
-            }
-        }
-
-        fetchPaginatedOrders(1);
-        
-
-    });
-</script>
-
 {% endblock %}

@@ -19,3 +19,11 @@ class OrderLogService(BaseService):
             order_logs_dicts.append(log_dict)
 
         return order_logs_dicts
+    
+    def add_order_log_with_this(self, items: dict) -> dict:
+        for item in items["data"]:
+            item["order_logs"] = self.get_order_log_by_order_id(item['id'])
+        return items
+    
+    # def get_order_log_by_order(self,order_id):
+    #     return self.model.query.filter_by(id=order_id).all()
