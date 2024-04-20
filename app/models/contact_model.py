@@ -33,4 +33,4 @@ class ContactModel(db.Model):
     email = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(11), nullable=False)
     query_message = db.Column(db.Text, nullable=False)
-    query_img_urls = db.Column(db.ARRAY(db.Text))
+    query_img_urls=db.Column(db.ARRAY(db.Text),default=[])
