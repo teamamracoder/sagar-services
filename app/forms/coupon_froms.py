@@ -9,7 +9,7 @@ class CreateCouponForm(FlaskForm):
     expiry_date=DateTimeLocalField("Expiry Date",validators=[DataRequired()])
     discount=FloatField("Discount",validators=[DataRequired()])
     discount_type=SelectField("Discount Type",coerce=int, validators=[DataRequired()])
-    coupon_img_url = FileField("Image",validators=[FileRequired(),FileAllowed(['jpg', 'png', 'jpeg', 'webp','gif'])])
+    coupon_img_url = FileField("Image",validators=[FileAllowed(['jpg', 'png', 'jpeg', 'webp','gif'])])
     count=IntegerField("Count",validators=[DataRequired()])
     
 
