@@ -10,11 +10,14 @@ class ProductService(BaseService):
     def add_product_with_this(self, items: dict) -> dict:
         for item in items["data"]:
             item["product_name"] = self.get_product_name_by_id(item["product_id"])
-            item["product_img_urls"] = self.model.query.filter_by(id=item["product_id"]).first().product_img_urls
+            item["product_img_urls"] = self.get_product_img_by_id(item["product_id"])
         return items
     
     def get_product_name_by_id(self,product_id):
         return ProductModel.query.filter_by(id=product_id).first().product_name
+    
+    def get_product_img_by_id(self,product_id):
+        return ProductModel.query.filter_by(id=product_id).first().product_img_urls
     
         
     def get_active(self):

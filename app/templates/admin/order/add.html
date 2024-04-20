@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <h3 class="text-center my-3">Add Product</h3>
+    <h3 class="text-center my-3">Add Order</h3>
 
     <form method="POST" action="{{ url_for('order.add') }}" id="adminForm">
         {{ form.csrf_token }}
@@ -33,10 +33,6 @@
             <div class="col-12">
                 {{ form.payment_method.label(class="form-label") }}
                 {{ form.payment_method(class="form-control") }}
-            </div>
-            <div class="col-12">
-                {{ form.order_status.label(class="form-label") }}
-                {{ form.order_status(class="form-control") }}
             </div>
             <div class="col-12">
                 {{ form.payment_status.label(class="form-label") }}
