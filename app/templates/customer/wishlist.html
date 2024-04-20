@@ -52,6 +52,7 @@
                 else{
                     product_image=null
                 }
+                console.log(item.in_cart)
                 wishlistTable.append(`
                   <div class="card border shadow-sm my-1 rounded-0 wishlist_item_${item.id}">
                     <div class="card-body">
@@ -70,7 +71,7 @@
                             </div>
                             <div class="col-lg-6 col-md-12 col-sm-12">
                               <button class="btn btn-outline-blue m-1 w-100" onclick="removeFromWishlist(${item.id})">Remove</button> 
-                              <button class="btn btn-outline-blue m-1 w-100" id="cart_button_${item.product_id}" onclick="addToCart(${item.product_id})">Add To Cart</button> 
+                              ${item.in_cart ? `<a href="/cart" id="cart_button_${item.product_id}" class="btn btn-outline-blue m-1 w-100" id="cart_button_${item.product_id}" >View Cart</a>`: `<button class="btn btn-outline-blue m-1 w-100" id="cart_button_${item.product_id}" onclick="addToCart(${item.product_id})">Add To Cart</button> `}
                             </div>
                           </div>
                         </div>
@@ -91,7 +92,7 @@
                     responseData=res.responseJSON
                         if (responseData.status === 'success') {
                             if(!responseData.data){
-                                toastr.success("Product Removed From Wishlist");
+                                toastr.error("Product Removed From Wishlist");
                                 $(".wishlist_item_"+wishlist_id).css("display","none")
                             }
                         }
@@ -111,11 +112,10 @@
                 type: "GET",
                 complete:res=> {
                     responseData=res.responseJSON
-                    console.log(responseData)
                     if (responseData.status == 'success') {
                             if(responseData.data){
                                 toastr.success(responseData.message);
-                                $("#cart_button_"+product_id).text("Added To Cart")
+                                $("#cart_button_"+product_id).replaceWith(`<a href="/cart" class="btn btn-outline-blue m-1 w-100" id="cart_button_${product_id}" >View Cart</a>`)
                             }
                             else{
                                 toastr.error(responseData.message);
@@ -127,7 +127,6 @@
                             toastr.error(responseData.message);
                             
                         }
-                        $("#cart_icon_"+product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
                     },
                 error: function (xhr, status, error) {
                     toastr.error('Error fetching wishlist details:', error);
