@@ -43,7 +43,7 @@ class BookingController:
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 service_id=form.service_id.data,
-                user_id=get_current_user().id,
+                user_id=logged_in_user.id,
                 total_charges=form.total_charges.data,
                 service_location=form.service_location.data,
                 service_status=form.service_status.data,

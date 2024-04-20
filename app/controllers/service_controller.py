@@ -128,4 +128,6 @@ class ServiceController:
         form = CreateServiceReviewForm()
         service = self.service_service.get_by_id(service_id)
         service_reviews = self.service_review_service.get_review_by_service_id(service_id)
+        if service is None:
+            return render_template("error/something_went_wrong.html")
         return render_template("customer/service_details.html",service=service, form=form, service_reviews=service_reviews)
