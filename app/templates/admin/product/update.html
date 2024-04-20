@@ -43,6 +43,10 @@
                 {{ form.product_img_urls(class="form-control form-control-sm multi with-preview max-10 maxsize-40960 accept-gif|jpg|png|jpeg|webp") }}
             </div>
             <div class="col-12">
+                {{ form.sort_description.label(class="form-label") }}
+                {{ form.sort_description(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
                 {{ form.specifications.label(class="form-label") }}
                 {{ form.specifications(class="form-control form-control-sm", id="default-editor") }}
             </div>

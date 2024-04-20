@@ -53,6 +53,8 @@ class ProductModel(db.Model):
 
     specifications=db.Column(db.Text,nullable=False)
 
+    sort_description=db.Column(db.Text)
+
     payment_methods=db.Column(db.ARRAY(db.Integer),nullable=False)
 
     available_area_pincodes=db.Column(db.ARRAY(db.String(6)),nullable=False)
