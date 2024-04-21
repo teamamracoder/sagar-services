@@ -16,7 +16,6 @@
         <thead>
             <tr>
                 <th># id</th>
-                <th>Image</th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Brand</th>
@@ -57,22 +56,6 @@
             },
             "columns": [
                 { "data": "id" },
-                {
-                    "data": null,
-                    "render": function (data, type, row) {
-                        if(row.product_img_urls!=null){
-                            let images='<span>';
-                            for (image of row.product_img_urls){
-                                if(image != ''){
-                                    images+=`<img src="../../static/${image}" class="adminTableImg">`;
-                                }
-                            }
-                            images+='</span>';
-                            return images;
-                        }
-                        return null
-                    }
-                },
                 { "data": "product_name"},
                 { "data": "category_name"},
                 { "data": "brand"},

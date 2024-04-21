@@ -14,9 +14,11 @@
 .my-profile-section input[readonly],
 .my-profile-section textarea[readonly],
 .my-profile-section select[disabled] {
-    border: none;
-    background-color: transparent;
+    outline: none;
+    border: 1px solid #0003;
+    background-color: rgba(103, 102, 102, 0.133);
 }
+
 
 /* For New Contact Page--Subhasis */
 .ContactUsbackgroundimg {
