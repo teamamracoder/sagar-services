@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateProductForm,UpdateProductForm
+from app.forms import CreateProductForm,UpdateProductForm, AddImageForm
 from app.services import ProductService
 from app.services import CategoryService,ProductQnAService,ProductReviewService
 from datetime import datetime
@@ -92,7 +92,6 @@ class ProductController:
                 'specifications': form.specifications.data,
                 'payment_methods': form.payment_methods.data,
                 'available_area_pincodes': pincode_list,
-                'return_policy': form.return_policy.data,
                 'updated_at': datetime.now(),
                 'updated_by': logged_in_user.id
             }
@@ -123,8 +122,43 @@ class ProductController:
         
     
     def details(self,id):
-        product=self.product_service.get_by_id(id)
-        return render_template("admin/product/details.html",product=product)
+        form = AddImageForm()
+        product = self.product_service.get_by_id(id)
+        category = self.category_service.get_by_id(product.category_id)
+
+        available_payment_methods=[]
+        for payment_method in product.payment_methods:
+            payment_method_value=payment_methods.get_value(payment_method)
+            available_payment_methods.append(payment_method_value)
+
+        available_area_pincodes=  ', '.join(product.available_area_pincodes)
+        return render_template("admin/product/details.html",product=product,form=form, category=category.category_name,available_payment_methods=available_payment_methods,available_area_pincodes=available_area_pincodes)
+
+
+    def addImage(self,product_id):
+        product = self.product_service.get_by_id(product_id)
+        form = AddImageForm()
+        filepath=product.product_img_urls
+        new_filepath=FileUtils.save('products',form.product_img_urls.data)
+        if isinstance(new_filepath,str):
+            new_filepath=[new_filepath]
+        all_filepath=filepath+new_filepath
+
+        self.product_service.update(product_id, product_img_urls= all_filepath)
+        return redirect(url_for("product.details",id=product_id))
+    
+
+    def deleteImage(self,product_id,filename):
+        product = self.product_service.get_by_id(product_id)
+        old_filepath = product.product_img_urls
+        updated_filepaths=[]
+        for image in old_filepath:
+            if filename.strip() != "'"+image.strip()+"'" and image.strip() != "":
+               updated_filepaths.append(image)
+            FileUtils.delete(filename)
+        self.product_service.update(product_id, product_img_urls= updated_filepaths)
+        return redirect(url_for("product.details",id=product_id)) 
+
 
 
     
@@ -146,6 +180,8 @@ class ProductController:
             return jsonify(data)
         except Exception as e:
             return jsonify(data)
+        finally:
+            print(data)
 
     def product_details_page(self,product_id):
         logged_in_user,roles=get_current_user().values()

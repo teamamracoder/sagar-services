@@ -1,7 +1,5 @@
 {% extends 'admin/base.html' %}
-
 {% block title %} {{ product.product_name }} {% endblock %}
-
 {% block content %}
 <div class="container">
     <div class="row">
@@ -11,23 +9,72 @@
             </div>
             <div class="card-body py-0">
                 <div class="row" style="min-height: 200px;">
-                    <div class="col-md-2 border-end">
-                        <div class="p-1">
-                            <img src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="..." class="card-img">
+                    <div class="col-lg-2 col-md-2 col-12 border-end">
+                        <div class="row">
+                            <div class="col-12 text-lg-center text-sm-start my-1">
+                                <form action="{{url_for('product.addImage',product_id=product.id)}}" method="POST", enctype="multipart/form-data">
+                                    {{ form.csrf_token }}
+                                    <div class="input-group mb-3">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.product_img_urls(id="product_img_urls", class="form-control form-control-sm") }}
+                                      </div>
+                                      <button type="submit" class="btn btn-outline-dark">Add New Image</button>
+                                </form>
+                            </div>
+                            {% for image in product.product_img_urls %}
+                                {% if image != "" %}
+                            <div class="col-lg-12 col-md-12 col-4 border-bottom">
+                                <button type="button" class="btn btn-outline-dark border-0"  data-toggle="tooltip"  data-bs-placement="bottom" title="Delete" data-bs-custom-class="custom-tooltip" onclick="deleteImage('{{product.id}}','{{image}}')"><i class="bi bi-trash"></i></button>
+                                <img src="{{ url_for('static',filename=image) }}" alt="..." class="card-img">
+                            </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-lg-10 col-md-10 col-12">
                         <ul class="list-group border-0">
                             <li class="list-group-item d-flex justify-content-start align-items-center border-0">
                                 <i class="bi bi-cpu me-2"></i>
-                              {{ product.brand }}
+                              <span class="fw-bold">Catgoery : </span>{{ category }}
                             </li>
                             <li class="list-group-item d-flex justify-content-start align-items-center border-0">
                                 <i class="bi bi-cpu me-2"></i>
-                                {{ product.model }}
+                              <span class="fw-bold">Brand : </span>{{ product.brand }}
                             </li>
                             <li class="list-group-item d-flex justify-content-start align-items-center border-0">
                                 <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Model : </span>{{ product.model }}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Price : </span>₹{{ product.price }}/-
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Discount : </span>₹{{ product.discount }}/-
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Final Amount : </span>₹{{ product.price-product.discount }}/-
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Stock Left : </span>{{ product.stock }}
+                            </li>
+                            <li class="list-group-item border my-4">
+                                <i class="bi bi-cpu me-2"></i><span class="fw-bold">Sort Description :</span>
+                                {{ product.sort_description }}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Available Payment Methods : </span>{% for method in available_payment_methods %} {{ method }} {% endfor %}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Available Area Pincodes :  </span>{{ available_area_pincodes }}
+                            </li>
+                            <li class="list-group-item border mt-4">
+                                <i class="bi bi-cpu me-2"></i><span class="fw-bold">Specifications :</span>
                                 {{ product.specifications|safe }}
                             </li>
                           </ul>
@@ -41,6 +88,13 @@
         </div>
     </div>
 </div>
-
+<script>
+   $(document).ready(function () {
+        window.deleteImage= function(product_id,filename){
+            var encodedFilename = encodeURIComponent(filename)
+            window.location.href=`/admin/products/deleteImage/${product_id}/'${encodedFilename}'`
+        }
+    })
+</script>
 
 {% endblock %}
