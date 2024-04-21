@@ -41,11 +41,23 @@ def status(id):
     return user_controller.status(id)
 
 
-@user_bp.route("/admin/users/details/<int:id>", methods=["GET", "PATCH"])
+@user_bp.route("/admin/users/details/<int:id>", methods=["GET"])
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def details(id):
     return user_controller.details(id)
+
+@user_bp.route("/admin/users/my_profile/", methods=["GET"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def admin_my_profile():
+    return user_controller.admin_my_profile()
+
+@user_bp.route("/admin/users/my_profile/",  methods=["GET", "POST"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def admin_my_profile_update():
+    return user_controller.admin_my_profile_update()
 
 
 

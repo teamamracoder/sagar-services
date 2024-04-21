@@ -1,0 +1,107 @@
+{% extends 'admin/base.html' %}
+
+{% block title %} User Details {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="card my-2 px-0 rounded-0">
+        <div class="card-body py-0">
+          <form class="row" action="{{ url_for('user.admin_my_profile')}}" method="POST" style="min-height: 200px">
+              <div class="col-md-3 border-end my-2 d-lg-block d-md-block d-none ">
+                  <div class="filter-options">
+                    <div class="p-1">
+                      <div class="img mb-4">
+                        <img
+                          src="{{ url_for('static', filename=user.profile_photo_url) }}"
+                          alt="Photo"
+                          style="width: 100%; object-fit: contain"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                        <ul class="navbar-nav stroke ms-auto">
+                            <li class="nav-item navtext">
+                                <a class="nav-link " href="{{ url_for('auth.logout') }}">
+                                    <i class="bi bi-box-arrow-in-left"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+              </div>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header">
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body" id="filter-options-phone">
+                 
+              </div>
+          </div>
+            <div class="col-md-9 my-profile-section my-2 p-4">
+              <div class="ms-2 d-lg-none d-md-none text-end">
+                  <button class="btn btn-sm btn-dark" type="button" id="filterMenuButton" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-microsoft"></i></button>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  {{ form.first_name.label(class="form-label") }}
+                  {{ form.first_name(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-md-6">
+                  {{ form.last_name.label(class="form-label") }}
+                  {{ form.last_name(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-md-6">
+                  {{ form.email.label(class="form-label") }}
+                  {{ form.email(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-md-6">
+                  {{ form.mobile.label(class="form-label") }}
+                  {{ form.mobile(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-12">
+                  {{ form.address.label(class="form-label") }}
+                  {{ form.address(class="form-control", readonly="readonly") }}
+              </div>
+              <div class="col-6">
+                      {{ form.gender.label(class="form-check-label")}}
+                      {{ form.gender(class="form-check", disabled="true")}}
+                </div>
+                <div class="col-6">
+                  {{ form.dob.label(class="form-check-label")}}
+                  {{ form.dob(class="form-control", readonly="readonly")}}
+                </div>
+                
+                <div class="col-12 text-end">
+                  <button type="button" id="myProfileEditButton" class="btn btn-sm btn-dark">Edit</button>
+                  <a href="{{url_for('user.admin_my_profile')}}" class="btn btn-sm btn-outline-dark">Back</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $('#filter-options-phone').html($('.filter-options').html());
+      $("#myProfileEditButton").click(function () {
+        if ($("input").prop("readonly")) {
+          $("input, textarea").prop("readonly", false);
+          $("input[type='checkbox']").prop("disabled", false);
+          $("input[type='date']").prop("disabled", false);
+          $(this).replaceWith('<button type="submit" id="myProfileEditButton" class="btn btn-sm btn-dark">Save</button>');
+        } else {
+          $("input, textarea").prop("readonly", true);
+          $("input[type='checkbox']").prop("disabled", true);
+          $("input[type='date']").prop("disabled", true);
+          $(this).replaceWith('<button type="button" id="myProfileEditButton" class="btn btn-sm btn-dark">Edit</button>');
+        }
+      });
+    });
+  </script>
+{% endblock %}

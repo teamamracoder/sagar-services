@@ -93,11 +93,6 @@ block content %}
     </div>
   </div>
 </div>
-{% if message %}
-<script>
-    toastr.error("{{message}}");
-</script>
-{% endif %}
 <script>
   $(document).ready(function () {
     $('#filter-options-phone').html($('.filter-options').html());

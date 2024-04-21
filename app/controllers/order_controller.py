@@ -21,7 +21,7 @@ class OrderController:
         return render_template("admin/order/index.html")
 
     def get_order_data(self):
-        columns = ["id", "product_id", "user_id","quantity","price","payment_method","order_status","shipping_address","payment_status","area_pincode","created_by","created_at","updated_by","updated_at","is_active"]
+        columns = ["id", "product_id", "user_id","quantity","price","payment_method","order_status","shipping_address","payment_status","area_pincode","created_by","created_at","updated_by","updated_at","is_active","mobile"]
         data = self.order_service.get(request, columns)
         data = self.product_service.add_product_with_this(data)
         data = self.user_service.add_user_with_this(data)
@@ -34,7 +34,6 @@ class OrderController:
         logged_in_user,roles=get_current_user().values()
         form = CreateOrderForm()
         form.payment_method.choices = payment_methods.get_all_items()
-        form.order_status.choices = order_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
         
         if form.validate_on_submit():
@@ -48,6 +47,7 @@ class OrderController:
                 payment_method=form.payment_method.data,
                 order_status=1,
                 shipping_address=form.shipping_address.data,
+                mobile=form.mobile.data,
                 payment_status=form.payment_status.data,
                 area_pincode=form.area_pincode.data,
                 expected_delivery=form.expected_delivery.data
@@ -76,8 +76,6 @@ class OrderController:
         form.product_id.choices = [(product.id, product.product_name)]
 
         form.payment_method.choices = payment_methods.get_all_items()
-        form.order_status.choices = order_statuses.get_all_items()
-        form.payment_status.choices = payment_statuses.get_all_items()
         if form.validate_on_submit():
             updated_data = {
                 'product_id': form.product_id.data,
@@ -86,6 +84,7 @@ class OrderController:
                 'price': form.price.data,
                 'payment_method': form.payment_method.data,
                 'shipping_address': form.shipping_address.data,
+                'mobile' : form.mobile.data,
                 'area_pincode': form.area_pincode.data,
                 'updated_at': datetime.now(),
                 'updated_by': logged_in_user.id,
