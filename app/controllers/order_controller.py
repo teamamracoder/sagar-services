@@ -156,8 +156,11 @@ class OrderController:
 
     def details(self,id):
         order=self.order_service.get_by_id(id)
+        product = self.product_service.get_by_id(order.product_id)
+        user = self.user_service.get_by_id(order.user_id)
+        payment_status = payment_statuses.get_value(order.payment_status)
         order_logs= self.order_log_service.get_order_log_by_order_id(id)
-        return render_template("admin/order/details.html",order=order,order_logs=order_logs)
+        return render_template("admin/order/details.html",order=order,order_logs=order_logs,product=product,user=user,payment_status=payment_status)
     
 
 
