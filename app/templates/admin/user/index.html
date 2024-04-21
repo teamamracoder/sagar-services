@@ -34,16 +34,15 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">User Profile</h5>
+                <h5 class="modal-title" id="userName">User Name</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="" class="img-fluid" id="profilePicture" alt="Profile Picture">
-                <p>Modal body text goes here.</p>
+                <img src="" class="img-fluid d-block mx-auto" id="profilePicture" alt="Profile Picture" style="height: 250px;">
+                <!-- <p>User Name.</p> -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -64,7 +63,7 @@
                     "data": "profile_photo_url",
                     "render": function (data, type, row) {
                         if (row.profile_photo_url != null && row.profile_photo_url != "") {
-                            return `<img src="../../${row.profile_photo_url}" class="adminTableImg">`;
+                            return `<img src="../../static/${row.profile_photo_url}" class="adminTableImg">`;
                         }
                         return null
                     }
@@ -167,6 +166,14 @@
 
     });
     $('#adminDataTable tbody').on('click', 'img.adminTableImg', function () {
+        
+        var src = $(this).attr('src');
+
+        var userName = $(this).closest('tr').find('td:eq(2)').text() + " " + $(this).closest('tr').find('td:eq(3)').text();
+        $('#userName').text(userName);
+      
+        $('#profilePicture').attr('src', src);
+
         $('#profileModal').modal('show');
     });
 </script>
