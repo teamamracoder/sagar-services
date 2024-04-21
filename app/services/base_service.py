@@ -91,3 +91,6 @@ class BaseService:
             entity.is_active=False
         db.session.commit()
         return entity.is_active
+    
+    def get_active(self):
+        return self.model.query.filter_by(is_active=True).all()

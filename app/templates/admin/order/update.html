@@ -30,20 +30,16 @@
                 {{ form.payment_method(class="form-control") }}
             </div>
             <div class="col-12">
-                {{ form.order_status.label(class="form-label") }}
-                {{ form.order_status(class="form-control") }}
-            </div>
-            <div class="col-12">
-                {{ form.payment_status.label(class="form-label") }}
-                {{ form.payment_status(class="form-control") }}
-            </div>
-            <div class="col-12">
                 {{ form.shipping_address.label(class="form-label") }}
                 {{ form.shipping_address(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.area_pincode.label(class="form-label") }}
                 {{ form.area_pincode(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12">
+                {{ form.expected_delivery.label(class="form-label") }}
+                {{ form.expected_delivery(class="form-control form-control-sm") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Update</button>

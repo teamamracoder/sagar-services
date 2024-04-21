@@ -40,11 +40,15 @@
             <div class="col-12">
                 {{ form.hidden_tag() }}
                 {{ form.product_img_urls.label(class="form-label") }}
-                {{ form.product_img_urls(class="form-control form-control-sm", multiple="multiple" ,class="multi with-preview", accept="gif|jpg|png|jpeg|webp") }}
+                {{ form.product_img_urls(class="form-control form-control-sm multi with-preview max-10 maxsize-40960 accept-gif|jpg|png|jpeg|webp") }}
+            </div>
+            <div class="col-12">
+                {{ form.sort_description.label(class="form-label") }}
+                {{ form.sort_description(class="form-control form-control-sm") }}
             </div>
             <div class="col-12">
                 {{ form.specifications.label(class="form-label") }}
-                {{ form.specifications(class="form-control form-control-sm") }}
+                {{ form.specifications(class="form-control form-control-sm", id="default-editor") }}
             </div>
             <div class="col-12">
                 {{ form.payment_methods.label(class="form-label") }}
@@ -54,10 +58,6 @@
                 {{ form.available_area_pincodes.label(class="form-label") }}
                 {{ form.available_area_pincodes(class="form-control form-control-sm") }}
             </div>
-            <div class="col-12">
-                {{ form.return_policy.label(class="form-label") }}
-                {{ form.return_policy(class="form-control form-control-sm") }}
-            </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Submit</button>
                 <a href="{{ url_for('product.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
@@ -66,6 +66,21 @@
     </form>
 
 </div>
+<script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea#default-editor',
+        height: 300,
+        theme: 'modern',
+        plugins: [
+          'advlist autolink lists link charmap print preview hr anchor',
+          'searchreplace wordcount visualblocks visualchars code fullscreen',
+          'insertdatetime nonbreaking save table contextmenu directionality',
+          'emoticons template paste textcolor colorpicker textpattern'
+        ],
+        toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
+        toolbar2: 'print preview media | forecolor backcolor emoticons'
+    });
+    </script>
 <script>
     $(document).ready(function () {
         $('#adminForm').validate({
@@ -77,7 +92,7 @@
                 },
                 brand: {
                     required: true,
-                    minlength: 3,
+                    minlength: 2,
                     maxlength: 20
                 },
                 model: {
@@ -110,7 +125,7 @@
                 },
                 brand: {
                     required: "Please enter brand",
-                    minlength: "Name must be at least 3 characters long",
+                    minlength: "Name must be at least 2 characters long",
                     maxlength: "Name must not exceed 20 characters"
                 },
                 model: {

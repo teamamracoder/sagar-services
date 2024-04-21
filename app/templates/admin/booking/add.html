@@ -13,12 +13,6 @@
                 {{ form.service_id.label(class="form-label") }}
                 {{ form.service_id(class="form-control form-control-sm") }}
             </div>
-            <p id="serviceError" class="error">
-                {% if error %}
-                    {{ error }}
-                {% endif %}
-            </p>
-            
             <div class="col-12">
                 {{ form.total_charges.label(class="form-label") }}
                 {{ form.total_charges(class="form-control form-control-sm") }}
@@ -55,20 +49,14 @@
     $(document).ready(function(){
         $('#adminForm').validate({
             rules: {
-                user_id: {
+                total_charges: {
                     required: true,
-                    digits: true,
-                    min: 1,
+                    minlength: 2,
+                    maxlength: 5
                 },
-                quantity: {
+                service_location: {
                     required: true,
-                    digits:true,
-                    min: 1,
-                    max: 5
-                },
-                shipping_address: {
-                    required: true,
-                    minlength: 20,
+                    minlength: 5,
                     maxlength: 100
                 },
                 area_pincode:{
@@ -79,21 +67,15 @@
                 }
             },
             messages: {
-                user_id: {
-                    required: "Please enter user id",
-                    digits: "Invalid user id",
-                    min: "Invalid user id"
+                total_charges: {
+                    required: "Service charge [total]",
+                    digits: "Input must be number",
+                    min: "Minimum 2 digits number.."
                 },
-                quantity: {
-                    required: "Please enter Quantity",
-                    digits: "Invalid Quantity",
-                    min: "Quantity can not be less then 0",
-                    max: "Quantity can not exceed 5"
-                },
-                shipping_address: {
-                    required: "Please enter shipping_address",
-                    minlength: "Incomplete Shipping address",
-                    maxlength: "Invalid Address"
+                service_location: {
+                    required: "Enter your address",
+                    minlength: "Incomplete shiping address",
+                    maxlength: "Input must be within 100 char..."
                 },
                 area_pincode: {
                     required: "Please enter area pincode",
@@ -102,53 +84,6 @@
             },
             submitHandler: function (form) {
                 form.submit();
-            }
-        });
-
-        function getTotalPrice(productId, quantity) {
-            $.ajax({
-                url: "{{ url_for('product.get_total_price') }}",
-                type: "GET",
-                contentType: "application/json",
-                data: {
-                    product_id: productId,
-                    quantity:quantity
-                },
-                success: function(response) {
-                    if (response.error) {
-                        $("#productError").text(response.error)
-                    }
-                    else{
-                        $("#price").val(response.total_price)
-                    }
-                }
-            });
-        }
-        
-        $("#product_id").on("change", function() {
-            $("#price").val(0)
-            $("#productError").text('')
-            if ($(this).val() !== '' && !isNaN($(this).val()) && parseInt($(this).val()) > 0) {
-                let selectedProductId = $(this).val();
-                let selectedQuantity = $("#quantity").val();
-                getTotalPrice(selectedProductId, selectedQuantity);
-            }
-            else{
-                $("#price").val(0)
-                $("#productError").text('Invalid Product Id')
-            }
-        });
-        
-        $("#quantity").on("change", function() {
-            $("#productError").text('')
-            $("#price").val(0)
-            if ($(this).val() !== '' && !isNaN($(this).val()) && parseInt($(this).val()) > 0) {
-                let selectedQuantity = $(this).val();
-                let selectedProductId = $("#product_id").val();
-                getTotalPrice(selectedProductId, selectedQuantity);
-            }
-            else{
-                $("#price").val(0)
             }
         });
     });

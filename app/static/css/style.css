@@ -54,9 +54,6 @@
 .accordion-button:not(.collapsed)::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-dash' viewBox='0 0 16 16'%3E%3Cpath d='M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm2.5 7.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1'/%3E%3C/svg%3E");
 }
-#adminDataTable{
-  min-height: 400px;
-}
 #adminDataTable th, #adminDataTable td{
     white-space:nowrap;
 }
@@ -94,7 +91,10 @@ div.dt-processing>div:last-child>div {
   text-decoration: none;
   font-size: larger;
 }
-
+.MultiFile-preview{
+  margin-top: 4px;
+  object-fit: contain;
+}
 
 /**************************************************************************************
 customer page buttons
@@ -102,6 +102,9 @@ customer page buttons
 
 .link-blue{
   color: #318CE7;
+}
+.link-blue:hover{
+  color: #0a80cf;
 }
 .dropdown-sort .dropdown-item:hover{
   color: white;
@@ -170,7 +173,7 @@ products (product list) page
   transition: .5s;
 }
 
-.product-action a.btn {
+.product-action button.btn {
   position: relative;
   margin: 0 3px;
   margin-top: 100px;
@@ -185,25 +188,25 @@ products (product list) page
   background: rgba(255, 255, 255, 0.7);
 }
 
-.product-item:hover .product-action a.btn:first-child {
+.product-item:hover .product-action button.btn:first-child {
   opacity: 1;
   margin-top: 0;
   transition: .3s 0s;
 }
 
-.product-item:hover .product-action a.btn:nth-child(2) {
+.product-item:hover .product-action button.btn:nth-child(2) {
   opacity: 1;
   margin-top: 0;
   transition: .3s .05s;
 }
 
-.product-item:hover .product-action a.btn:nth-child(3) {
+.product-item:hover .product-action button.btn:nth-child(3) {
   opacity: 1;
   margin-top: 0;
   transition: .3s .1s;
 }
 
-.product-item:hover .product-action a.btn:nth-child(4) {
+.product-item:hover .product-action button.btn:nth-child(4) {
   opacity: 1;
   margin-top: 0;
   transition: .3s .15s;
@@ -214,7 +217,7 @@ products (product list) page
 }
 
 .product-item:hover .product-img img {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .custom-control {

@@ -10,7 +10,70 @@
     max-width: 300px;
     max-height: 200px;
 }
-.my-profile-section input[readonly],.my-profile-section textarea[readonly],.my-profile-section select[disabled] {
+
+.my-profile-section input[readonly],
+.my-profile-section textarea[readonly],
+.my-profile-section select[disabled] {
     border: none;
     background-color: transparent;
+}
+
+/* For New Contact Page--Subhasis */
+.ContactUsbackgroundimg {
+    background-image: url('../../static/img/contact.webp');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 300px;
+}
+
+.ContactUsbackgroundimg::before {
+    content: "";
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.6s;
+}
+
+.ContactUsbackgroundimg:hover::before {
+    opacity: 0.3;
+}
+
+.address i {
+    font-size: 25px;
+    padding: 3px 6px;
+    border-radius: 100%;
+    border: 2px solid #1c66b1;
+    cursor: pointer;
+    color: #1c66b1;
+    transition: all 0.2s ease-in-out 0s;
+}
+
+.address i:hover {
+    background-color: #1c66b1;
+    color: white;
+}
+
+.address-info {
+    font-size: 15px;
+
+}
+
+.MsgSendbutton {
+    padding: 7px 15px;
+    border-radius: 10px;
+    background: linear-gradient(to top left, #6baae8, #2178cf);
+    cursor: pointer;
+    color: white;
+    margin-top: 10px;
+    border: none;
+}
+
+.MsgSendbutton:hover {
+    opacity: 0.9;
+    border: 1px solid #1c66b1;
 }

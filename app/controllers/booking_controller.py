@@ -43,7 +43,7 @@ class BookingController:
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 service_id=form.service_id.data,
-                user_id=get_current_user().id,
+                user_id=logged_in_user.id,
                 total_charges=form.total_charges.data,
                 service_location=form.service_location.data,
                 service_status=form.service_status.data,
@@ -67,6 +67,7 @@ class BookingController:
         form.payment_method.choices = payment_methods.get_all_items()
         form.service_status.choices = service_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
+        
         if form.validate_on_submit():
             if self.booking_service.update(
                 id=id,
@@ -97,6 +98,7 @@ class BookingController:
         # return redirect(url_for("booking.index"))
 
     def service_status(self,id,status_type,status):
+        logged_in_user,roles=get_current_user().values()
         booking = self.booking_service.get_by_id(id)
         if booking is None:
              return {"status":"error","message": "Booking not found"}
@@ -105,14 +107,14 @@ class BookingController:
             updated_data = {
                 'payment_status': status_key,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': logged_in_user.id
             }
         if status_type == 'booking':
             status_key = service_statuses.get_key(status)
             updated_data = {
                 'service_status': status_key,
                 'updated_at': datetime.now(),
-                'updated_by': get_current_user().id
+                'updated_by': logged_in_user.id
             }
         self.booking_service.update(id, **updated_data)
         return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
@@ -129,6 +131,14 @@ class BookingController:
 
     def bookings_page(self):
         return render_template("customer/my_bookings.html")
-    
-    def checkout_page(self):
-        return render_template("customer/checkout.html")
+
+    def bookings_page_data(self):
+        logged_in_user,roles=get_current_user().values()
+        columns = ["id", "created_by", "created_at","updated_by","updated_at","is_active","service_id","user_id","staff_id","total_charges","service_location","service_status","payment_status","payment_method","area_pincode"]
+        data = self.booking_service.get_bookings_by_user_id(logged_in_user.id,request, columns)
+        data = self.service_service.add_service_with_this(data)
+        data = self.booking_service.add_service_status_with_this(data)
+        data = self.booking_service.add_payment_status_with_this(data)
+        return jsonify(data)
+
+   

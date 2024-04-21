@@ -15,7 +15,7 @@
             </div>
             <div class="col-12">
                 {{ form.category_img_url.label(class="form-label") }}
-                {{ form.category_img_url(class="form-control form-control-sm", class="multi with-preview max-1", accept="gif|jpg|png|jpeg|webp") }}
+                {{ form.category_img_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
             </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Update</button>
