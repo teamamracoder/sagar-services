@@ -27,18 +27,63 @@
       </div>
     </div>
   </div>
-  <div class="row mt-4" style="height: 400px">
-    <div class="col-md-8">
-        <canvas id="barChart"></canvas>
+  <div class="content-wrapper mt-4">
+    <div class="row mb-4">
+      <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Line chart</h4>
+            <canvas id="lineChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Bar chart</h4>
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-md-4">
-        <canvas id="donoughtChart"></canvas>
+    <div class="row mb-4">
+      <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Area chart</h4>
+            <canvas id="areaChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Doughnut chart</h4>
+            <canvas id="doughnutChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Pie chart</h4>
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script src="{{ url_for('static', filename='js/vendorChart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+
 <script>
   //bar chart
-  const barChart = document.getElementById("barChart");
+  /*const barChart = document.getElementById("barChart");
   new Chart(barChart, {
     type: "bar",
     data: {
@@ -83,6 +128,6 @@
   const donoughtChart = document.getElementById("donoughtChart");
   new Chart(donoughtChart, donoughtConfig);
 
- 
+ */
 </script>
 {% endblock %}
