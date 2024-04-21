@@ -27,7 +27,17 @@ const getFormattedTime = (datetime)=>{
     let formattedTime = date.toLocaleString('en-GB', options);
     return(formattedTime);
 };
-
+const getFormattedDate = (datetime)=>{
+    let date = new Date(datetime);
+    let options = {
+        timeZone: 'UTC',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    };
+    let formattedDate = date.toLocaleString('en-GB', options);
+    return(formattedDate);
+};
 
 // nav transparent
 // $(document).ready(function(){

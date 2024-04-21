@@ -1,70 +1,171 @@
-{% extends 'customer/base.html' %}
+{% extends 'customer/base.html' %} 
 
-{% block title %}Cart{% endblock %}
-
+{% block title %}Cart{% endblock %} 
 {% block content %}
 
 <div class="container">
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
-            <li class="breadcrumb-item active" aria-current="page">Cart</li>
-        </ol>
-    </nav>
-    <div class="row">
-        <div class="col-lg-8 col-md-8 col-sm-12">
-            <div>
-                <table class="table table-bordered">
-                    <thead class="table table-dark table-sm">
-                        <tr>
-                            <td>Image</td>
-                            <td>Product Name</td>
-                            <td>Model</td>
-                            <td>Unit Price</td>
-                            <td>Total</td>
-                            <td>Actions</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="{{ url_for('static', filename='img/flask-icon.png') }}" class="adminTableImg"></td>
-                            <td>Monitor LED</td>
-                            <td>LLLLLL JUHUH JNJ</td>
-                            <td><i class="bi bi-currency-rupee"></i>10000 </td>
-                            <td><i class="bi bi-currency-rupee"></i>10009 </td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-blue border-0 " data-toggle="tooltip"  data-bs-placement="bottom"  title="Remove"><i class="bi bi-trash"></i></button> 
-                                <button class="btn btn-sm btn-outline-blue border-0 " data-toggle="tooltip"  data-bs-placement="bottom"  title="Buy Now"><i class="bi bi-bag-plus"></i></button> 
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-md-4 col-lg-4 col-sm-12 ">
-            <table class="table table-bordered ">
-                <tbody>
-                    <tr class="table-light" >
-                        <td class="">Sub-Total:</td>
-                        <td class=""><i class="bi bi-currency-rupee"></i>7000</td>
-                    </tr>
-                    <tr class="table-light">
-                        <td class="">Discount:</td>
-                        <td class=""><i class="bi bi-currency-rupee"></i>1000</td>
-                    </tr>
-                    <tr class="table-secondary">
-                        <td ><b>Total-Price:</b></td>
-                        <td><b><i class="bi bi-currency-rupee"></i>6000</b></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-between">
-                <a href="" class="btn link-blue">Continue Shopping</a>
-                <a href="" class="btn btn-outline-blue ">Checkout</a>
-            </div>
-        </div>
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Cart</li>
+    </ol>
+  </nav>
+  <div class="row align-items-start">
+
+    <div class="col-md-6 col-lg-7 col-sm-11 m-1 p-0" id="cart-items-container">
+      <!-- single item -->
+        
+      <!-- single item end-->
     </div>
+    <div class="col-md-5 col-lg-4 col-sm-12 shadow-sm p-0 rounded-0 m-1 py-1">
+      <table class="table table-hover summary-table">
+        <tbody>
+          <tr class="table-light">
+            <td class="">Sub-Total:</td>
+            <td class="">
+              <i class="bi bi-currency-rupee"></i
+              ><span class="subtotal"></span>
+            </td>
+          </tr>
+          <tr class="table-light">
+            <td class="">Discount:</td>
+            <td class="">
+              <i class="bi bi-currency-rupee"></i
+              ><span class="discount"></span>
+            </td>
+          </tr>
+          <tr class="table-secondary">
+            <td><b>Total-Price:</b></td>
+            <td>
+              <b
+                ><i class="bi bi-currency-rupee"></i
+                ><span class="total-price"></span></b
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-between">
+        <a href="{{ url_for('product.products_page') }}" class="btn link-blue">Continue Shopping</a>
+        <a href="{{ url_for('checkout.checkout_page') }}" class="btn btn-outline-blue">Checkout</a>
+      </div>
+    </div>
+  </div>
 </div>
 
+<script>
+  $(document).ready(function () {
+        // Function to fetch cart details
+        function fetchCartDetails() {
+            $.ajax({
+                url: "{{ url_for('cart.cart_page_data') }}",
+                type: "GET",
+                success: function (response) {
+                    // Call function to render cart details
+                    renderCartDetails(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching cart details:', error);
+                    // Handle error, show error message, etc.
+                }
+            });
+        }
+
+        // Function to render cart details on the frontend
+        function renderCartDetails(cartDetails) {
+            var cartTable = $('#cart-items-container');
+            var subtotalSpan = $('.subtotal');
+            var discountSpan = $('.discount');
+            var totalPriceSpan = $('.total-price');
+
+            // Clear previous content
+            cartTable.empty();
+            subtotalSpan.text('0');
+            discountSpan.text('0');
+            totalPriceSpan.text('0');
+
+            // Iterate over cart details and append to the DOM
+            cartDetails.forEach(function (item) {
+                subTotal = parseFloat(subtotalSpan.text())+item.price
+                totalDiscount = parseFloat(discountSpan.text())+item.discount
+                totalPrice = subTotal - totalDiscount
+
+                //Update subtotal, toal discount, and total pcice
+                subtotalSpan.text(subTotal.toFixed(2));
+                discountSpan.text(totalDiscount.toFixed(2));
+                totalPriceSpan.text(totalPrice.toFixed(2));
+
+                // Append cart item to the cart table
+                if(item.image.length>0){
+                    product_image=item.image[0]
+                }
+                else{
+                    product_image=null
+                }
+                cartTable.append(`
+                  <div class="card border shadow-sm my-1 rounded-0 cart_item_${item.id}">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-3 col-xs-3">
+                            ${product_image ? `<img src="../../static/${product_image}" alt="Product Image" class="w-100" style="object-fit: contain;">` : ''}
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-sm-9 col-xs-9">
+                          <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12">
+                              <p class="m-0 p-0 fs-5 fw-bold">${item.product_name}</p>
+                              <p class="m-0 p-0">By <span>${item.brand}</span></p>
+                              <p class="m-0 p-0">${item.stock > 0 ? '<small class="text-success">In Stock</small>' : '<small class="text-danger">Out of Stock</small>'}</p>
+                              <p class="m-0 p-0">Price: <span class="fw-bold"><i class="bi bi-currency-rupee"></i><span class="cart_price_${item.id}">${(item.price-item.discount).toFixed(2)}</span></span></p>
+                              <p class="m-0 p-0">You Saved: <span class="text-success"><i class="bi bi-currency-rupee"></i><span class="cart_discount_${item.id}">${item.discount.toFixed(2)}</span></span></p>
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12">
+                              <button class="btn btn-outline-blue m-1 w-100" onclick="removeFromCart(${item.id})">Remove</button> 
+                              <button class="btn btn-outline-blue m-1 w-100" onclick="checkout(${item.product_id})">Checkout</button> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `);
+            });
+        }
+        // Call fetchCartDetails function to fetch cart details
+        fetchCartDetails();
+    });
+    window.removeFromCart = function(cart_id){
+        var subtotalSpan = $('.subtotal');
+        var discountSpan = $('.discount');
+        var totalPriceSpan = $('.total-price');
+        $.ajax({
+                url: "{{ url_for('cart.status',id=0) }}".replace('0',cart_id),
+                type: "GET",
+                complete:res=> {
+                    responseData=res.responseJSON
+                        if (responseData.status === 'success') {
+                            if(!responseData.data){
+                                toastr.error("Product Removed Cart");
+                                $(".cart_item_"+cart_id).css("display","none")
+                                subtotalSpan.text(Number(subtotalSpan.text())-(Number($(".cart_price_"+cart_id).text())));
+                                discountSpan.text(Number(discountSpan.text())-Number($(".cart_discount_"+cart_id).text()));
+                                totalPriceSpan.text(Number(totalPriceSpan.text())-Number($(".cart_price_"+cart_id).text()));
+                            }
+                        }
+                        else{
+                            toastr.error(responseData.message);
+                        }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching cart details:', error);
+                }
+            });
+    }
+
+    window.checkout = function (product_id){
+      console.log(product_id)
+    }
+</script>
 
 {% endblock %}

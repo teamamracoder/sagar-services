@@ -4,46 +4,95 @@
 
 {% block content %}
 
-<div class="container-fluid">
+
+
+<div class="ContactUsbackgroundimg">
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb ms-3">
             <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a></li>
             <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
         </ol>
     </nav>
-    <div class="section about-bg-img" style="height: 100vh;">
-        <div class="head text-center">
-            <h1 class="text-dark mb-5">Contact Us</h1>
-        </div>
-        <div class="container contact-form d-flex justify-content-center">
-            <form action="" style="width: 700px; padding: 20px;" class="bg-light">
-                <div class="mb-3">
-                    <input required type="text" placeholder="User Name" class="form-control rounded-0"
-                        aria-describedby="exampleInputUsername">
-                </div>
-                <div class="mb-3">
-                    <input required type="email" placeholder="Email address" class="form-control rounded-0"
-                        aria-describedby="emailHelp">
-                </div>
-                <div class="mb-3">
-                    <input required type="tel" placeholder="Phone No" class="form-control  rounded-0"
-                        aria-describedby="exampleInputUsername">
-                </div>
-                <div class="mb-3">
-                    <textarea class="form-control rounded-0" rows="5"></textarea>
-                </div>
-                <input required type="submit" class="btn btn-primary w-100" value="Submit">
+</div>
 
-                <!-- <div class="d-flex justify-content-start mt-5  p-2 ">
-                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-whatsapp social-link me-3"></i></a></div>
-                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-instagram social-link me-3"></i> </a></div>
-                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-facebook social-link me-3"></i></a></div>
-                    <div class=""><a href="" class="btn"><i style="font-size: 30px;" class="bi bi-twitter-x social-link me-3"></i></a></div>
-                </div> -->
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="address d-flex">
+                <div class="mt-2 me-3">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
+                <div class="address-info">
+                    <h4>Location:</h4>
+                    <p>Sagar Services | DurgaBari, Cooch Behar–736172<br> Cooch Behar – 700097</p>
+                </div>
+            </div>
+
+            <div class="address d-flex ">
+                <div class="mt-2 me-3">
+                    <i class="bi bi-envelope-open"></i>
+                </div>
+                <div class="address-info me-2">
+                    <h4>Email:</h4>
+                    <p>sagar@services.gmail.com</p>
+                </div>
+            </div>
+
+            <div class="address d-flex me-2">
+                <div class="mt-2 me-3">
+                    <i class="bi bi-telephone-fill"></i>
+                </div>
+                <div class="address-info">
+                    <h4>Call:</h4>
+                    <p>+91 7362264320, +91 7361564320</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <form method="POST" action="{{ url_for('contact_bp.contact_us_page') }}" enctype="multipart/form-data"
+                id="addContactForm">
+                {{ form.csrf_token }}
+                <div class="form-group mb-3 d-flex">
+                    {{ form.name(class="form-control shadow-none me-2",placeholder="Name",style="border-radius:
+                    5px;" ) }}
+                    {{ form.email(class="form-control shadow-none me-2",placeholder="E-mail Id",style="border-radius:
+                    5px;" ) }}
+
+                </div>
+
+                <div class="form-group my-3">
+                    {{ form.phone(class="form-control shadow-none",placeholder="Phone No",style="border-radius:
+                    5px;" ) }}
+                </div>
+
+                <div class="form-group my-3">
+                    {{ form.query_message(class="form-control shadow-none",placeholder="Message",style="border-radius:
+                    5px;"
+                    ) }}
+
+                </div>
+                <div class="form-group my-3">
+                    {{ form.query_img_urls(class="form-control shadow-none multi with-preview max-10 maxsize-40960
+                    accept-gif|jpg|png|jpeg|webp",placeholder="Images"
+                    ) }}
+
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="MsgSendbutton">Send Message</button>
+                </div>
             </form>
         </div>
-
     </div>
-
 </div>
+<div class="pt-5 mb-3 mx-2">
+
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14303.811550315926!2d89.43329355541991!3d26.328024999999993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e2fe9e9727597f%3A0x6fb50b9759286ca2!2sSri%20Sri%20Durgabari!5e0!3m2!1sen!2sin!4v1713621951985!5m2!1sen!2sin"
+        width="100%" height="250" style="border:0;border-radius: 10px;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+
 {% endblock %}

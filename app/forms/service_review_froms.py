@@ -3,7 +3,7 @@ from wtforms import *
 from wtforms.validators import DataRequired
 
 class CreateServiceReviewForm(FlaskForm):
-    service_id = SelectField('Service', validators=[DataRequired()])
+    service_id = IntegerField('Service', validators=[DataRequired()])
     review_title=StringField('Title', validators=[DataRequired()])
     description=TextAreaField('Description', validators=[DataRequired()])
     rating=FloatField('Rating', validators=[DataRequired()])

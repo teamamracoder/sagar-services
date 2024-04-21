@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateContactForm, UpdateContactForm
 from app.services import ContactService, RoleService
+from app.utils import FileUtils
 
 
 class ContactController:
@@ -11,11 +12,16 @@ class ContactController:
     def create(self):
         form = CreateContactForm()
         if form.validate_on_submit():
+            filepath=FileUtils.save('contacts',form.query_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
+
             self.contact_service.create(
                 email=form.email.data,
                 name=form.name.data,
                 phone=form.phone.data,
                 query_message=form.query_message.data,
+                query_img_urls=filepath
             )
             return redirect(url_for("contact_bp.index"))
         return render_template("admin/contact/add.html", form=form)
@@ -40,6 +46,7 @@ class ContactController:
                 email=form.email.data,
                 phone=form.phone.data,
                 query_message=form.query_message.data,
+                query_img_urls=form.query_img_urls.data
             )
             return redirect(url_for("contact_bp.index"))
         return render_template("admin/contact/update.html", id=id,form=form)
@@ -50,10 +57,23 @@ class ContactController:
             return render_template("admin/error/something_went_wrong.html")
         self.contact_service.status(id)
         return redirect(url_for("contact_bp.index"))
-    
+
 
 
     ## customer controller ##
 
     def contact_us_page(self):
-        return render_template("customer/contact_us.html")
+        form = CreateContactForm()
+        if form.validate_on_submit():
+            filepath=FileUtils.save('contacts',form.query_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
+            self.contact_service.create(
+                email=form.email.data,
+                name=form.name.data,
+                phone=form.phone.data,
+                query_message=form.query_message.data,
+                query_img_urls=filepath
+            )
+            return redirect(url_for("home.index"))
+        return render_template("customer/contact_us.html", form=form)

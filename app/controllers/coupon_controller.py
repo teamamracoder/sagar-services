@@ -34,15 +34,6 @@ class CouponController:
         
   
     def get(self):
-        # coupons = self.coupon_service.get()
-      # sms = SMSUtils()
-        # success = sms.send("9999999999,8888888888,7777777777", "5599")
-        # print(f"Message sent successfully: {success}")
-
-        voice = VOICEUtils()
-        success = voice.voice_send("9563777346", "5599")
-        print(f"Message sent successfully: {success}")
-
 
         return render_template("admin/coupon/index.html")
 
@@ -93,3 +84,4 @@ class CouponController:
         if is_active:
             return {"status":"success","message":"Category Activated","data":is_active}
         return {"status":"success","message":"Category Deactivated","data":is_active}
+

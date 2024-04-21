@@ -43,9 +43,6 @@ def status(id):
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def statuses(id,status_type,status):
-    print(id)
-    print(status_type)
-    print(status)
     return order_controller.order_status(int(id),status_type,status)
 
 @order_bp.route("/admin/orders/details/<int:id>", methods=["GET", "PATCH"])
@@ -63,8 +60,12 @@ def details(id):
 def orders_page():
     return order_controller.orders_page()
 
-
-@order_bp.route("/checkout/")
+@order_bp.route("/my_orders/data")
 @login_required
-def checkouts_page():
-    return order_controller.checkout_page()
+def orders_page_data():
+    return order_controller.orders_page_data()
+
+@order_bp.route("/cancel/<int:order_id>")
+@login_required
+def cancel(order_id):
+    return order_controller.cancel(order_id)
