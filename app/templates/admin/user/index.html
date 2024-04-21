@@ -31,6 +31,21 @@
     </table>
 </div>
 
+<div class="modal " id="profileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userName">User Name</h5>
+                <button type="button" class="btn-close btn-outline-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <img src="" class="img-fluid d-block mx-auto" id="profilePicture" alt="Profile Picture" >
+                <!-- <p>User Name.</p> -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         var table = $('#adminDataTable').DataTable({
@@ -42,20 +57,20 @@
             },
             "columns": [
                 { "data": "id" },
-                { 
+                {
                     "data": "profile_photo_url",
                     "render": function (data, type, row) {
-                        if(row.profile_photo_url != null && row.profile_photo_url != ""){
-                            return `<img src="../../static/${row.profile_photo_url}" class="adminTableImg">` ;
+                        if (row.profile_photo_url != null && row.profile_photo_url != "") {
+                            return `<img src="../../static/${row.profile_photo_url}" class="adminTableImg">`;
                         }
                         return null
                     }
                 },
                 { "data": "first_name" },
                 { "data": "last_name" },
-                { 
+                {
                     "data": null,
-                    "render":function(data,type,row){
+                    "render": function (data, type, row) {
                         return `<a href="mailto:${row.email}" class="text-dark text-decoration-none"><i class="bi bi-envelope-at"></i> ${row.email}</a>`
                     }
                 },
@@ -68,12 +83,12 @@
 
                         for (let key in row.roles) {
                             if (row.roles.hasOwnProperty(key)) {
-                                container += '<button class="btn btn-outline-dark btn-sm m-1">' +row.roles[key] + '<a class="text-danger fw-bold" href="/admin/roles/status/'+key+'"><i class="bi bi-x-lg ms-2"></i></a></button></br>';
+                                container += '<button class="btn btn-outline-dark btn-sm m-1">' + row.roles[key] + '<a class="text-danger fw-bold" href="/admin/roles/status/' + key + '"><i class="bi bi-x-lg ms-2"></i></a></button></br>';
                             }
                         }
                         for (let key in row.not_in_roles) {
                             if (row.not_in_roles.hasOwnProperty(key)) {
-                                container += '<button class="btn btn-outline-dark btn-sm m-1">' + row.not_in_roles[key] + '<a class="text-success" href="/admin/roles/add/'+key+'/'+row.id+'"><i class="bi bi-plus-lg ms-2"></i></a></button></br>';
+                                container += '<button class="btn btn-outline-dark btn-sm m-1">' + row.not_in_roles[key] + '<a class="text-success" href="/admin/roles/add/' + key + '/' + row.id + '"><i class="bi bi-plus-lg ms-2"></i></a></button></br>';
                             }
                         }
                         container += '</div>';
@@ -85,8 +100,8 @@
                     "data": null,
                     "render": function (data, type, row) {
                         return '<button class="btn btn-outline-success btn-sm me-1" data-bs-placement="bottom" title="View" data-bs-custom-class="custom-tooltip" onclick="viewRecord(' + row.id + ')"><i class="bi bi-file-text"></i></button>' +
-                        '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip"  data-bs-placement="bottom" title="Edit" data-bs-custom-class="custom-tooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
-                        '<button id="disable_btn_'+row.id+'" class="btn  btn-sm me-1 border-'+(row.is_active ? 'danger' : 'success')+'" data-toggle="tooltip"  data-bs-placement="bottom"'+ (row.is_active ? 'title="Deactivate"' : 'title="Activate"')+' onclick="deactivateRecord(' + row.id+','+row.is_active+')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
+                            '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip"  data-bs-placement="bottom" title="Edit" data-bs-custom-class="custom-tooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
+                            '<button id="disable_btn_' + row.id + '" class="btn  btn-sm me-1 border-' + (row.is_active ? 'danger' : 'success') + '" data-toggle="tooltip"  data-bs-placement="bottom"' + (row.is_active ? 'title="Deactivate"' : 'title="Activate"') + ' onclick="deactivateRecord(' + row.id + ',' + row.is_active + ')" >' + (row.is_active ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') + '</button>';
                     }
                 }
             ]
@@ -94,12 +109,12 @@
 
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-        
+
         window.editRecord = function (id) {
-            window.location.href= "/admin/users/update/" + id;
+            window.location.href = "/admin/users/update/" + id;
         };
         window.viewRecord = function (id) {
-            window.location.href= "/admin/users/details/" + id;
+            window.location.href = "/admin/users/details/" + id;
         };
 
         window.deactivateRecord = function (id, is_active) {
@@ -114,8 +129,8 @@
                 icon: icon,
                 showCancelButton: true,
                 confirmButtonText: is_active ? "Deactivate" : "Activate",
-                confirmButtonColor:confirmButtonColor,
-                cancelButtonColor:cancelButtonColor,
+                confirmButtonColor: confirmButtonColor,
+                cancelButtonColor: cancelButtonColor,
                 customClass: {
                     confirmButton: 'btn btn-sm rounded-0',
                     cancelButton: 'btn btn-sm rounded-0'
@@ -123,22 +138,22 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url:"{{url_for('user.status',id=0)}}".replace('0',id),
-                        method:"GET",
-                        complete:res=>{
-                            responseData=res.responseJSON
+                        url: "{{url_for('user.status',id=0)}}".replace('0', id),
+                        method: "GET",
+                        complete: res => {
+                            responseData = res.responseJSON
                             if (responseData.status === 'success') {
                                 toastr.success(responseData.message);
-                                $("#disable_btn_"+id).replaceWith(
-                                    '<button id="disable_btn_'+id+'" class="btn  btn-sm me-1 border-'
-                                    +(responseData.data ? 'danger' : 'success')
-                                    +'" data-toggle="tooltip"  data-bs-placement="bottom"'
+                                $("#disable_btn_" + id).replaceWith(
+                                    '<button id="disable_btn_' + id + '" class="btn  btn-sm me-1 border-'
+                                    + (responseData.data ? 'danger' : 'success')
+                                    + '" data-toggle="tooltip"  data-bs-placement="bottom"'
                                     + (responseData.data ? 'title="Deactivate"' : 'title="Activate"')
-                                    +' onclick="deactivateRecord(' + id+','+responseData.data+')" >' 
-                                    + (responseData.data ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>') 
+                                    + ' onclick="deactivateRecord(' + id + ',' + responseData.data + ')" >'
+                                    + (responseData.data ? '<i class="bi bi-eye-slash-fill text-danger"></i>' : '<i class="bi bi-eye-fill text-success"></i>')
                                     + '</button>')
                             }
-                            else{
+                            else {
                                 toastr.error(responseData.message);
                             }
                         }
@@ -147,7 +162,18 @@
             });
         };
 
+
+    });
+    $('#adminDataTable tbody').on('click', 'img.adminTableImg', function () {
         
+        var src = $(this).attr('src');
+
+        var userName = $(this).closest('tr').find('td:eq(2)').text() + " " + $(this).closest('tr').find('td:eq(3)').text();
+        $('#userName').text(userName);
+      
+        $('#profilePicture').attr('src', src);
+
+        $('#profileModal').modal('show');
     });
 </script>
 
