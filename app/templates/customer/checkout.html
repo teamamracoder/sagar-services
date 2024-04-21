@@ -4,250 +4,175 @@
 
 {% block content %}
 
+
+
+
 <div class="container-fluidrow row d-flex justify-content-start mt-5">
-  <div class="col-lg-5 col-md-none d-none d-md-block">
-    <img src="{{ url_for('static', filename='img/gif.gif') }}" alt="" />
-  </div>
-  <div class="col-lg-6 col-md-12 col-sm-12">
-    <div class="accordion checkout-accordian" id="accordionPanelsStayOpenExample">
-      <div class="accordion-item">
+  <div class="col-lg-5 col-md-5 d-none d-md-block"> <img src="gif.gif" alt="" class="checkout-img"></div>
+  <div class="col-lg-6 col-md-6 col-sm-12" >
+  <div class="accordion  shadow" id="accordionPanelsStayOpenExample">
+      <div class="accordion-item ">
         <h2 class="accordion-header">
-          <button
-            class="accordion-button"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseOne"
-            aria-expanded="true"
-            aria-controls="panelsStayOpen-collapseOne"
-          >
-            1. Product List
+          <button class="accordion-button accordion-button1" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+            <i class="bi bi-check-circle check1" style="display: none;"></i> &nbsp; Order Summary
           </button>
         </h2>
-        <div
-          id="panelsStayOpen-collapseOne"
-          class="accordion-collapse collapse show"
-          data-bs-parent="#accordionPanelsStayOpenExample"
-        >
-          <div class="accordion-body">
-            <div class="product">
-              <div class="row">
-                <div
-                  class="col-md-3 d-md-flex align-items-center col-sm-12 div-style div-img"
-                >
-                  <img
-                    src="{{ url_for('static', filename='img/flask-icon.png') }}"
-                    alt=""
-                    height="99px;"
-                    width="120px"
-                  />
-                </div>
-                <div
-                  class="col-md-3 d-md-flex align-items-center col-sm-12 div-style div-pro"
-                >
-                  Product Name
-                </div>
-                <div
-                  class="col-md-3 d-md-flex align-items-center col-sm-12 div-style div-qnt"
-                >
-                  <select class="form-select">
-                    <option selected>Qnt</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </select>
-                </div>
-                <div
-                  class="col-md-3 d-md-flex align-items-center col-sm-12 div-style div-price"
-                >
-                  Price: ₹1990.00
-                </div>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionPanelsStayOpenExample">
+          <div class="accordion-body p-1">
+          <table class="table table-responsive table-bordered table-hover">
+              <tbody>
+                  <tr>
+                      <td><img src="product-1.webp" class="product-img" alt="Product Image" height="67px" width="67px"></td>
+                      <td class="text-primary">Product Name</td>
+                      <td class="text-success">₹ 1990.00</td>
+                      <td>
+                          <select class="form-select">
+                              <option selected>Qnt</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                          </select>
+                      </td>
+                      <td class="text-success">₹ 1990.00</td>
+                  </tr>
+              </tbody>
+              <tfoot class="">
+                <tr>
+                    <td colspan="4">Delivery Charge</td>
+                    <td class="text-success">₹ 50</td>
+                </tr>
+                <tr>
+                    <td colspan="4"><strong>Total Price</strong></td>
+                    <td class="text-success">₹ 1990</td>
+                </tr>
+            </tfoot>
+          </table>
 
-                <div class="col-md-3 d-md-flex col-sm-12 div-emt"></div>
-                <div class="col-md-3 d-md-flex col-sm-12 div-emt"></div>
-                <div class="col-md-3 d-md-flex col-sm-12 div-emt-qnt"></div>
-                <div
-                  class="col-md-3 d-md-flex col-sm-12 div-style div-total"
-                  style="white-space: nowrap"
-                >
-                  Delivery Charge: ₹50<br />Total: ₹1990.00
+          <div class="container text-center">
+            <p><input type="checkbox" name="have_coupon" id="have_coupon"> <label for="have_coupon">I have a Coupon Code</label></p>
+          </div>
+          
+          <div id="check_have_coupon" style="display: none;">
+          <div class="container d-flex justify-content-center">
+          <div class="input-group mt-3 w-50">
+            <input type="text" class="form-control w-25  rounded-start-pill" name="coupon_code" placeholder="Enter Coupon Code" aria-label="Enter Coupon Code " aria-describedby="button-addon2"> 
+             <button type="submit" class="btn btn-success " id="button-addon2" style="border-radius: 0 999px 999px 0;">Submit</button>
+          </div>
+          </div>
+          <div class="text-center me-5"><small>Invalied Coupon Code</small></div>
+
+            <div class="separation-line mt-3"></div>
+            <div class="total-section flex-between flex-vertical-center">
+              <div class="flex-fill flex-vertical">
+                <div class="text-center"><h6 class="text-success">Congratulations ! The coupon has been successfully applied.</h6></div>
+                <div class="total-label f-secondary-color text-center">Now You have to Pay</div>
+                <div class="text-center">
+                  <strong>₹ 549</strong>
+                  <small>.00</small>
                 </div>
               </div>
-
-              <div class="d-flex justify-content-end mt-3">
-                <button class="btn btn-primary">Next</button>
-              </div>
+              <i class="ai-coin size-lg"></i>
             </div>
           </div>
+
+          <div class="d-flex justify-content-end mt-3">
+              <button class="btn btn-success first-btn m-3">Next</button>
+          </div>
+          
+          </div>
+
         </div>
       </div>
+
+
+    
+
+
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button
-            class="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseTwo"
-            aria-expanded="false"
-            aria-controls="panelsStayOpen-collapseTwo"
-          >
-            2. Shipping Address
+          <button class="accordion-button collapsed accordion-button2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            <i class="bi bi-check-circle check2" style="display: none;"></i> &nbsp; Shipping Address
           </button>
         </h2>
-        <div
-          id="panelsStayOpen-collapseTwo"
-          class="accordion-collapse collapse"
-          data-bs-parent="#accordionPanelsStayOpenExample"
-        >
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionPanelsStayOpenExample">
+       
           <div class="accordion-body">
             <div class="user border shadow-sm p-3 bg-body-tertiary">
-              <strong class="pe-1">User Name:</strong> Arif Islam <br /><strong
-                class="pe-1"
-                >Email:</strong
-              >
-              arif@gmail.com <br /><strong class="pe-1">Address:</strong> 31,
-              Abcd xyz, Tufanganj, Coochbehar, 736101 <br /><strong class="pe-1"
-                >Contact No:</strong
-              >
-              6296354003
+              <strong class="pe-1">User Name:</strong> Arif
+              <br><strong class="pe-1">Email:</strong> arif@gmail.com
+              <br><strong class="pe-1">Address:</strong> 31, Abcd xyz, coochbehar, Coochbehar, 736101
+              <br><strong class="pe-1">Contact No:</strong> 629630002
             </div>
-            <br /><strong class="ps-5"
-              ><input type="checkbox" name="new-address" id="addressCheckbox" />
-              Address Is not Same as User Address</strong
-            >
+              <br><strong class="ps-5"><input type="checkbox" name="new-address" id="addressCheckbox"> <label for="addressCheckbox">Address Is not Same as User Address</label></strong>
+            
+              <div class=" justify-content-end" id="user-addr-btn" style="display: flex;">
+                <button class="btn btn-success second-btn m-3">Next</button>
+             </div>
+              <div id="newAddressForm" style="display: none;" class="mt-3 border shadow-sm p-3 bg-body-tertiary">
+                <h5 class="pb-3 text-center"><strong>Enter New Address</strong></h5>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label for="fullname" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" name="fullname" placeholder="Enter Full Name Here">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="MobleNo" class="form-label">Mobile No.</label>
+                        <input type="text" class="form-control" id="MobleNo" name="MobileNo" placeholder="Enter Mobile No">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="newCity" class="form-label">Street Address</label>
+                        <input type="text" class="form-control" id="StreetAddress" name="StreetAddress" placeholder="Flat/House No./Floor/Building/Street">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="Landmark" class="form-label">Landmark</label>
+                        <input type="text" class="form-control" id="Landmark" name="Landmark" placeholder="Enter Landmark Here">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="AdditionalAddress" class="form-label">Additional Address</label>
+                        <input type="text" class="form-control" id="AdditionalAddress" name="Additional Address" placeholder="colony/Locality">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="City" class="form-label">City</label>
+                        <input type="text" class="form-control" id="City" name="City" placeholder="Enter City/Village Name Here">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="PinCode" class="form-label">Pin Code</label>
+                        <input type="text" class="form-control" id="PinCode" name="PinCode" placeholder="Enter 6 Digit Pin Code">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="PinCode" class="form-label">State</label>
+                        <input type="text" class="form-control" id="State" name="State" placeholder="Enter State Here">
+                    </div>
+                  </div>
+               <div class="d-flex justify-content-end">
+                   <button class="btn btn-success m-3 second-btn-2">Next</button>
+                </div>
 
-            <div
-              class="justify-content-end"
-              id="user-addr-btn"
-              style="display: flex"
-            >
-              <button class="btn btn-primary">Next</button>
             </div>
-            <div
-              id="newAddressForm"
-              style="display: none"
-              class="mt-3 border shadow-sm p-3 bg-body-tertiary"
-            >
-              <h5 class="pb-3">Enter New Address</h5>
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label for="fullname" class="form-label">Full Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="fullname"
-                    placeholder="Enter Full Name Here"
-                  />
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="MobleNo" class="form-label">Mobile No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="MobleNo"
-                    name="MobileNo"
-                    placeholder="Enter Mobile No"
-                  />
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="newCity" class="form-label">Street Address</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="StreetAddress"
-                    name="StreetAddress"
-                    placeholder="Flat/House No./Floor/Building/Street"
-                  />
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="Landmark" class="form-label">Landmark</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="Landmark"
-                    name="Landmark"
-                    placeholder="Enter Landmark Here"
-                  />
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="AdditionalAddress" class="form-label"
-                    >Additional Address</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="AdditionalAddress"
-                    name="Additional Address"
-                    placeholder="colony/Locality"
-                  />
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="City" class="form-label">City</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="City"
-                    name="City"
-                    placeholder="Enter City/Village Name Here"
-                  />
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="PinCode" class="form-label">Pin Code</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="PinCode"
-                    name="PinCode"
-                    placeholder="Enter 6 Digit Pin Code"
-                  />
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="PinCode" class="form-label">State</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="State"
-                    name="State"
-                    placeholder="Enter State Here"
-                  />
-                </div>
-              </div>
-              <div class="d-flex justify-content-end">
-                <button class="btn btn-primary">Next</button>
-              </div>
+    
+            
+            
             </div>
-          </div>
+
         </div>
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button
-            class="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseThree"
-            aria-expanded="false"
-            aria-controls="panelsStayOpen-collapseThree"
-          >
-            3. Payment Method
+          <button class="accordion-button collapsed accordion-button3" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+            <i class="bi bi-check-circle check3" style="display: none;"></i> &nbsp; Payment Method
           </button>
         </h2>
-        <div
-          id="panelsStayOpen-collapseThree"
-          class="accordion-collapse collapse"
-          data-bs-parent="#accordionPanelsStayOpenExample"
-        >
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionPanelsStayOpenExample">
           <div class="accordion-body">
-            <strong
-              >Please select the preferred payment method to use on this
-              order.</strong
-            >
-            <br />
-            <input type="radio" name="pay-method" /> Payment by UPI/Wallet/Debit
-            & Credit Card E.M.I/Net Banking <br />
-            <input type="radio" name="pay-method" /> Payment by COD
-            <div class="d-flex justify-content-end">
-              <button class="btn btn-primary">Next</button>
+            <strong>Please select the preferred payment method to use on this order.</strong> 
+            <br>
+            <div class="d-block">
+            <input type="radio" name="pay-method" id="Online" ><label for="Online"> &nbsp; Payment by UPI/Wallet/Debit & Credit Card</label>
             </div>
+            <input type="radio" name="pay-method" id="COD"><label for="COD"> &nbsp; Payment by COD</label>
+           <div class="d-flex justify-content-end">
+            <button class="btn btn-success m-3 third-btn">Place Order</button>
+           </div>
           </div>
         </div>
       </div>
@@ -255,18 +180,8 @@
   </div>
 </div>
 
-<script>
-  // Get references to the checkbox and the new address form
-  const addressCheckbox = document.getElementById("addressCheckbox");
-  const newAddressForm = document.getElementById("newAddressForm");
-  const userAddressForm = document.getElementById("user-addr-btn");
 
-  // Add an event listener to the checkbox
-  addressCheckbox.addEventListener("change", function () {
-    // Toggle the visibility of the new address form based on the checkbox state
-    newAddressForm.style.display = addressCheckbox.checked ? "block" : "none";
-    userAddressForm.style.display = addressCheckbox.checked ? "none" : "flex";
-  });
-</script>
+
+
 
 {% endblock %}
