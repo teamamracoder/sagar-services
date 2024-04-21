@@ -5,7 +5,18 @@
 {% block content %}
 
 <div class="container">
-<h3>verify otp</h3>
+    <form method="POST" action="{{ url_for('auth.verify_otp',id=id) }}" id="adminForm" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-12">
+                {{ form.otp.label(class="form-label") }}
+                {{ form.otp(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-12 my-2 text-center">
+                <button type="submit" class="btn btn-dark btn-sm mt-3">VERIFY</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 {% endblock %}

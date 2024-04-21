@@ -1,6 +1,6 @@
 from datetime import datetime
+import re
 from flask import render_template, request, redirect, url_for, flash
-from flask_caching import Cache
 import random
 
 from app.forms import LoginForm
@@ -10,13 +10,8 @@ from app.services import UserService
 from app.auth import login, logout
 from app.services.role_service import RoleService
 from app.utils.file_utils import FileUtils
-
-cache = {}
-
-
-def init_cache(app):
-    global cache
-    cache = Cache(app, config={"CACHE_TYPE": "simple"})
+from app.utils.mail_utils import MailUtils
+from app.utils import cache
 
 
 class AuthController:
@@ -24,15 +19,14 @@ class AuthController:
     def __init__(self) -> None:
         self.user_service = UserService()
         self.role_service = RoleService()
-        self.cache = cache
-        print(cache)
 
     def send_otp(self, user_id: int) -> None:
         otp = str(random.randint(100000, 999999))
 
         # send otp to mobile number or email
 
-        self.cache.set(user_id, otp, timeout=180)
+        cache.set(user_id, otp, timeout=180)
+        print(cache.get(user_id))
 
     def login(self):
         form = LoginForm()
@@ -76,17 +70,17 @@ class AuthController:
 
     def verify_otp(self, user_id):
         form = VerifyOtpForm()
-        ctp = self.cache.get(user_id)
+        ctp = cache.get(user_id)
         print(ctp)
         if form.validate_on_submit():
             otp_attempt = form.otp.data
-            cached_otp = self.cache.get(user_id)
+            cached_otp = cache.get(user_id)
 
             if not cached_otp or cached_otp != otp_attempt:
                 return {"error": "Invalid OTP"}
 
             # Clear OTP from cache after successful verification
-            self.cache.delete(user_id)
+            cache.delete(user_id)
 
             # update is_active column
             user = self.user_service.update(user_id, is_active=True)
@@ -96,8 +90,72 @@ class AuthController:
                 return redirect(url_for("home.index"))
             else:
                 flash("Invalid OTP", "error")
-        return render_template("auth/verify_otp.html", form=form)
+        return render_template("auth/verify_otp.html", form=form, id=user_id)
 
     def logout(self):
         logout()
         return redirect(url_for("home.index"))
+
+    def send_otp_for_reset_password(self):
+        data = request.form.get("email_or_mob")
+
+        if MailUtils.is_valid_email(data):
+            # if email
+            user = self.user_service.get_user_by_email(data)
+        elif data.isdigit():
+            # if mobile
+            user = self.user_service.get_user_by_mobile(data)
+        else:
+            return {
+                "status": "fail",
+                "message": "Invalid email or mobile number.",
+                "user_id": None,
+            }
+
+        if user:
+            self.send_otp(user.id)
+            return {
+                "status": "success",
+                "message": "OTP send successfully.",
+                "user_id": user.id,
+            }
+        else:
+            return {
+                "status": "fail",
+                "message": "OTP send failed, please try again.",
+                "user_id": None,
+            }
+
+    def verify_otp_for_reset_password(self):
+        otp = request.form.get("otp")
+        user_id = request.form.get("user_id")
+
+        cached_otp = cache.get(int(user_id))
+
+        if not cached_otp or cached_otp != otp:
+            return {"status": "fail", "message": "Invalid OTP.", "user_id": user_id}
+
+        cache.delete(user_id)
+        return {
+            "status": "success",
+            "message": "OTP verification successfull.",
+            "user_id": user_id,
+        }
+
+    def change_password(self):
+        new_password = request.form.get("new_password")
+        user_id = request.form.get("user_id")
+        user = self.user_service.update(user_id, password=new_password)
+        if user:
+            login(user)
+            return {
+                "status": "success",
+                "message": "Password successfully changed.",
+                "user_id": user_id,
+            }
+        else:
+            return {
+                "status": "fail",
+                "message": "Password change failed.",
+                "user_id": user_id,
+            }
