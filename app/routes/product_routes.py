@@ -3,6 +3,8 @@ from app.controllers import ProductController
 from flask_login import login_required
 from app.constants import roles
 from app.auth import role_required
+from urllib.parse import unquote
+
 product_bp = Blueprint("product", __name__)
 product_controller = ProductController()
 
@@ -46,11 +48,25 @@ def update(id):
 def status(id):
     return product_controller.status(id)
 
-@product_bp.route("/admin/products/details/<int:id>", methods=["GET", "PATCH"])
+@product_bp.route("/admin/products/details/<int:id>", methods=["GET"])
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def details(id):
     return product_controller.details(id)
+
+@product_bp.route("/admin/products/addimage/<int:product_id>", methods=["GET","POST"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def addImage(product_id):
+    return product_controller.addImage(product_id)
+
+
+@product_bp.route("/admin/products/deleteImage/<int:product_id>/<path:filename>")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def deleteImage(product_id,filename):
+    filename = unquote(filename)
+    return product_controller.deleteImage(product_id,filename)
 
 
 

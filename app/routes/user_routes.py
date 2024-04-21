@@ -52,7 +52,12 @@ def details(id):
 
 ## customer routes ##
 
-@user_bp.route("/my_profile/")
+@user_bp.route("/my_profile/", methods=["GET", "POST"])
 @login_required
 def my_profile_page():
     return user_controller.my_profile_page()
+
+@user_bp.route("/my_profile/update", methods=["GET", "POST"])
+@login_required
+def my_profile_update():
+    return user_controller.my_profile_update()

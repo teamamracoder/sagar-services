@@ -43,7 +43,7 @@
         <div class="booking-btn d-flex justify-content-evenly my-2">
           <span onclick="addToWishlist('{{product.id}}')"><i class="bi bi-heart fs-3" style="cursor:pointer;"></i></span>
           {% if cart %}
-            <a type="button" id="cart_button_{{product.id}}" href="/cart" class="btn btn-blue" style="width: 45%">View Cart</a>
+            <a type="button" id="cart_button_{{product.id}}" href="/cart/" class="btn btn-blue" style="width: 45%">View Cart</a>
           {% else %}
             <button type="button" id="cart_button_{{product.id}}" onclick='addToCart("{{ product.id }}")'  class="btn btn-blue" style="width: 45%">Add to Cart</button>
           {% endif %}
