@@ -254,3 +254,6 @@ products (product list) page
   margin-bottom: 0;
   vertical-align: top;
 }
+.form-check{
+  list-style-type: none;
+}

@@ -22,6 +22,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone No.</th>
+                <th>Address</th>
                 <th>Roles</th>
                 <th>Action</th>
             </tr>
@@ -45,7 +46,7 @@
                     "data": "profile_photo_url",
                     "render": function (data, type, row) {
                         if(row.profile_photo_url != null && row.profile_photo_url != ""){
-                            return `<img src="../../${row.profile_photo_url}" class="adminTableImg">` ;
+                            return `<img src="../../static/${row.profile_photo_url}" class="adminTableImg">` ;
                         }
                         return null
                     }
@@ -59,6 +60,7 @@
                     }
                 },
                 { "data": "mobile" },
+                { "data": "address" },
                 { 
                     "data": null,
                     "render": function (data, type, row) {
