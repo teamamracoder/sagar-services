@@ -148,7 +148,9 @@
                     sort_by:sort_by
                 },
                 success: function (response) {
-                    renderProducts(response);
+                    if(response.recordsFiltered>0){
+                        renderProducts(response);
+                    }
                     renderPaginationControls(response);
                 },
                 error: function (xhr, status, error) {
