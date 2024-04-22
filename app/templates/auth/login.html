@@ -3,46 +3,44 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="p-0 d-none d-lg-inline-block col-lg-7">
+            <img src="../../static/img/login_back.jpg" alt="..." style="max-width:100%; height:100vh; object-fit: contain;">
+        </div>
+        <div class="col-lg-5 pt-5">
+            <h5 class="mt-5 mb-3" style="border-bottom:3px solid #000000;width:fit-content;margin:auto;">LOG IN
+            </h5>
 
-<div class="container">
-    <h3 class="text-center mt-5">Login</h3>
+            <form method="POST" action="{{ url_for('auth.login') }}" id="adminForm">
+                {{ form.csrf_token }}
+                <div class="row d-flex flex-column align-items-center">
+                    <div class="col-md-8 col-lg-12 col-sm-12">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-8 col-lg-12 col-sm-12">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-8 my-2">
+                        <div class="row">
+                            <div class="col-6 d-flex flex-column justify-content-start align-items-start">
+                                <a href="{{ url_for('auth.signup') }}" class="text-decoration-none">New user ?</a>
+                                <a href="{{ url_for('auth.reset_password') }}" class="text-decoration-none">Forgot password ?</a>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="submit" class="btn btn-outline-dark btn-sm">LOGIN</button>
+                            </div>
+                        </div>
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-
-    {% if current_user.is_authenticated %}
-    Hi {{ current_user.name }}!
-    {% endif %}
-
-    <form method="POST" action="{{ url_for('auth.login') }}">
-        {{ form.csrf_token }}
-        <div class="row">
-            <div class="col-md-8">
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control") }}
-            </div>
-            <div class="col-md-8">
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control") }}
-            </div>
-            <div class="col-md-8 my-3">
-                <button type="submit" class="btn btn-outline-dark btn-sm">Login</button>
-                <div class="row my-3">
-                    <div class="col">
-                        <a href="{{ url_for('auth.reset_password') }}">Forgot password ?</a>
-                        <a href="{{ url_for('auth.signup') }}" class="float-end">New user ?</a>
                     </div>
                 </div>
-            </div>
+            </form>
+
         </div>
-    </form>
+    </div>
+</div>
 </div>
 
 {% endblock %}

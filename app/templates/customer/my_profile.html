@@ -76,7 +76,7 @@ block content %}
             </div>
             <div class="col-6">
                     {{ form.gender.label(class="form-check-label")}}
-                    {{ form.gender(class="form-check", disabled="true")}}
+                    {{ form.gender(class="form-check")}}
               </div>
               <div class="col-6">
                 {{ form.dob.label(class="form-check-label")}}
@@ -95,16 +95,17 @@ block content %}
 </div>
 <script>
   $(document).ready(function () {
+    $("input[type='radio']").prop("disabled", true);
     $('#filter-options-phone').html($('.filter-options').html());
     $("#myProfileEditButton").click(function () {
       if ($("input").prop("readonly")) {
         $("input, textarea").prop("readonly", false);
-        $("input[type='checkbox']").prop("disabled", false);
+        $("input[type='radio']").prop("disabled", false);
         $("input[type='date']").prop("disabled", false);
         $(this).replaceWith('<button type="submit" id="myProfileEditButton" class="btn btn-blue">Save</button>');
       } else {
         $("input, textarea").prop("readonly", true);
-        $("input[type='checkbox']").prop("disabled", true);
+        $("input[type='radio']").prop("disabled", true);
         $("input[type='date']").prop("disabled", true);
         $(this).replaceWith('<button type="button" id="myProfileEditButton" class="btn btn-blue">Edit</button>');
       }
