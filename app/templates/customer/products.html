@@ -11,7 +11,8 @@
                 <div class="bg-light p-4 mb-30">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter By Categories</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input all_products" checked name="category" value="">
+                        <input type="checkbox" class="custom-control-input all_products" checked name="category"
+                            value="">
                         <label class="custom-control-label">All Products</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0 rounded-0">1000</span> -->
                     </div>
@@ -73,10 +74,11 @@
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
                 <h5 id="offcanvasRightLabel">Filter Products</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
             </div>
             <div class="offcanvas-body" id="filter-options-phone">
-               
+
             </div>
         </div>
         <!-- small screen filter options end -->
@@ -86,26 +88,29 @@
                     <div class="mb-4 d-flex justify-content-between w-100">
                         <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                              <li class="breadcrumb-item">
-                                <a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a>
-                              </li>
-                              <li class="breadcrumb-item active" aria-current="page">Products</li>
+                                <li class="breadcrumb-item">
+                                    <a href="{{ url_for('home.index') }}"><i class="bi bi-house"></i></a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Products</li>
                             </ol>
                         </nav>
                         <div class="ms-2 d-flex">
                             <div class="btn-group">
                                 <div class="dropdown">
-                                    <select class="p-0" id="sort-by" style="height:38px; border:1px solid #318CE7; outline:#318CE7; cursor: pointer;">
+                                    <select class="p-0" id="sort-by"
+                                        style="height:38px; border:1px solid #318CE7; outline:#318CE7; cursor: pointer;">
                                         <option value="default">Sort By</option>
                                         <option value="latest">Latest</option>
                                         <option value="popularity">Popularity</option>
                                         <option value="price_low_to_high">Price : low to high</option>
                                         <option value="price_high_to_low">Price : high to low</option>
                                     </select>
-                                  </div>
+                                </div>
                             </div>
                             <div class="ms-2 d-lg-none text-end">
-                                <button class="btn btn-blue" id="filterMenuButton" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-microsoft"></i></button>
+                                <button class="btn btn-blue" id="filterMenuButton" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i
+                                        class="bi bi-microsoft"></i></button>
                             </div>
                         </div>
                     </div>
@@ -117,12 +122,12 @@
                 </div>
                 <div class="col-12">
                     <nav>
-                      <ul class="pagination justify-content-center" id="pagination_controls">
-                        <!-- pagination  -->
-                      </ul>
+                        <ul class="pagination justify-content-center" id="pagination_controls">
+                            <!-- pagination  -->
+                        </ul>
                     </nav>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -131,21 +136,22 @@
     $(document).ready(function () {
         $('#filter-options-phone').html($('.filter-options').html());
 
+
         window.fetchPaginatedProducts = function (page) {
-            var category = [...$('input[name="category"]:checked')].filter(category=>category.value != '').map(category=>Number(category.value));
-            var brand = [...$('input[name="brand"]:checked')].filter(brand=>brand.value != '').map(brand=>brand.value);
-            var price = [...$('input[name="price"]:checked')].filter(price=>price.value != '').map(price=>price.value);
+            var category = [...$('input[name="category"]:checked')].filter(category => category.value != '').map(category => Number(category.value));
+            var brand = [...$('input[name="brand"]:checked')].filter(brand => brand.value != '').map(brand => brand.value);
+            var price = [...$('input[name="price"]:checked')].filter(price => price.value != '').map(price => price.value);
             var sort_by = document.getElementById("sort-by").value;
             $.ajax({
                 url: "{{ url_for('product.products_page_data') }}",
                 type: "GET",
                 data: {
-                    page: page, 
+                    page: page,
                     page_size: 30,
                     category: category,
                     brand: brand,
                     price: price,
-                    sort_by:sort_by
+                    sort_by: sort_by
                 },
                 success: function (response) {
                     renderProducts(response);
@@ -157,50 +163,50 @@
             });
         };
         function renderProducts(products) {
-                var productContainer = $('#product_list');
-                productContainer.empty();
+            var productContainer = $('#product_list');
+            productContainer.empty();
 
-                // Iterate through each product in the response
-                products.data.forEach(function(product) {
-                    var totalRating = 0;
-                    var numberOfReviews = product.product_review.length;
+            // Iterate through each product in the response
+            products.data.forEach(function (product) {
+                var totalRating = 0;
+                var numberOfReviews = product.product_review.length;
 
-                    product.product_review.forEach(function(review) {
-                        totalRating += review.rating;
-                    });
+                product.product_review.forEach(function (review) {
+                    totalRating += review.rating;
+                });
 
-                    var averageRating = numberOfReviews > 0 ? totalRating / numberOfReviews : 0;
+                var averageRating = numberOfReviews > 0 ? totalRating / numberOfReviews : 0;
 
-                    var fullStars = Math.floor(averageRating);
-                    var halfStars = averageRating - fullStars >= 0.5 ? 1 : 0;
-                    var emptyStars = 5 - fullStars - halfStars;
+                var fullStars = Math.floor(averageRating);
+                var halfStars = averageRating - fullStars >= 0.5 ? 1 : 0;
+                var emptyStars = 5 - fullStars - halfStars;
 
-                    // Construct the HTML for the star ratings
-                    var starsHTML = '';
-                    for (var i = 0; i < fullStars; i++) {
-                        starsHTML += '<small class="bi bi-star-fill text-primary me-1"></small>';
-                    }
-                    if (halfStars === 1) {
-                        starsHTML += '<small class="bi bi-star-half text-primary me-1"></small>';
-                    }
-                    for (var j = 0; j < emptyStars; j++) {
-                        starsHTML += '<small class="bi bi-star text-primary me-1"></small>';
-                    }
+                // Construct the HTML for the star ratings
+                var starsHTML = '';
+                for (var i = 0; i < fullStars; i++) {
+                    starsHTML += '<small class="bi bi-star-fill text-primary me-1"></small>';
+                }
+                if (halfStars === 1) {
+                    starsHTML += '<small class="bi bi-star-half text-primary me-1"></small>';
+                }
+                for (var j = 0; j < emptyStars; j++) {
+                    starsHTML += '<small class="bi bi-star text-primary me-1"></small>';
+                }
 
-                    cartTooltipTitle = product.cart ? "Added to Cart" : "Add to Cart";
-                    cartTooltipIcon = product.cart ? '<i class="bi bi-cart-check-fill"></i>' : '<i class="bi bi-cart-plus"></i>';
+                cartTooltipTitle = product.cart ? "Added to Cart" : "Add to Cart";
+                cartTooltipIcon = product.cart ? '<i class="bi bi-cart-check-fill"></i>' : '<i class="bi bi-cart-plus"></i>';
 
-                    wishlistTooltipTitle = product.wishlist ? "Added to Wishlist" : "Add to Wishlist";
-                    wishlistTooltipIcon = product.wishlist ? '<i class="bi bi-heart-fill"></i>' : '<i class="bi bi-heart"></i>';
+                wishlistTooltipTitle = product.wishlist ? "Added to Wishlist" : "Add to Wishlist";
+                wishlistTooltipIcon = product.wishlist ? '<i class="bi bi-heart-fill"></i>' : '<i class="bi bi-heart"></i>';
 
-                    cart_button=`<button id="cart_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product.id})" data-bs-placement="bottom" title="${cartTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${cartTooltipIcon}</button>`
-                    wishlist_button=`<button id="wishlist_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product.id})" data-bs-placement="bottom" title="${wishlistTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${wishlistTooltipIcon}</button>`
+                cart_button = `<button id="cart_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product.id})" data-bs-placement="bottom" title="${cartTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${cartTooltipIcon}</button>`
+                wishlist_button = `<button id="wishlist_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product.id})" data-bs-placement="bottom" title="${wishlistTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${wishlistTooltipIcon}</button>`
 
-                    // Create a new div element to hold the product information
-                    var productDiv = $('<div>', { class: 'col-lg-3 col-md-3 col-sm-4 col-6 pb-1'});
-                    
-                    // Construct the HTML for the product
-                    var productHTML = `
+                // Create a new div element to hold the product information
+                var productDiv = $('<div>', { class: 'col-lg-3 col-md-3 col-sm-4 col-6 pb-1' });
+
+                // Construct the HTML for the product
+                var productHTML = `
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt="">
@@ -213,22 +219,22 @@
                             <div class="text-center py-4">
                                 <a class="h6 text-decoration-none link-blue" href="/product_details/${product.id}">${product.product_name}</a>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h5 class="text-success">₹${product.price-product.discount}</h5><h6 class="text-muted ms-2"><del>₹${product.discount}</del></h6>
+                                    <h5 class="text-success">₹${product.price - product.discount}</h5><h6 class="text-muted ms-2"><del>₹${product.discount}</del></h6>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center mb-1">
                                     ${starsHTML}
                                     <small>(${numberOfReviews})</small>
                                 </div>
-                            </div> 
+                            </div>
                         </div>`;
-                    
-                    // Append the product HTML to the product div
-                    productDiv.html(productHTML);
-                    
-                    // Append the product div to the products container
-                    productContainer.append(productDiv);
-                });
-            }
+
+                // Append the product HTML to the product div
+                productDiv.html(productHTML);
+
+                // Append the product div to the products container
+                productContainer.append(productDiv);
+            });
+        }
         function renderPaginationControls(metadata) {
             var paginationControls = $('#pagination_controls');
             paginationControls.empty();
@@ -242,7 +248,7 @@
         }
 
         fetchPaginatedProducts(1);
-        $("#sort-by").on('change',()=>{
+        $("#sort-by").on('change', () => {
             fetchPaginatedProducts(1);
         });
 
@@ -261,80 +267,80 @@
         handleCheckboxChange(priceCheckboxes, allPricesCheckbox);
 
         function handleCheckboxChange(checkboxes, defaultCheckbox) {
-            checkboxes.change(function() {
+            checkboxes.change(function () {
                 // If the default checkbox is checked, uncheck all other checkboxes in the same section
                 if (checkboxes.is(':checked')) {
-            defaultCheckbox.prop('checked', false);
-        } else {
-            // If all other checkboxes within the section are unchecked, select the default checkbox
-            if (checkboxes.not(this).not(":checked").length === checkboxes.not(this).length) {
-                defaultCheckbox.prop('checked', true);
-            }
-        }
-            
+                    defaultCheckbox.prop('checked', false);
+                } else {
+                    // If all other checkboxes within the section are unchecked, select the default checkbox
+                    if (checkboxes.not(this).not(":checked").length === checkboxes.not(this).length) {
+                        defaultCheckbox.prop('checked', true);
+                    }
+                }
+
                 // Call fetchPaginatedProducts with page number 1 after 3 seconds
-                
+
                 fetchPaginatedProducts(1);
-                
+
             });
         }
-        
+
         // add to cart
-        window.addToCart = function(product_id){
+        window.addToCart = function (product_id) {
             $.ajax({
-                url: "{{ url_for('cart.add',product_id=0) }}".replace('0',product_id),
+                url: "{{ url_for('cart.add',product_id=0) }}".replace('0', product_id),
                 type: "GET",
-                complete:res=> {
-                    responseData=res.responseJSON
-                        if (responseData.status == 'success') {
-                            if(responseData.data){
-                                toastr.success(responseData.message);
-                                tooltipTitle="Added to Cart"
-                                tooltipIcon='<i class="bi bi-cart-check-fill"></i>'
-                            }
-                            else{
-                                toastr.error(responseData.message);
-                                tooltipTitle="Add to Cart"
-                                tooltipIcon='<i class="bi bi-cart-plus"></i>'
-                            }
+                complete: res => {
+                    responseData = res.responseJSON
+                    if (responseData.status == 'success') {
+                        if (responseData.data) {
+                            toastr.success(responseData.message);
+                            tooltipTitle = "Added to Cart"
+                            tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
                         }
-                        else{
+                        else {
                             toastr.error(responseData.message);
-                            tooltipTitle="Add to Cart"
-                            tooltipIcon='<i class="bi bi-cart-plus"></i>'
+                            tooltipTitle = "Add to Cart"
+                            tooltipIcon = '<i class="bi bi-cart-plus"></i>'
                         }
-                        $("#cart_icon_"+product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
-                    },
+                    }
+                    else {
+                        toastr.error(responseData.message);
+                        tooltipTitle = "Add to Cart"
+                        tooltipIcon = '<i class="bi bi-cart-plus"></i>'
+                    }
+                    $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+                },
                 error: function (xhr, status, error) {
                     toastr.error('Error fetching wishlist details:', error);
                 }
             });
         }
 
-        window.addToWishlist = function(product_id){
+        window.addToWishlist = function (product_id) {
             $.ajax({
-                url: "{{ url_for('wishlist.add',product_id=0) }}".replace('0',product_id),
+                url: "{{ url_for('wishlist.add',product_id=0) }}".replace('0', product_id),
                 type: "GET",
-                complete:res=> {
-                    responseData=res.responseJSON
-                        if (responseData.status === 'success') {
-                            if(responseData.data){
-                                toastr.success(responseData.message);
-                                tooltipTitle="Added to Wishlist"
-                                tooltipIcon='<i class="bi bi-heart-fill"></i>'
-                            }
-                            else{
-                                toastr.error(responseData.message);
-                                tooltipTitle="Added to Wishlist"
-                                tooltipIcon='<i class="bi bi-heart"></i>'
-                            }
+                complete: res => {
+                    responseData = res.responseJSON
+                    if (responseData.status === 'success') {
+                        if (responseData.data) {
+                            toastr.success(responseData.message);
+                            tooltipTitle = "Added to Wishlist"
+                            tooltipIcon = '<i class="bi bi-heart-fill"></i>'
                         }
-                        else{
+                        else {
                             toastr.error(responseData.message);
-                            tooltipTitle="Added to Wishlist"
-                            tooltipIcon='<i class="bi bi-heart"></i>'
+                            tooltipTitle = "Added to Wishlist"
+                            tooltipIcon = '<i class="bi bi-heart"></i>'
                         }
-                        $("#wishlist_icon_"+product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+                    }
+                    else {
+                        toastr.error(responseData.message);
+                        tooltipTitle = "Added to Wishlist"
+                        tooltipIcon = '<i class="bi bi-heart"></i>'
+                    }
+                    $("#wishlist_icon_" + product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
 
                 },
                 error: function (xhr, status, error) {
@@ -343,7 +349,7 @@
             });
         }
 
-        window.checkout = function(product_id){
+        window.checkout = function (product_id) {
             console.log(product_id)
         }
 

@@ -107,11 +107,21 @@
 
                 <ul class="navbar-nav ">
                     <li class="nav-item navtext">
-                        <a class="nav-link " aria-current="page" href="{{ url_for('cart.cart_page') }}"><i class="bi bi-cart4"></i></a>
+                        <a class="nav-link wishBtn" href="{{ url_for('wishlist.wishlist_page') }}"><i
+                                class="bi bi-heart"></i>
+                            <span class="cartBtnTooltip" id="wishBtnTooltip">0</span>
+
+                        </a>
+
                     </li>
                     <li class="nav-item navtext">
-                        <a class="nav-link " href="{{ url_for('wishlist.wishlist_page') }}"><i class="bi bi-heart"></i></a>
+                        <a class="nav-link cartBtn" aria-current="page" href="{{ url_for('cart.cart_page') }}"><i
+                                class="bi bi-cart4"></i>
+                            <span class="cartBtnTooltip" id="cartBtnTooltip">0</span>
+
+                        </a>
                     </li>
+
                 </ul>
             </div>
 
@@ -162,12 +172,23 @@
                 </div>
             </div>
             <ul class="navbar-nav bottomNavItems">
+
                 <li class="nav-item navtext">
-                    <a class="nav-link" href="{{ url_for('cart.cart_page') }}"><i class="bi bi-cart4 me-2 fs-5"></i>Cart</a>
+                    <a class="nav-link" href="{{ url_for('wishlist.wishlist_page') }}"><i
+                            class="bi bi-heart  me-2 fs-5"></i>WishList
+                        <span class="cartBtnTooltip" id="wishBtnTooltip">0</span>
+
+                    </a>
+
                 </li>
                 <li class="nav-item navtext">
-                    <a class="nav-link" href="{{ url_for('wishlist.wishlist_page') }}"><i class="bi bi-heart  me-2 fs-5"></i>WishList</a>
+                    <a class="nav-link " href="{{ url_for('cart.cart_page') }}"><i
+                            class="bi bi-cart4 me-2 fs-5"></i>Cart
+                        <span class="cartBtnTooltip" id="cartBtnTooltip">0</span>
+
+                    </a>
                 </li>
+
             </ul>
         </div>
     </div>
