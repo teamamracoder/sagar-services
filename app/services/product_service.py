@@ -12,11 +12,16 @@ class ProductService(BaseService):
             item["product_name"] = self.get_product_name_by_id(item["product_id"])
             item["product_img_urls"] = self.model.query.filter_by(id=item["product_id"]).first().product_img_urls
         return items
-    
+
     def get_product_name_by_id(self,product_id):
         return ProductModel.query.filter_by(id=product_id).first().product_name
-    
-        
+
+    def get_latest_products(self):
+        return ProductModel.query.filter_by(is_active=True).order_by(ProductModel.id.desc()).limit(10).all()
+
+    def get_products_by_category(self,category_id):
+            return ProductModel.query.filter_by(category_id=category_id,is_active=True).order_by(ProductModel.product_name).all()
+
     def get_active(self):
         return ProductModel.query.filter_by(is_active=True).order_by(ProductModel.product_name).all()
 
@@ -43,7 +48,7 @@ class ProductService(BaseService):
             'total_price':total_price
         }
         return price_calculated_data
-    
+
 
     def get_product_details_by_ids(self,product_ids):
         try:
@@ -55,18 +60,18 @@ class ProductService(BaseService):
 
         except Exception as e:
             raise ValueError(str(e))  # Raise an exception if an error occurs
-        
+
     def get_all_brands(self):
         brands= db.session.query(ProductModel.brand).distinct().all()
         brand_names = [brand[0] for brand in brands]
         return brand_names
-    
+
     def get_filtered_list(self, request, columns):
         page = int(request.args.get('page'))
         page_size = int(request.args.get('page_size'))
-    
+
         query = self.model.query.filter(self.model.is_active == True)
-    
+
         category_filters = request.args.getlist('category[]')
         if category_filters:
             category_ids = [int(cat) for cat in category_filters]
@@ -107,10 +112,10 @@ class ProductService(BaseService):
         # Perform pagination after filtering
         paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
         paginated_data = paginated_query.items
-    
+
         # Format data
         formatted_data = [{key: getattr(item, key) for key in columns} for item in paginated_data]
-    
+
         return {
             "recordsTotal": paginated_query.total,
             "recordsFiltered": len(paginated_data),
@@ -118,10 +123,17 @@ class ProductService(BaseService):
             "page": page,
             "total_pages": paginated_query.pages
         }
-    
+
     def get_available_pincodes(self,request):
         product_id = int(request.args.get("product_id"))
         product = self.get_by_id(product_id)
         if product:
             return ProductModel.query.filter_by(id=product_id).first().available_area_pincodes
-        return None       
+        return None
+
+    def serialized_products(self, products_item):
+        if products_item:
+            serialized_products_item = {key: getattr(products_item, key) for key in products_item.__dict__.keys() if not key.startswith("_")}
+            return serialized_products_item
+        else:
+            return None

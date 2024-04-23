@@ -27,7 +27,7 @@ class ProductController:
         data = self.product_service.get(request, columns)
         combined_data = self.category_service.add_category_with_products(data)
         return jsonify(combined_data)
-    
+
     def create(self):
         logged_in_user,roles=get_current_user().values()
         form = CreateProductForm()
@@ -55,7 +55,7 @@ class ProductController:
                 payment_methods=form.payment_methods.data,
                 available_area_pincodes=pincode_list,
                 category_id=form.category_id.data,
-                return_policy=form.return_policy.data
+                # return_policy=form.return_policy.data
             )
             return redirect(url_for("product.index"))
             # return render_template("admin/product/add.html", form=form, error="Product already exists")
@@ -93,13 +93,13 @@ class ProductController:
                 'specifications': form.specifications.data,
                 'payment_methods': form.payment_methods.data,
                 'available_area_pincodes': pincode_list,
-                'return_policy': form.return_policy.data,
+                # 'return_policy': form.return_policy.data,
                 'updated_at': datetime.now(),
                 'updated_by': logged_in_user.id
             }
             self.product_service.update(id, **updated_data)
             return redirect(url_for("product.index"))
-        
+
         form.available_area_pincodes.data = ', '.join(product.available_area_pincodes)
         return render_template("admin/product/update.html", id=id, form=form)
 
@@ -115,27 +115,27 @@ class ProductController:
     def get_total_price(self):
         price_calculated_data=self.product_service.get_total_price(request)
         return jsonify(price_calculated_data)
-    
+
     def get_available_pincodes(self):
         available_pincodes=self.product_service.get_available_pincodes(request)
         if available_pincodes:
             return jsonify({'status': 'success', 'pincodes': available_pincodes})
         return jsonify({'status': 'error', 'message':'Not available','pincodes': [None]})
-        
-    
+
+
     def details(self,id):
         product=self.product_service.get_by_id(id)
         return render_template("admin/product/details.html",product=product)
 
 
-    
+
      ## customer controllers ##
 
     def products_page(self):
         categories = self.category_service.get_active()
         brands = self.product_service.get_all_brands()
         return render_template("customer/products.html", categories=categories, brands = brands)
-    
+
     def products_page_data(self):
         logged_in_user,roles=get_current_user().values()
         columns = ["id", "product_name", "brand","model","price","discount","stock", "product_img_urls"]
@@ -147,6 +147,9 @@ class ProductController:
             return jsonify(data)
         except Exception as e:
             return jsonify(data)
+        finally:
+            print(data)
+
 
     def product_details_page(self,product_id):
         logged_in_user,roles=get_current_user().values()

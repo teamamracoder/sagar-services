@@ -3,6 +3,8 @@ from .base_service import BaseService
 from app.constants import payment_methods
 from app.constants import order_statuses
 from app.constants import payment_statuses
+from app.models import ProductModel
+from collections import Counter
 class OrderService(BaseService):
     def __init__(self) -> None:
         super().__init__(OrderModel)
@@ -46,10 +48,10 @@ class OrderService(BaseService):
         # Perform pagination after filtering
         paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
         paginated_data = paginated_query.items
-    
+
         # Format data
         formatted_data = [{key: getattr(item, key) for key in columns} for item in paginated_data]
-    
+
         return {
             "recordsTotal": paginated_query.total,
             "recordsFiltered": len(paginated_data),
@@ -57,3 +59,28 @@ class OrderService(BaseService):
             "page": page,
             "total_pages": paginated_query.pages
         }
+
+    def get_top_10_ordered_products(self):
+        all_orders = self.model.query.all()
+
+        product_counts = Counter(order.product_id for order in all_orders)
+
+        # sorted_product_ids = sorted(product_counts.keys(), key=lambda x: product_counts[x])
+        # sorted_product_ids = sorted(product_counts.keys(), key=lambda x: product_counts[x], reverse=True)
+        top_10_product_ids = [product_id for product_id, _ in product_counts.most_common(10)]
+
+        # top_10_products = []
+        # for product_id in top_10_product_ids:
+        #     product = ProductModel.query.get(product_id)
+        #     if product:
+        #         top_10_products.append(product)
+
+        # return top_10_products
+        top_10_products = []
+        for product_id in top_10_product_ids[:10]:
+            product = ProductModel.query.get(product_id)
+            if product:
+               top_10_products.append(product)
+
+        return top_10_products
+

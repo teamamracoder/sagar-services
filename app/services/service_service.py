@@ -17,7 +17,7 @@ class ServiceService(BaseService):
 
     def get_service_name_by_id(self,service_id):
         return ServiceModel.query.filter_by(id=service_id).first().service_name
-    
+
     def get_active(self):
         return ServiceModel.query.filter_by(is_active=True).order_by(ServiceModel.service_name).all()
 
@@ -53,5 +53,12 @@ class ServiceService(BaseService):
         service = self.model.query.filter_by(id=service_id).first()
         if service:
             return service.service_name
+        else:
+            return None
+
+    def serialized_product_services(self, services_item):
+        if services_item:
+            serialized_services_item = {key: getattr(services_item, key) for key in services_item.__dict__.keys() if not key.startswith("_")}
+            return serialized_services_item
         else:
             return None

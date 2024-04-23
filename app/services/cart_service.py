@@ -29,7 +29,7 @@ class CartService(BaseService):
 
         except Exception as e:
             raise ValueError(str(e))  # Raise an exception if an error occurs
-        
+
 
     def get_cart_item_by_user_id_product_id(self,user_id,product_id):
         try:
@@ -37,17 +37,17 @@ class CartService(BaseService):
             return cart_item
         except Exception as e:
             return None
-        
+
     def get_active_cart_item_by_user_id_product_id(self,user_id,product_id):
         return self.model.query.filter_by(user_id=user_id, product_id=product_id, is_active=True).first()
-        
+
     def serialize_cart_item(self, cart_item):
         if cart_item:
             serialized_cart_item = {key: getattr(cart_item, key) for key in cart_item.__dict__.keys() if not key.startswith("_")}
             return serialized_cart_item
         else:
             return None
-        
+
     def add_cart_with_user_and_product(self, user_id, datas):
         try:
             user_id=user_id
@@ -58,3 +58,4 @@ class CartService(BaseService):
             return datas
         except Exception as e:
             return datas
+
