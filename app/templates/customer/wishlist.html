@@ -50,10 +50,9 @@
                 else{
                     product_image=null
                 }
-                console.log(item.in_cart)
                 wishlistTable.append(`<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border shadow-sm">
-                  <div class="card border-none shadow-none my-1 rounded-0 wishlist_item_${item.id}">
-                    <div class="card-body">
+                  <div class="card border-0 shadow-none my-1 rounded-0 wishlist_item_${item.id}">
+                    <div class="card-body border-0">
                       <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
                             ${product_image ? `<img src="../../static/${product_image}" alt="Product Image" class="w-100" style="object-fit: contain;">` : ''}

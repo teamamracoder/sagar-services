@@ -138,7 +138,7 @@
                             </div>
 
 
-                            <h5 class="card-title text-center ProductName">{{top_10_products.product_name}}</h5>
+                            <h5 class="card-title text-center ProductName"><a href="/product_details/{{top_10_products.id}}" class="text-decoration-none text-dark">{{top_10_products.product_name}}</a></h5>
                             <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
 
                                 <span class=" fw-bold text-success" style="font-size: 15px;
@@ -217,7 +217,7 @@
                                     average_rating}})</span>
 
                             </div>
-                            <h5 class="card-title text-center ProductName" id="">{{monitor_products.product_name}}</h5>
+                            <h5 class="card-title text-center ProductName" id=""><a href="/product_details/{{monitor_products.id}}" class="text-decoration-none text-dark">{{monitor_products.product_name}}</a></h5>
                             <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
                                 <span class=" fw-bold text-success" style="font-size: 15px;
                                     "><i
@@ -299,7 +299,7 @@
                             </div>
 
 
-                            <h5 class="card-title text-center ProductName" id="">{{laptop_products.product_name}}</h5>
+                            <h5 class="card-title text-center ProductName" id=""><a href="/product_details/{{laptop_products.id}}">{{laptop_products.product_name}}</a></h5>
                             <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
                                 <span class=" fw-bold text-success" style="font-size: 15px;
                                     "><i
@@ -375,7 +375,7 @@
                 </div>
                 <div class="ServiceNameDiv">
                     <h6 class="ServiceName mx-auto mt-2 px-3 py-1">
-                        {{ service.service_name }}
+                        <a href="service_details/{{ service.id }}" class="text-decoration-none text-dark">{{ service.service_name }}</a>
                     </h6>
                 </div>
             </div>
@@ -398,7 +398,7 @@
                     <div class="d-flex">
                         <img src="../../static/{{ service.service_img_urls[0]}}" alt="">
                         <div class="ps-3">
-                            <h6 class="card-title text-center ProductName" id="">{{ service.service_name }}</h6>
+                            <h6 class="card-title text-center ProductName" id=""><a href="service_details/{{ service.id }}" class="text-decoration-none text-dark">{{ service.service_name }}</a></h6>
                             <div class=" text-center" style="color: #fec42d;font-size: 13px;">
                                 {% set number_of_reviews = service['service_review'] | length %}
                                 {% set total_rating = 0 %}
@@ -533,7 +533,8 @@
                     <img src="../../static/{{latest_products.product_img_urls[0]}}" alt="">
                     <div class="ps-3 text-truncate overflow-hidden text-nowrap">
                         <h6 class="card-title text-center ProductName " id="">
-                            {{latest_products.product_name}}</h6>
+                            <a href="product_details/{{latest_products.id}}" class="text-decoration-none text-dark">{{latest_products.product_name}}</a>
+                            </h6>
                         <div class="price text-muted" style="font-family: 'Raleway', sans-serif;">
                             <span id="Pricespan" class="fw-bold text-success" style="font-size: 15px;
                             "><i
@@ -544,7 +545,6 @@
                     </div>
                 </div>
                 {% endfor %}
-
             </div>
         </div>
         <div class="col-md-12 col-lg-9 d-flex row">
@@ -557,11 +557,11 @@
                         <div class="text-center ProductCategoryButton"><sup class="px-1">Up
                                 to</sup><br /><span>80%</span> OFF
                         </div>
-
                     </div>
                     <div class="my-1">
                         <h5 class="card-title text-center ProductCategoryName">
-                            {{category.category_name}}</h5>
+                            <a href="/products/?category={{category.id}}" class="text-dark text-decoration-none">{{category.category_name}}</a>
+                            </h5>
 
                     </div>
                 </div>

@@ -78,13 +78,16 @@
             <div class="card-footer my-1">
                 <a href="{{ url_for('order.index') }}"  class="btn btn-outline-dark btn-sm float-end">Back</a>
                 <a href="{{ url_for('order.update',id=order.id) }}"  class="btn btn-dark btn-sm me-1 float-end">Edit</a>
-
+                <button onclick="printDocument()" class="btn btn-outline-dark btn-sm me-1">Print</button>
             </div>
         </div>
     </div>
-
     </div>
 </div>
-
+<script>
+    function printDocument(){
+        print()
+    }
+</script>
 
 {% endblock %}
