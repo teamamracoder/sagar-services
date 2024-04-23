@@ -77,7 +77,7 @@ class ProductService(BaseService):
         query = self.model.query.filter(self.model.is_active == True)
 
         category_filters = request.args.getlist('category[]')
-        if category_filters:
+        if len(category_filters)>0 and category_filters[0]:
             category_ids = [int(cat) for cat in category_filters]
             query = query.filter(self.model.category_id.in_(category_ids))
 
