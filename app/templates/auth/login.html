@@ -23,11 +23,26 @@
                         {{ form.password.label(class="form-label") }}
                         {{ form.password(class="form-control form-control-sm") }}
                     </div>
-                    <div class="col-8 my-2">
-                        <div class="row">
-                            <div class="col-6 d-flex flex-column justify-content-start align-items-start">
-                                <a href="{{ url_for('auth.signup') }}" class="text-decoration-none">New user ?</a>
-                                <a href="{{ url_for('auth.reset_password') }}" class="text-decoration-none">Forgot password ?</a>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <p class="text-danger p-0 m-0">
+                                    {{ message }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <div class="col-md-8 col-lg-12 col-sm-12 my-2">
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-6 ">
+                                <div>
+                                    <a href="{{ url_for('auth.signup') }}" class="text-decoration-none">New user ?</a>
+
+                                </div>
+                                <div>
+                                    <a href="{{ url_for('auth.reset_password') }}" class="text-decoration-none">Forgot password ?</a>
+
+                                </div>
                             </div>
                             <div class="col-6 text-end">
                                 <button type="submit" class="btn btn-outline-dark btn-sm">LOGIN</button>

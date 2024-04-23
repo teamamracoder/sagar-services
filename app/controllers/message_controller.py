@@ -48,3 +48,46 @@ class MessageController:
             return render_template("admin/error/something_went_wrong.html")
         self.message_service.status(id)
         return redirect(url_for("message.index",conversation_id=conversation_id))
+    
+    def chatbox(self):
+        logged_in_user,roles=get_current_user().values()
+        try:
+
+            conversation=self.conversation_service.get_by_user_id(logged_in_user.id)
+            if conversation:
+                columns = ["id", "message", "attachement_url","conversation_id","created_at", "created_by"]
+                messages=self.message_service.get_by_conversation_id_json(conversation.id,columns)
+                messages=self.user_service.add_username_with_this(messages)
+                for message in messages:
+                    message['current_user_id']=logged_in_user.id
+                return jsonify(messages)
+            else:
+                return {"status":"sucess","message":"write a message"}
+
+        except Exception as e:
+            return {"status":"failed","message":"something went wrong"}
+    
+    def write(self):
+        logged_in_user,roles=get_current_user().values()
+        conversation=self.conversation_service.get_by_user_id(logged_in_user.id)
+        if not conversation:
+            conversation = self.conversation_service.create(
+                user_id=logged_in_user.id,
+                created_by= logged_in_user.id,
+                created_at = datetime.now()
+            )
+        filepath=FileUtils.save('messages',[request.files.get("attachement_url")])
+        message = self.message_service.create(
+            conversation_id=conversation.id,
+            message=request.form.get("message"),
+            created_by=logged_in_user.id,
+            created_at = datetime.now(),
+            attachement_url=filepath
+        )
+        self.conversation_service.update(
+            conversation.id,
+            updated_at = datetime.now()
+        )
+        if message:
+            return {"status":"success","message":"message sent"}
+        return {"status":"fail","message":"message sending failed"}

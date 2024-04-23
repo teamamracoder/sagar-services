@@ -26,3 +26,9 @@ class UserService(BaseService):
 
     def get_user_by_mobile(self, mobile):
         return UserModel.query.filter_by(mobile=mobile).first()
+    
+    def add_username_with_this(self, messages:dict):
+        for message in messages:
+            message["sent_by"] = self.get_by_id(message['created_by']).first_name
+        return messages
+
