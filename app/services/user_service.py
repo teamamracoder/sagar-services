@@ -11,14 +11,14 @@ class UserService(BaseService):
 
     def add_user_with_this(self, items: dict) -> dict:
         for item in items["data"]:
-            user=self.get_by_id(item["user_id"])
-            item["fullname"] = user.first_name+' '+user.last_name
+            user = self.get_by_id(item["user_id"])
+            item["fullname"] = user.first_name + " " + user.last_name
             item["email"] = user.email
         return items
 
-    def add_message_with_this(self,messages:dict)->dict:
+    def add_message_with_this(self, messages: dict) -> dict:
         for message in messages:
-            message.sent_by=self.get_by_id(message.created_by).first_name
+            message.sent_by = self.get_by_id(message.created_by).first_name
         return messages
 
     def get_user_by_id(self,id):
@@ -40,6 +40,8 @@ class UserService(BaseService):
     def serialize_users(self, user):
         return {key: getattr(user, key) for key in user.__dict__ if not key.startswith("_")}
 
+    def get_user_by_email(self, email):
+        return UserModel.query.filter_by(email=email).first()
 
-
-
+    def get_user_by_mobile(self, mobile):
+        return UserModel.query.filter_by(mobile=mobile).first()

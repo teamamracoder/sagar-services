@@ -34,6 +34,7 @@ class CouponController:
         
   
     def get(self):
+
         return render_template("admin/coupon/index.html")
 
 
@@ -83,3 +84,4 @@ class CouponController:
         if is_active:
             return {"status":"success","message":"Category Activated","data":is_active}
         return {"status":"success","message":"Category Deactivated","data":is_active}
+

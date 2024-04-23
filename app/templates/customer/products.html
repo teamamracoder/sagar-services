@@ -137,7 +137,6 @@
         $('#filter-options-phone').html($('.filter-options').html());
 
 
-
         window.fetchPaginatedProducts = function (page) {
             var category = [...$('input[name="category"]:checked')].filter(category => category.value != '').map(category => Number(category.value));
             var brand = [...$('input[name="brand"]:checked')].filter(brand => brand.value != '').map(brand => brand.value);
