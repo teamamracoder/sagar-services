@@ -14,10 +14,10 @@ class WishlistService(BaseService):
 
         except Exception as e:
             raise ValueError(str(e))  # Raise an exception if an error occurs
-        
+
     def get_wishlist_item_by_user_id_product_id(self,user_id,product_id):
         return self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
-    
+
     def get_active_wishlist_item_by_user_id_product_id(self,user_id,product_id):
         return self.model.query.filter_by(user_id=user_id, product_id=product_id, is_active=True).first()
 
@@ -27,7 +27,7 @@ class WishlistService(BaseService):
             return serialized_wishlist_item
         else:
             return None
-        
+
     def add_wishlist_with_user_and_product(self, user_id, datas):
         if user_id:
             for data in datas["data"]:
@@ -36,3 +36,4 @@ class WishlistService(BaseService):
                 data["wishlist"] = serialized_wishlist_item
             return datas
         return datas
+
