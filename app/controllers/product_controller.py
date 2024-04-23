@@ -180,8 +180,8 @@ class ProductController:
             return jsonify(data)
         except Exception as e:
             return jsonify(data)
-        finally:
-            print(data)
+        # finally:
+        #     print(data)
 
 
     def product_details_page(self,product_id):

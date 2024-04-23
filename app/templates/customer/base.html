@@ -40,23 +40,7 @@
 
 <body>
 
-    <div class="chatbox-wrapper" style="z-index: 10;">
-        <div class="chatbox-toggle">
-            <i class="bi bi-chat-left"></i>
-        </div>
-        <div class="chatbox-message-wrapper">
-            <div class="chatbox-message-header">
-                <div class="chatbox-message-profile">
-                    <img src="{{ url_for('static', filename='img/about_us.jpg') }}"
-                        alt="" class="chatbox-message-image">
-                </div>
-            
-            </div>
-            <div class="chatbox-message-content">
-                <h4 class="chatbox-message-no-message">Hello world!</h4>
-            </div>
-        </div>
-    </div>
+   
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top " id="nav">
         <div class="container-fluid" id="navContent">
@@ -76,9 +60,15 @@
                     <li class="nav-item navtext">
                         <a class="nav-link " href="{{ url_for('product.products_page') }}">Products</a>
                     </li>
-                    <li class="nav-item navtext">
-                        <a class="nav-link " href="#service-section">Services</a>
-                    </li>
+                    <li class="nav-item navtext"  id="service_section_nav_link_top"></li>
+                        <script>
+                            if (window.location.pathname=="/"){
+                                $("#service_section_nav_link_top").html(`<a class="nav-link " href="#service-section">Services</a>`)
+                            }
+                            else{
+                                $("#service_section_nav_link_top").html('')
+                            }
+                        </script>
 
                     <li class="nav-item navtext">
                         <a class="nav-link " href="{# url_for('categories.get_categories') #}">Category</a>
@@ -145,9 +135,16 @@
                     <a class="nav-link " href="{{ url_for('product.products_page') }}"><i
                             class="bi bi-cpu me-2 fs-5"></i>Products</a>
                 </li>
-                <li class="nav-item navtext">
-                    <a class="nav-link " href="#service-section"><i
-                            class="bi bi-gear-wide-connected me-2 fs-5"></i>Services</a>
+                <li id="service_section_nav_link"  class="nav-item navtext"></li>
+                    <script>
+                        if (window.location.pathname=="/"){
+                            $("#service_section_nav_link").html(`<a class="nav-link " href="#service-section"><i
+                        class="bi bi-gear-wide-connected me-2 fs-5"></i>Services</a>`)
+                        }
+                        else{
+                            $("#service_section_nav_link").html('')
+                        }
+                    </script>
                 </li>
                 <li class="nav-item navtext">
                     <a class="nav-link " href="#Category"><i class="bi bi-diagram-3 fs-6 me-2"></i>Category</a>
@@ -196,6 +193,40 @@
 
     <div class="container-fluid" style="min-height: 600px;">
         {% block content %}{% endblock %}
+    </div>
+    <div class="chatbox-wrapper" style="z-index: 10;">
+        <div class="chatbox-toggle">
+            <i class="bi bi-chat-left"></i>
+        </div>
+        <div class="chatbox-message-wrapper">
+            <div class="card rounded-0">
+                <div class="card-header">
+                    <!-- <button class="btn btn-light btn-sm float-start ">Back</button> -->
+                    <h5 class="text-center">Messages</h5>
+                </div>
+                <div class="card-body p-1" style="overflow-y: scroll; height: 300px;" id="messageBox">
+                    
+                </div>
+                <div class="card-footer">
+                    <form enctype="multipart/form-data"  id="adminForm">
+                        <div class="row">
+                            <div class="col-10 p-0 m-0">
+                                <input type="text" class="form-control form-control-sm" name="message" required>
+                            </div>
+                            <div class="col-1 p-0 m-0">
+                                <label for="profile_photo_url">
+                                    <i class="bi bi-paperclip fs-5 p-0 m-0 btn btn-outline-dark border-0"></i>
+                                  </label>
+                                  <input type="file" name="attachement_url" class="d-none", accept="jpg|jpeg|png|webp|gif|docs|pdf|xlxs", id="profile_photo_url">
+                            </div>
+                            <div class="col-1 p-0 m-0">
+                                <button type="submit" class="btn btn-dark btn-sm float-end" id="message_send_btn"><i class="bi bi-send"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Footer section -->
@@ -282,7 +313,109 @@
     <script src="{{ url_for('static', filename='js/arif.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pawan.js') }}"></script>
 
+    <script>
+        $(document).ready(function () {
+            
+            function populateChatBox(){
+            $('#messageBox').empty();
+                $.ajax({
+                    url: "{{ url_for('message.chatbox') }}",
+                    type: "GET",
+                    dataType:"json",
+                    success: function (response) {
+                        if(response.status){
+                            if(response.status=="failed"){
+                                $("#message_send_btn").on("click",function (){
+                                    window.location.href="/login"
+                                })
+                            }
+                        }
+                        else{
+                            var messages = response;
+                            $('#messageBox').html('')
+                            chats='';
+                            messages.forEach(function(message) {
+                                if(message.current_user_id == message.created_by){
+                                    chats+=`<div class="card border-0 w-75 ms-auto shadow-none">
+                                        <div class="card-body">
+                                            <p class="small text-end text-muted">
+                                                <i class="bi bi-person me-1"></i>
+                                                ${message.sent_by} -
+                                                <span>${getFormattedTime(message.created_at)}</span>
+                                            </p>
+                                            <p class="card-text text-end">
+                                                <span style="padding: 3px 4px; background-color: #0009; color:#fff; width: fit-content; border-radius: 8px 0px 8px 8px;">
+                                                    ${ message.message }
+                                                </span>
+                                                <p class=" w-100 text-end p-0 m-0">`;
+                                                    if(message.attachement_url){
+                                                        chats+= `<a href="${message.attachement_url}" download class="text-decoration-none text-dark"><i class="bi bi-paperclip fs-5 p-0 m-0"></i>attachment</a>`;
+                                                    }
+                                                chats+=`</p>
+                                            </p>
+                                        </div>
+                                    </div>`;
+                                }    
+                                else{
+                                    chats+=`
+                                    <div class="card border-0 w-75 shadow-none">
+                                        <div class="card-body">
+                                            <p class="small text-muted">
+                                                <i class="bi bi-person me-1"></i>
+                                                sagar services - 
+                                                <span>${getFormattedTime(message.created_at)}</span>
+                                            </p>
+                                            <p class="card-text">
+                                                <span style="padding: 3px 4px; background-color: #0002; width: fit-content; border-radius: 0px 8px 8px 8px; ">
+                                                    ${message.message}
+                                                </span>
+                                                <p class=" w-100 p-0 m-0">`;
 
+                                                    if (message.attachement_url){
+                                                        chats+=`<a href="${message.attachement_url}" download class="text-decoration-none text-dark"><i class="bi bi-paperclip fs-5 p-0 m-0"></i>attachment</a>`;
+                                                    }
+                                                chats+=`</p>
+                                            </p>
+                                        </div>
+                                    </div>`;
+                                }
+                            });
+                            $('#messageBox').html(chats)
+                            $('#messageBox').scrollTop($('#messageBox')[0].scrollHeight);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching cart details:', error);
+                    }
+                });
+            }
+            populateChatBox();
+            
+                
+
+            $('#adminForm').submit(function(event) {
+                event.preventDefault();
+                var formData = new FormData($(this)[0]);
+
+                $.ajax({
+                    url: '{{ url_for("message.write") }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#messageBox').scrollTop($('#messageBox')[0].scrollHeight);
+                        // $('#messageBox').append('')
+                        $('input').val('')
+                        populateChatBox();
+                    },
+                    error: function(xhr, status, error) {
+
+                    }
+                });
+            });
+        })
+    </script>
 </body>
 
 </html>

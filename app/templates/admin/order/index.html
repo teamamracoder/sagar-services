@@ -21,6 +21,7 @@
                 <th>User id</th>
                 <th>User's Name</th>
                 <th>User's Email</th>
+                <th>Mobile No.</th>
                 <th>Quantity</th>
                 <th>Final Amount</th>
                 <th>Payment Method</th>
@@ -50,7 +51,19 @@
                 { "data": "product_name"},
                 { "data": "user_id" },
                 { "data": "fullname" },
-                { "data": "email" },
+                { 
+                    "data": null,
+                    "render":function(data,type,row){
+                        return `<a href="mailto:${row.email}" class="text-dark text-decoration-none"><i class="bi bi-envelope-at"></i> ${row.email}</a>`
+                    }
+                },
+                { 
+                    "data": null,
+                    "render":function(data,type,row){
+                        return `<a href="tel:${row.mobile}" class="text-dark text-decoration-none"><i class="bi bi-telephone-outbound"></i> ${row.mobile}</a>`
+                    } 
+                    
+                },
                 { "data": "quantity"},
                 { "data": "price"},
                 { "data": "payment_method_name"},

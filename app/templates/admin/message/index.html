@@ -19,20 +19,16 @@
                             <div class="card-body">
                                 <p class="small text-end text-muted">
                                     <i class="bi bi-person me-1"></i>
-                                    {% if message.conversation_id==message.created_by %}
                                     {{ message.sent_by }} -
-                                    {% else %}
-                                    sagar services - 
-                                    {% endif  %}
                                     <span id="time_{{ loop.index }}"></span>
                                 </p>
                                 <p class="card-text text-end">
                                     <span style="padding: 3px 4px; background-color: #0009; color:#fff; width: fit-content; border-radius: 8px 0px 8px 8px;">
                                         {{ message.message }}
                                     </span>
-                                    <p class=" w-100">
+                                    <p class=" w-100 text-end p-0 m-0">
                                         {% if message.attachement_url %}
-                                            <img src="{{ url_for('static',filename=message.attachement_url) }}" class="w-100">
+                                            <a href="{{ url_for('static',filename=message.attachement_url) }}" download class="text-decoration-none text-dark"><i class="bi bi-paperclip fs-5 p-0 m-0"></i>attachment</a>
                                         {% endif %}
                                     </p>
 
@@ -44,20 +40,16 @@
                             <div class="card-body">
                                 <p class="small text-muted">
                                     <i class="bi bi-person me-1"></i>
-                                    {% if message.conversation_id==message.created_by %}
-                                    {{ message.sent_by }} -
-                                    {% else %}
                                     sagar services - 
-                                    {% endif  %}
                                     <span id="time_{{ loop.index }}"></span>
                                 </p>
                                 <p class="card-text">
                                     <span style="padding: 3px 4px; background-color: #0002; width: fit-content; border-radius: 0px 8px 8px 8px; ">
                                         {{ message.message }}
                                     </span>
-                                    <p class=" w-100">
+                                    <p class=" w-100 p-0 m-0">
                                         {% if message.attachement_url %}
-                                            <img src="{{ url_for('static',filename=message.attachement_url) }}" class="w-100">
+                                            <a href="{{ url_for('static',filename=message.attachement_url) }}" download class="text-decoration-none text-dark"><i class="bi bi-paperclip fs-5 p-0 m-0"></i>attachment</a>
                                         {% endif %}
                                     </p>
                                 </p>
@@ -76,13 +68,16 @@
                     <form method="POST" action="{{ url_for('message.add',conversation_id=conversation.id) }}" enctype="multipart/form-data"  id="adminForm">
                         {{ form.csrf_token }}
                         <div class="row">
-                            <div class="col-10">
+                            <div class="col-10 p-0 m-0">
                                 {{ form.message(class="form-control form-control-sm") }}
                             </div>
-                            <div class="col-1">
-                                {{ form.attachement_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096") }}
+                            <div class="col-1 p-0 m-0">
+                                <label for="profile_photo_url">
+                                    <i class="bi bi-paperclip fs-5 p-0 m-0 btn btn-outline-dark border-0"></i>
+                                  </label>
+                                {{ form.attachement_url(class="d-none", accept="jpg|jpeg|png|webp|gif|docs|pdf|xlxs", id="profile_photo_url") }}
                             </div>
-                            <div class="col-1">
+                            <div class="col-1 p-0 m-0">
                                 <button type="submit" class="btn btn-dark btn-sm float-end"><i class="bi bi-send"></i></button>
                             </div>
                         </div>
@@ -91,12 +86,12 @@
             </div>
         </div>
     </div>
-    
 </div>
 
 <script>
     $(document).ready(function () {
         $('#messageBox').scrollTop($('#messageBox')[0].scrollHeight);
+
         window.editRecord = function (id) {
             window.location.href= "/admin/messages/update/" + id;
         };

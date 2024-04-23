@@ -1,9 +1,11 @@
 .about-bg-img {
-    background-image: url('../../static/img/back.jpg');
+	background-image: url('../../static/img/contact_us_back.png');
     background-repeat: no-repeat;
     background-size: cover;
+	background-blend-mode: overlay;
     width: 100%;
     background-position: center;
+	background-blend-mode: screen;
 }
 
 .about-page-small-img img {

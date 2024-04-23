@@ -25,7 +25,20 @@
         <tbody></tbody>
     </table>
 </div>
-
+<div class="modal " id="profileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userName">User Name</h5>
+                <button type="button" class="btn-close btn-outline-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <img src="" class="img-fluid d-block mx-auto" id="profilePicture" alt="Profile Picture" >
+                <!-- <p>User Name.</p> -->
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         var table = $('#adminDataTable').DataTable({
@@ -109,6 +122,17 @@
                 }
             });
         };
+    });
+    $('#adminDataTable tbody').on('click', 'img.adminTableImg', function () {
+        
+        var src = $(this).attr('src');
+
+        var userName = $(this).closest('tr').find('td:eq(2)').text() + " " + $(this).closest('tr').find('td:eq(3)').text();
+        $('#userName').text(userName);
+      
+        $('#profilePicture').attr('src', src);
+
+        $('#profileModal').modal('show');
     });
 </script>
 

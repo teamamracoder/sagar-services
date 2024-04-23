@@ -64,6 +64,8 @@ class OrderModel(db.Model):
 
     expected_delivery = db.Column(db.Date)
 
+    mobile = db.Column(db.String(15))
+
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="orders")
     products = db.relationship("ProductModel",back_populates="orders")
     # created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="orders_created")

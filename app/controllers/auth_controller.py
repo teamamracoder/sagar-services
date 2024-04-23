@@ -11,6 +11,7 @@ from app.auth import login, logout
 from app.services.role_service import RoleService
 from app.utils.file_utils import FileUtils
 from app.utils.mail_utils import MailUtils
+from app.utils.voice_utils import VOICEUtils
 from app.utils import cache
 
 
@@ -20,13 +21,20 @@ class AuthController:
         self.user_service = UserService()
         self.role_service = RoleService()
 
-    def send_otp(self, user_id: int) -> None:
+    def send_otp(self, user_id: int, type:str, send_to:str) -> bool:
         otp = str(random.randint(100000, 999999))
 
         # send otp to mobile number or email
-
-        cache.set(user_id, otp, timeout=180)
-        print(cache.get(user_id))
+        if type=="mobile":
+            send_status=VOICEUtils.voice_send(send_to, otp)
+        else:
+            send_status=MailUtils.send(send_to,"otp verification",f"Your OTP is {otp} and it is valid upto 3 minutes")
+        if send_status:
+            cache.set(user_id, otp, timeout=180)
+            print(cache.get(user_id))
+            return True
+        else:
+            return False
 
     def login(self):
         form = LoginForm()
@@ -39,7 +47,7 @@ class AuthController:
                 next_page = request.args.get("next")
                 return redirect(next_page or url_for("home.index"))
             else:
-                flash("Invalid username or password", "error")
+                flash("*Invalid username or password", "error")
         return render_template("auth/login.html", form=form)
 
     def signup(self):
@@ -61,8 +69,10 @@ class AuthController:
             )
 
             if user:
-                self.send_otp(user.id)
-                return redirect(url_for("auth.verify_otp", id=user.id))
+                if self.send_otp(user.id, "email", user.email):
+                    return redirect(url_for("auth.verify_otp", id=user.id))
+                else:
+                    flash("OTP sending failed, please try again", "error")
         return render_template("auth/signup.html", form=form)
 
     def reset_password(self):
@@ -102,9 +112,11 @@ class AuthController:
         if MailUtils.is_valid_email(data):
             # if email
             user = self.user_service.get_user_by_email(data)
+            type = "email"
         elif data.isdigit():
             # if mobile
             user = self.user_service.get_user_by_mobile(data)
+            type = "mobile"
         else:
             return {
                 "status": "fail",
@@ -113,16 +125,27 @@ class AuthController:
             }
 
         if user:
-            self.send_otp(user.id)
-            return {
-                "status": "success",
-                "message": "OTP send successfully.",
-                "user_id": user.id,
-            }
+            if type=="email":
+                status=self.send_otp(user.id, type, user.email)
+            else:
+                status=self.send_otp(user.id, type, user.mobile)
+
+            if status:
+                return {
+                    "status": "success",
+                    "message": "OTP send successfully.",
+                    "user_id": user.id,
+                }
+            else:
+                return {
+                    "status": "fail",
+                    "message": "OTP sending failed, please try again",
+                    "user_id": user.id,
+                }
         else:
             return {
                 "status": "fail",
-                "message": "OTP send failed, please try again.",
+                "message": "User does not exist, please <a href='/signup'>signup</a>",
                 "user_id": None,
             }
 
