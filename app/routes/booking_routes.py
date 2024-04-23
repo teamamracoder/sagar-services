@@ -66,3 +66,8 @@ def bookings_page():
 def bookings_page_data():
     return booking_controller.bookings_page_data()
 
+@booking_bp.route("/cancel/<int:booking_id>")
+@login_required
+def cancel(booking_id):
+    return booking_controller.cancel(booking_id)
+

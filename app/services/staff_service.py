@@ -16,3 +16,6 @@ class StaffService(BaseService):
         for item in items["data"]:
             item['department_name']=departments.get_value(item["department"])
         return items
+    
+    def get_staff_from_users_by_staff_id(self,staff_id):
+        return StaffModel.query.filter_by(staff_id=staff_id).first()

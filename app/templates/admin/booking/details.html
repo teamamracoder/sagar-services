@@ -11,30 +11,78 @@
             </div>
             <div class="card-body py-0">
                 <div class="row" style="min-height: 200px;">
-                    <div class="col-md-2 bbooking-end">
-                        <div class="p-1">
-                            <img src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="..." class="card-img">
-                        </div>
-                    </div>
                     <div class="col-md-10">
-                        <ul class="list-group bbooking-0">
-                            <li class="list-group-item d-flex justify-content-start align-items-center bbooking-0">
-                                <i class="bi bi-cpu me-2"></i>
-                              {{ booking.created_at }}
-                            </li>
-                            <li class="list-group-item d-flex justify-content-start align-items-center bbooking-0">
-                                <i class="bi bi-cpu me-2"></i>
-                                {{ booking.service_id }}
-                            </li>
-                            <li class="list-group-item d-flex justify-content-start align-items-center bbooking-0">
-                                <i class="bi bi-cpu me-2"></i>
-                                {{ booking.service_charge }}
-                            </li>
-                            <li class="list-group-item d-flex justify-content-start align-items-center bbooking-0">
-                                <i class="bi bi-cpu me-2"></i>
-                                {{ booking.service_location }}
-                            </li>
-                          </ul>
+                        <div class="row">
+                            <div class="col-lg-6 col-12">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Staff</th>
+                                            <th>Total Charge</th>
+                                            <th>Payment Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><img src="{{ url_for('static', filename=service.service_img_urls[0]) }}" alt="..." class="card-img">
+                                                {{ service.service_name }}</td>
+                                            <td>{{ staff.status_name }}</td>
+                                            <td>₹{{ booking.total_charge }}/-</td>
+                                            <td>{{ payment_status }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p>Shipping Information</p>
+                                <p>
+                                    {{ user.first_name +" "+ user.last_name }}, 
+                                </p>
+
+                                <ul class="list-group border-0">
+                                    <li class="list-group-item border-0">
+                                      <span class="fw-bold">Booked By : </span> {{ user.first_name +" "+ user.last_name }}
+                                    </li>
+                                    <li class="list-group-item  border-0">
+                                      <span class="fw-bold">Booked At : </span> {{ booking.created_at }}
+                                    </li>
+                                    <li class="list-group-item  border-0">
+                                        <span class="fw-bold">Service : </span> {{ booking.service_name }}
+                                    </li>
+                                    <li class="list-group-item  border-0">
+                                        <span class="fw-bold">Service Charge : </span> ₹{{ booking.total_charge }}/- ( {{payment_status}} )
+                                    </li>
+                                    <li class="list-group-item  border-0">
+                                        <span class="fw-bold">Service Location : </span> {{ booking.service_location }}
+                                    </li>
+                                    <li class="list-group-item  border-0">
+                                        <span class="fw-bold">Pincode : </span> {{ booking.area_pincode }}
+                                    </li>
+                                  </ul>
+                            </div>
+                            <div class="col-lg-6 col-12 border">
+                                <h5 class="text-center">Booking Logs</h5>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for booking_log in booking_logs %}
+                                            <tr>
+                                                <td id="booking_log_{{booking_log['id']}}"></td>
+                                                <td>{{ booking_log['status_name']}}</td>
+                                            </tr>
+                                            <script>
+                                                $("#booking_log_{{booking_log['id']}}").text(getFormattedDateTime("{{ booking_log['created_at'] }}"))
+                                            </script>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

@@ -37,3 +37,12 @@ def update(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def status(id):
     return service_qna_controller.status(id)
+
+
+
+# customer
+@service_qna_bp.route("/service_qnas/<int:service_id>", methods=["GET","POST"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF"), roles.get_key("CUSTOMER")])
+def service_qna_create(service_id):
+    return service_qna_controller.service_qna_create(service_id)
