@@ -3,6 +3,7 @@ from app.controllers import ServiceController
 from flask_login import login_required
 from app.constants import roles
 from app.auth import role_required
+from urllib.parse import unquote
 
 
 service_bp = Blueprint("service", __name__)
@@ -46,6 +47,20 @@ def status(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def details(id):
     return service_controller.details(id)
+
+@service_bp.route("/admin/services/addimage/<int:service_id>", methods=["GET","POST"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def addImage(service_id):
+    return service_controller.addImage(service_id)
+
+@service_bp.route("/admin/services/deleteImage/<int:service_id>/<path:filename>")
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def deleteImage(service_id,filename):
+    filename = unquote(filename)
+    return service_controller.deleteImage(service_id,filename)
+
 
 
 # customer routes

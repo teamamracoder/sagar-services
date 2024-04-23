@@ -1,7 +1,5 @@
 {% extends 'admin/base.html' %}
-
 {% block title %} {{ service.service_name }} {% endblock %}
-
 {% block content %}
 <div class="container">
     <div class="row">
@@ -11,24 +9,57 @@
             </div>
             <div class="card-body py-0">
                 <div class="row" style="min-height: 200px;">
-                    <div class="col-md-2 border-end">
-                        <div class="p-1">
-                            <img src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="..." class="card-img">
+                    <div class="col-lg-2 col-md-2 col-12 border-end">
+                        <div class="row">
+                            <div class="col-12 text-lg-center text-sm-start my-1">
+                                <form action="{{url_for('service.addImage',service_id=service.id)}}" method="POST", enctype="multipart/form-data">
+                                    {{ form.csrf_token }}
+                                    <div class="input-group mb-3">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.service_img_urls(id="service_img_urls", class="form-control form-control-sm") }}
+                                      </div>
+                                      <button type="submit" class="btn btn-outline-dark">Add New Image</button>
+                                </form>
+                            </div>
+                            {% for image in service.service_img_urls %}
+                                {% if image != "" %}
+                            <div class="col-lg-12 col-md-12 col-4 border-bottom">
+                                <button type="button" class="btn btn-outline-dark border-0"  data-toggle="tooltip"  data-bs-placement="bottom" title="Delete" data-bs-custom-class="custom-tooltip" onclick="deleteImage('{{service.id}}','{{image}}')"><i class="bi bi-trash"></i></button>
+                                <img src="{{ url_for('static',filename=image) }}" alt="..." class="card-img">
+                            </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-lg-10 col-md-10 col-12">
                         <ul class="list-group border-0">
                             <li class="list-group-item d-flex justify-content-start align-items-center border-0">
                                 <i class="bi bi-cpu me-2"></i>
-                              {{ service.service_charge }}
+                              <span class="fw-bold">Service Type : </span>{{ service_type }}
                             </li>
                             <li class="list-group-item d-flex justify-content-start align-items-center border-0">
                                 <i class="bi bi-cpu me-2"></i>
-                                {{ service.discount }}
+                              <span class="fw-bold">Service Name : </span>{{ service.service_name }}
                             </li>
                             <li class="list-group-item d-flex justify-content-start align-items-center border-0">
                                 <i class="bi bi-cpu me-2"></i>
-                                {{ service.description }}
+                                <span class="fw-bold">Description : </span>{{ service.description }}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Service Charge : </span>₹{{ service.service_charge }}/-
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Discount : </span>₹{{ service.discount }}/-
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Available Payment Methods : </span>{% for method in available_payment_methods %} {{ method }} {% endfor %}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
+                                <i class="bi bi-cpu me-2"></i>
+                                <span class="fw-bold">Available Area Pincodes :  </span>{{ available_area_pincodes }}
                             </li>
                           </ul>
                     </div>
@@ -37,13 +68,17 @@
             <div class="card-footer my-1">
                 <a href="{{ url_for('service.index') }}"  class="btn btn-outline-dark btn-sm float-end">Back</a>
                 <a href="{{ url_for('service.update',id=service.id) }}"  class="btn btn-dark btn-sm me-1 float-end">Edit</a>
-
-                <!-- <button class="btn btn-outline-dark btn-sm float-end"><a href="{{ url_for('service.index') }}"  class="btn btn-outline-dark btn-sm my-2">Back</a></button> -->
-                <!-- <button class="btn btn-dark me-1 btn-sm float-end"><a href="{{ url_for('service.update',id=service.id) }}"  class="btn btn-outline-dark btn-sm my-2">Edit</a></button> -->
             </div>
         </div>
     </div>
 </div>
-
+<script>
+   $(document).ready(function () {
+        window.deleteImage= function(service_id,filename){
+            var encodedFilename = encodeURIComponent(filename)
+            window.location.href=`/admin/services/deleteImage/${service_id}/'${encodedFilename}'`
+        }
+    })
+</script>
 
 {% endblock %}
