@@ -30,10 +30,11 @@ class UserController:
         return render_template("admin/user/add.html", form=form)
 
     def get(self):
-        return render_template("admin/user/index.html")
+        logged_in_user,roles=get_current_user().values()
+        return render_template("admin/user/index.html",user_id=logged_in_user.id)
 
     def get_user_data(self):
-        columns = ["id", "first_name", "email", "is_active", "mobile", "last_name", "profile_photo_url"]
+        columns = ["id", "first_name", "email", "is_active", "mobile", "last_name", "profile_photo_url", "address"]
         data = self.user_service.get(request, columns)
         data = self.role_service.add_roles_with_users(data)
         return jsonify(data)
@@ -75,7 +76,36 @@ class UserController:
         user=self.user_service.get_by_id(id)
         return render_template("admin/user/details.html",user=user)
     
+    def admin_my_profile(self):
+        logged_in_user,roles=get_current_user().values()
+        user = self.user_service.get_by_id(logged_in_user.id)
+        form = UpdateUserForm(obj=user)
+        return render_template("admin/user/my_profile.html",form=form, user=user)
 
+
+    def admin_my_profile_update(self):
+        logged_in_user,roles=get_current_user().values()
+        user = self.user_service.get_by_id(logged_in_user.id)
+        form = UpdateUserForm(obj=user)
+        filepath=user.profile_photo_url
+        new_filepath=FileUtils.save('users',[form.profile_photo_url.data])
+        if new_filepath:
+            FileUtils.delete(filepath)
+            filepath=new_filepath
+        self.user_service.update(
+            id=logged_in_user.id,
+            email=form.email.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            mobile=form.mobile.data,
+            address=form.address.data,
+            updated_by=logged_in_user.id,
+            gender = form.gender.data,
+            dob = form.dob.data,
+            updated_at=datetime.now(),
+            profile_photo_url=filepath
+        )
+        return render_template("admin/user/my_profile.html",user=user,form=form)
 
 
 
@@ -85,4 +115,31 @@ class UserController:
 
 
     def my_profile_page(self):
-        return render_template("customer/my_profile.html")
+        logged_in_user,roles=get_current_user().values()
+        user = self.user_service.get_by_id(logged_in_user.id)
+        form = UpdateUserForm(obj=user)
+        return render_template("customer/my_profile.html",form=form, user=user)
+    
+    def my_profile_update(self):
+        logged_in_user,roles=get_current_user().values()
+        user = self.user_service.get_by_id(logged_in_user.id)
+        form = UpdateUserForm(obj=user)
+        filepath=user.profile_photo_url
+        new_filepath=FileUtils.save('users',[form.profile_photo_url.data])
+        if new_filepath:
+            FileUtils.delete(filepath)
+            filepath=new_filepath
+        self.user_service.update(
+            id=logged_in_user.id,
+            email=form.email.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            mobile=form.mobile.data,
+            address=form.address.data,
+            updated_by=logged_in_user.id,
+            gender = form.gender.data,
+            dob = form.dob.data,
+            updated_at=datetime.now(),
+            profile_photo_url=filepath
+        )
+        return render_template("customer/my_profile.html",user=user,form=form)

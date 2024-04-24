@@ -42,7 +42,6 @@
 </div>
 <!-- Carousel End -->
 
-
 <!-- Product Carousel Section -->
 <div class="container-fluid">
     <div class="container text-center mb-2">
@@ -62,596 +61,256 @@
 
     </div>
     <div class="row" style="justify-content: center;">
+
         <div class="col-12">
             <div class="owl-carousel owl-carousel-Product owl-theme" id="BestSellingProduct">
+
+                {% for top_10_products in data.products.top_10_products %}
                 <div class="item mb-4">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
+                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
                         <div class="ProductImgDiv">
-                            <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
+                            <img src="../../static/{{top_10_products.product_img_urls[0]}}" class="card-img-top"
+                                alt="...">
+                            <div class="text-center ProductOffer">
+                                -{{((top_10_products.discount/top_10_products.price)*100) | int}}%
                             </div>
 
+
                             <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
+                                {% if top_10_products.cart %}
+                                <span id="CartBtn_{{top_10_products.id}}"
+                                    onclick="addToCart('{{ top_10_products.id }}')"><i
+                                        class="bi bi-cart-check-fill"></i></span>
+                                {% else %}
+                                <span id="CartBtn_{{top_10_products.id}}"
+                                    onclick="addToCart('{{ top_10_products.id }}')"><i
+                                        class="bi bi-cart-plus"></i></span>
+                                {% endif %}
+
+                                {% if top_10_products.wishlist %}
+                                <span onclick="addToWishlist('{{ top_10_products.id }}')"><i
+                                        class="bi bi-heart-fill"></i></span>
+                                {% else %}
+                                <span onclick="addToWishlist('{{ top_10_products.id }}')"><i
+                                        class="bi bi-heart"></i></span>
+                                {% endif %}
+                                <!-- <span onclick="addToCart('{{ top_10_products.id }}')">
+                                    <i
+                                        class="bi {% if top_10_products.cart %} bi-cart-check-fill{% else %} bi-cart-plus{% endif %}"></i>
+                                </span>
+                                <span onclick="addToWishlist('{{ top_10_products.id }}')">
+                                    <i
+                                        class="bi {% if top_10_products.wishlist %} bi-heart-fill{% else %} bi-heart{% endif %}"></i>
+                                </span> -->
                             </div>
                         </div>
                         <div class="my-1">
+
                             <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
+
+                                {% set number_of_reviews = top_10_products['product_review'] | length %}
+                                {% set total_rating = 0 %}
+                                {% set total_rating = top_10_products['product_review'] | map(attribute='rating') | sum
+                                %}
+
+                                {% set average_rating = total_rating / number_of_reviews if number_of_reviews > 0 else 0
+                                %}
+
+                                {% set full_stars = average_rating | int %}
+                                {% set half_stars = 1 if average_rating - full_stars >= 0.5 else 0 %}
+                                {% set empty_stars = 5 - full_stars - half_stars %}
+
+                                {% for _ in range(full_stars) %}
                                 <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                                {% endfor %}
+
+                                {% if half_stars == 1 %}
                                 <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
+                                {% endif %}
+
+                                {% for _ in range(empty_stars) %}
+                                <i class="bi bi-star"></i>
+                                {% endfor %}
+
+                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">({{"%.1f" %
+                                    average_rating}})</span>
+
                             </div>
 
 
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
+                            <h5 class="card-title text-center ProductName"><a href="/product_details/{{top_10_products.id}}" class="text-decoration-none text-dark">{{top_10_products.product_name}}</a></h5>
                             <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
+
                                 <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
+                                    "><i
+                                        class="bi bi-currency-rupee"></i>{{top_10_products.price-top_10_products.discount}}</span>
                                 <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
+                                    style="padding-left: 10px;font-size: 11px;">₹{{top_10_products.discount}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Laptop.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Ram1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/product-1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Monitor4.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/CPU1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/product-3.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
 
             </div>
             <div class="owl-carousel owl-carousel-Product owl-theme " id="MonitorProduct">
+                {% for monitor_products in data.products.monitor_products %}
                 <div class="item mb-4">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
+                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
                         <div class="ProductImgDiv">
-                            <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
+                            <img src="../../static/{{monitor_products.product_img_urls[0]}}" class="card-img-top"
+                                alt="...">
+                            <div class="text-center ProductOffer">
+                                -{{((monitor_products.discount/monitor_products.price)*100) | int}}%
                             </div>
 
                             <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
+                                {% if monitor_products.cart %}
+                                <span id="CartBtn_{{monitor_products.id}}"
+                                    onclick="addToCart('{{ monitor_products.id }}')"><i
+                                        class="bi bi-cart-check-fill"></i></span>
+                                {% else %}
+                                <span id="CartBtn_{{monitor_products.id}}"
+                                    onclick="addToCart('{{ monitor_products.id }}')"><i
+                                        class="bi bi-cart-plus"></i></span>
+                                {% endif %}
+
+                                {% if monitor_products.wishlist %}
+                                <span onclick="addToWishlist('{{ monitor_products.id }}')"><i
+                                        class="bi bi-heart-fill"></i></span>
+                                {% else %}
+                                <span onclick="addToWishlist('{{ monitor_products.id }}')"><i
+                                        class="bi bi-heart"></i></span>
+                                {% endif %}
+
                             </div>
                         </div>
                         <div class="my-1">
+
                             <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
+
+                                {% set number_of_reviews = monitor_products['product_review'] | length %}
+                                {% set total_rating = 0 %}
+                                {% set total_rating = monitor_products['product_review'] | map(attribute='rating') | sum
+                                %}
+
+                                {% set average_rating = total_rating / number_of_reviews if number_of_reviews > 0 else 0
+                                %}
+
+                                {% set full_stars = average_rating | int %}
+                                {% set half_stars = 1 if average_rating - full_stars >= 0.5 else 0 %}
+                                {% set empty_stars = 5 - full_stars - half_stars %}
+
+                                {% for _ in range(full_stars) %}
                                 <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                                {% endfor %}
+
+                                {% if half_stars == 1 %}
                                 <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
+                                {% endif %}
+
+                                {% for _ in range(empty_stars) %}
+                                <i class="bi bi-star"></i>
+                                {% endfor %}
+
+                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">({{"%.1f" %
+                                    average_rating}})</span>
+
                             </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
+                            <h5 class="card-title text-center ProductName" id=""><a href="/product_details/{{monitor_products.id}}" class="text-decoration-none text-dark">{{monitor_products.product_name}}</a></h5>
                             <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
                                 <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
+                                    "><i
+                                        class="bi bi-currency-rupee"></i>{{(monitor_products.price-monitor_products.discount)}}</span>
                                 <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
+                                    style="padding-left: 10px;font-size: 11px;">₹{{(monitor_products.discount)}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
 
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
             </div>
             <div class="owl-carousel owl-carousel-Product owl-theme " id="LaptopProduct">
+                {% for laptop_products in data.products.laptop_products %}
                 <div class="item mb-4">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
+                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
                         <div class="ProductImgDiv">
-                            <img src="../../static/img/Laptop.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
+                            <img src="../../static/{{laptop_products.product_img_urls[0]}}" class="card-img-top"
+                                alt="...">
+                            <div class="text-center ProductOffer">
+                                -{{((laptop_products.discount/laptop_products.price)*100) | int}}%
                             </div>
 
                             <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
+                                {% if laptop_products.cart %}
+                                <span id="CartBtn_{{laptop_products.id}}"
+                                    onclick="addToCart('{{ laptop_products.id }}')"><i
+                                        class="bi bi-cart-check-fill"></i></span>
+                                {% else %}
+                                <span id="CartBtn_{{laptop_products.id}}"
+                                    onclick="addToCart('{{ laptop_products.id }}')"><i
+                                        class="bi bi-cart-plus"></i></span>
+                                {% endif %}
+
+                                {% if laptop_products.wishlist %}
+                                <span onclick="addToWishlist('{{ laptop_products.id }}')"><i
+                                        class="bi bi-heart-fill"></i></span>
+                                {% else %}
+                                <span onclick="addToWishlist('{{ laptop_products.id }}')"><i
+                                        class="bi bi-heart"></i></span>
+                                {% endif %}
+
                             </div>
                         </div>
                         <div class="my-1">
+
                             <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
+
+                                {% set number_of_reviews = laptop_products['product_review'] | length %}
+                                {% set total_rating = 0 %}
+                                {% set total_rating = laptop_products['product_review'] | map(attribute='rating') | sum
+                                %}
+
+                                {% set average_rating = total_rating / number_of_reviews if number_of_reviews > 0 else 0
+                                %}
+
+                                {% set full_stars = average_rating | int %}
+                                {% set half_stars = 1 if average_rating - full_stars >= 0.5 else 0 %}
+                                {% set empty_stars = 5 - full_stars - half_stars %}
+
+                                {% for _ in range(full_stars) %}
                                 <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                                {% endfor %}
+
+                                {% if half_stars == 1 %}
                                 <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
+                                {% endif %}
+
+                                {% for _ in range(empty_stars) %}
+                                <i class="bi bi-star"></i>
+                                {% endfor %}
+
+                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">({{"%.1f" %
+                                    average_rating}})</span>
+
                             </div>
 
 
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
+                            <h5 class="card-title text-center ProductName" id=""><a href="/product_details/{{laptop_products.id}}">{{laptop_products.product_name}}</a></h5>
                             <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
                                 <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
+                                    "><i
+                                        class="bi bi-currency-rupee"></i>{{(laptop_products.price-laptop_products.discount)}}</span>
                                 <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
+                                    style="padding-left: 10px;font-size: 11px;">₹{{(laptop_products.discount)}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Laptop2.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Laptop3.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Laptop.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="card mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
-                        <div class="ProductImgDiv">
-                            <img src="../../static/img/Laptop3.jpg" class="card-img-top" alt="...">
-                            <div class="text-center ProductOffer"> -30%
-                            </div>
-
-                            <div class="CardWishDiv text-center">
-                                <span><i class="bi bi-cart-fill"></i></span>
-                                <span><i class="bi bi-heart-fill"></i></span>
-                            </div>
-                        </div>
-                        <div class="my-1">
-                            <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-
-
-                            <h5 class="card-title text-center ProductName" id="">Samsunm
-                                monitor</h5>
-                            <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                                <span class=" fw-bold text-success" style="font-size: 15px;
-                                    "><i class="bi bi-currency-rupee"></i>2,999</span>
-                                <span class="text-decoration-line-through"
-                                    style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
 
 
             </div>
@@ -671,103 +330,58 @@
     <div class="row" style="justify-content: center;">
 
         <div class="col-md-12 col-lg-9 d-flex row">
+            {% for service in data.services %}
+
             <div class="item mb-4 col-lg-4 col-md-4 col-sm-3 col-6 ServiceCardDiv">
                 <div class="shadow p-1 mx-auto ServiceCard">
                     <div class="">
-                        <img src="../../static/img/Service2.avif" class="card-img-top " alt="..."
+                        <img src="../../static/{{ service.service_img_urls[0]}}" class="card-img-top " alt="..."
                             style="height:11rem;width: 11rem;margin: auto;">
-                        <div class="text-center ServiceCategoryOfferDiv">Up To 80% OFF
+                        <div class="text-center ServiceCategoryOfferDiv">Up To
+                            {{((service.discount/service.service_charge)*100) | int}}% OFF
                         </div>
-                        <div class=" text-center" style="color: #fec42d;font-size: 10px;">
+                        <div class="rationg text-center" style="color: #fec42d;font-size: 10px;">
+
+                            {% set number_of_reviews = service['service_review'] | length %}
+                            {% set total_rating = 0 %}
+                            {% set total_rating = service['service_review'] | map(attribute='rating') | sum
+                            %}
+                            {% set average_rating = total_rating / number_of_reviews if number_of_reviews > 0 else 0
+                            %}
+
+                            {% set full_stars = average_rating | int %}
+                            {% set half_stars = 1 if average_rating - full_stars >= 0.5 else 0 %}
+                            {% set empty_stars = 5 - full_stars - half_stars %}
+
+                            {% for _ in range(full_stars) %}
                             <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
+                            {% endfor %}
+
+                            {% if half_stars == 1 %}
                             <i class="bi bi-star-half"></i>
-                            <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
+                            {% endif %}
+
+                            {% for _ in range(empty_stars) %}
+                            <i class="bi bi-star"></i>
+                            {% endfor %}
+
+                            <span class="text-muted" style="font-size: 12px;font-weight: bold;">({{"%.1f" %
+                                average_rating}})</span>
+
                         </div>
+
                     </div>
 
                 </div>
                 <div class="ServiceNameDiv">
                     <h6 class="ServiceName mx-auto mt-2 px-3 py-1">
-                        CPU Assemble
+                        <a href="service_details/{{ service.id }}" class="text-decoration-none text-dark">{{ service.service_name }}</a>
                     </h6>
                 </div>
             </div>
 
-            <div class="item mb-4 col-lg-4 col-md-4 col-sm-3 col-6 ServiceCardDiv" id="service-section">
-                <div class="shadow p-1 mx-auto ServiceCard">
-                    <div class="">
-                        <img src="../../static/img/Service4.png" class="card-img-top " alt="..."
-                            style="height:11rem;width: 11rem;margin: auto;">
-                        <div class="text-center ServiceCategoryOfferDiv">Up To 80% OFF
-                        </div>
-                        <div class=" text-center" style="color: #fec42d;font-size: 10px;">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                        </div>
-                    </div>
 
-                </div>
-                <div class="ServiceNameDiv">
-                    <h6 class="ServiceName mx-auto mt-2 px-3 py-1">
-                        CPU Assemble
-                    </h6>
-                </div>
-            </div>
-            <div class="item mb-4 col-lg-4 col-md-4 col-sm-3 col-6 ServiceCardDiv">
-                <div class="shadow p-1 mx-auto ServiceCard">
-                    <div class="">
-                        <img src="../../static/img/Service3.png" class="card-img-top " alt="..."
-                            style="height:11rem;width: 11rem;margin: auto;">
-                        <div class="text-center ServiceCategoryOfferDiv">Up To 80% OFF
-                        </div>
-                        <div class=" text-center" style="color: #fec42d;font-size: 10px;">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="ServiceNameDiv">
-                    <h6 class="ServiceName mx-auto mt-2 px-3 py-1">
-                        CPU Assemble
-                    </h6>
-                </div>
-            </div>
-            <div class="item mb-4 col-lg-4 col-md-4 col-sm-3 col-6 ServiceCardDiv">
-                <div class="shadow p-1 mx-auto ServiceCard">
-                    <div class="">
-                        <img src="../../static/img/Service2.avif" class="card-img-top " alt="..."
-                            style="height:11rem;width: 11rem;margin: auto;">
-                        <div class="text-center ServiceCategoryOfferDiv">Up To 80% OFF
-                        </div>
-                        <div class=" text-center" style="color: #fec42d;font-size: 10px;">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="ServiceNameDiv">
-                    <h6 class="ServiceName mx-auto mt-2 px-3 py-1">
-                        CPU Assemble
-                    </h6>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         <div class="col-md-12 col-lg-3 container mb-4 NewlyAddedProductHeader">
             <div class="mb-3 ProductCategoryDiv">
@@ -778,131 +392,121 @@
                 </ul>
             </div>
             <div id="NewlyAddedProductContainer">
+                {% for service in data.services %}
+                {% if service['service_review'] | length!=0 %}
                 <div class="" id="NewlyAddedProductDiv">
                     <div class="d-flex">
-                        <img src="../../static/img/Service2.avif" alt="">
+                        <img src="../../static/{{ service.service_img_urls[0]}}" alt="">
                         <div class="ps-3">
-                            <h6 class="card-title text-center ProductName" id="">Printer Repairing</h6>
+                            <h6 class="card-title text-center ProductName" id=""><a href="service_details/{{ service.id }}" class="text-decoration-none text-dark">{{ service.service_name }}</a></h6>
                             <div class=" text-center" style="color: #fec42d;font-size: 13px;">
+                                {% set number_of_reviews = service['service_review'] | length %}
+                                {% set total_rating = 0 %}
+                                {% set total_rating = service['service_review'] | map(attribute='rating') | sum
+                                %}
+                                {% set average_rating = total_rating / number_of_reviews if number_of_reviews > 0 else 0
+                                %}
+
+
+                                {% set full_stars = average_rating | int %}
+                                {% set half_stars = 1 if average_rating - full_stars >= 0.5 else 0 %}
+                                {% set empty_stars = 5 - full_stars - half_stars %}
+
+
+                                {% for _ in range(full_stars) %}
                                 <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                                {% endfor %}
+
+                                {% if half_stars == 1 %}
                                 <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
+                                {% endif %}
+
+                                {% for _ in range(empty_stars) %}
+                                <i class="bi bi-star"></i>
+                                {% endfor %}
+
+                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">({{"%.1f" %
+                                    average_rating}})</span>
                             </div>
                         </div>
 
                     </div>
                     <div class="mb-3" style="border-bottom: 1px solid #e8e8e8;border-radius: 5px;">
                         <div class="d-flex ">
+
                             <div class=" text-center"
                                 style="color: #fec42d;font-size: 9px;align-items: center;display: flex;padding-left: 10px;">
+                                {%set highest_rated_review=0%}
+                                {%set highest_rated_user_id=0%}
+                                {% if service['service_review'] %}
+                                {% set highest_rated_review = service['service_review'] | max(attribute='rating') %}
+                                {% set highest_rated_user_id = highest_rated_review.user_id %}
+
+                                {% set full_stars = highest_rated_review.rating | int %}
+                                {% set half_stars = 1 if highest_rated_review.rating - full_stars >= 0.5 else 0 %}
+                                {% set empty_stars = 5 - full_stars - half_stars %}
+
+
+                                {% for _ in range(full_stars) %}
                                 <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                                {% endfor %}
+
+                                {% if half_stars == 1 %}
                                 <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
+                                {% endif %}
+
+                                {% for _ in range(empty_stars) %}
+                                <i class="bi bi-star"></i>
+                                {% endfor %}
+                                <span class="text-muted"
+                                    style="font-size: 12px;font-weight: bold;">({{highest_rated_review.rating}})</span>
+
+                                {% endif %}
+
                             </div>
+                            {% if highest_rated_review != 0 %}
+                            {% set serialized_users = service['serialized_users'] %}
+                            {% set processed_user_ids = [] %}
+                            {% for user in serialized_users %}
+                            {% if user['id'] == highest_rated_user_id and user['id'] not in processed_user_ids %}
+                            {% set first_name = user.get('first_name') %}
+                            {% set last_name = user.get('last_name') %}
+                            {% set profile_photo_url = user.get('profile_photo_url') %}
                             <div class="ms-auto" style="padding-right: 5px;
                                 align-items: center;
-                                display: flex;font-size: 12px;font-weight: 600;">Subhasis
-                                Barman</div>
+                                display: flex;font-size: 12px;font-weight: 600;">
+
+
+                                {{ first_name }} {{ last_name }}
+
+                            </div>
+                            {%if profile_photo_url!=none %}
+                            <img src="../../static/{{profile_photo_url}}" alt="" class="px-1"
+                                style="width: 40px;height: 32px;border-radius: 100%;">
+                            {% else %}
                             <img src="../../static/img/AVTAR.jpg" alt="" class="px-1" style="width: 40px;height: 32px;">
+                            {% endif %}
+
+                            {% set _ = processed_user_ids.append(user['id']) %}
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
                         </div>
 
                         <div class="mx-3 mb-1" style="font-size: 10px;white-space: nowrap;overflow: hidden;
                             text-overflow: ellipsis;">
-                            * This is Veri Good Product This is Veri Good Product
-                            This is Veri Good Product
+                            {{highest_rated_review.description}}
+
+                            <!-- * This is Veri Good Product This is Veri Good Product
+                            This is Veri Good Product -->
                         </div>
                     </div>
                 </div>
-                <div class="" id="NewlyAddedProductDiv">
-                    <div class="d-flex">
-                        <img src="../../static/img/Service4.png" alt="">
-                        <div class="ps-3">
-                            <h6 class="card-title text-center ProductName" id="">Printer Repairing</h6>
-                            <div class=" text-center" style="color: #fec42d;font-size: 13px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="mb-3" style="border-bottom: 1px solid #e8e8e8;border-radius: 5px;">
-                        <div class="d-flex ">
-                            <div class=" text-center"
-                                style="color: #fec42d;font-size: 9px;align-items: center;display: flex;padding-left: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-                            <div class="ms-auto" style="padding-right: 5px;
-                                align-items: center;
-                                display: flex;font-size: 12px;font-weight: 600;">Subhasis
-                                Barman</div>
-                            <img src="../../static/img/AVTAR.jpg" alt="" class="px-1" style="width: 40px;height: 32px;">
-                        </div>
-
-                        <div class="mx-3 mb-1" style="font-size: 10px;white-space: nowrap;overflow: hidden;
-                            text-overflow: ellipsis;">
-                            * This is Veri Good Product This is Veri Good Product
-                            This is Veri Good Product
-                        </div>
-                    </div>
-                </div>
-                <div class="" id="NewlyAddedProductDiv">
-                    <div class="d-flex">
-                        <img src="../../static/img/Service3.png" alt="">
-                        <div class="ps-3">
-                            <h6 class="card-title text-center ProductName" id="">Printer Repairing</h6>
-                            <div class=" text-center" style="color: #fec42d;font-size: 13px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="mb-3" style="border-bottom: 1px solid #e8e8e8;border-radius: 5px;">
-                        <div class="d-flex ">
-                            <div class=" text-center"
-                                style="color: #fec42d;font-size: 9px;align-items: center;display: flex;padding-left: 10px;">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                                <span class="text-muted" style="font-size: 12px;font-weight: bold;">(4.5)</span>
-                            </div>
-                            <div class="ms-auto" style="padding-right: 5px;
-                                align-items: center;
-                                display: flex;font-size: 12px;font-weight: 600;">Subhasis
-                                Barman</div>
-                            <img src="../../static/img/AVTAR.jpg" alt="" class="px-1" style="width: 40px;height: 32px;">
-                        </div>
-
-                        <div class="mx-3 mb-1" style="font-size: 10px;white-space: nowrap;overflow: hidden;
-                            text-overflow: ellipsis;">
-                            * This is Veri Good Product This is Veri Good Product
-                            This is Veri Good Product
-                        </div>
-                    </div>
-                </div>
+                {%endif%}
+                {% endfor %}
             </div>
         </div>
+
     </div>
 </div>
 <!-- Service Section End -->
@@ -924,187 +528,46 @@
                 </ul>
             </div>
             <div id="NewlyAddedProductContainer">
+                {% for latest_products in data.products.latest_products %}
                 <div class="d-flex mb-3 ms-3" id="NewlyAddedProductDiv">
-                    <img src="../../static/img/Laptop3.jpg" alt="">
-                    <div class="ps-3">
-                        <h6 class="card-title text-center ProductName" id="">HP 16.5inc Laptop</h6>
-                        <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
+                    <img src="../../static/{{latest_products.product_img_urls[0]}}" alt="">
+                    <div class="ps-3 text-truncate overflow-hidden text-nowrap">
+                        <h6 class="card-title text-center ProductName " id="">
+                            <a href="product_details/{{latest_products.id}}" class="text-decoration-none text-dark">{{latest_products.product_name}}</a>
+                            </h6>
+                        <div class="price text-muted" style="font-family: 'Raleway', sans-serif;">
                             <span id="Pricespan" class="fw-bold text-success" style="font-size: 15px;
-                            "><i class="bi bi-currency-rupee"></i>2,999</span>
+                            "><i
+                                    class="bi bi-currency-rupee"></i>{{latest_products.price-latest_products.discount}}</span>
                             <span class="text-decoration-line-through"
-                                style="padding-left: 10px;font-size: 11px;">₹1000</span>
+                                style="padding-left: 10px;font-size: 11px;">₹{{latest_products.discount}}</span>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex mb-3 ms-3" id="NewlyAddedProductDiv">
-                    <img src="../../static/img/Monitor1.jpg" alt="">
-                    <div class="ps-3">
-                        <h6 class="card-title text-center ProductName" id="">HP 16.5inc Laptop</h6>
-                        <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                            <span id="Pricespan" class="fw-bold text-success" style="font-size: 15px;
-                            "><i class="bi bi-currency-rupee"></i>2,999</span>
-                            <span class="text-decoration-line-through"
-                                style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex mb-3 ms-3" id="NewlyAddedProductDiv">
-                    <img src="../../static/img/Ram1.jpg" alt="">
-                    <div class="ps-3">
-                        <h6 class="card-title text-center ProductName" id="">HP 16.5inc Laptop</h6>
-                        <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                            <span id="Pricespan" class="fw-bold text-success" style="font-size: 15px;
-                            "><i class="bi bi-currency-rupee"></i>2,999</span>
-                            <span class="text-decoration-line-through"
-                                style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex mb-3 ms-3" id="NewlyAddedProductDiv">
-                    <img src="../../static/img/product-1.jpg" alt="">
-                    <div class="ps-3">
-                        <h6 class="card-title text-center ProductName" id="">HP 16.5inc Laptop</h6>
-                        <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
-                            <span id="Pricespan" class="fw-bold text-success" style="font-size: 15px;
-                            "><i class="bi bi-currency-rupee"></i>2,999</span>
-                            <span class="text-decoration-line-through"
-                                style="padding-left: 10px;font-size: 11px;">₹1000</span>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
         <div class="col-md-12 col-lg-9 d-flex row">
+            {% for category in data.categories %}
             <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card mx-auto ProductCard" style="width: 12rem;height: 15rem;" id="">
+                <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 15rem;" id="">
                     <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="..." style="height: 12rem;">
-                        <div class="text-center ProductCategoryButton"><sup class="px-1">Up
-                                to</sup><br /><span>80%</span> OFF
-                        </div>
-
-                    </div>
-                    <div class="my-1">
-                        <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card mx-auto ProductCard" style="width: 13rem;height: 15rem;" id="">
-                    <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Laptop.jpg" class="card-img-top" alt="..." style="height: 12rem;">
-                        <div class="text-center ProductCategoryButton"><sup class="px-1">Up
-                                to</sup><br /><span>80%</span> OFF
-                        </div>
-
-                    </div>
-                    <div class="my-1">
-                        <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
-
-                    </div>
-                </div>
-            </div>
-            <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card mx-auto ProductCard" style="width: 13rem;height: 15rem;" id="">
-                    <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Ram1.jpg" class="card-img-top" alt="..." style="height: 12rem;">
-                        <div class="text-center ProductCategoryButton"><sup class="px-1">Up
-                                to</sup><br /><span>80%</span> OFF
-                        </div>
-
-                    </div>
-                    <div class="my-1">
-                        <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
-
-                    </div>
-                </div>
-            </div>
-            <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6 ">
-                <div class="card mx-auto ProductCard" style="width: 13rem;height: 15rem;" id="">
-                    <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Processor1.jpg" class="card-img-top" alt="..."
+                        <img src="../../static/{{category.category_img_url}}" class="card-img-top" alt="..."
                             style="height: 12rem;">
                         <div class="text-center ProductCategoryButton"><sup class="px-1">Up
                                 to</sup><br /><span>80%</span> OFF
                         </div>
-
                     </div>
                     <div class="my-1">
                         <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
+                            <a href="/products/?category={{category.id}}" class="text-dark text-decoration-none">{{category.category_name}}</a>
+                            </h5>
 
                     </div>
                 </div>
             </div>
-            <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card mx-auto ProductCard" style="width: 13rem;height: 15rem;" id="">
-                    <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="..." style="height: 12rem;">
-                        <div class="text-center ProductCategoryButton"><sup class="px-1">Up
-                                to</sup><br /><span>80%</span> OFF
-                        </div>
+            {% endfor %}
 
-                    </div>
-                    <div class="my-1">
-                        <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
-
-                    </div>
-                </div>
-            </div>
-            <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card mx-auto ProductCard" style="width: 13rem;height: 15rem;" id="">
-                    <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="..." style="height: 12rem;">
-                        <div class="text-center ProductCategoryButton"><sup class="px-1">Up
-                                to</sup><br /><span>80%</span> OFF
-                        </div>
-
-                    </div>
-                    <div class="my-1">
-                        <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
-
-                    </div>
-                </div>
-            </div>
-            <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card mx-auto ProductCard" style="width: 13rem;height: 15rem;" id="">
-                    <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="..." style="height: 12rem;">
-                        <div class="text-center ProductCategoryButton"><sup class="px-1">Up
-                                to</sup><br /><span>80%</span> OFF
-                        </div>
-
-                    </div>
-                    <div class="my-1">
-                        <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
-
-                    </div>
-                </div>
-            </div>
-            <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card mx-auto ProductCard" style="width: 13rem;height: 15rem;" id="">
-                    <div class="ProductCategoryImgDiv">
-                        <img src="../../static/img/Monitor1.jpg" class="card-img-top" alt="..." style="height: 12rem;">
-                        <div class="text-center ProductCategoryButton"> <sup class="px-1">Up
-                                to</sup><br /><span>80%</span> OFF
-                        </div>
-
-                    </div>
-                    <div class="my-1">
-                        <h5 class="card-title text-center ProductCategoryName">
-                            Monitors</h5>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -1118,28 +581,28 @@
         <div class="col">
             <div class="owl-carousel vendor-carousel">
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/Brand1.png" alt="" class="card">
+                    <img src="../../static/img/Brand1.png" alt="" class="cardDiv">
                 </div>
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/Brand1.png" alt="" class="card">
+                    <img src="../../static/img/Brand1.png" alt="" class="cardDiv">
                 </div>
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/Brand3.png" alt="" class="card">
+                    <img src="../../static/img/Brand3.png" alt="" class="cardDiv">
                 </div>
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/Brand4.png" alt="" class="card">
+                    <img src="../../static/img/Brand4.png" alt="" class="cardDiv">
                 </div>
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/Brand5.png" alt="" class="card">
+                    <img src="../../static/img/Brand5.png" alt="" class="cardDiv">
                 </div>
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/Brand6.png" alt="" class="card">
+                    <img src="../../static/img/Brand6.png" alt="" class="cardDiv">
                 </div>
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/Brand4.png" alt="" class="card">
+                    <img src="../../static/img/Brand4.png" alt="" class="cardDiv">
                 </div>
                 <div class="bg-light mx-auto" id="Brandcard">
-                    <img src="../../static/img/vendor-8.jpg" alt="" class="card">
+                    <img src="../../static/img/vendor-8.jpg" alt="" class="cardDiv">
                 </div>
             </div>
         </div>
@@ -1184,22 +647,6 @@
 
     });
 
-
-    // For ProductName
-    document.addEventListener("DOMContentLoaded", function () {
-        var ProductNames = document.querySelectorAll(".ProductName");
-        ProductNames.forEach(function (ProductName) {
-
-            var originalText = ProductName.innerHTML;
-            var maxLength = 52;
-            var originalLength = originalText.length;
-            if (originalLength > maxLength) {
-                var truncatedText = originalText.slice(0, 52) + "...";
-                ProductName.textContent = truncatedText;
-            }
-        });
-
-    });
 
     //Brand Carousel
     $('.vendor-carousel').owlCarousel({
@@ -1268,7 +715,142 @@
     });
     //For Product carousel End
 
+    // add to cart
+    // window.addToCart = function (product_id) {
+    //     $.ajax({
+    //         url: "{{ url_for('cart.add',product_id=0) }}".replace('0', product_id),
+    //         type: "GET",
+    //         complete: res => {
+    //             responseData = res.responseJSON
+    //             if (responseData.status == 'success') {
+    //                 if (responseData.data) {
+    //                     toastr.success(responseData.message);
+    //                     tooltipTitle = "Added to Cart"
+    //                     tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
+    //                 }
+    //                 else {
+    //                     toastr.error(responseData.message);
+    //                     tooltipTitle = "Add to Cart"
+    //                     tooltipIcon = '<i class="bi bi-cart-plus"></i>'
+    //                 }
+    //             }
+    //             else {
+    //                 toastr.error(responseData.message);
+    //                 tooltipTitle = "Add to Cart"
+    //                 tooltipIcon = '<i class="bi bi-cart-plus"></i>'
+    //             }
+    //             // $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
 
+    //             // $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`)
+    //             console.log($("#CartBtn_" + product_id));
+    //             $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`);
+    //             console.log($("#CartBtn_" + product_id));
+    //         },
+    //         error: function (xhr, status, error) {
+    //             toastr.error('Error fetching wishlist details:', error);
+    //         }
+    //     });
+    // }
+
+    //Add to Cart
+    function addToCart(product_id) {
+        cartBtnTooltip = document.getElementById("cartBtnTooltip");
+        totalCart = cartBtnTooltip.innerText;
+
+        $.ajax({
+            url: "{{ url_for('cart.add',product_id=0) }}".replace('0', product_id),
+            type: "GET",
+            complete: res => {
+                responseData = res.responseJSON
+                if (responseData.status == 'success') {
+                    if (responseData.data) {
+                        toastr.success(responseData.message);
+                        tooltipTitle = "Added to Cart"
+                        tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
+                        totalCart = parseInt(totalCart) + 1;
+                        cartBtnTooltip.innerHTML = totalCart;
+                    }
+                    else {
+                        toastr.error(responseData.message);
+                        tooltipTitle = "Add to Cart"
+                        tooltipIcon = '<i class="bi bi-cart-plus"></i>'
+                        if (totalCart > 0) {
+                            totalCart = parseInt(totalCart) - 1;
+                        }
+                        cartBtnTooltip.innerHTML = totalCart;
+                    }
+                }
+                else {
+                    toastr.error(responseData.message);
+                    tooltipTitle = "Add to Cart"
+                    tooltipIcon = '<i class="bi bi-cart-plus"></i>'
+                    if (totalCart > 0) {
+                        totalCart = parseInt(totalCart) - 1;
+                    }
+                    cartBtnTooltip.innerHTML = totalCart;
+                }
+                // $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+
+                // $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`)
+                // console.log($("#CartBtn_" + product_id));
+                // $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`);
+                // console.log($("#CartBtn_" + product_id));
+
+
+            },
+            error: function (xhr, status, error) {
+                toastr.error('Error fetching wishlist details:', error);
+            }
+        });
+    }
+    //WishList
+    window.addToWishlist = function (product_id) {
+        wishBtnTooltip = document.getElementById("wishBtnTooltip");
+        totalWish = wishBtnTooltip.innerText;
+        $.ajax({
+            url: "{{ url_for('wishlist.add',product_id=0) }}".replace('0', product_id),
+            type: "GET",
+            complete: res => {
+                responseData = res.responseJSON
+                if (responseData.status === 'success') {
+                    if (responseData.data) {
+                        toastr.success(responseData.message);
+                        tooltipTitle = "Added to Wishlist"
+                        tooltipIcon = '<i class="bi bi-heart-fill"></i>'
+
+                        totalWish = parseInt(totalWish) + 1;
+                        wishBtnTooltip.innerHTML = totalWish;
+                    }
+                    else {
+                        toastr.error(responseData.message);
+                        tooltipTitle = "Added to Wishlist"
+                        tooltipIcon = '<i class="bi bi-heart"></i>'
+
+                        if (totalWish > 0) {
+                            totalWish = parseInt(totalWish) - 1;
+                        }
+                        wishBtnTooltip.innerHTML = totalWish;
+                    }
+                }
+                else {
+                    toastr.error(responseData.message);
+                    tooltipTitle = "Added to Wishlist"
+                    tooltipIcon = '<i class="bi bi-heart"></i>'
+
+                    if (totalWish > 0) {
+                        totalWish = parseInt(totalWish) - 1;
+                    }
+                    wishBtnTooltip.innerHTML = totalWish;
+                }
+                $("#wishlist_icon_" + product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+
+            },
+            error: function (xhr, status, error) {
+                toastr.error('Error fetching wishlist details:', error);
+            }
+        });
+    }
 </script>
+
 
 {% endblock %}

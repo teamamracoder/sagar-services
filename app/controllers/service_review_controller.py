@@ -89,11 +89,11 @@ class ServiceReviewController:
 
     def service_review_create(self,service_id):
         logged_in_user,roles=get_current_user().values()
-        form = CreateServiceReviewForm()
+        reviewForm = CreateServiceReviewForm()
         services=self.service_service.get_active()
         # form.service_id.choices = [(service.id, service.service_name) for service in services]
        
-        if form.validate_on_submit():
+        if reviewForm.validate_on_submit():
             # check if user purchased this service(from booking table, make function as  get_booking_by_user_is_and_service_id)
                 # if no
                     # check if user already gave a review (from review table, make funtion as get_review_by_user_id_and_service_id)
@@ -102,20 +102,20 @@ class ServiceReviewController:
                         # else return render template with error
                         # return redirect(url_for("service.service_details_page",service_id=service_id, error="error here"))
 
-            filepath=FileUtils.save('service_reviews',form.service_review_img_urls.data)
+            filepath=FileUtils.save('service_reviews',reviewForm.service_review_img_urls.data)
             if isinstance(filepath,str):
                 filepath=[filepath]
             self.service_review_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 user_id=logged_in_user.id,   
-                review_title=form.review_title.data,
-                description=form.description.data,
+                review_title=reviewForm.review_title.data,
+                description=reviewForm.description.data,
                 service_review_img_urls=filepath,
-                rating=form.rating.data,
-                service_id=form.service_id.data,
+                rating=reviewForm.rating.data,
+                service_id=reviewForm.service_id.data,
             )
             service=self.service_service.get_by_id(service_id)
             return redirect(url_for("service.service_details_page",service_id=service_id))
             # return render_template("admin/service_review/add.html", form=form, error="product_review already exists")
-        return redirect(url_for("service.service_details_page",service_id=service_id, form=form))
+        return redirect(url_for("service.service_details_page",service_id=service_id, reviewForm=reviewForm))

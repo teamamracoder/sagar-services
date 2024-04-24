@@ -1,9 +1,11 @@
 .about-bg-img {
-    background-image: url('../../static/img/back.jpg');
+	background-image: url('../../static/img/contact_us_back.png');
     background-repeat: no-repeat;
     background-size: cover;
+	background-blend-mode: overlay;
     width: 100%;
     background-position: center;
+	background-blend-mode: screen;
 }
 
 .about-page-small-img img {
@@ -14,9 +16,11 @@
 .my-profile-section input[readonly],
 .my-profile-section textarea[readonly],
 .my-profile-section select[disabled] {
-    border: none;
-    background-color: transparent;
+    outline: none;
+    border: 1px solid #0003;
+    background-color: rgba(103, 102, 102, 0.133);
 }
+
 
 /* For New Contact Page--Subhasis */
 .ContactUsbackgroundimg {

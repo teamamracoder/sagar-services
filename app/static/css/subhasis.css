@@ -1,3 +1,33 @@
+.nav-item .cartBtn,
+.wishBtn {
+    border-radius: 100% !important;
+    border: 1.3px solid #318CE7 !important;
+    padding: 5px 8px 3px 8px !important;
+    position: relative;
+
+}
+
+.nav-item .cartBtn:hover::before,
+.nav-item .wishBtn:hover::before {
+    visibility: hidden;
+}
+
+.cartBtnTooltip {
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    border-radius: 100%;
+    background-color: #ff5e00;
+    position: absolute;
+    top: -7px;
+    color: #fff;
+    overflow: hidden;
+    text-align: center;
+    font-size: 12px;
+    right: -13px;
+}
+
+
 .Navbardropdown-container {
     position: relative;
     display: inline-block;
@@ -96,7 +126,6 @@
     bottom: 0;
     left: 0;
     background-color: #318CE7;
-    ;
     /* background-color: #e43c5c; */
     visibility: hidden;
     transform: scaleX(0);
@@ -259,12 +288,12 @@
 
 
 /* Product Carousel */
-.card img {
+.cardDiv img {
     max-width: 100%;
     max-height: 100%;
 }
 
-.card {
+.cardDiv {
     /* margin: 0 0.5em; */
     box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
     border: none;
@@ -275,7 +304,7 @@
     padding: 1em;
 }
 
-.card img {
+.cardDiv img {
     height: 8em;
 }
 
@@ -311,6 +340,7 @@
 }
 
 .ProductImgDiv img {
+    object-fit: contain;
     transition: all 0.2s ease-in-out 0s;
 }
 
@@ -372,6 +402,7 @@
     font-family: "Nunito", sans-serif;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Product Carousel End */
@@ -459,7 +490,8 @@
 }
 
 .CardWishDiv span:hover {
-    color: white;
+    color: white !important;
+    /* border: 1.3px solid white; */
     background: #f96a05;
     /* background: #318CE7;; */
 }
@@ -503,9 +535,11 @@
     padding-left: 2px;
     font-weight: 600;
 }
-.ProductOffer{
+
+.ProductOffer {
     background-color: #f96a05;
 }
+
 .ProductCategoryImgDiv img {
     transition: all 0.2s ease-in-out 0s;
 }
@@ -793,11 +827,3 @@
 }
 
 /* ScrollBar End*/
-
-    .ProductCategoryName {
-        background: none;
-        background-color: white;
-        color: black;
-    }.ProductCategoryName:hover {
-        color: white;
-    }

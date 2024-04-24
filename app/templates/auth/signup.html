@@ -4,8 +4,144 @@
 
 {% block content %}
 
-<div class="container">
-<h3>sign up</h3>
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="p-0 d-none d-lg-inline-block col-lg-7">
+            <img src="../../static/img/login_back.jpg" alt="..." style="max-width:100%; height:100vh; object-fit: contain;">
+        </div>
+        <div class="col-lg-5 pt-5">
+            <h5 class="mt-5 mb-3" style="border-bottom:3px solid #000000;width:fit-content;margin:auto;">CREATE ACCOUNT
+            </h5>
+
+            <form method="POST" action="{{ url_for('auth.signup') }}" id="adminForm" enctype="multipart/form-data">
+                {{ form.csrf_token }}
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center mb-4">
+                        <label for="profile_photo_url" class="position-relative">
+                            <i class="bi bi-pencil-square position-absolute d-none" style="top:0;right:0;" id="image_edit_icon"></i>
+                            {% if user.profile_photo_url and user.profile_photo_url != '' %}
+                            <img
+                              src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
+                            />
+                            {% else %}
+                            <img
+                              src="../../static/img/AVTAR.jpg" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
+                            />
+                            {% endif %}
+                          </label>
+                        {{ form.profile_photo_url(class="d-none") }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.first_name.label(class="form-label") }}
+                        {{ form.first_name(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.last_name.label(class="form-label") }}
+                        {{ form.last_name(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.mobile.label(class="form-label") }}
+                        {{ form.mobile(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-12 my-2 text-center">
+                        <button type="submit" class="btn btn-dark btn-sm mt-3">SIGN UP</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("strongPassword", function (value, element) {
+        return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value);
+    }, "Password must contain </br>*<small>at least one lowercase letter,</small></br>*<small>one uppercase letter,</small></br>*<small>one digit,</small></br>*<small>one special character,</small></br>*<small>at least 8 characters long.</small>");
+
+        $('#adminForm').validate({
+            rules: {
+                first_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                last_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                email: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 40,
+                    email: true
+                },
+                mobile: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 40,
+                    strongPassword: true
+                }
+            },
+            messages: {
+                first_name: {
+                    required: "Please enter your first name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                last_name: {
+                    required: "Please enter your last name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                email: {
+                    required: "Please enter your first name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 40 characters",
+                    email: "Please enter a valid email address"
+                },
+                mobile: {
+                    required: "Please enter your mobile number",
+                },
+                password: {
+                    required: "password should be minimum 8 character",
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+
+    const outputImage = document.getElementById('userImgTag');
+    const imageInput = document.getElementById('profile_photo_url');
+
+    imageInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                outputImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 </div>
 
 {% endblock %}

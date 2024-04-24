@@ -67,6 +67,8 @@ class BookingModel(db.Model):
 
     area_pincode=db.Column(db.Integer,nullable=False)
 
+    booking_details=db.Column(db.Text)
+
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="bookings_users")
     staffs = db.relationship('StaffModel', foreign_keys=[staff_id], backref="bookings_staffs")
     services = db.relationship("ServiceModel", back_populates="bookings")

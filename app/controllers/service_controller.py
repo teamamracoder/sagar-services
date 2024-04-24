@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateServiceForm, UpdateServiceForm, CreateServiceReviewForm
-from app.services import ServiceService, ServiceTypeService, ServiceReviewService
+from app.forms import CreateServiceForm, UpdateServiceForm, CreateServiceReviewForm, CreateServiceQnAForm, AddServiceImageForm
+from app.services import ServiceService, ServiceTypeService, ServiceReviewService, ServiceQnAService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
@@ -12,6 +12,7 @@ class ServiceController:
         self.service_service = ServiceService()
         self.service_type_service = ServiceTypeService()
         self.service_review_service = ServiceReviewService()
+        self.service_qna_service = ServiceQnAService()
 
     def get(self):
         return render_template("admin/service/index.html")
@@ -113,9 +114,40 @@ class ServiceController:
         return jsonify(service_charge_calculated_data)
     
     def details(self,id):
+        form = AddServiceImageForm()
         service=self.service_service.get_by_id(id)
-        return render_template("admin/service/details.html",service=service)
+        service_type = self.service_type_service.get_by_id(service.service_type_id)
 
+        available_payment_methods=[]
+        for payment_method in service.payment_methods:
+            payment_method_value=payment_methods.get_value(payment_method)
+            available_payment_methods.append(payment_method_value)
+
+        available_area_pincodes=  ', '.join(service.available_area_pincodes)
+        return render_template("admin/service/details.html",service=service, form=form, service_type=service_type.type_name,available_payment_methods=available_payment_methods,available_area_pincodes=available_area_pincodes)
+
+    def addImage(self,service_id):
+        service = self.service_service.get_by_id(service_id)
+        form = AddServiceImageForm()
+        filepath=service.service_img_urls
+        new_filepath=FileUtils.save('services',form.service_img_urls.data)
+        if isinstance(new_filepath,str):
+            new_filepath=[new_filepath]
+        all_filepath=filepath+new_filepath
+
+        self.service_service.update(service_id, service_img_urls= all_filepath)
+        return redirect(url_for("service.details",id=service_id))
+    
+    def deleteImage(self,service_id,filename):
+        service = self.service_service.get_by_id(service_id)
+        old_filepath = service.service_img_urls
+        updated_filepaths=[]
+        for image in old_filepath:
+            if filename.strip() != "'"+image.strip()+"'" and image.strip() != "":
+               updated_filepaths.append(image)
+            FileUtils.delete(filename)
+        self.service_service.update(service_id, service_img_urls= updated_filepaths)
+        return redirect(url_for("service.details",id=service_id)) 
 
 
     # customer section
@@ -125,9 +157,12 @@ class ServiceController:
 
 
     def service_details_page(self,service_id):
-        form = CreateServiceReviewForm()
+        logged_in_user,roles=get_current_user().values()
+        reviewForm = CreateServiceReviewForm()
+        qnaForm = CreateServiceQnAForm()
         service = self.service_service.get_by_id(service_id)
         service_reviews = self.service_review_service.get_review_by_service_id(service_id)
+        service_qnas = self.service_qna_service.get_qna_by_service_id(service_id)
         if service is None:
             return render_template("error/something_went_wrong.html")
-        return render_template("customer/service_details.html",service=service, form=form, service_reviews=service_reviews)
+        return render_template("customer/service_details.html",service=service, reviewForm=reviewForm, qnaForm=qnaForm, service_reviews=service_reviews,service_qnas=service_qnas,logged_in_user=logged_in_user)

@@ -1,0 +1,200 @@
+{% extends 'admin/base.html' %}
+
+{% block title %} User Details {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="card my-2 px-0 rounded-0">
+        <div class="card-body py-0">
+          <form class="row" action="{{ url_for('user.admin_my_profile_update')}}" method="POST" style="min-height: 200px" enctype="multipart/form-data", id="adminForm">
+              <div class="col-md-3 border-end my-2 d-lg-block d-md-block d-none ">
+                  <div class="filter-options">
+                    <div class="p-1">
+                      <div class="img mb-4">
+                        <label for="profile_photo_url" class="position-relative">
+                          <i class="bi bi-pencil-square position-absolute d-none" style="top:0;right:0;" id="image_edit_icon"></i>
+                          {% if user.profile_photo_url and user.profile_photo_url != '' %}
+                          <img
+                            src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
+                          />
+                          {% else %}
+                          <img
+                            src="../../static/img/AVTAR.jpg" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
+                          />
+                          {% endif %}
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                        <ul class="navbar-nav stroke ms-auto">
+                            <li class="nav-item navtext">
+                                <a class="nav-link " href="{{ url_for('auth.logout') }}">
+                                    <i class="bi bi-box-arrow-in-left"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+              </div>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header">
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body" id="filter-options-phone">
+                 
+              </div>
+          </div>
+            <div class="col-md-9 my-profile-section my-2 p-4">
+              <div class="ms-2 d-lg-none d-md-none text-end">
+                  <button class="btn btn-sm btn-dark" type="button" id="filterMenuButton" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-microsoft"></i></button>
+              </div>
+              <div class="row g-3">
+                <div class="col-12 d-none">
+                  {{ form.profile_photo_url(class="d-none",  readonly="readonly", disabled=true, accept="jpg|png|jpeg|png") }}
+              </div>
+                <div class="col-md-6">
+                  {{ form.first_name.label(class="form-label") }}
+                  {{ form.first_name(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-md-6">
+                  {{ form.last_name.label(class="form-label") }}
+                  {{ form.last_name(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-md-6">
+                  {{ form.email.label(class="form-label") }}
+                  {{ form.email(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-md-6">
+                  {{ form.mobile.label(class="form-label") }}
+                  {{ form.mobile(class="form-control", readonly="readonly") }}
+                </div>
+  
+                <div class="col-12">
+                  {{ form.address.label(class="form-label") }}
+                  {{ form.address(class="form-control", readonly="readonly") }}
+              </div>
+              <div class="col-6">
+                      {{ form.gender.label(class="form-check-label")}}
+                      {{ form.gender(class="form-check", disabled="true")}}
+                </div>
+                <div class="col-6">
+                  {{ form.dob.label(class="form-check-label")}}
+                  {{ form.dob(class="form-control", readonly="readonly")}}
+                </div>
+                
+                <div class="col-12 text-end">
+                  <button type="button" id="myProfileEditButton" class="btn btn-sm btn-dark">Edit</button>
+                  <a href="{{url_for('user.admin_my_profile')}}" class="btn btn-sm btn-outline-dark">Back</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+$.validator.addMethod('filesize', function(value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param);
+      }, function(param, element) {
+        return 'File size must be less than ' + param + ' bytes.';
+      });
+
+    $(document).ready(function () {
+      $("input[type='radio']").prop("disabled", true);
+      $('#filter-options-phone').html($('.filter-options').html());
+      $("#myProfileEditButton").click(function () {
+        if ($("input").prop("readonly")) {
+          $("input, textarea").prop("readonly", false);
+          $("input[type='checkbox']").prop("disabled", false);
+          $("input[type='date']").prop("disabled", false);
+          $("input").prop("disabled", false);
+$("#image_edit_icon").removeClass("d-none")
+          $(this).replaceWith('<button type="submit" id="myProfileEditButton" class="btn btn-sm btn-dark">Save</button>');
+        } else {
+        $("#image_edit_icon").addClass("d-none")
+          $("input, textarea").prop("readonly", true);
+          $("input[type='checkbox']").prop("disabled", true);
+          $("input[type='date']").prop("disabled", true);
+          $(this).replaceWith('<button type="button" id="myProfileEditButton" class="btn btn-sm btn-dark">Edit</button>');
+        }
+      });
+      const outputImage = document.getElementsByClassName('userImgTag');
+
+    $("#profile_photo_url").on('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+              outputImage[0].src = e.target.result;
+              outputImage[1].src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+    $('#adminForm').validate({
+            rules: {
+                first_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                last_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                email: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 40,
+                    email: true
+                },
+                mobile: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 40
+                },
+                profile_photo_url:{
+                  filesize: 1024
+                }
+            },
+            messages: {
+                first_name: {
+                    required: "Please enter your first name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                last_name: {
+                    required: "Please enter your last name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 20 characters"
+                },
+                email: {
+                    required: "Please enter your first name",
+                    minlength: "Name must be at least 3 characters long",
+                    maxlength: "Name must not exceed 40 characters",
+                    email: "Please enter a valid email address"
+                },
+                mobile: {
+                    required: "Please enter your mobile number",
+                },
+                password: {
+                    required: "password should be minimum 4 character",
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+  </script>
+{% endblock %}
