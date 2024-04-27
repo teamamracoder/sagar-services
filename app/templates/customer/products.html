@@ -227,9 +227,9 @@
 
                 // Construct the HTML for the product
                 var productHTML = `
-                        <div class="product-item bg-light mb-4">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt="">
+                        <div class="product-item mb-4 shadow-sm">
+                            <div class="product-img position-relative overflow-hidden d-flex flex-column align-items-center">
+                                <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt="" style="max-height:150px;">
                                 <div class="product-action">
                                     ${cart_button}
                                     ${wishlist_button}
@@ -237,7 +237,9 @@
                                 </div>
                             </div>
                             <div class="text-center py-4">
-                                <a class="h6 text-decoration-none link-blue" href="/product_details/${product.id}">${product.product_name}</a>
+                                <div class="product-title px-1">
+                                    <a class="h6 text-decoration-none link-blue " href="/product_details/${product.id}">${product.product_name}</a>
+                                    </div>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
                                     <h5 class="text-success">₹${product.price - product.discount}</h5><h6 class="text-muted ms-2"><del>₹${product.discount}</del></h6>
                                 </div>

@@ -257,3 +257,8 @@ products (product list) page
 .form-check{
   list-style-type: none;
 }
+.product-title{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
