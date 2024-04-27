@@ -35,7 +35,7 @@ class OrderController:
         form = CreateOrderForm()
         form.payment_method.choices = payment_methods.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
-        
+
         if form.validate_on_submit():
             order=self.order_service.create(
                 created_by=logged_in_user.id,
@@ -92,7 +92,7 @@ class OrderController:
             }
             self.order_service.update(id, **updated_data)
             return redirect(url_for("order.index"))
-        
+
         return render_template("admin/order/update.html", id=id, form=form)
 
     def status(self, id):
@@ -160,7 +160,7 @@ class OrderController:
         payment_status = payment_statuses.get_value(order.payment_status)
         order_logs= self.order_log_service.get_order_log_by_order_id(id)
         return render_template("admin/order/details.html",order=order,order_logs=order_logs,product=product,user=user,payment_status=payment_status)
-    
+
 
 
     ## customer controllers ##
@@ -168,7 +168,7 @@ class OrderController:
     def orders_page(self):
         columns = ['id','product_id','quantity','price','payment_method','shipping_address','payment_status','expected_delivery']
         return render_template("customer/my_orders.html")
-    
+
     def orders_page_data(self):
         logged_in_user,roles=get_current_user().values()
         columns = ['id','product_id','created_at','quantity','price','payment_method','shipping_address','payment_status','expected_delivery','order_status']
@@ -179,10 +179,11 @@ class OrderController:
         data = self.order_service.add_payment_method_with_this(data)
         data = self.order_log_service.add_order_logs_with_this(data)
         return jsonify(data)
-    
+
     def cancel(self,order_id):
         order = self.order_service.get_by_id(order_id)
         order_prev_status=order.order_status
-        if order_prev_status == 1 or order_prev_status ==2: 
+        if order_prev_status == 1 or order_prev_status ==2:
             self.order_status(order_id,'order','CANCELLED')
         return redirect(url_for("order.orders_page"))
+

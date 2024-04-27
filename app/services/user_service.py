@@ -1,5 +1,7 @@
 from app.models import UserModel
 from .base_service import BaseService
+from datetime import datetime, timedelta
+from collections import defaultdict
 
 
 class UserService(BaseService):
@@ -45,9 +47,103 @@ class UserService(BaseService):
 
     def get_user_by_mobile(self, mobile):
         return UserModel.query.filter_by(mobile=mobile).first()
-    
+
     def add_username_with_this(self, messages:dict):
         for message in messages:
             message["sent_by"] = self.get_by_id(message['created_by']).first_name
         return messages
+    def get_users_registered_data_for_Chart(self, time_range):
+        dates = []
+        counts = []
+        if time_range == 'Weekly':
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=end_date.weekday())
 
+            current_date = start_date
+            while current_date <= end_date:
+                day_start = datetime.combine(current_date, datetime.min.time())
+                day_end = datetime.combine(current_date, datetime.max.time())
+
+                user_count = (
+                    UserModel.query
+                    .filter(UserModel.created_at >= day_start)
+                    .filter(UserModel.created_at <= day_end)
+                    .filter(UserModel.is_active ==True)
+                    .count()
+                )
+
+                dates.append(current_date.strftime('%Y-%m-%d'))
+                counts.append(user_count)
+                current_date += timedelta(days=1)
+
+        elif time_range == 'Yearly':
+            current_year = datetime.now().year
+            current_month = datetime.now().month
+            start_date = datetime(current_year, 1, 1)
+            next_month_start = datetime(current_year, current_month + 1, 1)
+            end_date = next_month_start - timedelta(days=1)
+            user_registrations = UserModel.query.filter(
+                UserModel.created_at >= start_date,
+                UserModel.created_at <= end_date,
+                UserModel.is_active ==True
+            ).all()
+            monthly_counts = defaultdict(int)
+            for registration in user_registrations:
+                month_key = (registration.created_at.year, registration.created_at.month)
+                monthly_counts[month_key] += 1
+
+            for month in range(1, current_month + 1):
+                first_day_of_month = datetime(current_year, month, 1)
+                month_count = monthly_counts[(current_year, month)]
+                date_range = f"{first_day_of_month.strftime('%B')}"
+                dates.append(date_range)
+                counts.append(month_count)
+
+        elif time_range == 'Monthly':
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=29)
+
+
+            current_date = start_date
+            while current_date <= end_date:
+                week_start = current_date
+                week_end = min(current_date + timedelta(days=6), end_date)
+                user_count = (
+                    UserModel.query
+                    .filter(UserModel.created_at >= week_start)
+                    .filter(UserModel.created_at <= week_end + timedelta(days=1))
+                    .filter(UserModel.is_active ==True)
+                    .count()
+                )
+
+                dates.append(f"{week_start.strftime('%d/%m')} - {week_end.strftime('%d/%m')}")
+                counts.append(user_count)
+
+                current_date += timedelta(days=6)
+
+        dataset = {
+            "label": dates,
+            "data": counts
+        }
+
+        return dataset
+
+    def get_active(self):
+        return self.model.query.filter_by(is_active=True).count()
+
+    def get_all_users(self,time_range):
+           end_date = datetime.now()
+           if time_range == 'Weekly':
+               start_date = end_date - timedelta(days=end_date.weekday())
+           elif time_range == 'Monthly':
+               start_date = end_date.replace(day=1)- timedelta(days=1)
+           elif time_range == 'Yearly':
+               start_date = end_date.replace(month=1, day=1)
+
+           total_users = UserModel.query.filter(
+               UserModel.created_at >= start_date,
+               UserModel.created_at <= end_date,
+               UserModel.is_active==True
+           ).count()
+
+           return total_users

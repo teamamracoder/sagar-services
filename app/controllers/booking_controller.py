@@ -33,11 +33,11 @@ class BookingController:
         form = CreateBookingForm()
         services=self.service_service.get_active()
         form.service_id.choices = [(service.id, service.service_name) for service in services]
-       
+
         form.payment_method.choices = payment_methods.get_all_items()
         form.service_status.choices = service_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
-     
+
         if form.validate_on_submit():
             booking = self.booking_service.create(
                 created_by=logged_in_user.id,
@@ -74,7 +74,7 @@ class BookingController:
         form.payment_method.choices = payment_methods.get_all_items()
         form.service_status.choices = service_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
-        
+
         if form.validate_on_submit():
             if self.booking_service.update(
                 id=id,
@@ -131,12 +131,12 @@ class BookingController:
         service = self.service_service.get_by_id(booking.service_id)
         user = self.user_service.get_by_id(booking.user_id)
         payment_status = payment_statuses.get_value(booking.payment_status)
-        staff = self.staff_service.get_by_id(booking.staff_id) 
+        staff = self.staff_service.get_by_id(booking.staff_id)
         booking_logs = self.booking_log_service.get_booking_log_by_booking_id(id)
         return render_template("admin/booking/details.html",booking=booking,service=service,user=user,payment_status=payment_status,booking_logs=booking_logs,staff=staff)
 
- 
-    
+
+
 
 
     ## customer controllers ##
@@ -152,6 +152,6 @@ class BookingController:
         data = self.booking_service.add_service_status_with_this(data)
         data = self.booking_service.add_payment_status_with_this(data)
         data = self.booking_log_service.add_booking_logs_with_this(data)
+        print(data)
         return jsonify(data)
 
-   

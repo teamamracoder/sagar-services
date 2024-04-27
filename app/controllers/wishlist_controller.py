@@ -30,24 +30,24 @@ class WishlistController:
         if is_active:
             return {"status":"success","message":"Wishlist Activated","data":is_active}
         return {"status":"success","message":"Wishlist Deactivated","data":is_active}
-    
+
 
 
     ## customer controllers ##
 
     def wishlist_page(self):
         return render_template("customer/wishlist.html")
-    
+
 
     def wishlist_page_data(self):
         logged_in_user,roles=get_current_user().values()
         try:
             # Get wishlist items for the given user id
             wishlist_items = self.wishlist_service.get_wishlist_items_by_user_id(logged_in_user.id)
-    
+
             # Extract product ids from wishlist items
             product_ids = [wishlist_item.product_id for wishlist_item in wishlist_items]
-    
+
             # Get product details for the product ids
             products = self.product_service.get_product_details_by_ids(product_ids)
             # Construct response data
@@ -73,10 +73,10 @@ class WishlistController:
                     })
 
             return jsonify(response_data)
-    
+
         except ValueError as e:
             return jsonify({'error': str(e)}), 500
-        
+
 
     def create(self,product_id):
         logged_in_user,roles=get_current_user().values()

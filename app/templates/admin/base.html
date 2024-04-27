@@ -25,9 +25,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
     <script src="{{ url_for('static', filename='js/jquery.MultiFile.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js" integrity="sha512-SJh7xW/9SLzllt0PqjnYlomfUPi7UYF40TXU5m6kVXLFr1hdKe+L8Tqqoi1y9vlsMQBdGC2lZI0d6w04Nn6piQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"
+        integrity="sha512-SJh7xW/9SLzllt0PqjnYlomfUPi7UYF40TXU5m6kVXLFr1hdKe+L8Tqqoi1y9vlsMQBdGC2lZI0d6w04Nn6piQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    
+
 </head>
 
 <body>
@@ -54,7 +56,8 @@
     <div class="container-fluid">
         <div class="row">
             <!-- changing d-lg-block from #sidebarMain will effect js at the end of this file which -->
-            <div class="col-2 p-0 d-none d-lg-block" style="min-height: 100vh;" id="sidebarMain">
+            <div class="col-2 p-0 d-none d-lg-block"
+                style="min-height: 100vh; box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 7px;" id="sidebarMain">
                 <div class="list-group rounded-0 d-none d-lg-block" id="sidebarLinks">
                     <div class="list-group-item list-group-item-action bg-light border-0 border-end active"
                         aria-current="true">
@@ -166,7 +169,7 @@
                                                 class="list-group-item list-group-item-action ui-bg-grey border-0 ps-4">
                                                 <i class="bi bi-star fs-6 me-2"></i>
                                                 Reviews</a>
-                                                <a href="{{ url_for('booking.index') }}"
+                                            <a href="{{ url_for('booking.index') }}"
                                                 class="list-group-item list-group-item-action ui-bg-grey border-0 ps-4">
                                                 <i class="bi bi-calendar-check fs-6 me-2"></i>
                                                 Bookings</a>
@@ -232,7 +235,8 @@
                                         Offers
                                     </button>
                                 </h2>
-                                <div id="offer" class="accordion-collapse collapse" data-bs-parent="#accordionContainer">
+                                <div id="offer" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionContainer">
                                     <div class="accordion-body p-0">
                                         <div class="list-group rounded-0">
                                             <a href="{{ url_for('coupon.index') }}"

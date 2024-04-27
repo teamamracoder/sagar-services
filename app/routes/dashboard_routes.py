@@ -13,3 +13,17 @@ dashboard_controller = DashboardController()
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def index():
     return dashboard_controller.dashboard()
+
+# @dashboard_bp.route("/admin/", methods=["POST"])
+# @login_required
+# @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+# def ChartData():
+#     return dashboard_controller.ChartData()
+
+@dashboard_bp.route("/admin/", methods=["POST"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def get_chart_data():
+    return dashboard_controller.get_chart_data()
+
+
