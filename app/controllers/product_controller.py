@@ -146,7 +146,7 @@ class ProductController:
 
         self.product_service.update(product_id, product_img_urls= all_filepath)
         return redirect(url_for("product.details",id=product_id))
-    
+
 
     def deleteImage(self,product_id,filename):
         product = self.product_service.get_by_id(product_id)
@@ -157,7 +157,7 @@ class ProductController:
                updated_filepaths.append(image)
             FileUtils.delete(filename)
         self.product_service.update(product_id, product_img_urls= updated_filepaths)
-        return redirect(url_for("product.details",id=product_id)) 
+        return redirect(url_for("product.details",id=product_id))
 
 
 

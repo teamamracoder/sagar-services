@@ -1,154 +1,375 @@
 {% extends 'admin/base.html' %} {% block title %}Dashboard{% endblock %} {%block content %}
 
 <div class="container">
-  <div class="dropdown mb-3 mt-3">
-    <a class="btn btn-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Record Upto
-    </a>
-  
-    <ul class="dropdown-menu">
-      <li class="dropdown-item">1 Week</li>
-      <li class="dropdown-item">4 Week</li>
-      <li class="dropdown-item">8 Week</li>
-      <li class="dropdown-item">1 Year</li>
-      <!-- <li class="dropdown-item">5 Years</li> -->
-    </ul>
+  <div class="d-flex justify-content-center">
+    <div class="mb-3 mt-4 mx-auto">
+      <select id="recordRange" class="form-select form-select-lg px-5 py-2 text-center"
+        aria-label="Default select example"
+        style="box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;align-items: center;display: inline-block;font-size: 15px;">
+        <option value="Weekly" selected>-- Select Data Range --</option>
+        <option value="Weekly">Weekly</option>
+        <option value="Monthly">Monthly</option>
+        <option value="Yearly">Yearly</option>
+      </select>
+    </div>
+
   </div>
   <div class="row mt-3 mb-1">
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body fs-5">item-1</div>
-        <div class="card-footer">count-0</div>
+    <div class="mb-3 col-md-6 col-lg-3 col-sm-6 col-6">
+      <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 7px;">
+        <div class="py-1 px-sm-3 px-1 d-flex text-muted"><span
+            style="align-content: center;font-size: 20px;">Customers</span>
+          <i class="bi bi-people me-2 ms-auto" style="font-size: 35px;"></i>
+        </div>
+        <div class="card-footer py-1" style="background-color:rgba(0, 206, 0, 0.5);">
+          <a href="{{ url_for('user.index') }}"
+            style="display: flex;text-decoration: none;color: rgba(0, 0, 0, 0.749);font-size: 13px;">
+            <span id="totalCustomer"></span>
+            <i class="bi bi-caret-right ms-auto text-muted"></i>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">item-2</div>
-        <div class="card-footer">count-0</div>
+    <div class="mb-3 col-md-6 col-lg-3 col-sm-6 col-6">
+      <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 7px;">
+        <div class="py-1 px-sm-3 px-1 d-flex text-muted"><span
+            style="align-content: center;font-size: 20px;">Orders</span>
+          <i class="bi bi-bag-check me-2 ms-auto" style="font-size: 35px;"></i>
+        </div>
+        <div class="card-footer py-1" style="background-color: rgba(54, 162, 235, 0.5);">
+          <a href="{{ url_for('order.index') }}"
+            style="display: flex;text-decoration: none;color: rgba(0, 0, 0, 0.749);font-size: 13px;">
+            <span id="totalOrder"></span>
+            <i class="bi bi-caret-right ms-auto"></i>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">item-3</div>
-        <div class="card-footer">count-0</div>
+    <div class="mb-3 col-md-6 col-lg-3 col-sm-6 col-6">
+      <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 7px;">
+        <div class="py-1 px-sm-3 px-1 px-xs-0 d-flex text-muted"><span
+            style="align-content: center;font-size: 20px;">Products</span>
+          <i class="bi bi-pc-display me-2 ms-auto" style="font-size: 35px;"></i>
+        </div>
+        <div class="card-footer py-1" style="background-color: rgba(255, 206, 86, 0.5);">
+          <a href="{{ url_for('product.index') }}"
+            style="display: flex;text-decoration: none;color: rgba(0, 0, 0, 0.749);font-size: 13px;">
+            <span id="totalProduct"></span>
+            <i class="bi bi-caret-right ms-auto"></i>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">item-4</div>
-        <div class="card-footer">count-0</div>
+    <div class="mb-3 col-md-6 col-lg-3 col-sm-6 col-6">
+      <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 7px;">
+        <div class="py-1 px-sm-3 px-1 d-flex text-muted"><span
+            style="align-content: center;font-size: 20px;">Services</span>
+          <i class="bi bi-tools me-2 ms-auto" style="font-size: 35px;"></i>
+        </div>
+        <div class="card-footer py-1" style="background-color:rgba(75, 192, 192, 0.2);">
+          <a href="{{ url_for('service.index') }}"
+            style="display: flex;text-decoration: none;color: rgba(0, 0, 0, 0.749);font-size: 13px;">
+            <span id="totalService"></span>
+            <i class="bi bi-caret-right ms-auto"></i>
+          </a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="content-wrapper mt-4">
-    
+  <div class="content-wrapper mt-2">
+
     <div class="row mb-4">
-      <div class="col-lg-6 grid-margin stretch-card">
-        <div class="card rounded-0">
-          <div class="card-body">
-            <h4 class="card-title">Bar chart</h4>
-            <canvas id="barChart"></canvas>
+      <div class="form-horizontal">
+        <div class="card-body">
+          <div class="row g-3 p-1" id="Itm">
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; min-width: 20rem;">
+                <div class="card-body">
+                  <div><canvas id="barChart"></canvas></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; min-width: 20rem;">
+                <div class="card-body">
+                  <div><canvas id="lineChart"></canvas></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6 grid-margin stretch-card">
-        <div class="card rounded-0">
-          <div class="card-body">
-            <h4 class="card-title">Area chart</h4>
-            <canvas id="areaChart"></canvas>
-          </div>
-        </div>
-      </div>
-      
+
     </div>
-    <div class="row mb-4">
-      <div class="col-lg-4 grid-margin stretch-card">
-        <div class="card rounded-0">
-          <div class="card-body">
-            <h4 class="card-title">Line chart</h4>
-            <canvas id="lineChart"></canvas>
+    <div class="row mb-5">
+      <div class="form-horizontal">
+        <div class="card-body">
+          <div class="row g-3 p-1" id="Itm">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+              <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; min-width: 18rem;">
+                <div class="card-body" style="position: relative;">
+                  <canvas id="doughnutChart" style="margin-top: 5px;"></canvas>
+                  <div id="chart-title" style="position: absolute;
+                  top: 0;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  font-size: 15px;
+                  font-weight: 350px;
+                  ">Product Status</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+              <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; min-width: 18rem;">
+                <div class="card-body" style="position: relative;">
+                  <canvas id="pieChart" style="margin-top: 5px;"></canvas>
+                  <div id="chart-title" style="position: absolute;
+                  top: 0;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  font-size: 15px;
+                  font-weight: 350px;
+                  ">Service Status</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+              <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; min-width: 18rem;">
+                <div class="card-body" style="position: relative;">
+                  <canvas id="doughnutChartforProductRating" style="margin-top: 5px;"></canvas>
+                  <div id="chart-title" style="position: absolute;
+                  top: 0;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  font-size: 15px;
+                  font-weight: 350px;
+                  ">Product Rating</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 grid-margin stretch-card">
-        <div class="card rounded-0">
-          <div class="card-body">
-            <h4 class="card-title">Doughnut chart</h4>
-            <canvas id="doughnutChart"></canvas>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 grid-margin grid-margin-lg-0 stretch-card">
-        <div class="card rounded-0">
-          <div class="card-body">
-            <h4 class="card-title">Pie chart</h4>
-            <canvas id="pieChart"></canvas>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/vendorChart.js') }}"></script>
 <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 
 <script>
-  //bar chart
-  /*const barChart = document.getElementById("barChart");
-  new Chart(barChart, {
-    type: "bar",
-    data: {
-      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-      datasets: [
-        {
-          label: "# of Sales",
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1,
+  // Function to fetch chart data and update the chart
+  function get_chart_data(interval) {
+    $.ajax({
+      url: "{{ url_for('dashboard.get_chart_data')}}",
+      type: 'POST',
+      data: { "range": interval },
+      success: function (data) {
+        document.getElementById('totalCustomer').innerHTML = "Total - " + data.total_user
+        document.getElementById('totalOrder').innerHTML = "Total - " + data.total_order
+        document.getElementById('totalProduct').innerHTML = "Total - " + data.total_product
+        document.getElementById('totalService').innerHTML = "Total - " + data.total_service
+        console.log(data.dataset4);
+        barchart_data_for_user(data.dataset1, interval);
+        linechart_data_for_order(data.dataset2, interval);
+        doughnutchart_data_for_order_status(data.dataset3, interval);
+        piechart_data_for_booking_status(data.dataset4, interval);
+        doughnutchart_data_for_product_rating(data.dataset5, interval);
+      }
+    });
+  }
+  // Function to update the doughnut chart for rating with new data
+  function doughnutchart_data_for_product_rating(product_rating, interval) {
+    var initialData = {
+      labels: product_rating.rating,
+      datasets: [{
+        label: 'Product Rating',
+        data: product_rating.rating_counts,
+        backgroundColor: Array.from({ length: product_rating.rating.length }, () => getRandomColor()),
+        borderColor: Array.from({ length: product_rating.rating.length }, () => getRandomColor()),
+        borderWidth: 1
+      }]
+    };
+
+    var doughnutOptions = {
+      responsive: true,
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    };
+
+    if (window.doughnutChartforProductRating && window.doughnutChartforProductRating instanceof Chart) {
+      window.doughnutChartforProductRating.destroy();
+    }
+    var doughnutChartforProductRatingCanvas = $("#doughnutChartforProductRating").get(0).getContext("2d");
+    window.doughnutChartforProductRating = new Chart(doughnutChartforProductRatingCanvas, {
+      type: 'doughnut',
+      data: initialData,
+      options: doughnutOptions
+    });
+  }
+  // Function to update the Pie chart with new data
+  function piechart_data_for_booking_status(booking_status_data, interval) {
+    var initialData = {
+      labels: booking_status_data.service_statuses,
+      datasets: [{
+        label: 'Service Status',
+        data: booking_status_data.status_counts,
+        backgroundColor: Array.from({ length: booking_status_data.service_statuses.length }, () => getRandomColor()),
+        borderColor: Array.from({ length: booking_status_data.service_statuses.length }, () => getRandomColor()),
+        borderWidth: 1
+      }]
+    };
+
+    var PieOptions = {
+      responsive: true,
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    };
+    if (window.pieChart && window.pieChart instanceof Chart) {
+      window.pieChart.destroy();
+    }
+    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+    window.pieChart = new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: initialData,
+      options: PieOptions
+    });
+  }
+
+  // Function to update the doughnut chart with new data
+  function doughnutchart_data_for_order_status(order_status_data, interval) {
+    var initialData = {
+      labels: order_status_data.order_statuses,
+      datasets: [{
+        label: 'Order Status',
+        data: order_status_data.status_counts,
+        backgroundColor: Array.from({ length: order_status_data.order_statuses.length }, () => getRandomColor()),
+        borderColor: Array.from({ length: order_status_data.order_statuses.length }, () => getRandomColor()),
+        borderWidth: 1
+      }]
+    };
+
+    var doughnutOptions = {
+      responsive: true,
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    };
+    if (window.doughnutChart && window.doughnutChart instanceof Chart) {
+      window.doughnutChart.destroy();
+    }
+    var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+    window.doughnutChart = new Chart(doughnutChartCanvas, {
+      type: 'doughnut',
+      data: initialData,
+      options: doughnutOptions
+    });
+  }
+  // Function to update the Bar chart with new data
+  function barchart_data_for_user(data, interval) {
+    var initialData = {
+      labels: data.label,
+      datasets: [{
+        label: 'Customers',
+        data: data.data,
+        backgroundColor: Array.from({ length: data.data.length }, () => getRandomColor()),
+        borderColor: Array.from({ length: data.data.length }, () => getRandomColor()),
+        borderWidth: 1
+      }]
+    };
+
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
         },
-      ],
-    },
-    options: {
+        title: {
+          display: true,
+          text: 'Chart.js Floating Bar Chart'
+        }
+      },
       scales: {
         y: {
-          beginAtZero: true,
-        },
-      },
-    },
+          beginAtZero: true
+        }
+      }
+    };
+
+    var barChartCanvas = $("#barChart").get(0).getContext("2d")
+
+    // If window.barChart is a Chart.js chart instance, destroy it
+    if (window.barChart && window.barChart instanceof Chart) {
+      window.barChart.destroy();
+    }
+    window.barChart = new Chart(barChartCanvas, {
+      type: 'bar',
+      data: initialData,
+      options: options
+    });
+  }
+  // Function to update the Bar chart with new data
+  function linechart_data_for_order(order_data, interval) {
+    const initialData = {
+      labels: order_data.label,
+      datasets: [{
+        label: 'Product Ordered',
+        data: order_data.data,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        tension: 0.1,
+        borderWidth: 1
+      }]
+    };
+    const options = {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    };
+    if (window.lineChart && window.lineChart instanceof Chart) {
+      window.lineChart.destroy();
+    }
+    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+    window.lineChart = new Chart(lineChartCanvas, {
+      type: 'line',
+      data: initialData,
+      options: options
+    });
+  }
+  // Function to generate random colors
+  function getRandomColor() {
+    const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    return randomColor;
+  }
+
+  $(document).ready(function () {
+
+
+    const selectElement = document.getElementById('recordRange');
+    get_chart_data(selectElement.value);
+    selectElement.addEventListener('change', function () {
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      get_chart_data(selectedOption.value)
+    });
+
+  });
+  const selectElement = document.getElementById('recordRange');
+  window.addEventListener('load', function () {
+    selectElement.value = "Weekly";
   });
 
-  //donought chart
-  const donoughtData = {
-    labels: ["Red", "Blue", "Yellow"],
-    datasets: [
-      {
-        label: "My First Dataset",
-        data: [50, 50, 20, 100, 70, 70],
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-        ],
-        hoverOffset: 4,
-      },
-    ],
-  };
-  const donoughtConfig = {
-    type: "doughnut",
-    data: donoughtData,
-  };
-  const donoughtChart = document.getElementById("donoughtChart");
-  new Chart(donoughtChart, donoughtConfig);
-
- */
- $(function() {
-    $('.dropdown-item').on('click', function() {
-        var selectedOption = $(this).text(); 
-        $('.dropdown-toggle').text(selectedOption);
-        console.log("Selected option:", selectedOption);
-    });
-});
 
 </script>
 {% endblock %}

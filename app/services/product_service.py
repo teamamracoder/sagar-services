@@ -2,6 +2,8 @@ from db import db
 from app.models import ProductModel
 from .base_service import BaseService
 from sqlalchemy import or_, and_
+from datetime import datetime, timedelta
+
 
 class ProductService(BaseService):
     def __init__(self) -> None:
@@ -22,7 +24,7 @@ class ProductService(BaseService):
     def get_products_by_category(self,category_id):
             return ProductModel.query.filter_by(category_id=category_id,is_active=True).order_by(ProductModel.product_name).all()
 
-    
+
     def get_product_img_by_id(self,product_id):
         return ProductModel.query.filter_by(id=product_id).first().product_img_urls
 
@@ -141,3 +143,20 @@ class ProductService(BaseService):
             return serialized_products_item
         else:
             return None
+
+    def get_all_products(self,time_range):
+           end_date = datetime.now()
+           if time_range == 'Weekly':
+               start_date = end_date - timedelta(days=end_date.weekday())
+           elif time_range == 'Monthly':
+               start_date = end_date.replace(day=1)- timedelta(days=1)
+           elif time_range == 'Yearly':
+               start_date = end_date.replace(month=1, day=1)
+
+           total_products = ProductModel.query.filter(
+               ProductModel.created_at >= start_date,
+               ProductModel.created_at <= end_date,
+               ProductModel.is_active==True
+           ).count()
+
+           return total_products

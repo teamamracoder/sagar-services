@@ -3,6 +3,8 @@ from .base_service import BaseService
 from app.constants import payment_methods
 from app.constants import service_statuses
 from app.constants import payment_statuses
+from datetime import datetime, timedelta
+from collections import defaultdict
 
 
 class BookingService(BaseService):
@@ -48,14 +50,46 @@ class BookingService(BaseService):
         # Perform pagination after filtering
         paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
         paginated_data = paginated_query.items
-    
+
         # Format data
         formatted_data = [{key: getattr(item, key) for key in columns} for item in paginated_data]
-    
+
         return {
             "recordsTotal": paginated_query.total,
             "recordsFiltered": len(paginated_data),
             "data": formatted_data,
             "page": page,
             "total_pages": paginated_query.pages
+        }
+
+    def get_booking_statuses_count(self,time_range):
+        status_mapping=service_statuses.get_all_items_as_dict()
+        end_date = datetime.now()
+        if time_range == 'Weekly':
+            start_date = end_date - timedelta(days=end_date.weekday())
+        elif time_range == 'Monthly':
+            start_date = end_date.replace(day=1)- timedelta(days=1)
+        elif time_range == 'Yearly':
+            start_date = end_date.replace(month=1, day=1)
+
+        services_last_week = BookingModel.query.filter(
+            BookingModel.created_at >= start_date,
+            BookingModel.created_at <= end_date,
+            BookingModel.is_active ==True
+        ).all()
+
+        status_counts = defaultdict(int)
+        for service in services_last_week:
+            status_name = status_mapping.get(service.service_status)
+            if status_name:
+                status_counts[status_name] += 1
+
+        present_statuses = [status_name for status_name in status_mapping.values() if status_counts[status_name] > 0]
+        status_counts_list = []
+        for status_name in present_statuses:
+            status_counts_list.append(status_counts[status_name])
+
+        return {
+            "service_statuses": present_statuses,
+            "status_counts": status_counts_list
         }

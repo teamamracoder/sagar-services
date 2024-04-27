@@ -1,6 +1,7 @@
 from app.models import ProductReviewModel
 from .base_service import BaseService
-
+from datetime import datetime, timedelta
+from collections import Counter
 
 class ProductReviewService(BaseService):
     def __init__(self) -> None:
@@ -32,3 +33,31 @@ class ProductReviewService(BaseService):
             products = self.model.query.filter(self.model.id.in_(product_ids)).all()
 
             return products
+
+    def get_product_rating_counts(self,time_range):
+        end_date = datetime.now()
+        if time_range == 'Weekly':
+            start_date = end_date - timedelta(days=end_date.weekday())
+        elif time_range == 'Monthly':
+            start_date = end_date.replace(day=1)- timedelta(days=1)
+        elif time_range == 'Yearly':
+            start_date = end_date.replace(month=1, day=1)
+
+        reviews_last_week = ProductReviewModel.query.filter(
+            ProductReviewModel.created_at >= start_date,
+            ProductReviewModel.created_at <= end_date
+        ).all()
+
+        rating_counts = Counter(review.rating for review in reviews_last_week)
+
+        ratings = []
+        counts = []
+        for rating, count in rating_counts.items():
+            ratings.append(f'{rating} rating')
+            counts.append(count)
+
+        return {
+            "rating": ratings,
+            "rating_counts": counts
+        }
+
