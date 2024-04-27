@@ -131,8 +131,12 @@ class BookingController:
         service = self.service_service.get_by_id(booking.service_id)
         user = self.user_service.get_by_id(booking.user_id)
         payment_status = payment_statuses.get_value(booking.payment_status)
-        staff = self.staff_service.get_by_id(booking.staff_id) 
         booking_logs = self.booking_log_service.get_booking_log_by_booking_id(id)
+        if booking.staff_id:
+            get_user_id = self.staff_service.get_by_user_id(booking.staff_id) 
+            staff = self.user_service.get_by_id(get_user_id.user_id)
+        else:
+            None
         return render_template("admin/booking/details.html",booking=booking,service=service,user=user,payment_status=payment_status,booking_logs=booking_logs,staff=staff)
 
  

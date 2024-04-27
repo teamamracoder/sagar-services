@@ -16,21 +16,7 @@
             <form method="POST" action="{{ url_for('auth.signup') }}" id="adminForm" enctype="multipart/form-data">
                 {{ form.csrf_token }}
                 <div class="row">
-                    <div class="col-12 d-flex justify-content-center mb-4">
-                        <label for="profile_photo_url" class="position-relative">
-                            <i class="bi bi-pencil-square position-absolute d-none" style="top:0;right:0;" id="image_edit_icon"></i>
-                            {% if user.profile_photo_url and user.profile_photo_url != '' %}
-                            <img
-                              src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
-                            />
-                            {% else %}
-                            <img
-                              src="../../static/img/AVTAR.jpg" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
-                            />
-                            {% endif %}
-                          </label>
-                        {{ form.profile_photo_url(class="d-none") }}
-                    </div>
+                    
                     <div class="col-md-6">
                         {{ form.first_name.label(class="form-label") }}
                         {{ form.first_name(class="form-control form-control-sm") }}
