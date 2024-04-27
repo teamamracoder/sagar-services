@@ -25,6 +25,20 @@
         <tbody></tbody>
     </table>
 </div>
+<div class="modal " id="profileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userName">User Name</h5>
+                <button type="button" class="btn-close btn-outline-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <img src="" class="img-fluid d-block mx-auto" id="profilePicture" alt="Profile Picture" >
+                <!-- <p>User Name.</p> -->
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function () {
@@ -39,10 +53,12 @@
                 { "data": "id" },
                 { "data": "type_name" },
                 { 
-                    "data": null,
+                    "data": "service_type_img_url",
                     "render": function (data, type, row) {
                         if(row.service_type_img_url != null){
-                            return `<img src="../../static/${row.service_type_img_url}" class="adminTableImg">` ;
+                            console.log(row.service_type_img_url)
+                            img_src="{{ url_for('static',filename=0) }}".replace('0',row.service_type_img_url)
+                            return `<img src="${img_src}" class="adminTableImg">` ;
                         }
                         return null
                     }
@@ -107,6 +123,17 @@
                 }
             });
         };
+    });
+    $('#adminDataTable tbody').on('click', 'img.adminTableImg', function () {
+        
+        var src = $(this).attr('src');
+
+        var userName = $(this).closest('tr').find('td:eq(2)').text() + " " + $(this).closest('tr').find('td:eq(3)').text();
+        $('#userName').text(userName);
+      
+        $('#profilePicture').attr('src', src);
+
+        $('#profileModal').modal('show');
     });
 </script>
 
