@@ -60,15 +60,9 @@
                     <li class="nav-item navtext">
                         <a class="nav-link " href="{{ url_for('product.products_page') }}">Products</a>
                     </li>
-                    <li class="nav-item navtext" id="service_section_nav_link_top"></li>
-                    <script>
-                        if (window.location.pathname == "/") {
-                            $("#service_section_nav_link_top").html(`<a class="nav-link " href="#ServiceSection">Services</a>`)
-                        }
-                        else {
-                            $("#service_section_nav_link_top").html('')
-                        }
-                    </script>
+                    <li class="nav-item navtext" id="service_section_nav_link_top">
+                        <a class="nav-link " href="{{ url_for('home.index') }}#ServiceSection">Services</a>
+                    </li>
 
                     <li class="nav-item navtext">
                         <a class="nav-link " href="{{ url_for('home.index') }}#CategorySection">Category</a>
@@ -129,16 +123,9 @@
                     <a class="nav-link " href="{{ url_for('product.products_page') }}"><i
                             class="bi bi-cpu me-2 fs-5"></i>Products</a>
                 </li>
-                <li id="service_section_nav_link" class="nav-item navtext"></li>
-                <script>
-                    if (window.location.pathname == "/") {
-                        $("#service_section_nav_link").html(`<a class="nav-link " href="#service-section"><i
-                        class="bi bi-gear-wide-connected me-2 fs-5"></i>Services</a>`)
-                    }
-                    else {
-                        $("#service_section_nav_link").html('')
-                    }
-                </script>
+                <li id="service_section_nav_link" class="nav-item navtext">
+                    <a class="nav-link " href="{{ url_for('home.index') }}#ServiceSection">Services</a>
+                </li>
                 </li>
                 <li class="nav-item navtext">
                     <a class="nav-link " href="#Category"><i class="bi bi-diagram-3 fs-6 me-2"></i>Category</a>
