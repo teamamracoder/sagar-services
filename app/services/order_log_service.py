@@ -43,4 +43,5 @@ class OrderLogService(BaseService):
                     }
                     order_logs_dicts.append(log_dict)
                 order['order_logs']=order_logs_dicts
+        print(order['order_logs'])
         return orders

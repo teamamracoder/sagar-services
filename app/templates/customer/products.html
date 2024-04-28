@@ -327,7 +327,7 @@
                             tooltipIcon = '<i class="bi bi-cart-plus"></i>'
                         }
                     }
-                    else {
+                    else if (responseData.status == 'error'){
                         toastr.error(responseData.message);
                         tooltipTitle = "Add to Cart"
                         tooltipIcon = '<i class="bi bi-cart-plus"></i>'
@@ -373,7 +373,7 @@
         }
 
         window.checkout = function (product_id) {
-            console.log(product_id)
+            window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
         }
 
     });

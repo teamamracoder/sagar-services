@@ -190,6 +190,33 @@ class ProductController:
         qnaForm = CreateProductQnAForm()
         product = self.product_service.get_by_id(product_id)
         product_reviews = self.product_review_service.get_review_by_product_id(product_id)
+        if product:
+            try:
+                cart=self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product_id)
+                if cart.is_active:
+                    return render_template("customer/product_details.html", product=product, product_reviews=product_reviews, cart=cart)
+                return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
+            except Exception as e:
+                return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
+        return render_template("error/page_not_found.html")
+    
+    def check_area_availability(self):
+        print(request.form)
+        product_id = request.form.get('product_id')
+        pincode = request.form.get('pincode')
+        product=self.product_service.get_by_id(product_id)
+        available_area_pincodes = product.available_area_pincodes
+        if pincode in available_area_pincodes:
+            return {"is_available":True,"message":""}
+        else:
+            return {"is_available":False,"message":f"{product.product_name} is currently Not Avaiable in your area"}
+        
+    def product_details_page(self,product_id):
+        logged_in_user,roles=get_current_user().values()
+        reviewForm = CreateProductReviewForm()
+        qnaForm = CreateProductQnAForm()
+        product = self.product_service.get_by_id(product_id)
+        product_reviews = self.product_review_service.get_review_by_product_id(product_id)
 
         sr=[{
             "id":product_review.id,
