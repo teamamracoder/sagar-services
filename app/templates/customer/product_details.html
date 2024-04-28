@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-5">
         <div id="cursor" ></div>
-        <div class="img-container">
+        <div class="details-img-container">
         <img
           src="{{ url_for('static',filename=product.product_img_urls[0]) }}"
           width="100%"
@@ -30,7 +30,7 @@
         </div>
         <div class="small-img-row">
           {% for img in product.product_img_urls %}
-          <div class="small-img-col img-hover-zoom--colorize">
+          <div class="small-img-col ">
             <img
               src="{{ url_for('static',filename=img) }}"
               width="70%"

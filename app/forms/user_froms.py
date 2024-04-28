@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FileField, TextAreaField, DateField, RadioField
+from wtforms import StringField, IntegerField, FileField, TextAreaField, DateField, RadioField
 from wtforms.validators import DataRequired, Email
 from flask_wtf.file import FileAllowed
 
@@ -11,6 +11,7 @@ class CreateUserForm(FlaskForm):
     last_name=StringField("Last Name",validators=[DataRequired()])
     mobile=StringField("Mobile",validators=[DataRequired()])
     profile_photo_url = FileField("Profile Picture",validators=[FileAllowed(['jpg', 'png', 'jpeg', 'webp'])])
+    pincode=IntegerField("Pincode")
 
 class UpdateUserForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
@@ -21,3 +22,4 @@ class UpdateUserForm(FlaskForm):
     dob = DateField("DOB",validators=[DataRequired()])
     gender = RadioField("Gender", choices=[('Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')],validators=[DataRequired()])
     profile_photo_url = FileField("Profile Picture")
+    pincode=IntegerField("Pincode")

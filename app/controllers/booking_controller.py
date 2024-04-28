@@ -68,6 +68,19 @@ class BookingController:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateBookingForm(obj=booking)
 
+        
+        staffs = self.staff_service.get_active()
+        staffs_id = [(staff.id, staff.id) for staff in staffs]
+        staff_details = []
+        for staff_id, _ in staffs_id:
+            staff_detail = self.user_service.get_by_id(staff_id)
+            staff_details.append(staff_detail)
+        print(staff_details)
+        form.staff_id.choices = [(staff.id, staff.first_name) for staff in staff_details]
+        
+        
+        # get_staffs_from_user = self.user_service.get_by_id(staffs_id)
+
         service = self.service_service.get_by_id(booking.service_id)
         form.service_id.choices = [(service.id, service.service_name)]
 
@@ -133,6 +146,11 @@ class BookingController:
         payment_status = payment_statuses.get_value(booking.payment_status)
         staff = self.staff_service.get_by_id(booking.staff_id)
         booking_logs = self.booking_log_service.get_booking_log_by_booking_id(id)
+        if booking.staff_id:
+            get_user_id = self.staff_service.get_by_user_id(booking.staff_id) 
+            staff = self.user_service.get_by_id(get_user_id.user_id)
+        else:
+            None
         return render_template("admin/booking/details.html",booking=booking,service=service,user=user,payment_status=payment_status,booking_logs=booking_logs,staff=staff)
 
 

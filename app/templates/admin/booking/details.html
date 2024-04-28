@@ -27,7 +27,7 @@
                                         <tr>
                                             <td><img src="{{ url_for('static', filename=service.service_img_urls[0]) }}" alt="..." class="card-img">
                                                 {{ service.service_name }}</td>
-                                            <td>{{ staff.status_name }}</td>
+                                            <td>{{ staff.first_name }} {{ staff.last_name }}</td>
                                             <td>₹{{ booking.total_charge }}/-</td>
                                             <td>{{ payment_status }}</td>
                                         </tr>
