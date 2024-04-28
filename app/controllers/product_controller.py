@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, jsonify
-from app.forms import CreateProductForm,UpdateProductForm, AddImageForm
+from app.forms import CreateProductForm,UpdateProductForm, AddImageForm, CreateProductReviewForm, CreateProductQnAForm
 from app.services import ProductService
 from app.services import CategoryService,ProductQnAService,ProductReviewService
 from datetime import datetime
@@ -186,14 +186,28 @@ class ProductController:
 
     def product_details_page(self,product_id):
         logged_in_user,roles=get_current_user().values()
+        reviewForm = CreateProductReviewForm()
+        qnaForm = CreateProductQnAForm()
         product = self.product_service.get_by_id(product_id)
         product_reviews = self.product_review_service.get_review_by_product_id(product_id)
-        if product:
-            try:
-                cart=self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product_id)
-                if cart.is_active:
-                    return render_template("customer/product_details.html", product=product, product_reviews=product_reviews, cart=cart)
-                return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
-            except Exception as e:
-                return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
-        return render_template("error/page_not_found.html")
+
+        sr=[{
+            "id":product_review.id,
+            "user_id":product_review.created_by
+            } for product_review in product_reviews]
+            
+        sr=[product_review.created_by for product_review in product_reviews]
+
+        print(sr)
+
+        # users_id = [(product_review.id, product_review.created_by) for product_review in product_reviews]
+        # user_details = []
+        # for user_id, _ in users_id:
+        #     user_detail = self.user_product.get_by_id(user_id)
+        #     user_details.append(user_detail)
+
+
+        product_qnas = self.product_qna_service.get_qna_by_product_id(product_id)
+        if product is None:
+            return render_template("error/something_went_wrong.html")
+        return render_template("customer/product_details.html",product=product, reviewForm=reviewForm, qnaForm=qnaForm, product_reviews=product_reviews,product_qnas=product_qnas,logged_in_user=logged_in_user)

@@ -116,6 +116,6 @@ class ServiceReviewController:
                 service_id=reviewForm.service_id.data,
             )
             service=self.service_service.get_by_id(service_id)
-            return redirect(url_for("service.service_details_page",service_id=service_id))
+            return redirect(url_for("service.service_details_page",service_id=service_id,reviewForm=reviewForm))
             # return render_template("admin/service_review/add.html", form=form, error="product_review already exists")
         return redirect(url_for("service.service_details_page",service_id=service_id, reviewForm=reviewForm))
