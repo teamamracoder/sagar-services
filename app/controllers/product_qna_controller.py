@@ -64,4 +64,23 @@ class ProductQnAController:
             return {"status":"success","message":"QnA Activated","data":is_active}
         return {"status":"success","message":"QnA Deactivated","data":is_active}
 
+
+
+    def product_qna_create(self,product_id):
+        logged_in_user,roles=get_current_user().values()
+        qnaForm = CreateProductQnAForm()
+        products = self.product_service.get_active()
+
+        if qnaForm.validate_on_submit():
+            product = self.product_qna_service.create(
+                created_by=logged_in_user.id,
+                created_at=datetime.now(),
+                product_id = qnaForm.product_id.data,
+                question = qnaForm.question.data,
+                user_id = logged_in_user.id
+            )
+            product=self.product_service.get_by_id(product_id)
+            return redirect(url_for("product.product_details_page",product_id=product_id))
+        return redirect(url_for("product.product_details_page",product_id=product_id,qnaForm=qnaForm))
+
        

@@ -18,6 +18,9 @@ class UserService(BaseService):
             item["email"] = user.email
         return items
 
+    def get_user_name_by_this(self,user_id):
+        return UserModel.query.filter_by(user_id=user_id).all()
+
     def add_message_with_this(self, messages: dict) -> dict:
         for message in messages:
             message.sent_by = self.get_by_id(message.created_by).first_name
