@@ -1,12 +1,10 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateBookingForm,UpdateBookingForm
-from app.services import ServiceService
-from app.services import BookingService
+from app.services import ServiceService,BookingService,BookingLogService,UserService,StaffService
 from datetime import datetime
 from app.constants import payment_methods
 from app.constants import service_statuses
 from app.constants import payment_statuses
-from app.services import UserService
 from app.auth import get_current_user
 
 class BookingController:
@@ -14,6 +12,8 @@ class BookingController:
         self.service_service = ServiceService()
         self.booking_service = BookingService()
         self.user_service = UserService()
+        self.staff_service = StaffService()
+        self.booking_log_service = BookingLogService()
 
     def get(self):
         return render_template("admin/booking/index.html")
@@ -33,13 +33,13 @@ class BookingController:
         form = CreateBookingForm()
         services=self.service_service.get_active()
         form.service_id.choices = [(service.id, service.service_name) for service in services]
-       
+
         form.payment_method.choices = payment_methods.get_all_items()
         form.service_status.choices = service_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
-     
+
         if form.validate_on_submit():
-            if self.booking_service.create(
+            booking = self.booking_service.create(
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
                 service_id=form.service_id.data,
@@ -50,8 +50,15 @@ class BookingController:
                 payment_status=form.payment_status.data,
                 payment_method=form.payment_method.data,
                 area_pincode=form.area_pincode.data,
-                ):
-                return redirect(url_for("booking.index"))
+            )
+            booked_service=self.booking_service.get_by_id(booking.service_id) # insert status in booking_log
+            self.booking_log_service.create(
+                created_by=logged_in_user.id,
+                created_at=datetime.now(),
+                booking_id=booking.id,
+                booking_status=booking.service_status
+            )
+            return redirect(url_for("booking.index"))
         return render_template("admin/booking/add.html", form=form)
 
     def update(self, id):
@@ -61,13 +68,26 @@ class BookingController:
             return render_template("admin/error/something_went_wrong.html")
         form = UpdateBookingForm(obj=booking)
 
+        
+        staffs = self.staff_service.get_active()
+        staffs_id = [(staff.id, staff.id) for staff in staffs]
+        staff_details = []
+        for staff_id, _ in staffs_id:
+            staff_detail = self.user_service.get_by_id(staff_id)
+            staff_details.append(staff_detail)
+        print(staff_details)
+        form.staff_id.choices = [(staff.id, staff.first_name) for staff in staff_details]
+        
+        
+        # get_staffs_from_user = self.user_service.get_by_id(staffs_id)
+
         service = self.service_service.get_by_id(booking.service_id)
         form.service_id.choices = [(service.id, service.service_name)]
 
         form.payment_method.choices = payment_methods.get_all_items()
         form.service_status.choices = service_statuses.get_all_items()
         form.payment_status.choices = payment_statuses.get_all_items()
-        
+
         if form.validate_on_submit():
             if self.booking_service.update(
                 id=id,
@@ -120,11 +140,21 @@ class BookingController:
         return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
 
     def details(self,id):
-        booking=self.booking_service.get_by_id(id)
-        return render_template("admin/booking/details.html",booking=booking)
+        booking = self.booking_service.get_by_id(id)
+        service = self.service_service.get_by_id(booking.service_id)
+        user = self.user_service.get_by_id(booking.user_id)
+        payment_status = payment_statuses.get_value(booking.payment_status)
+        staff = self.staff_service.get_by_id(booking.staff_id)
+        booking_logs = self.booking_log_service.get_booking_log_by_booking_id(id)
+        if booking.staff_id:
+            get_user_id = self.staff_service.get_by_user_id(booking.staff_id) 
+            staff = self.user_service.get_by_id(get_user_id.user_id)
+        else:
+            None
+        return render_template("admin/booking/details.html",booking=booking,service=service,user=user,payment_status=payment_status,booking_logs=booking_logs,staff=staff)
 
 
-    
+
 
 
     ## customer controllers ##
@@ -139,6 +169,7 @@ class BookingController:
         data = self.service_service.add_service_with_this(data)
         data = self.booking_service.add_service_status_with_this(data)
         data = self.booking_service.add_payment_status_with_this(data)
+        data = self.booking_log_service.add_booking_logs_with_this(data)
+        print(data)
         return jsonify(data)
 
-   

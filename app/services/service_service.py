@@ -1,5 +1,6 @@
 from app.models import ServiceModel
 from .base_service import BaseService
+from datetime import datetime, timedelta
 
 class ServiceService(BaseService):
     def __init__(self) -> None:
@@ -62,3 +63,20 @@ class ServiceService(BaseService):
             return serialized_services_item
         else:
             return None
+
+    def get_all_services(self,time_range):
+           end_date = datetime.now()
+           if time_range == 'Weekly':
+               start_date = end_date - timedelta(days=end_date.weekday())
+           elif time_range == 'Monthly':
+               start_date = end_date.replace(day=1)- timedelta(days=1)
+           elif time_range == 'Yearly':
+               start_date = end_date.replace(month=1, day=1)
+
+           total_services = ServiceModel.query.filter(
+               ServiceModel.created_at >= start_date,
+               ServiceModel.created_at <= end_date,
+               ServiceModel.is_active==True
+           ).count()
+
+           return total_services

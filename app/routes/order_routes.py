@@ -6,7 +6,7 @@ from app.auth import role_required
 order_bp = Blueprint("order", __name__)
 order_controller = OrderController()
 
-    
+
 @order_bp.route("/admin/orders/")
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
@@ -69,3 +69,5 @@ def orders_page_data():
 @login_required
 def cancel(order_id):
     return order_controller.cancel(order_id)
+
+

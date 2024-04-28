@@ -1,55 +1,52 @@
-{% extends 'customer/base.html' %}
-
-{% block title %}Service Details{% endblock %}
-
-{% block content %}
+{% extends 'customer/base.html' %} {% block title %}Service Details{% endblock
+%} {% block content %}
 
 <div class="container-fluid">
-
   <div class="container-fluid small-container single-product">
     <!-- overview section -->
     <p>Home>CPU-Repaile>Details</p>
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-5">
         <!-- cursor id wala element ta nai -->
-        <div class="details_img-container">
+        <div id="cursor"></div>
+        <div class="details-img-container">
           <!-- <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt=""> -->
-                                
-        <img
-          src="{{ url_for('static', filename='img/product-5.jpg') }}"
-          width="100%"
-          id="ProductImg"
-          alt=""
-        />
+
+          <img
+            src="{{ url_for('static',filename=service.service_img_urls[0]) }}"
+            width="100%"
+            id="ProductImg"
+            alt=""
+          />
         </div>
         <div class="small-img-row">
-          <div class="small-img-col img-hover-zoom--colorize">
+          <div class="small-img-col">
             <img
-              src="../../static/img/product-6.jpg"
+              src="{{ url_for('static',filename=service.service_img_urls[0]) }}"
               width="70%"
               class="small-img"
               alt=""
             />
           </div>
-          <div class="small-img-col img-hover-zoom--colorize">
+          <div class="small-img-col">
             <img
-              src="../../static/img/product-1.jpg"
+              src="{{ url_for('static',filename=service.service_img_urls[1]) }}"
               width="70%"
               class="small-img"
               alt=""
             />
           </div>
-          <div class="small-img-col img-hover-zoom--colorize">
+          <div class="small-img-col">
             <img
-              src="../../static/img/product-3.jpg"
+              src="{{ url_for('static',filename=service.service_img_urls[2]) }}"
               width="70%"
               class="small-img"
               alt=""
             />
           </div>
-          <div class="small-img-col img-hover-zoom--colorize">
+          <div class="small-img-col">
             <img
-              src="../../static/img/product-5.jpg"
+              src="{{ url_for('static',filename=service.service_img_urls[3]) }}"
               width="70%"
               class="small-img"
               alt=""
@@ -57,8 +54,15 @@
           </div>
         </div>
         <div class="booking-btn d-flex justify-content-evenly my-2">
-          <a href="{{ url_for('contact_bp.contact_us_page') }}" class="btn btn-blue" style="width: 45%">Contact Us</a>
-          <a href="" class="btn btn-outline-blue" style="width: 45%">Booking Now</a>
+          <a
+            href="{{ url_for('contact_bp.contact_us_page') }}"
+            class="btn btn-blue"
+            style="width: 45%"
+            >Contact Us</a
+          >
+          <a href="" class="btn btn-outline-blue" style="width: 45%"
+            >Booking Now</a
+          >
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-7">
@@ -69,24 +73,33 @@
                 <h3>{{service.service_name}}</h3>
               </div>
               <div class="gy-0">
-                <p>Service Charge:<span class="text-success">₹{{service.service_charge}}</span> <br/>
-                <span class="">You can save ₹{{service.discount}} with our service</span></p>
+                <p>
+                  Service Charge:<span class="text-success"
+                    >₹{{service.service_charge}}</span
+                  >
+                  <br />
+                  <span class=""
+                    >You can save ₹{{service.discount}} with our service</span
+                  >
+                </p>
               </div>
               <div class="ms-0">
-                <span style="font-size: 12px;">Reviews</span><br/>
+                <span style="font-size: 12px">Reviews</span><br />
                 <div id="rating" class="rating"></div>
               </div>
-                <div>
+              <div>
                 <div class="">
                   <span>Check Availability:</span>
                   <input
-                    class="form-control-sm "
+                    class="form-control-sm"
                     type="text"
                     value=""
                     placeholder="Pin"
                     id="pincode"
                   />
-                  <span onclick="checkAvailability()" style="margin-left: -40px;"><i class="bi bi-search"></i></span>
+                  <span onclick="checkAvailability()" style="margin-left: -40px"
+                    ><i class="bi bi-search"></i
+                  ></span>
                   <p class="" id="show-availability"></p>
                 </div>
               </div>
@@ -99,9 +112,7 @@
           </div>
           <div class="col-12 mt-2">
             <h3>Service Details<i class="bi bi-cpu"></i></h3>
-            <p>
-             {{service.description}}
-            </p>
+            <p>{{service.description}}</p>
           </div>
         </div>
       </div>
@@ -110,13 +121,19 @@
     <!-- engineears section -->
     <div class="mt-4 text-center">
       <h2>Experienced <span class="text-primary">Staffs</span></h2>
-      <p class="large">Our experts have been featured in press numerous times.</p>
+      <p class="large">
+        Our experts have been featured in press numerous times.
+      </p>
     </div>
     <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-6 rounded-2" >
+      <div class="col-sm-12 col-md-6 col-lg-6 rounded-2">
         <div class="row h-75">
           <div class="col-4 d-flex align-items-center justify-content-center">
-            <img src="../../static/img/team-member-1.jpg" width="100%" alt="staff-1">
+            <img
+              src="../../static/img/team-member-1.jpg"
+              width="100%"
+              alt="staff-1"
+            />
           </div>
           <div class="col-8 d-flex flex-column justify-content-center">
             <h3>Name: SUBHASIS DAS</h3>
@@ -125,11 +142,15 @@
           </div>
         </div>
       </div>
-    
-      <div class="col-sm-12 col-md-6 col-lg-6 rounded-2" >
+
+      <div class="col-sm-12 col-md-6 col-lg-6 rounded-2">
         <div class="row h-75">
           <div class="col-4 d-flex align-items-center justify-content-center">
-            <img src="../../static/img/team-member-2.jpg" width="100%" alt="staff-2">
+            <img
+              src="../../static/img/team-member-2.jpg"
+              width="100%"
+              alt="staff-2"
+            />
           </div>
           <div class="col-8 d-flex flex-column justify-content-center">
             <h3>Name: ANKITA DAS</h3>
@@ -141,10 +162,7 @@
     </div>
     <!-- engineears section end -->
 
-
-
-
-<!-- revice section -->
+    <!-- revice section -->
     <div class="container-fluid mt-4">
       <div class="row">
         <div class="col">
@@ -182,143 +200,142 @@
             <div class="tab-content">
               <div class="tab-pane fade show active" id="tab-pane-1">
                 <h4 class="mb-3">Service Description</h4>
-                <p>
-                  {{service.description}}
-                </p>
+                <p>{{service.description}}</p>
               </div>
               <div class="tab-pane fade" id="tab-pane-2">
                 <div class="row">
+                  {% if logged_in_user.id %}
                   <div class="col-md-6">
                     <h4 class="mb-4">Leave a review</h4>
                     <small
-                      >Your email address will not be published. Required
-                      fields are marked *</small
+                      >Your email address will not be published. Required fields
+                      are marked <span class="text-danger fs-5">*</span></small
                     >
-                    <div class="d-flex my-3">
-                      <p class="mb-0 me-2">Your Rating * :</p>
-                      <div class="text-primary">
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                      </div>
+                    <div
+                      class="border border-1 shadow p-3 mb-5 bg-body rounded"
+                    >
+                    <form
+                    method="POST"
+                    action="{{ url_for('service_review.service_review_create', service_id=service.id) }}"
+                    enctype="multipart/form-data"
+                    id="adminForm"
+                >
+                    {{ reviewForm.csrf_token }}
+                    <div class="row">
+                        <div class="col-12">
+                            {{ reviewForm.service_id(class="form-control form-control-sm", value=service.id, hidden="hidden") }}
+                        </div>
+                        <div class="col-12">
+                            {{ reviewForm.review_title(class="form-control form-control-sm", placeholder="Title") }}
+                        </div>
+                        <div class="col-12">
+                            {{ reviewForm.description(class="form-control form-control-sm", placeholder="Message...") }}
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                {{ reviewForm.rating(class="form-control form-control-sm", placeholder="Rating") }}
+                            </div>
+                            <div class="col-6">
+                                {{ reviewForm.hidden_tag() }} 
+                                {{ reviewForm.service_review_img_urls(class="form-control form-control-sm multi with-preview", accept="gif|jpg|png|jpeg|webp") }}
+                            </div>
+                        </div>
+                        <div class="col-12 my-2">
+                            <button type="submit" class="btn btn-dark btn-sm">
+                                Submit
+                            </button>
+                        </div>
                     </div>
-                    
-                    <form method="POST" action="{{ url_for('service_review.service_review_create',service_id=service.id) }}" enctype="multipart/form-data"  id="adminForm">
-                      {{ form.csrf_token }}
-                      <div class="row">
-                          <div class="col-12">
-                              {{ form.service_id(class="form-control form-control-sm", value=service.id, hidden="hidden") }}
-                          </div>
-                          <div class="col-12">
-                              {{ form.review_title.label(class="form-label") }}
-                              {{ form.review_title(class="form-control form-control-sm") }}
-                          </div>
-                          <div class="col-12">
-                              {{ form.description.label(class="form-label") }}
-                              {{ form.description(class="form-control form-control-sm") }}
-                          </div>
-                          <div class="col-12">
-                              {{ form.rating.label(class="form-label") }}
-                              {{ form.rating(class="form-control form-control-sm") }}
-                          </div>
-                          <div class="col-12">
-                              {{ form.hidden_tag() }}
-                              {{ form.service_review_img_urls.label(class="form-label") }}
-                              {{ form.service_review_img_urls(class="form-control form-control-sm", class="multi with-preview", accept="gif|jpg|png|jpeg|webp") }}
-                          </div>
-                          <div class="col-12 my-2">
-                              <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                              <a href="{{ url_for('service_review.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
-                          </div>
-                          {% if error %}
-                            {{error}}
-                          {% endif %}
-                      </div>
-                  </form>
-                  </div>
-                  <div class="col-md-6">
-                    {% for review in service_reviews %}
+                </form>
+                
+                
+                
+              </div>
+            </div>
+            {% endif %}
+                  <div class="col-md-6 p-3 mb-5 bg-body">
+                    {% for review in service_reviews %} {% if loop.index <= 4 %}
                     <div>
-                      <h5 class="mb-4">1 review for {{service.service_name}}</h5>
-                      <div class="media mb-4">
-                        <img
-                          src="{{review.service_review_img_urls[0]}}"
-                          alt="Image"
-                          class="img-fluid me-3 mt-1"
-                          style="width: 45px"
-                        />
+                      <div class="media mb-4 row">
+                        <div class="col-4">
+                          <img
+                            src="{{ review.service_review_img_urls[0] }}"
+                            alt="Image"
+                            class="img-fluid me-3 mt-1"
+                            style="width: 45px"
+                          />
+                        </div>
+                        <div class="col-6">
+                          <h6>{{ service.created_by }}</h6>
+                        </div>
                         <div class="media-body">
-                          <h6>
-                            {{service.created_by}}<small> - <i>{{service.created_at}}</i></small>
-                          </h6>
                           <div class="ms-0">
-                            <span style="font-size: 12px;">Reviews</span><br/>
+                            <span style="font-size: 12px">Reviews</span><br />
                             <div id="all-ratings" class="rating"></div>
                           </div>
-                          <p>
-                            {{review.description}}
-                          </p>
+                          <p>{{ review.description }}</p>
                         </div>
                       </div>
                     </div>
-                    {% endfor %}
+                    {% endif %} {% endfor %}
                   </div>
                 </div>
               </div>
               <div class="tab-pane fade" id="tab-pane-3">
-                <h4 class="mb-3">Additional Information</h4>
-                <p>
-                  Eos no lorem eirmod diam diam, eos elitr et gubergren diam
-                  sea. Consetetur vero aliquyam invidunt duo dolores et duo
-                  sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
-                  consetetur invidunt sed sed et, lorem duo et eos elitr,
-                  sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed
-                  tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing,
-                  eos dolores sit no ut diam consetetur duo justo est, sit
-                  sanctus diam tempor aliquyam eirmod nonumy rebum dolor
-                  accusam, ipsum kasd eos consetetur at sit rebum, diam kasd
-                  invidunt tempor lorem, ipsum lorem elitr sanctus eirmod
-                  takimata dolor ea invidunt.
-                </p>
                 <div class="row">
                   <div class="col-md-6">
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item px-0">
-                        Sit erat duo lorem duo ea consetetur, et eirmod
-                        takimata.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Amet kasd gubergren sit sanctus et lorem eos
-                        sadipscing at.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Takimata ea clita labore amet ipsum erat justo
-                        voluptua. Nonumy.
-                      </li>
-                    </ul>
+                    <h5 class="mb-3">Ask your doubts..?</h5>
+                    <form
+                      method="POST"
+                      action="{{ url_for('service_qna.service_qna_create',service_id=service.id) }}"
+                      id="adminForm"
+                    >
+                      {{ qnaForm.csrf_token }}
+                      <span onclick="sendQna('{{service.id}}')"></span>
+                      <div class="row">
+                        <div class="col-12">
+                          {{ qnaForm.service_id(class="form-control
+                          form-control-sm", value=service.id, hidden="hidden")
+                          }}
+                        </div>
+                        <div class="col-12">
+                          {{ qnaForm.question(class="form-control
+                          form-control-sm", placeholder="Message..?") }}
+                        </div>
+                        {% if logged_in_user %}
+                        <div class="col-12 my-2">
+                          <button type="submit" class="btn btn-dark btn-sm">
+                            Submit
+                          </button>
+                        </div>
+                        <span id="getAlert"></span>
+                        {% else %}
+                        <div class="col-12 my-2">
+                          <button
+                            type="button"
+                            onclick="alertMessage()"
+                            class="btn btn-dark btn-sm"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                        {% endif %}
+                        <span id="getAlert"></span>
+                      </div>
+                    </form>
                   </div>
                   <div class="col-md-6">
                     <ul class="list-group list-group-flush">
+                      {% for qna in service_qnas %} {% if loop.index <= 4 %}
                       <li class="list-group-item px-0">
-                        Sit erat duo lorem duo ea consetetur, et eirmod
-                        takimata.
+                        <strong class="text-dark">Questions:</strong> {{
+                        qna.question }}
                       </li>
                       <li class="list-group-item px-0">
-                        Amet kasd gubergren sit sanctus et lorem eos
-                        sadipscing at.
+                        <strong class="text-dark">Answer:</strong> {{ qna.answer
+                        }}
                       </li>
-                      <li class="list-group-item px-0">
-                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Takimata ea clita labore amet ipsum erat justo
-                        voluptua. Nonumy.
-                      </li>
+                      {% endif %} {% endfor %}
                     </ul>
                   </div>
                 </div>
@@ -346,9 +363,9 @@
                           <i class="far fa-star"></i>
                         </div>
                         <p>
-                          Diam amet duo labore stet elitr ea clita ipsum,
-                          tempor labore accusam ipsum et no at. Kasd diam
-                          tempor rebum magna dolores sed sed eirmod ipsum.
+                          Diam amet duo labore stet elitr ea clita ipsum, tempor
+                          labore accusam ipsum et no at. Kasd diam tempor rebum
+                          magna dolores sed sed eirmod ipsum.
                         </p>
                       </div>
                     </div>
@@ -356,8 +373,8 @@
                   <div class="col-md-6">
                     <h4 class="mb-4">Leave a review</h4>
                     <small
-                      >Your email address will not be published. Required
-                      fields are marked *</small
+                      >Your email address will not be published. Required fields
+                      are marked *</small
                     >
                     <div class="d-flex my-3">
                       <p class="mb-0 me-2">Your Rating * :</p>
@@ -403,78 +420,104 @@
         </div>
       </div>
     </div>
-<!-- revice section end-->
+    <!-- revice section end-->
   </div>
 </div>
 
-
 <script>
-//****************************check avaiable area pincode ***********************************************************
-var pincodes = '{{service.available_area_pincodes}}'
+  //****************************check avaiable area pincode ***********************************************************
+  var pincodes = "{{service.available_area_pincodes}}";
 
-pinCodesString = pincodes.replace(/&#39;/g, "'");
-pinCodesString = pinCodesString.replace(/'/g, '"'); 
-var pinCodesArray = JSON.parse(pinCodesString);
-console.log(pinCodesArray)
+  pinCodesString = pincodes.replace(/&#39;/g, "'");
+  pinCodesString = pinCodesString.replace(/'/g, '"');
+  var pinCodesArray = JSON.parse(pinCodesString);
+  console.log(pinCodesArray);
 
-function checkAvailability(){
-let pincode = document.getElementById('pincode').value;
-let get_availability = document.getElementById('show-availability');
-// Flag to indicate if the pin code is found
-let found = false;
-for(var i = 0; i < pinCodesArray.length; i++){
-  if(pinCodesArray[i] === pincode){
-    found = true;
-    break; 
-  }
-}
-if (found) {
-  get_availability.textContent = "Available..!";
-  get_availability.style.color="green"
-} else {
-  get_availability.textContent = "Not Available..!";
-  get_availability.style.color="red"
-}
-}
-
-//********************************* showing rating using star *************************************
-function setStarRating(rating) {
-  var ratingContainer = document.getElementById("rating");
-  ratingContainer.innerHTML = ""; // Clear previous content
-
-  // Calculate full stars
-  var fullStars = Math.floor(rating);
-  for (var i = 0; i < fullStars; i++) {
-    var star = document.createElement("i");
-    star.className = "bi bi-star-fill";
-    ratingContainer.appendChild(star);
+  function checkAvailability() {
+    let pincode = document.getElementById("pincode").value;
+    let get_availability = document.getElementById("show-availability");
+    // Flag to indicate if the pin code is found
+    let found = false;
+    for (var i = 0; i < pinCodesArray.length; i++) {
+      if (pinCodesArray[i] === pincode) {
+        found = true;
+        break;
+      }
+    }
+    if (found) {
+      get_availability.textContent = "Available..!";
+      get_availability.style.color = "green";
+    } else {
+      get_availability.textContent = "Not Available..!";
+      get_availability.style.color = "red";
+    }
   }
 
-  // Calculate half star, if applicable
-  var halfStar = rating - fullStars;
-  if (halfStar >= 0.5) {
-    var halfStarElement = document.createElement("i");
-    halfStarElement.className = "bi bi-star-half";
-    ratingContainer.appendChild(halfStarElement);
-    fullStars++; // Increment fullStars to ensure the correct number of empty stars are appended
+  //********************************* showing rating using star *************************************
+  function setStarRating(rating) {
+    var ratingContainer = document.getElementById("rating");
+    ratingContainer.innerHTML = ""; // Clear previous content
+
+    // Calculate full stars
+    var fullStars = Math.floor(rating);
+    for (var i = 0; i < fullStars; i++) {
+      var star = document.createElement("i");
+      star.className = "bi bi-star-fill";
+      ratingContainer.appendChild(star);
+    }
+
+    // Calculate half star, if applicable
+    var halfStar = rating - fullStars;
+    if (halfStar >= 0.5) {
+      var halfStarElement = document.createElement("i");
+      halfStarElement.className = "bi bi-star-half";
+      ratingContainer.appendChild(halfStarElement);
+      fullStars++; // Increment fullStars to ensure the correct number of empty stars are appended
+    }
+
+    // Calculate empty stars
+    var emptyStars = 5 - fullStars;
+    for (var j = 0; j < emptyStars; j++) {
+      var emptyStar = document.createElement("i");
+      emptyStar.className = "bi bi-star";
+      ratingContainer.appendChild(emptyStar);
+    }
   }
 
-  // Calculate empty stars
-  var emptyStars = 5 - fullStars;
-  for (var j = 0; j < emptyStars; j++) {
-    var emptyStar = document.createElement("i");
-    emptyStar.className = "bi bi-star";
-    ratingContainer.appendChild(emptyStar);
-  }
-}
+  var rating = 0;
+  var count = 0;
+  ("{% for review in service_reviews %}");
+  rating += parseFloat("{{review.rating}}");
+  count++;
+  ("{% endfor %}");
+  setStarRating((rating / count).toFixed(2));
+</script>
+<script>
+  $(document).ready(function () {
+    window.sendQna = function (service_id) {
+      $.ajax({
+        url: "{{ url_for('service.service_details_page',service_id=0) }}".replace(
+          "0",
+          service_id
+        ),
+        type: "GET",
+        complete: (res) => {
+          responseData = res.responseJSON;
+          if (responseData.status === "success") {
+            if (responseData.data) {
+              toastr.success(responseData.message);
+            }
+          } else {
+            toastr.error(responseData.message);
+          }
+        },
+        error: function (xhr, status, error) {
+          toastr.error("Error fetching sending reviews:", error);
+        },
+      });
+    };
+  });
 
-var rating=0
-var count=0
-"{% for review in service_reviews %}"
-  rating += parseFloat("{{review.rating}}") 
-  count ++
-"{% endfor %}"
-setStarRating((rating/count).toFixed(2));
-
+  
 </script>
 {% endblock %}

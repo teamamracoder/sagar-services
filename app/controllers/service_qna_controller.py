@@ -20,22 +20,22 @@ class ServiceQnAController:
         combined_data = self.service_service.add_service_with_this(question_data)
         return jsonify(combined_data)
 
-    def create(self):
-        logged_in_user,roles=get_current_user().values()
-        form = CreateServiceQnAForm()
-        services=self.service_service.get_active()
-        form.service_id.choices = [(service.id, service.service_name) for service in services]
+    # def create(self):
+    #     logged_in_user,roles=get_current_user().values()
+    #     form = CreateServiceQnAForm()
+    #     services=self.service_service.get_active()
+    #     form.service_id.choices = [(service.id, service.service_name) for service in services]
        
-        if form.validate_on_submit():
-            service = self.service_qna_service.create(
-                created_by=logged_in_user.id,
-                created_at=datetime.now(),
-                service_id = form.service_id.data,
-                question = form.question.data,
-                user_id = logged_in_user.id
-            )
-            return redirect(url_for("service_qna.index"))
-        return render_template("admin/service_qna/add.html", form=form)
+    #     if form.validate_on_submit():
+    #         service = self.service_qna_service.create(
+    #             created_by=logged_in_user.id,
+    #             created_at=datetime.now(),
+    #             service_id = form.service_id.data,
+    #             question = form.question.data,
+    #             user_id = logged_in_user.id
+    #         )
+    #         return redirect(url_for("service_qna.index"))
+    #     return render_template("admin/service_qna/add.html", form=form)
 
     def update(self, id):
         logged_in_user,roles=get_current_user().values()
@@ -71,3 +71,22 @@ class ServiceQnAController:
         # return redirect(url_for("service_qna.index"))
 
        
+
+
+    # cutomer 
+    def service_qna_create(self,service_id):
+        logged_in_user,roles=get_current_user().values()
+        qnaForm = CreateServiceQnAForm()
+        services = self.service_service.get_active()
+
+        if qnaForm.validate_on_submit():
+            service = self.service_qna_service.create(
+                created_by=logged_in_user.id,
+                created_at=datetime.now(),
+                service_id = qnaForm.service_id.data,
+                question = qnaForm.question.data,
+                user_id = logged_in_user.id
+            )
+            service=self.service_service.get_by_id(service_id)
+            return redirect(url_for("service.service_details_page",service_id=service_id))
+        return redirect(url_for("service.service_details_page",service_id=service_id,qnaForm=qnaForm))

@@ -5,6 +5,9 @@ from app.constants import order_statuses
 from app.constants import payment_statuses
 from app.models import ProductModel
 from collections import Counter
+from datetime import datetime, timedelta
+from collections import defaultdict
+
 class OrderService(BaseService):
     def __init__(self) -> None:
         super().__init__(OrderModel)
@@ -64,18 +67,9 @@ class OrderService(BaseService):
         all_orders = self.model.query.all()
 
         product_counts = Counter(order.product_id for order in all_orders)
-
-        # sorted_product_ids = sorted(product_counts.keys(), key=lambda x: product_counts[x])
-        # sorted_product_ids = sorted(product_counts.keys(), key=lambda x: product_counts[x], reverse=True)
         top_10_product_ids = [product_id for product_id, _ in product_counts.most_common(10)]
 
-        # top_10_products = []
-        # for product_id in top_10_product_ids:
-        #     product = ProductModel.query.get(product_id)
-        #     if product:
-        #         top_10_products.append(product)
 
-        # return top_10_products
         top_10_products = []
         for product_id in top_10_product_ids[:10]:
             product = ProductModel.query.get(product_id)
@@ -84,3 +78,128 @@ class OrderService(BaseService):
 
         return top_10_products
 
+    def get_ordered_data_for_Chart(self, time_range):
+        dates = []
+        counts = []
+        if time_range == 'Weekly':
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=6)
+
+            current_date = start_date
+            while current_date <= end_date:
+                day_start = datetime.combine(current_date, datetime.min.time())
+                day_end = datetime.combine(current_date, datetime.max.time())
+
+                order_count = (
+                    OrderModel.query
+                    .filter(OrderModel.created_at >= day_start)
+                    .filter(OrderModel.created_at <= day_end)
+                    .filter(OrderModel.is_active ==True)
+                    .count()
+                )
+
+                dates.append(current_date.strftime('%Y-%m-%d'))
+                counts.append(order_count)
+                current_date += timedelta(days=1)
+
+        elif time_range == 'Yearly':
+            current_year = datetime.now().year
+            current_month = datetime.now().month
+            start_date = datetime(current_year, 1, 1)
+            next_month_start = datetime(current_year, current_month + 1, 1)
+            end_date = next_month_start - timedelta(days=1)
+            order_count = OrderModel.query.filter(
+                OrderModel.created_at >= start_date,
+                OrderModel.created_at <= end_date,
+                OrderModel.is_active ==True
+            ).all()
+            monthly_counts = defaultdict(int)
+            for order in order_count:
+                month_key = (order.created_at.year, order.created_at.month)
+                monthly_counts[month_key] += 1
+
+            for month in range(1, current_month + 1):
+                first_day_of_month = datetime(current_year, month, 1)
+                month_count = monthly_counts[(current_year, month)]
+                date_range = f"{first_day_of_month.strftime('%B')}"
+                dates.append(date_range)
+                counts.append(month_count)
+
+        elif time_range == 'Monthly':
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=29)
+
+
+            current_date = start_date
+            while current_date <= end_date:
+                week_start = current_date
+                week_end = min(current_date + timedelta(days=6), end_date)
+                order_count = (
+                    OrderModel.query
+                    .filter(OrderModel.created_at >= week_start)
+                    .filter(OrderModel.created_at <= week_end + timedelta(days=1))
+                    .filter(OrderModel.is_active ==True)
+                    .count()
+                )
+
+                dates.append(f"{week_start.strftime('%d/%m')} - {week_end.strftime('%d/%m')}")
+                counts.append(order_count)
+
+                current_date += timedelta(days=6)
+
+        dataset = {
+            "label": dates,
+            "data": counts
+        }
+
+        return dataset
+
+    def get_order_statuses_count(self,time_range):
+
+        status_mapping=order_statuses.get_all_items_as_dict()
+        end_date = datetime.now()
+        if time_range == 'Weekly':
+            start_date = end_date - timedelta(days=end_date.weekday())
+        elif time_range == 'Monthly':
+            start_date = end_date.replace(day=1)- timedelta(days=1)
+        elif time_range == 'Yearly':
+            start_date = end_date.replace(month=1, day=1)
+
+        orders_last_week = OrderModel.query.filter(
+            OrderModel.created_at >= start_date,
+            OrderModel.created_at <= end_date,
+            OrderModel.is_active == True
+        ).all()
+
+        status_counts = defaultdict(int)
+        for order in orders_last_week:
+            status_name = status_mapping.get(order.order_status)
+            if status_name:
+                status_counts[status_name] += 1
+
+        present_statuses = [status_name for status_name in status_mapping.values() if status_counts[status_name] > 0]
+        status_counts_list = []
+        for status_name in present_statuses:
+            status_counts_list.append(status_counts[status_name])
+
+        return {
+            "order_statuses": present_statuses,
+            "status_counts": status_counts_list
+        }
+
+    def get_all_orders(self,time_range):
+           end_date = datetime.now()
+           if time_range == 'Weekly':
+               start_date = end_date - timedelta(days=end_date.weekday())
+           elif time_range == 'Monthly':
+               start_date = end_date.replace(day=1)- timedelta(days=1)
+           elif time_range == 'Yearly':
+               start_date = end_date.replace(month=1, day=1)
+
+           total_orders = OrderModel.query.filter(
+               OrderModel.created_at >= start_date,
+               OrderModel.created_at <= end_date,
+               OrderModel.is_active==True
+           ).count()
+
+           return total_orders

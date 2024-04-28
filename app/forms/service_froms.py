@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import *
 from wtforms.validators import DataRequired
+from flask_wtf.file import FileAllowed, FileRequired
+
 
 class CreateServiceForm(FlaskForm):
     service_type_id = SelectField("Service Type", validators=[DataRequired()])
@@ -23,7 +25,8 @@ class UpdateServiceForm(FlaskForm):
     service_img_urls = MultipleFileField("Image [Selecting image or images will add with previous images]")
 
 
-
+class AddServiceImageForm(FlaskForm):
+    service_img_urls = MultipleFileField("Image",validators=[FileRequired(),FileAllowed(['jpg', 'png', 'jpeg', 'webp','gif'])])
 
 
 

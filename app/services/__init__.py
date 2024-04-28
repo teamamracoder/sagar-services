@@ -18,3 +18,4 @@ from .booking_service import BookingService
 from .staff_service import StaffService
 from .product_qna_service import ProductQnAService
 from .order_log_service import OrderLogService
+from .booking_log_service import BookingLogService
