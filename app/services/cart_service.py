@@ -59,3 +59,7 @@ class CartService(BaseService):
         except Exception as e:
             return datas
 
+    def get_total_cart_items_by_user_id(self,user_id):
+            cart_items = self.model.query.filter_by(user_id=user_id, is_active=True).count()
+            return cart_items
+
