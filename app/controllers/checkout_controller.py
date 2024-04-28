@@ -3,7 +3,8 @@ from app.services import ServiceService, ProductService, OrderService, BookingSe
 from datetime import datetime
 from app.auth import get_current_user
 from app.utils import cache
-
+from app.constants import email_templates
+from app.utils.mail_utils import MailUtils
 
 class CheckoutController:
     def __init__(self) -> None:
@@ -187,7 +188,6 @@ class CheckoutController:
 
             for order_details in products_info:
                 order = self.order_service.create(**order_details)
-                print(order.id)
                 self.order_log_service.create(
                     created_by=logged_in_user.id,
                     created_at=datetime.now(),
@@ -196,6 +196,8 @@ class CheckoutController:
                 )
                 self.cart_service.update_cart_status(logged_in_user.id,product_id,2)
 
+            msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
+            MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
             cache.delete(f"cart_{logged_in_user.id}")
             return "order success"
         return render_template("customer/cart.html")

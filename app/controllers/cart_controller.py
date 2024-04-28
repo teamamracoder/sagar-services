@@ -135,9 +135,9 @@ class CartController:
             try:
                 if cart_item:
                     if cart_item.is_active:
-                        self.status(cart_item.id)
-                        return {"status":"success","message":"Product Removed From Cart","data":False}
-                    else:
+                        # self.status(cart_item.id)
+                        return {"status":"added"}
+                    if not cart_item.is_active:
                         #check product stock
                         product = self.product_service.get_by_id(product_id)
                         if product:

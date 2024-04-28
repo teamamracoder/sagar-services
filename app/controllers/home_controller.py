@@ -36,12 +36,6 @@ class HomeController:
             serialized_bestselling_products = self.product_service.serialized_products(product)
             bestselling_products.append(serialized_bestselling_products)
         bestselling_products=self.product_reviews_service.get_reviews_by_product_for_home(bestselling_products)
-<<<<<<< HEAD
-        # print(bestselling_products)
-=======
->>>>>>> main
-
-
         monitor_products = []
         laptop_products = []
         for category in categories:
@@ -102,7 +96,6 @@ class HomeController:
             totalWish = self.wish_service.get_total_wishlist_items_by_user_id(logged_in_user.id)
             user_data=self.user_service.get_user_by_id(logged_in_user.id)
             user_profile_photo_url=user_data[0].profile_photo_url
-            print(user_profile_photo_url)
             if totalCart is not None or totalWish is not None:
                 total_cart_and_wish = {
                     "status": "success",
