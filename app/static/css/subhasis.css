@@ -1,3 +1,28 @@
+/* For LOgibn Btn */
+.loginBtn {
+    padding: 3px 12px 3px 12px !important;
+    color: #fff !important;
+    background-size: 300% 100%;
+    border-radius: 50px;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out !important;
+    background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+    box-shadow: 0 4px 15px 0 rgba(73, 137, 234, 0.75);
+}
+
+.loginBtn:hover {
+    background-position: 100% 0;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.loginBtn:focus {
+    outline: none;
+}
+
+
 .nav-item .cartBtn,
 .wishBtn {
     border-radius: 100% !important;
@@ -8,11 +33,13 @@
 }
 
 .nav-item .cartBtn:hover::before,
-.nav-item .wishBtn:hover::before {
+.nav-item .wishBtn:hover::before,
+.nav-item .loginBtn:hover::before {
     visibility: hidden;
 }
 
-.cartBtnTooltip {
+.cartBtnTooltip,
+.wishBtnTooltip {
     width: 22px;
     height: 22px;
     line-height: 22px;
@@ -36,7 +63,7 @@
 
 .Navbardropdown-container .dropdown-menu {
     position: absolute;
-    top: 50px;
+    top: 45px;
     left: 50%;
     transform: translateX(-50%);
     background-color: white;
@@ -45,6 +72,7 @@
     padding: 10px;
     text-align: center;
     display: none;
+    z-index: 999;
 }
 
 
