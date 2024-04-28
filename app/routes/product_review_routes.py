@@ -37,3 +37,10 @@ def add():
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def status(id):
     return product_review_controller.status(id)
+
+
+
+# **************
+@product_review_bp.route("/product_reviews/<int:product_id>", methods=["GET", "POST"])
+def product_review_create(product_id):
+    return product_review_controller.product_review_create(product_id)

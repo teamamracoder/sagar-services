@@ -74,3 +74,38 @@ class ProductReviewController:
         if is_active:
             return {"status":"success","message":"Review Activated","data":is_active}
         return {"status":"success","message":"Review Deactivated","data":is_active}
+
+
+# ********************************
+    def product_review_create(self,product_id):
+        logged_in_user,roles=get_current_user().values()
+        reviewForm = CreateProductReviewForm()
+        products=self.product_service.get_active()
+        # form.product_id.choices = [(product.id, product.product_name) for product in products]
+       
+        if reviewForm.validate_on_submit():
+            # check if user purchased this product(from booking table, make function as  get_booking_by_user_is_and_product_id)
+                # if no
+                    # check if user already gave a review (from review table, make funtion as get_review_by_user_id_and_product_id)
+                        # if no
+                            # proceed below
+                        # else return render template with error
+                        # return redirect(url_for("product.product_details_page",product_id=product_id, error="error here"))
+
+            filepath=FileUtils.save('product_reviews',reviewForm.product_review_img_urls.data)
+            if isinstance(filepath,str):
+                filepath=[filepath]
+            self.product_review_service.create(
+                created_by=logged_in_user.id,
+                created_at=datetime.now(),
+                user_id=logged_in_user.id,   
+                review_title=reviewForm.review_title.data,
+                description=reviewForm.description.data,
+                product_review_img_urls=filepath,
+                rating=reviewForm.rating.data,
+                product_id=reviewForm.product_id.data,
+            )
+            product=self.product_service.get_by_id(product_id)
+            return redirect(url_for("product.product_details_page",product_id=product_id,reviewForm=reviewForm))
+            # return render_template("admin/product_review/add.html", form=form, error="product_review already exists")
+        return redirect(url_for("product.product_details_page",product_id=product_id, reviewForm=reviewForm))

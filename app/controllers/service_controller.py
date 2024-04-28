@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateServiceForm, UpdateServiceForm, CreateServiceReviewForm, CreateServiceQnAForm, AddServiceImageForm
-from app.services import ServiceService, ServiceTypeService, ServiceReviewService, ServiceQnAService
+from app.services import ServiceService, ServiceTypeService, ServiceReviewService, ServiceQnAService, UserService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
@@ -13,6 +13,7 @@ class ServiceController:
         self.service_type_service = ServiceTypeService()
         self.service_review_service = ServiceReviewService()
         self.service_qna_service = ServiceQnAService()
+        self.user_service = UserService()
 
     def get(self):
         return render_template("admin/service/index.html")
@@ -162,6 +163,23 @@ class ServiceController:
         qnaForm = CreateServiceQnAForm()
         service = self.service_service.get_by_id(service_id)
         service_reviews = self.service_review_service.get_review_by_service_id(service_id)
+
+        sr=[{
+            "id":service_review.id,
+            "user_id":service_review.created_by
+            } for service_review in service_reviews]
+            
+        sr=[service_review.created_by for service_review in service_reviews]
+
+        print(sr)
+
+        # users_id = [(service_review.id, service_review.created_by) for service_review in service_reviews]
+        # user_details = []
+        # for user_id, _ in users_id:
+        #     user_detail = self.user_service.get_by_id(user_id)
+        #     user_details.append(user_detail)
+
+
         service_qnas = self.service_qna_service.get_qna_by_service_id(service_id)
         if service is None:
             return render_template("error/something_went_wrong.html")
