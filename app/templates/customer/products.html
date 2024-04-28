@@ -7,7 +7,7 @@
     <div class="row px-xl-5">
         <div class="col-lg-3 filter-options-container d-none d-lg-block">
             <div class="filter-options">
-               
+
                 <div class="bg-light p-4 mb-30 category_filters">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter By Categories</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
@@ -27,7 +27,7 @@
                 <script>
                     var category_param = new URLSearchParams(window.location.search).get('category');
                     console.log(category_param)
-                    if(category_param !=null){
+                    if (category_param != null) {
                         $(".category_filters").html("<a href='/products' class='text-dark'>View all categories</a>")
 
                     }
@@ -148,10 +148,10 @@
 
         window.fetchPaginatedProducts = function (page) {
             var category_param = new URLSearchParams(window.location.search).get('category');
-            if(category_param != null){
-                var category=[category_param]
+            if (category_param != null) {
+                var category = [category_param]
             }
-            else{
+            else {
                 var category = [...$('input[name="category"]:checked')].filter(category => category.value != '').map(category => Number(category.value));
             }
             var brand = [...$('input[name="brand"]:checked')].filter(brand => brand.value != '').map(brand => brand.value);
@@ -169,11 +169,12 @@
                     sort_by: sort_by
                 },
                 success: function (response) {
-                    if(response.recordsFiltered>0){
+
+                    if (response.recordsFiltered > 0) {
                         renderProducts(response);
                         renderPaginationControls(response);
                     }
-                    else{
+                    else {
                         $('#product_list').text("No products");
                     }
                 },

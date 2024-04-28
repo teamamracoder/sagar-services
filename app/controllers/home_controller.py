@@ -2,6 +2,8 @@ from flask import render_template
 from app.services import ProductService
 from app.services import CategoryService
 from app.services import ServiceService,OrderService,ProductReviewService,CartService,WishlistService,ServiceReviewService,UserService
+from app.auth import get_current_user
+from flask import jsonify
 
 class HomeController:
     def __init__(self) -> None:
@@ -26,7 +28,6 @@ class HomeController:
         top_10_product_ids = [order.id for order in top_10_orders]
         top_10_products =self.product_service.get_product_details_by_ids(top_10_product_ids)
         top_10_products.reverse()
-        # print(top_10_products)
         product_reviews=self.product_reviews_service.get_review_by_product_ids(top_10_product_ids)
 
     #    For BestSelling
@@ -35,7 +36,10 @@ class HomeController:
             serialized_bestselling_products = self.product_service.serialized_products(product)
             bestselling_products.append(serialized_bestselling_products)
         bestselling_products=self.product_reviews_service.get_reviews_by_product_for_home(bestselling_products)
+<<<<<<< HEAD
         # print(bestselling_products)
+=======
+>>>>>>> main
 
 
         monitor_products = []
@@ -72,7 +76,6 @@ class HomeController:
         for_product_services=self.service_reviews_service.get_reviews_by_service_for_home (for_product_services)
 
         for_product_services=self.user_service.get_user_by_reviews_for_home(for_product_services)
-        # print(for_product_services)
 
 
         data = {
@@ -90,3 +93,29 @@ class HomeController:
 }
 
         return render_template("customer/home.html",data=data)
+
+    # Get Total Cart and Wish of User
+    def get_total_cart_and_wish(self):
+        logged_in_user, roles = get_current_user().values()
+        try:
+            totalCart = self.cart_service.get_total_cart_items_by_user_id(logged_in_user.id)
+            totalWish = self.wish_service.get_total_wishlist_items_by_user_id(logged_in_user.id)
+            user_data=self.user_service.get_user_by_id(logged_in_user.id)
+            user_profile_photo_url=user_data[0].profile_photo_url
+            print(user_profile_photo_url)
+            if totalCart is not None or totalWish is not None:
+                total_cart_and_wish = {
+                    "status": "success",
+                    "message": "Data retrieved successfully",
+                    "data": {
+                        "totalCart": totalCart,
+                        "totalWish": totalWish
+                    },
+                    "user_profile_photo_url":user_profile_photo_url
+                }
+                return jsonify(total_cart_and_wish)
+            else:
+                return {"status":"success","message":"write a message"}
+
+        except Exception as e:
+            return {"status":"failed","message":"something went wrong"}

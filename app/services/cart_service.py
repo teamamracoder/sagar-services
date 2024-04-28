@@ -59,6 +59,7 @@ class CartService(BaseService):
             return datas
         except Exception as e:
             return datas
+<<<<<<< HEAD
         
     def update_cart_status(self, user_id, product_id, cart_status):
     # Assuming self.db_session is your SQLAlchemy session
@@ -68,3 +69,10 @@ class CartService(BaseService):
             self.status(cart_item.id)
             db.session.commit()
         return True
+=======
+
+    def get_total_cart_items_by_user_id(self,user_id):
+            cart_items = self.model.query.filter_by(user_id=user_id, is_active=True).count()
+            return cart_items
+
+>>>>>>> main
