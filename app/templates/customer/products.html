@@ -372,7 +372,7 @@
         }
 
         window.checkout = function (product_id) {
-            console.log(product_id)
+            window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
         }
 
     });

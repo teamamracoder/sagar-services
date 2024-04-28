@@ -11,6 +11,7 @@ class ProductService(BaseService):
         for item in items["data"]:
             item["product_name"] = self.get_product_name_by_id(item["product_id"])
             item["product_img_urls"] = self.get_product_img_by_id(item["product_id"])
+            item["stock"] = self.get_product_stock_id(item["product_id"])
         return items
 
     def get_product_name_by_id(self,product_id):
@@ -141,3 +142,19 @@ class ProductService(BaseService):
             return serialized_products_item
         else:
             return None
+        
+    def get_product_details_by_ids_dict(self, product_ids):
+        product_details = []
+
+        # Populate the list with dictionaries containing product IDs
+        for product_id in product_ids:
+
+            product = self.get_by_id(id=product_id)
+            product_details.append({"product_id": product.id,"stock":product.stock})
+
+        # Return list of product details dictionaries
+        return product_details
+    
+    def get_product_stock_id(self,product_id):
+        return ProductModel.query.filter_by(id=product_id).first().stock
+

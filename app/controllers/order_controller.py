@@ -92,7 +92,6 @@ class OrderController:
             }
             self.order_service.update(id, **updated_data)
             return redirect(url_for("order.index"))
-        
         return render_template("admin/order/update.html", id=id, form=form)
 
     def status(self, id):

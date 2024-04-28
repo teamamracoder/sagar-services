@@ -21,62 +21,6 @@
         </ol>
     </nav>
     <div class="row" id="order_list">
-        <!-- single order -->
-        <!-- <div class="col-12">      
-            <div class="card rounded-0">
-                <div class="card-body">
-                    <div class="d-flex ">
-                        <img class="align-self-center img-fluid" src="moni.jpg" width="250">
-                        <div>
-                            <h5 class="bold">product_name</h5>
-                            <p class="text-muted"> Qt: qty item</p>
-                            <p class="text-muted"> shipping_address</p>
-                            <h4 class="mb-3"> <i class="bi bi-currency-rupee"></i>price <span class="small text-muted">(payment_method)/payment_status </span></h4>
-                            <p class="text-muted">Expected Delivery on: <span class="text-body">expected_delivery_date</span></p>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="d-flex justify-content-center align-items-center big-dot dot">
-                            <i class="fa fa-check text-white"></i>
-                        </span>
-                    </div>
-                    <div class="d-flex flex-row justify-content-between align-items-center">
-                        <div class="d-flex flex-column align-items-start">
-                            <span>15 Mar</span><span><strong>Processing</strong></span>
-                        </div>
-
-                        <div class="d-flex flex-column justify-content-center">
-                            <span>15 Mar</span><span><strong>Packaging</strong></span></div>
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                            <span>15 Mar</span><span><strong>Shipping</strong></span>
-                        </div>
-                        <div class="d-flex flex-column align-items-center">
-                            <span>15 Mar</span><span><strong>Out for delivery</strong></span>
-                        </div>
-                        <div class="d-flex flex-column align-items-end">
-                            <span>15 Mar</span><span><strong>Delivered</strong></span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="btn btn-outline-blue text-center">Order Again</a>
-                        <a href="" class="btn btn-outline-blue text-center">Cancel</a>
-                    </div>
-                </div>   
-            </div>
-        </div> -->
-        <!-- end single -->
     </div>
     <div class="row">
         <div class="col-12">
@@ -121,6 +65,7 @@ $(document).ready(function () {
         orders.data.forEach(function(order) {
             var order_statuses = order.order_statuses;
             var order_logs = order.order_logs;
+            console.log(order_logs)
             var latestStatusKey = order_logs.length > 0 ? order_logs[order_logs.length - 1].status_key : 0;
             var bookingDiv = $('<div class="col-12">');
 

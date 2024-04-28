@@ -197,3 +197,14 @@ class ProductController:
             except Exception as e:
                 return render_template("customer/product_details.html", product=product, product_reviews=product_reviews)
         return render_template("error/page_not_found.html")
+    
+    def check_area_availability(self):
+        print(request.form)
+        product_id = request.form.get('product_id')
+        pincode = request.form.get('pincode')
+        product=self.product_service.get_by_id(product_id)
+        available_area_pincodes = product.available_area_pincodes
+        if pincode in available_area_pincodes:
+            return {"is_available":True,"message":""}
+        else:
+            return {"is_available":False,"message":f"{product.product_name} is currently Not Avaiable in your area"}

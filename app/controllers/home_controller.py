@@ -35,7 +35,7 @@ class HomeController:
             serialized_bestselling_products = self.product_service.serialized_products(product)
             bestselling_products.append(serialized_bestselling_products)
         bestselling_products=self.product_reviews_service.get_reviews_by_product_for_home(bestselling_products)
-        print(bestselling_products)
+        # print(bestselling_products)
 
 
         monitor_products = []

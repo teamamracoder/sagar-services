@@ -1,6 +1,6 @@
 from app.models import UserModel
 from .base_service import BaseService
-
+from db import db
 
 class UserService(BaseService):
     def __init__(self) -> None:
@@ -51,3 +51,16 @@ class UserService(BaseService):
             message["sent_by"] = self.get_by_id(message['created_by']).first_name
         return messages
 
+
+    def check_coupon_by_coupon_id(self,user_id,coupon_id):
+        user = self.get_by_id(user_id)
+        if user.coupon==coupon_id:
+            return True
+        else:
+            return False
+        
+    def delete_coupon(self,user_id,coupon_id):
+        user = self.model.query.filter_by(id=user_id).first()
+        print(user.coupon)
+        user.coupon =None
+        db.session.commit()
