@@ -27,6 +27,7 @@ class DashboardController:
         total_order=self.order_service.get_all_orders(range)
         total_product=self.product_service.get_all_products(range)
         total_service=self.service_service.get_all_services(range)
+        print(user_data)
         dataset = {
             "dataset1": user_data,
             "dataset2": order_data,
