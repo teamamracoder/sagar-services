@@ -118,6 +118,7 @@ class OrderController:
                     'updated_at': datetime.now(),
                     'updated_by': 1
                 }
+                self.order_service.update(id, **updated_data)
                 return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
 
             if status_type == 'order':
@@ -126,7 +127,7 @@ class OrderController:
                 order_prev_status=order.order_status
                 order_prev_status_name = order_statuses.get_value(order_prev_status)
                 if order_prev_status!=5 and order_prev_status!=6:
-                    if order_new_status>=order_prev_status :
+                    if order_new_status>=order_prev_status:
                     # if new status is less than previous status, than can not change
                     # if order status is 'delivered','cancelled' than can not change
                         # update order table
@@ -143,7 +144,11 @@ class OrderController:
                             order_id=order.id,
                             order_status=order_new_status
                         )
-                        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+                        # update payment if delivered
+                        # if order_new_status==6:
+                        self.order_service.update(id, payment_status=1)
+
+                        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status, "key":order_new_status}
                     else:
                         return {"status":"error","message":f"{status_type} status can not be changed to old step","data":status}
                 else:
@@ -174,10 +179,9 @@ class OrderController:
         columns = ['id','product_id','created_at','quantity','price','payment_method','shipping_address','payment_status','expected_delivery','order_status']
         data = self.order_service.get_orders_by_user_id(logged_in_user.id,request,columns)
         data = self.product_service.add_product_with_this(data)
-        data = self.order_service.add_order_status_with_this(data)
-        data = self.order_service.add_payment_status_with_this(data)
+        data = self.order_log_service.add_order_latest_log(data)
+        data = self.order_service.add_payment_status_name_with_this(data)
         data = self.order_service.add_payment_method_with_this(data)
-        data = self.order_log_service.add_order_logs_with_this(data)
         return jsonify(data)
 
     def cancel(self,order_id):
@@ -187,3 +191,12 @@ class OrderController:
             self.order_status(order_id,'order','CANCELLED')
         return redirect(url_for("order.orders_page"))
 
+    def order_details_page(self,order_id):
+        order=self.order_service.get_by_id(order_id)
+        product = self.product_service.get_by_id(order.product_id)
+        user = self.user_service.get_by_id(order.user_id)
+        payment_method = payment_methods.get_value(order.payment_method)
+        payment_status = payment_statuses.get_value(order.payment_status)
+        order_logs= self.order_log_service.get_order_log_by_order_id(order_id)
+        print(order_logs)
+        return render_template("customer/order_details.html",order=order,order_logs=order_logs,product=product,user=user,payment_status=payment_status,payment_method=payment_method)

@@ -69,6 +69,8 @@ class BookingModel(db.Model):
 
     booking_details=db.Column(db.Text)
 
+    mobile = db.Column(db.String(15))
+
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="bookings_users")
     staffs = db.relationship('StaffModel', foreign_keys=[staff_id], backref="bookings_staffs")
     services = db.relationship("ServiceModel", back_populates="bookings")

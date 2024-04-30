@@ -71,15 +71,20 @@ class BookingService(BaseService):
             start_date = end_date.replace(day=1)- timedelta(days=1)
         elif time_range == 'Yearly':
             start_date = end_date.replace(month=1, day=1)
+        elif time_range == 'Overall':
+            start_date = None
+            end_date = datetime.now()
 
-        services_last_week = BookingModel.query.filter(
-            BookingModel.created_at >= start_date,
-            BookingModel.created_at <= end_date,
-            BookingModel.is_active ==True
-        ).all()
+        orders_query = BookingModel.query
+
+        if start_date is not None:
+            orders_query = orders_query.filter(BookingModel.created_at >= start_date)
+        orders_query = orders_query.filter(BookingModel.created_at <= end_date, BookingModel.is_active == True)
+
+        services = orders_query.all()
 
         status_counts = defaultdict(int)
-        for service in services_last_week:
+        for service in services:
             status_name = status_mapping.get(service.service_status)
             if status_name:
                 status_counts[status_name] += 1

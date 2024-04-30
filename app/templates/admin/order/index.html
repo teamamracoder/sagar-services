@@ -198,6 +198,9 @@
                         }
                         else{
                             $("#order_status_"+id).text(responseData.data)
+                            if(responseData.key==6){
+                                $("#payment_status_"+id).text("PAID")
+                            }
                         }
                     }
                     else{

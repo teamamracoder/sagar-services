@@ -3,6 +3,7 @@ from .base_service import BaseService
 from db import db
 from datetime import datetime, timedelta
 from collections import defaultdict
+from sqlalchemy import func
 
 class UserService(BaseService):
     def __init__(self) -> None:
@@ -124,6 +125,23 @@ class UserService(BaseService):
 
                 current_date += timedelta(days=6)
 
+        elif time_range == 'Overall':
+            min_date = UserModel.query.with_entities(func.min(UserModel.created_at)).scalar()
+            max_date = UserModel.query.with_entities(func.max(UserModel.created_at)).scalar()
+            start_year = min_date.year if min_date else datetime.now().year
+            end_year = max_date.year if max_date else datetime.now().year
+
+            yearly_counts = defaultdict(int)
+            for year in range(start_year, end_year + 1):
+                orders = UserModel.query.filter(
+                    func.extract('year', UserModel.created_at) == year,
+                    UserModel.is_active == True
+                ).all()
+                yearly_counts[year] = len(orders)
+            for year in range(start_year, end_year + 1):
+                dates.append(str(year))
+                counts.append(yearly_counts[year])
+
         dataset = {
             "label": dates,
             "data": counts
@@ -142,12 +160,19 @@ class UserService(BaseService):
                start_date = end_date.replace(day=1)- timedelta(days=1)
            elif time_range == 'Yearly':
                start_date = end_date.replace(month=1, day=1)
+           elif time_range == 'Overall':
+               start_date = None
 
-           total_users = UserModel.query.filter(
-               UserModel.created_at >= start_date,
-               UserModel.created_at <= end_date,
-               UserModel.is_active==True
-           ).count()
+           if start_date is not None:
+               total_users = UserModel.query.filter(
+                   UserModel.created_at >= start_date,
+                   UserModel.created_at <= end_date,
+                   UserModel.is_active == True
+               ).count()
+           else:
+               total_users = UserModel.query.filter(
+                   UserModel.is_active == True
+               ).count()
 
            return total_users
     

@@ -262,3 +262,106 @@ products (product list) page
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+
+
+/* progress bar */
+.ProgressBar {
+  margin: 0 auto;
+  padding: 2em 0 3em;
+  list-style: none;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProgressBar-step {
+  text-align: center;
+  position: relative;
+  width: 100%;
+
+  &:before,
+  &:after {
+    content: "";
+    height: 0.5em;
+    background-color: #9F9FA3;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    left: -50%;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .25s ease-out;
+  }
+  
+  &:first-child:before,
+  &:first-child:after { 
+    display: none; 
+  }
+
+  &:after {
+    background-color: #00637C;
+    width: 0%;
+  }
+
+  &.is-complete + &.is-current:after,
+  &.is-complete + &.is-complete:after {
+    width: 100%;
+  }
+}
+
+.ProgressBar-icon {
+  width: 1.5em;
+  height: 1.5em;
+  background-color: #9F9FA3;
+  fill: #9F9FA3;
+  border-radius: 50%;
+  padding: 0.5em;
+  max-width: 100%;
+  z-index: 10;
+  position: relative;
+  transition: all .25s ease-out;
+  
+  .is-current & {
+    fill: #00637C;
+    background-color: #00637C;
+  }
+  
+  .is-complete & {
+    fill: #DBF1FF;
+    background-color: #00637C;
+  }
+}
+
+.ProgressBar-stepLabel {
+  display: block;
+  text-transform: uppercase;
+  color: #9F9FA3;
+  position: absolute;
+  padding-top: 0.5em;
+  width: 100%;
+  transition: all .25s ease-out;
+  
+  .is-current > &,
+  .is-complete > & {
+    color: #00637C;
+  }
+}
+
+.progress-wrapper {
+  max-width: 1000px;
+  margin: 4em auto;
+  font-size: 16px;
+}
+@media screen and (max-width: 768px) {
+  .ProgressBar-stepLabel {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .ProgressBar-stepLabel {
+    font-size: 12px;
+  }
+}

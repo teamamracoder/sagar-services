@@ -7,6 +7,7 @@ from app.models import ProductModel
 from collections import Counter
 from datetime import datetime, timedelta
 from collections import defaultdict
+from sqlalchemy import func
 
 class OrderService(BaseService):
     def __init__(self) -> None:
@@ -42,6 +43,11 @@ class OrderService(BaseService):
         for item in items["data"]:
             item['payment_method_name']=payment_methods.get_value(item["payment_method"])
         return items
+    
+    def add_payment_status_name_with_this(self,orders):
+        for order in orders['data']:
+            order['payment_status_name']=payment_statuses.get_value(order["payment_status"])
+        return orders
 
     def get_orders_by_user_id(self,user_id,request,columns):
         page = int(request.args.get('page', 1))
@@ -83,8 +89,8 @@ class OrderService(BaseService):
         counts = []
         if time_range == 'Weekly':
             end_date = datetime.now()
-            start_date = end_date - timedelta(days=6)
-
+            # start_date = end_date - timedelta(days=6)
+            start_date = end_date - timedelta(days=end_date.weekday())
             current_date = start_date
             while current_date <= end_date:
                 day_start = datetime.combine(current_date, datetime.min.time())
@@ -147,6 +153,23 @@ class OrderService(BaseService):
 
                 current_date += timedelta(days=6)
 
+        elif time_range == 'Overall':
+            min_date = OrderModel.query.with_entities(func.min(OrderModel.created_at)).scalar()
+            max_date = OrderModel.query.with_entities(func.max(OrderModel.created_at)).scalar()
+            start_year = min_date.year if min_date else datetime.now().year
+            end_year = max_date.year if max_date else datetime.now().year
+
+            yearly_counts = defaultdict(int)
+            for year in range(start_year, end_year + 1):
+                orders = OrderModel.query.filter(
+                    func.extract('year', OrderModel.created_at) == year,
+                    OrderModel.is_active == True
+                ).all()
+                yearly_counts[year] = len(orders)
+            for year in range(start_year, end_year + 1):
+                dates.append(str(year))
+                counts.append(yearly_counts[year])
+
         dataset = {
             "label": dates,
             "data": counts
@@ -164,23 +187,24 @@ class OrderService(BaseService):
             start_date = end_date.replace(day=1)- timedelta(days=1)
         elif time_range == 'Yearly':
             start_date = end_date.replace(month=1, day=1)
+        elif time_range == 'Overall':
+            start_date = None
+            end_date = datetime.now()
 
-        orders_last_week = OrderModel.query.filter(
-            OrderModel.created_at >= start_date,
-            OrderModel.created_at <= end_date,
-            OrderModel.is_active == True
-        ).all()
+        orders_query = OrderModel.query
+        if start_date is not None:
+            orders_query = orders_query.filter(OrderModel.created_at >= start_date)
+        orders_query = orders_query.filter(OrderModel.created_at <= end_date, OrderModel.is_active == True)
+
+        orders = orders_query.all()
 
         status_counts = defaultdict(int)
-        for order in orders_last_week:
+        for order in orders:
             status_name = status_mapping.get(order.order_status)
             if status_name:
                 status_counts[status_name] += 1
-
         present_statuses = [status_name for status_name in status_mapping.values() if status_counts[status_name] > 0]
-        status_counts_list = []
-        for status_name in present_statuses:
-            status_counts_list.append(status_counts[status_name])
+        status_counts_list = [status_counts[status_name] for status_name in present_statuses]
 
         return {
             "order_statuses": present_statuses,
@@ -195,6 +219,7 @@ class OrderService(BaseService):
                start_date = end_date.replace(day=1)- timedelta(days=1)
            elif time_range == 'Yearly':
                start_date = end_date.replace(month=1, day=1)
+
 
            total_orders = OrderModel.query.filter(
                OrderModel.created_at >= start_date,
@@ -213,3 +238,21 @@ class OrderService(BaseService):
             if order.product_id == product_id and order.user_id == user_id:
                 return order
         return None
+
+           elif time_range == 'Overall':
+               start_date = None
+
+           if start_date is not None:
+               total_orders = OrderModel.query.filter(
+                   OrderModel.created_at >= start_date,
+                   OrderModel.created_at <= end_date,
+                   OrderModel.is_active == True
+               ).count()
+           else:
+               total_orders = OrderModel.query.filter(
+                   OrderModel.is_active == True
+               ).count()
+
+           return total_orders
+    
+

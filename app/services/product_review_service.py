@@ -42,13 +42,21 @@ class ProductReviewService(BaseService):
             start_date = end_date.replace(day=1)- timedelta(days=1)
         elif time_range == 'Yearly':
             start_date = end_date.replace(month=1, day=1)
+        elif time_range == 'Overall':
+               start_date = None
 
-        reviews_last_week = ProductReviewModel.query.filter(
-            ProductReviewModel.created_at >= start_date,
-            ProductReviewModel.created_at <= end_date
-        ).all()
+        if start_date is not None:
+            reviews = ProductReviewModel.query.filter(
+                ProductReviewModel.created_at >= start_date,
+                ProductReviewModel.created_at <= end_date,
+                ProductReviewModel.is_active == True
+            ).all()
+        else:
+            reviews = ProductReviewModel.query.filter(
+                ProductReviewModel.is_active == True
+            ).all()
 
-        rating_counts = Counter(review.rating for review in reviews_last_week)
+        rating_counts = Counter(review.rating for review in reviews)
 
         ratings = []
         counts = []

@@ -187,4 +187,17 @@ class ServiceController:
         service_qnas = self.service_qna_service.get_qna_by_service_id(service_id)
         if service is None:
             return render_template("error/something_went_wrong.html")
+
         return render_template("customer/service_details.html",service=service, reviewForm=reviewForm, qnaForm=qnaForm, service_reviews=service_reviews,service_qnas=service_qnas,data_for_staffs=data_for_staffs,staff_user_ids=staff_user_ids,logged_in_user=logged_in_user)
+
+    def check_area_availability(self):
+        print(request.form)
+        service_id = request.form.get('service_id')
+        pincode = request.form.get('pincode')
+        service=self.service_service.get_by_id(service_id)
+        available_area_pincodes = service.available_area_pincodes
+        if pincode in available_area_pincodes:
+            return {"is_available":True,"message":""}
+        else:
+            return {"is_available":False,"message":f"{service.service_name} is currently Not Avaiable in your area"}
+        
