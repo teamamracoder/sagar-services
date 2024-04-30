@@ -143,7 +143,12 @@
                         complete: res => {
                             responseData = res.responseJSON
                             if (responseData.status === 'success') {
-                                toastr.success(responseData.message);
+                                if(responseData.data){
+                                    toastr.success(responseData.message);
+                                }
+                                else{
+                                    toastr.error(responseData.message);
+                                }
                                 $("#disable_btn_" + id).replaceWith(
                                     '<button id="disable_btn_' + id + '" class="btn  btn-sm me-1 border-'
                                     + (responseData.data ? 'danger' : 'success')

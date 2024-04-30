@@ -11,6 +11,10 @@ class UserService(BaseService):
 
     def get_user_by_email_and_password(self, email, password):
         return UserModel.query.filter_by(email=email, password=password).first()
+    
+    def get_user_by_email_or_mobile_and_password(self, email_or_mobile, password):
+        return UserModel.query.filter((UserModel.email == email_or_mobile) | (UserModel.mobile == email_or_mobile), UserModel.password == password).first()
+
 
     def add_user_with_this(self, items: dict) -> dict:
         for item in items["data"]:

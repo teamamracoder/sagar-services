@@ -11,6 +11,11 @@ class CreateUserForm(FlaskForm):
     last_name=StringField("Last Name",validators=[DataRequired()])
     mobile=StringField("Mobile",validators=[DataRequired()])
     profile_photo_url = FileField("Profile Picture",validators=[FileAllowed(['jpg', 'png', 'jpeg', 'webp'])])
+    street = StringField("Street Address")
+    landmark = StringField("Landmark")
+    address_line = StringField("Address Line")
+    city = StringField("City")
+    state = StringField("State")
     pincode=IntegerField("Pincode")
 
 class UpdateUserForm(FlaskForm):
@@ -22,4 +27,9 @@ class UpdateUserForm(FlaskForm):
     dob = DateField("DOB",validators=[DataRequired()])
     gender = RadioField("Gender", choices=[('Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')],validators=[DataRequired()])
     profile_photo_url = FileField("Profile Picture")
+    street = StringField("Street Address")
+    landmark = StringField("Landmark")
+    address_line = StringField("Address Line")
+    city = StringField("City")
+    state = StringField("State")
     pincode=IntegerField("Pincode")

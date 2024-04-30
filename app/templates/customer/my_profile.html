@@ -14,7 +14,7 @@ block content %}
                         <i class="bi bi-pencil-square position-absolute d-none" style="top:0;right:0;" id="image_edit_icon"></i>
                         {% if user.profile_photo_url and user.profile_photo_url != '' %}
                         <img
-                          src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
+                          src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="Photo" style="width: 100%; max-height:150px;object-fit: contain" class="userImgTag"
                         />
                         {% else %}
                         <img
@@ -94,7 +94,7 @@ block content %}
               </div>
               <div class="col-12 text-end">
                 <button type="button" id="myProfileEditButton" class="btn btn-blue">Edit</button>
-                <a href="{{url_for('user.my_profile_page')}}" class="btn btn-outline-blue">Back</a>
+                <a href="{{url_for('home.index')}}" class="btn btn-outline-blue">Back</a>
               </div>
             </div>
           </div>

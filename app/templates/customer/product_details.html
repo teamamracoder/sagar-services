@@ -97,6 +97,12 @@
                 <p class="text-success">₹{{product.price - product.discount}}<br/>
                 <span class="">Save ₹{{product.discount}} <strike style="font-size: 12px;">MSRP ₹{{product.price}}</strike></span></p>
               </div>
+              {% if product.stock < 3 %}
+                <p class="text-danger">Out Of Stock</p>
+                {% else %}
+                <p class="text-success">In Stock</p>
+              {% endif %}
+              
               <div class="ms-0">
                 <span style="font-size: 12px">Reviews</span><br />
                   <div id="rating" class="rating rating text-warning d-flex flex-row justify-content-start flex-row-reverse"></div>
