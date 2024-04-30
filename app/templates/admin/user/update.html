@@ -6,7 +6,6 @@
 
 <div class="container">
     <h3 class="text-center my-3">Edit User</h3>
-
     <form method="POST" action="{{ url_for('user.update',id=id) }}" id="adminForm"  enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="row">
@@ -30,6 +29,43 @@
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control form-control-sm") }}
             </div>
+            <div class="col-12 border px-2 py-2 my-2">
+                <p>Address</p>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.street.label(class="form-label") }}
+                        {{ form.street(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.landmark.label(class="form-label") }}
+                        {{ form.landmark(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.address_line.label(class="form-label") }}
+                        {{ form.address_line(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.city.label(class="form-label") }}
+                        {{ form.city(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.state.label(class="form-label") }}
+                        {{ form.state(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.pincode.label(class="form-label") }}
+                        {{ form.pincode(class="form-control form-control-sm") }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                {{ form.gender.label(class="form-check-label")}}
+                {{ form.gender(class="form-check", required="true")}}
+          </div>
+          <div class="col-6">
+            {{ form.dob.label(class="form-check-label")}}
+            {{ form.dob(class="form-check", required="true")}}
+      </div>
             <div class="col-12">
                 {{ form.profile_photo_url.label(class="form-label") }}
                 {{ form.profile_photo_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
@@ -40,9 +76,7 @@
             </div>
         </div>
     </form>
-
 </div>
-
 <script>
     $(document).ready(function () {
         $('#adminForm').validate({

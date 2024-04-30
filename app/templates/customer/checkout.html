@@ -9,7 +9,7 @@
     <img src="../../static/img/gif.gif" alt="" class="checkout-img" style="opacity: 0.3; object-fit: contain;">
   </div>
   <div class="col-lg-6 col-md-6 col-sm-12" >
-  <form class="accordion shadow-sm rounded-0 adminForm" id="accordionPanelsStayOpenExample" method="POST" action="{{url_for('booking.confirm')}}">
+  <form class="accordion shadow-sm rounded-0 adminForm" id="accordionPanelsStayOpenExample" method="POST" action="{{url_for('checkout.confirm')}}">
       <div class="accordion-item rounded-0">
         <h2 class="accordion-header rounded-0">
           <button type="button" class="accordion-button accordion-button1 rounded-0" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
@@ -104,12 +104,11 @@
           </button>
         </h2>
         <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionPanelsStayOpenExample">
-       
           <div class="accordion-body">
             <div class="user border shadow-sm p-3 bg-body-tertiary">
               <strong class="pe-1">Name:</strong> {{user.first_name + " "+user.last_name}}
               <br><strong class="pe-1">Email:</strong> {{user.email}}
-              <br><strong class="pe-1">Address:</strong> {{user.address}}
+              <br><strong class="pe-1">Address:</strong> {{ user.landmark }} ,{{ user.address_line }} ,{{ user.city }}, {{ user.state }} ,{{ user.street }}
               <br><strong class="pe-1">Pincode:</strong> <span id="prev_pincode">{{user.pincode}}</span>
               <br><strong class="pe-1">Contact No:</strong> {{user.mobile}}
             </div>
@@ -118,16 +117,14 @@
               <strong class="ps-5 d-none">
                 <input type="checkbox" name="new-address" id="addressCheckbox" checked>
                 <label for="addressCheckbox">Ship To New Address</label>
-            </strong>
-              
-                
+              </strong>
+              <p class="text-danger">Your address is insufficient</p>
                 {% else %}
                 <strong class="ps-5">
                     <input type="checkbox" name="new-address" id="addressCheckbox">
                     <label for="addressCheckbox">Ship To New Address</label>
                 </strong>
                 {% endif %}
-            
               <div class=" justify-content-end" id="user-addr-btn" style="display: flex;">
                 <button type="button" class="btn second-btn m-3 btn-blue">Next</button>
              </div>

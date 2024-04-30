@@ -26,19 +26,27 @@
               <div id="panelsStayOpen-collapseOne">
                 <div class="p-1 rounded-0">
                   <table class="table table-responsive table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Service</th>
+                            <th>Charge</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
                       <tbody>
                           <tr id="service_row_{{service.id}}">
                               <input type="hidden" name="service_id" value="{{service.id}}" id="service_id">
-                              <td><img src="{{ url_for('static', filename=service.service_img_urls[1]) }}" class="product-img" alt="Product Image" height="67px" width="67px"></td>
+                              <td><img src="{{ url_for('static', filename=service.service_img_urls[0]) }}" class="product-img" alt="Service Image" height="67px" width="67px"></td>
                               <td class="text-primary">{{ service.service_name }}</td>
-                              <td>₹ <span>{{ service.service_charge - service.discount }}</span>/-</td>
-                              <td>₹ <span class="sub_total_price">{{ service.service_charge - service.discount }}</span>/-</td>
+                              <td>₹ <span>{{ service.service_charge }}</span>/-</td>
+                              <td>₹ <span class="sub_total_price">{{ service.service_charge-service.discount }}</span>/-</td>
                           </tr>
                       </tbody>
                       <tfoot class="">
                           <tr>
-                              <td colspan="4"><strong>Total Amount</strong></td>
-                              <td>₹ <span id="total_price"></span> /-</td>
+                              <td colspan="3"><strong>Total Amount</strong></td>
+                              <td>₹ <span id="total_price">{{ service.service_charge - service.discount }}</span>/-</td>
                           </tr>
                       </tfoot>
                   </table>
