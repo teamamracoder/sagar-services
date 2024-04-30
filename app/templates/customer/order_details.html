@@ -100,9 +100,9 @@
   function updateProgressBar() {
     var $bar = $(".ProgressBar");
     $bar.children().removeClass("is-current is-complete");
-    if (progressData[progressData.length - 1].status_name === 'DELIVERED') {
-        $("#invoice").removeClass("d-none")
-      }
+    // if (progressData[progressData.length - 1].status_name === 'DELIVERED') {
+    //     $("#invoice").removeClass("d-none")
+    //   }
     if (progressData.length > 0 && progressData[progressData.length - 1].status_name === 'CANCELLED') {
         $bar.children().removeClass("is-current is-complete");
         $("#cancelled_text").removeClass("d-none")
