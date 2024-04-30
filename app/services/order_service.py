@@ -234,3 +234,4 @@ class OrderService(BaseService):
                ).count()
 
            return total_orders
+    

@@ -1,1 +1,142 @@
-booking success
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Shopping</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<style>
+  h3{
+    font-family:cursive;
+  }
+  body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #330b0b;
+    }
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .video {
+      min-width: 72%;
+      min-height: 72%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 53%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+
+    .loader {
+      height: 100vh;
+      width: 100vw;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+
+    
+@media (max-width: 1500px) {
+    
+  .container{
+      width: 50vw;
+    }
+  
+  
+  }
+
+
+
+      
+@media (max-width: 500px) {
+    
+    .container{
+        width: 100vw;
+      }
+    
+    
+    }
+
+    
+</style>
+
+</head>
+<body>
+    
+  <div class="loader d-flex">
+    <div class="container text-center">
+      <img src="{%url_for('static',filename='video/celebration-10322572-8413733.mp4')%}" class="img-fluid" alt="Loading animation">
+    </div>
+  </div>
+
+<div class="display d-none justify-containt-center mt-5">
+  <div class="video-background">
+    <video loading="lazy" muted="muted" src="{%url_for('static',filename='video/celebration-10322572-8413733.mp4')%}" type="video/mp4" autoplay="autoplay" loop="loop" class="video"></video>
+  </div>
+    <div class="container w-sm-100 mt-5">
+    <div class="card text-center">
+        <div class="card-header d-flex">
+           <h3 class="card-title mx-auto text-primary"> Thank You for Shopping! 
+            <img src="{%url_for('static',filename='img/cart101.png')%}"  alt="..." height="70px">
+          </h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text">We appreciate your business.</p>
+
+            <div class="">
+              <video loading="lazy" muted="muted" src="{%url_for('static',filename='video/Packing.mp4')%}" type="video/mp4" autoplay="autoplay" loop="loop" height="200px"></video>
+              </div>
+
+            <h3 class="card-title  text-success">Your order has been successfully placed.</h3>
+
+          <p class="card-text">We will send you an email confirmation shortly.</p>
+          
+          <a href="#" class="btn btn-primary text-center">View Order</a>
+       
+        </div>
+        <div class="card-footer text-body-secondary">
+          <div class="">
+          <img src="3-countdown-unscreen.gif" alt="" height="50px" loop="false">
+              
+        </div>
+          It will redirect to Home page
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(function() {
+      const loader = document.querySelector('.loader');
+      const display = document.querySelector('.display');
+      const body = document.body;
+
+      loader.classList.toggle('d-none');
+      display.classList.toggle('d-none');
+      loader.classList.toggle('d-flex');
+      display.classList.toggle('d-flex');
+
+      body.style.backgroundColor = 'transparent';
+    }, 2000);
+
+  
+
+    setTimeout(function() {
+     window.location.href="index.html";
+    }, 67000);
+
+
+  </script>
+</body>
+</html> -->

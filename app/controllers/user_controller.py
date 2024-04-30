@@ -22,8 +22,16 @@ class UserController:
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
+                landmark=form.landmark.data,
+                address_line=form.address_line.data,
+                city=form.city.data,
+                state=form.state.data,
+                street=form.street.data,
+                pincode=form.pincode.data,
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
+                dob=form.dob.data,
+                gender=form.gender.data,
                 profile_photo_url=filepath
             )
             return redirect(url_for("user.index"))
@@ -34,7 +42,7 @@ class UserController:
         return render_template("admin/user/index.html",user_id=logged_in_user.id)
 
     def get_user_data(self):
-        columns = ["id", "first_name", "email", "is_active", "mobile", "last_name", "profile_photo_url", "address"]
+        columns = ["id", "first_name", "email", "is_active", "mobile", "last_name", "profile_photo_url"]
         data = self.user_service.get(request, columns)
         data = self.role_service.add_roles_with_users(data)
         return jsonify(data)
@@ -52,16 +60,24 @@ class UserController:
             self.user_service.update(
                 id=id,
                 email=form.email.data,
-                password=form.password.data,
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 mobile=form.mobile.data,
+                dob=form.dob.data,
+                gender=form.gender.data,
+                landmark=form.landmark.data,
+                address_line=form.address_line.data,
+                city=form.city.data,
+                state=form.state.data,
+                street=form.street.data,
+                pincode=form.pincode.data,
+                profile_photo_url=filepath,
                 updated_by=logged_in_user.id,
-                updated_at=datetime.now(),
-                profile_photo_url=filepath
+                updated_at=datetime.now()
             )
             return redirect(url_for("user.index"))
         return render_template("admin/user/update.html", id=id, form=form)
+
 
     def status(self, id):
         user = self.user_service.get_by_id(id)
@@ -82,7 +98,6 @@ class UserController:
         form = UpdateUserForm(obj=user)
         return render_template("admin/user/my_profile.html",form=form, user=user)
 
-
     def admin_my_profile_update(self):
         logged_in_user,roles=get_current_user().values()
         user = self.user_service.get_by_id(logged_in_user.id)
@@ -98,10 +113,15 @@ class UserController:
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             mobile=form.mobile.data,
-            address=form.address.data,
             updated_by=logged_in_user.id,
             gender = form.gender.data,
             dob = form.dob.data,
+            landmark=form.landmark.data,
+            address_line=form.address_line.data,
+            city=form.city.data,
+            state=form.state.data,
+            street=form.street.data,
+            pincode=form.pincode.data,
             updated_at=datetime.now(),
             profile_photo_url=filepath
         )
@@ -135,10 +155,15 @@ class UserController:
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             mobile=form.mobile.data,
-            address=form.address.data,
             updated_by=logged_in_user.id,
             gender = form.gender.data,
             dob = form.dob.data,
+            landmark=form.landmark.data,
+            address_line=form.address_line.data,
+            city=form.city.data,
+            state=form.state.data,
+            street=form.street.data,
+            pincode=form.pincode.data,
             updated_at=datetime.now(),
             profile_photo_url=filepath
         )

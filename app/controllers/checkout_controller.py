@@ -83,6 +83,8 @@ class CheckoutController:
         logged_in_user, roles = get_current_user().values()
         try:
             coupon_code = request.form.get("coupon_code")
+            print(coupon_code)
+
             coupon = self.coupon_service.get_by_code(coupon_code)
             if coupon:
                 is_valid_coupon = self.user_service.check_coupon_by_coupon_id(logged_in_user.id, coupon.id)
@@ -164,7 +166,7 @@ class CheckoutController:
                 mobile = request.form.get("MobileNo")
             else:
                 mobile = logged_in_user.mobile
-                shipping_address = logged_in_user.address
+                shipping_address = logged_in_user.landmark+","+logged_in_user.address_line+","+logged_in_user.city+","+logged_in_user.state+","+logged_in_user.street
                 area_pincode = logged_in_user.pincode
             if request.form.get("pay-method")=='1':
                 payment_status = 2
