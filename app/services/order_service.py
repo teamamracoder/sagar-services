@@ -219,6 +219,26 @@ class OrderService(BaseService):
                start_date = end_date.replace(day=1)- timedelta(days=1)
            elif time_range == 'Yearly':
                start_date = end_date.replace(month=1, day=1)
+
+
+           total_orders = OrderModel.query.filter(
+               OrderModel.created_at >= start_date,
+               OrderModel.created_at <= end_date,
+               OrderModel.is_active==True
+           ).count()
+
+           return total_orders
+
+
+
+    def get_by_user_and_product_id(self, product_id, user_id):
+        orders = self.model.query.filter_by(product_id=product_id, user_id=user_id).all()
+        
+        for order in orders:
+            if order.product_id == product_id and order.user_id == user_id:
+                return order
+        return None
+
            elif time_range == 'Overall':
                start_date = None
 
@@ -235,3 +255,4 @@ class OrderService(BaseService):
 
            return total_orders
     
+

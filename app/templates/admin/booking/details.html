@@ -28,28 +28,32 @@
                                             <td><img src="{{ url_for('static', filename=service.service_img_urls[0]) }}" alt="..." class="card-img">
                                                 {{ service.service_name }}</td>
                                             <td>{{ staff.first_name }} {{ staff.last_name }}</td>
-                                            <td>₹{{ booking.total_charge }}/-</td>
+                                            <td>₹{{ booking.total_charges }}/-</td>
                                             <td>{{ payment_status }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <p>Shipping Information</p>
-                                <p>
-                                    {{ user.first_name +" "+ user.last_name }}, 
-                                </p>
-
+                                <h4>Shipping Information</h4>
                                 <ul class="list-group border-0">
                                     <li class="list-group-item border-0">
                                       <span class="fw-bold">Booked By : </span> {{ user.first_name +" "+ user.last_name }}
                                     </li>
                                     <li class="list-group-item  border-0">
-                                      <span class="fw-bold">Booked At : </span> {{ booking.created_at }}
+                                      <span class="fw-bold">Booked At : </span> {{ booking.created_at.strftime('%d/%m/%Y, %I:%M %p') }}
+
                                     </li>
                                     <li class="list-group-item  border-0">
-                                        <span class="fw-bold">Service : </span> {{ booking.service_name }}
+                                        <span class="fw-bold">Service : </span> {{ service.service_name }}
                                     </li>
                                     <li class="list-group-item  border-0">
-                                        <span class="fw-bold">Service Charge : </span> ₹{{ booking.total_charge }}/- ( {{payment_status}} )
+                                        <span class="fw-bold">Service Charge : </span> ₹{{ service.service_charge }}/- ( {{payment_status}} )
+                                    </li>
+                                    <li class="list-group-item  border-0">
+                                        <span class="fw-bold">Discount : </span> {{ service.discount }}
+                                    </li>
+                                    {% set sub_total = service.service_charge - service.discount %}
+                                    <li class="list-group-item border-0">
+                                        <span class="fw-bold">Sub-Total : </span> ₹{{ sub_total }}
                                     </li>
                                     <li class="list-group-item  border-0">
                                         <span class="fw-bold">Service Location : </span> {{ booking.service_location }}

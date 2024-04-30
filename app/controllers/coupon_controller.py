@@ -1,17 +1,20 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateCouponForm, UpdateCouponForm
-from app.services import CouponService
+from app.services import CouponService,UserService
 from app.auth import get_current_user
 from datetime import datetime
 from app.constants import discount_types
 from app.utils import FileUtils
 from app.utils import SMSUtils
 from app.utils import VOICEUtils
+from app.constants import email_templates
+from app.utils.mail_utils import MailUtils
 
 class CouponController:
 
     def __init__(self) -> None:
         self.coupon_service= CouponService()
+        self.user_service= UserService()
 
     def create(self):
         logged_in_user,roles=get_current_user().values()
@@ -85,3 +88,19 @@ class CouponController:
             return {"status":"success","message":"Category Activated","data":is_active}
         return {"status":"success","message":"Category Deactivated","data":is_active}
 
+# 
+    def send_coupon(self, id, user_id):
+        logged_in_user,roles=get_current_user().values()
+        coupon = self.coupon_service.get_by_id(id)
+        if coupon is None:
+            return {"status":"error","message":"item not found","data":None}
+        is_avaiable_coupon = self.user_service.check_coupon_by_coupon_id(user_id,id)
+        msg = email_templates.get_value('SENT_COUPON_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}").replace("[COUPON_CODE]",coupon.coupon_code)
+        MailUtils.send(logged_in_user.email, "Congratulations! You Got a New Coupon Code ", msg)
+        
+        
+        self.user_service.update(
+            id=user_id,
+            coupon=id
+        )
+        return redirect(url_for("coupon.index"))

@@ -9,7 +9,7 @@ class CreateBookingForm(FlaskForm):
     service_status = SelectField('Service Status', coerce=int, validators=[DataRequired()])
     payment_status = SelectField('Payment Status', coerce=int, validators=[DataRequired()])
     payment_method = SelectField('Payment Method', coerce=int, validators=[DataRequired()])
-    area_pincode  = StringField("area_pincode", validators=[DataRequired()])
+    area_pincode  = StringField("Available Pincode", validators=[DataRequired()])
 
 class UpdateBookingForm(FlaskForm):
     service_id  = SelectField('Service', validators=[DataRequired()])
@@ -19,4 +19,5 @@ class UpdateBookingForm(FlaskForm):
     service_status = SelectField('Service Status', coerce=int, validators=[DataRequired()])
     payment_status = SelectField('Payment Status', coerce=int, validators=[DataRequired()])
     payment_method = SelectField('Payment Method', coerce=int, validators=[DataRequired()])
-    area_pincode  = StringField("area_pincode", validators=[DataRequired()])
+    area_pincode = StringField("Available Pincode", validators=[DataRequired()])
+    booking_details = TextAreaField("Extra Charges [booking details]")
