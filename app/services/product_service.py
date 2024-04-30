@@ -153,12 +153,19 @@ class ProductService(BaseService):
                start_date = end_date.replace(day=1)- timedelta(days=1)
            elif time_range == 'Yearly':
                start_date = end_date.replace(month=1, day=1)
+           elif time_range == 'Overall':
+               start_date = None
 
-           total_products = ProductModel.query.filter(
-               ProductModel.created_at >= start_date,
-               ProductModel.created_at <= end_date,
-               ProductModel.is_active==True
-           ).count()
+           if start_date is not None:
+               total_products = ProductModel.query.filter(
+                   ProductModel.created_at >= start_date,
+                   ProductModel.created_at <= end_date,
+                   ProductModel.is_active == True
+               ).count()
+           else:
+               total_products = ProductModel.query.filter(
+                   ProductModel.is_active == True
+               ).count()
 
            return total_products
 

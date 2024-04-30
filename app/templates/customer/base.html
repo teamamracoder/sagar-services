@@ -317,7 +317,7 @@
                             } else {
                                 html_before_login = ''
                                 html_before_login += `<li class="nav-item navtext">
-                            <a class="nav-link loginBtn" href="{{ url_for('auth.login') }}">Login</a>
+                            <a class="nav-link loginBtn" href="{{ url_for('auth.login') }}">Sign In</a>
                         </li>`
                                 $('.nav_login_div').append(html_before_login);
                                 $(".nav_cart_wish_Btns").hide();
@@ -430,6 +430,28 @@
                 });
             });
         })
+
+
+
+        window.addEventListener('scroll', function () {
+            let scrollPosition = window.scrollY;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                let sectionId = link.getAttribute('href').substring(1);
+                let section = document.getElementById(sectionId);
+                let navbarHeight = document.getElementById('navbarSupportedContent').offsetHeight;
+
+                if (section) {
+                    let sectionTop = section.getBoundingClientRect().top + window.scrollY - navbarHeight;
+                    let sectionHeight = section.offsetHeight;
+
+                    if (scrollPosition >= sectionTop && scrollPosition < (sectionTop + sectionHeight)) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                }
+            });
+        });
     </script>
 </body>
 

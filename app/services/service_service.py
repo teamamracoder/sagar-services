@@ -72,11 +72,18 @@ class ServiceService(BaseService):
                start_date = end_date.replace(day=1)- timedelta(days=1)
            elif time_range == 'Yearly':
                start_date = end_date.replace(month=1, day=1)
+           elif time_range == 'Overall':
+               start_date = None
 
-           total_services = ServiceModel.query.filter(
-               ServiceModel.created_at >= start_date,
-               ServiceModel.created_at <= end_date,
-               ServiceModel.is_active==True
-           ).count()
+           if start_date is not None:
+               total_services = ServiceModel.query.filter(
+                   ServiceModel.created_at >= start_date,
+                   ServiceModel.created_at <= end_date,
+                   ServiceModel.is_active == True
+               ).count()
+           else:
+               total_services = ServiceModel.query.filter(
+                   ServiceModel.is_active == True
+               ).count()
 
            return total_services
