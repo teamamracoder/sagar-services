@@ -193,7 +193,7 @@ email_templates = DefaultTemplate(
                         <h1>Thank You for Shopping with Sagar-co!</h1>
                         <p>Hi [FULL_NAME],</p>
                         <p> Congratulations..! your a lucky customer for Sagar-co!</p>
-                        <p> You Got a coupon code - [COUPON_CODE]<br/> Use the coupon code and enjoy your shopping with Sagar-co!</p>
+                        <p> You Got a coupon code -  [COUPON_CODE] <br/>  this coupon code validate till [EXPIRY_DATE] <br/> Use the coupon code and enjoy your shopping with Sagar-co!</p>
                         <p>Thank you for your support!</p>
                         <p>Best wishes,</p>
                         <p>The Sagar-co Team</p>
