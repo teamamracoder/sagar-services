@@ -212,22 +212,33 @@ class OrderService(BaseService):
         }
 
     def get_all_orders(self,time_range):
-           end_date = datetime.now()
-           if time_range == 'Weekly':
-               start_date = end_date - timedelta(days=end_date.weekday())
-           elif time_range == 'Monthly':
-               start_date = end_date.replace(day=1)- timedelta(days=1)
-           elif time_range == 'Yearly':
-               start_date = end_date.replace(month=1, day=1)
+        end_date = datetime.now()
+        if time_range == 'Weekly':
+            start_date = end_date - timedelta(days=end_date.weekday())
+        elif time_range == 'Monthly':
+            start_date = end_date.replace(day=1)- timedelta(days=1)
+        elif time_range == 'Yearly':
+            start_date = end_date.replace(month=1, day=1)
+        elif time_range == 'Overall':
+            start_date = None
 
+        if start_date is not None:
+               total_orders = OrderModel.query.filter(
+                   OrderModel.created_at >= start_date,
+                   OrderModel.created_at <= end_date,
+                   OrderModel.is_active == True
+               ).count()
+        else:
+            total_orders = OrderModel.query.filter(
+                OrderModel.is_active == True
+            ).count()
+        total_orders = OrderModel.query.filter(
+            OrderModel.created_at >= start_date,
+            OrderModel.created_at <= end_date,
+            OrderModel.is_active==True
+        ).count()
 
-           total_orders = OrderModel.query.filter(
-               OrderModel.created_at >= start_date,
-               OrderModel.created_at <= end_date,
-               OrderModel.is_active==True
-           ).count()
-
-           return total_orders
+        return total_orders
 
 
 
@@ -239,20 +250,6 @@ class OrderService(BaseService):
                 return order
         return None
 
-           elif time_range == 'Overall':
-               start_date = None
 
-           if start_date is not None:
-               total_orders = OrderModel.query.filter(
-                   OrderModel.created_at >= start_date,
-                   OrderModel.created_at <= end_date,
-                   OrderModel.is_active == True
-               ).count()
-           else:
-               total_orders = OrderModel.query.filter(
-                   OrderModel.is_active == True
-               ).count()
-
-           return total_orders
     
 
