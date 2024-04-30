@@ -12,7 +12,6 @@
         <div class="col-lg-5 pt-5">
             <h5 class="mt-5 mb-3" style="border-bottom:3px solid #000000;width:fit-content;margin:auto;">CREATE ACCOUNT
             </h5>
-
             <form method="POST" action="{{ url_for('auth.signup') }}" id="adminForm" enctype="multipart/form-data">
                 {{ form.csrf_token }}
                 <div class="row">
@@ -40,6 +39,24 @@
                     <div class="col-md-6">
                         {{ form.mobile.label(class="form-label") }}
                         {{ form.mobile(class="form-control form-control-sm") }}
+                    </div>
+                    <div class="col-md-12">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                            {% if category == 'email_error' %}
+                            <p class="text-danger p-0 m-0">
+                                {{ message }}
+                            </p>
+                            {% endif %}
+                            {% if category == 'mobile_error' %}
+                            <p class="text-danger p-0 m-0 text-end">
+                                {{ message }}
+                            </p>
+                            {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% endwith %}
                     </div>
                     <div class="col-12">
                         {{ form.password.label(class="form-label") }}

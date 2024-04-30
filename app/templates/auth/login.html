@@ -16,8 +16,8 @@
                 {{ form.csrf_token }}
                 <div class="row d-flex flex-column align-items-center">
                     <div class="col-md-8 col-lg-12 col-sm-12">
-                        {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control form-control-sm") }}
+                        {{ form.email_or_mobile.label(class="form-label") }}
+                        {{ form.email_or_mobile(class="form-control form-control-sm") }}
                     </div>
                     <div class="col-md-8 col-lg-12 col-sm-12">
                         {{ form.password.label(class="form-label") }}
@@ -39,7 +39,6 @@
                             <div class="col-6 ">
                                 <div>
                                     <a href="{{ url_for('auth.signup') }}" class="text-decoration-none">New user ?</a>
-
                                 </div>
                                 <div>
                                     <a href="{{ url_for('auth.reset_password') }}" class="text-decoration-none">Forgot password ?</a>

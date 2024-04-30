@@ -42,7 +42,6 @@ email_templates = DefaultTemplate(
                     </ol>
 
                     <p>For any questions, simply click below:</p>
-                    <a href="[SITE]" class="button" style="display: inline-block; background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; margin-top: 20px;">Login Here</a>
                     <p>Happy browsing!</p>
                     <p>Best Regards,<br>[FULL_NAME]<br>Sagar Electronics</p>
                     <footer class="footer" style="text-align: center; margin-top: 20px;">
@@ -103,7 +102,6 @@ email_templates = DefaultTemplate(
                         <p>Hi Arif,</p>
                         <p>We're reaching out to provide you with an update on your recent order with us. Your order number is: <b>[ORDER_NUMBER]</b>.</p>
                         <p>We're pleased to inform you that your order is <b>[ORDER_STATUS]</b>. You can track the progress of your order by clicking the button below:</p>
-                        <a href="[SITE]" class="button" style="display: inline-block; background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; margin-top: 20px;">Order Tracking</a>
                         <p>If you have any questions or concerns regarding your order, please don't hesitate to contact our customer support team at <a href="tel:" style="color:black;text-decoration: none;">9775116594</a> | <a href="mailto:team.amracode@gmail.com" style="color:black;text-decoration: none;">team.amracode@gmail.com</a>.com. We're here to assist you every step of the way.</p>
                         <p>Thank you for choosing us for your purchase. We appreciate your business and look forward to serving you again in the future.</p>
                         <p>Best regards,</p>

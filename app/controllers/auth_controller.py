@@ -47,8 +47,8 @@ class AuthController:
     def login(self):
         form = LoginForm()
         if form.validate_on_submit():
-            user = self.user_service.get_user_by_email_and_password(
-                form.email.data, form.password.data
+            user = self.user_service.get_user_by_email_or_mobile_and_password(
+                form.email_or_mobile.data.strip(), form.password.data.strip()
             )
             if user:
                 login(user)
@@ -61,13 +61,23 @@ class AuthController:
     def signup(self):
         form = CreateUserForm()
         if form.validate_on_submit():
+            email=form.email.data.strip()
+            mobile=form.mobile.data.strip()
+            prev_user = self.user_service.get_user_by_email(email)
+            if prev_user:
+                flash("Email already exist", "email_error")
+                return render_template("auth/signup.html", form=form)
+            prev_user = self.user_service.get_user_by_mobile(mobile)
+            if prev_user:
+                flash("Phone No. already exist", "mobile_error")
+                return render_template("auth/signup.html", form=form)
             filepath = FileUtils.save("users", [form.profile_photo_url.data])
             user = self.user_service.create(
-                email=form.email.data,
-                password=form.password.data,
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                mobile=form.mobile.data,
+                email=email,
+                password=form.password.data.strip(),
+                first_name=form.first_name.data.strip(),
+                last_name=form.last_name.data.strip(),
+                mobile=mobile,
                 created_at=datetime.now(),
                 profile_photo_url=filepath,
                 is_active=False,
