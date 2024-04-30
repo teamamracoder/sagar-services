@@ -34,7 +34,7 @@
                         </script>
                         <td>
                             <select class="form-select qty-selector" id="qty_{{ product.id }}" onchange="updateQuantity('{{ product.id }}')">
-                                <option value="">qty</option>
+                                <option value="" disabled>qty</option>
                                 <option value="{{ product.id }}_1" selected>1</option>
                                 <option value="{{ product.id }}_2">2</option>
                                 <option value="{{ product.id }}_3">3</option>

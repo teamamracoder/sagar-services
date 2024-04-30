@@ -166,7 +166,7 @@ class CheckoutController:
                 mobile = request.form.get("MobileNo")
             else:
                 mobile = logged_in_user.mobile
-                shipping_address = logged_in_user.address
+                shipping_address = logged_in_user.landmark+","+logged_in_user.address_line+","+logged_in_user.city+","+logged_in_user.state+","+logged_in_user.street
                 area_pincode = logged_in_user.pincode
             if request.form.get("pay-method")=='1':
                 payment_status = 2
