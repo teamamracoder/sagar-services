@@ -1,0 +1,131 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}Book{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+        <div class="card my-2 px-0 rounded-0">
+            <div class="card-header">
+                <h5 class="text-center my-1">Order Details</h5>
+            </div>
+            <div class="card-body py-0 w-100">
+                <div class="row" style="min-height: 200px;">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table my-1 w-100">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Total Amount</th>
+                                            <th>Payment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><img src="{{ url_for('static', filename=product.product_img_urls[0])  }}" alt="" class="adminTableImg"></td>
+                                            <td>{{ product.product_name }}</td>
+                                            <td>x{{order.quantity}}</td>
+                                            <td>₹{{ order.price }}/-</td>
+                                            <td>{{payment_method}}/{{payment_status}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row border p-1 shadow-sm">
+                                    <div class="col-6">
+                                        
+                                            <p class="fw-bold">Shipping Information :</p>
+                                            <p>{{ user.first_name +" "+ user.last_name }}, {{order.mobile}}</p>
+                                            <p>{{ order.shipping_address }}, {{ order.area_pincode }}</p>
+                                        
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="fw-bold">Billing Information :</p>
+                                        <p>{{ user.first_name +" "+ user.last_name }}, {{user.mobile}}</p>
+                                        <p>{{ user.email }}</p>
+                                        <p>{{ user.address }},{{user.pincode}}</p>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="progress-wrapper mt-4 py-0">
+                                   <ol class="ProgressBar">
+                                     <li class="ProgressBar-step">
+                                       <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
+                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>PROCESSING</span><span class="date_0"></span></span>
+                                     </li>
+                                     <li class="ProgressBar-step">
+                                       <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
+                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>PACKAGING</span><span class="date_1"></span></span>
+
+                                     </li>
+                                     <li class="ProgressBar-step">
+                                       <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
+                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>SHIPPING</span><span class="date_2"></span></span>
+                                     </li>
+                                     <li class="ProgressBar-step">
+                                       <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
+                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>ON_THE_WAY</span><span class="date_3"></span></span>
+                                    </li>
+                                     <li class="ProgressBar-step">
+                                        <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
+                                        <span class="ProgressBar-stepLabel d-flex flex-column"><span>DELIVERED</span><span class="date_4"></span></span>
+                                    </li>
+                                   </ol>
+                                </div>
+                                   <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                                     <symbol id="checkmark-bold" viewBox="0 0 24 24">
+                                       <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/>
+                                     </symbol>
+                                   </svg>
+                            </div>
+                            <p id="cancelled_text" class="text-danger text-end d-none"><i class="bi bi-exclamation-triangle"></i> Ordered Canceled</p>
+                            <button id="invoice" class="btn btn-outline-blue d-none">Invoice</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+<script>
+  var progressDataString = '{{ order_logs | tojson }}'
+  var progressData = JSON.parse(progressDataString);
+  function updateProgressBar() {
+    var $bar = $(".ProgressBar");
+    $bar.children().removeClass("is-current is-complete");
+    if (progressData[progressData.length - 1].status_name === 'DELIVERED') {
+        $("#invoice").removeClass("d-none")
+      }
+    if (progressData.length > 0 && progressData[progressData.length - 1].status_name === 'CANCELLED') {
+        $bar.children().removeClass("is-current is-complete");
+        $("#cancelled_text").removeClass("d-none")
+      }
+      else{
+          progressData.forEach(function(step, index) {
+              $(".date_"+index).text(getFormattedDate(step.created_at))
+            
+            var $step = $bar.children().eq(index);
+            $step.addClass("is-complete");
+            
+            if (index === progressData.length - 1) {
+              $step.addClass("is-current");
+            }
+
+          });
+      }
+  }
+
+$(document).ready(function() {
+  updateProgressBar();
+});
+
+</script>
+
+{% endblock %}
