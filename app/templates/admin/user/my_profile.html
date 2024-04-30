@@ -30,7 +30,7 @@
                         <ul class="navbar-nav stroke ms-auto">
                             <li class="nav-item navtext">
                                 <a class="nav-link " href="{{ url_for('auth.logout') }}">
-                                    <i class="bi bi-box-arrow-in-left"></i> Logout</a>
+                                <i class="bi bi-box-arrow-in-left"></i> Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -48,43 +48,63 @@
               <div class="ms-2 d-lg-none d-md-none text-end">
                   <button class="btn btn-sm btn-dark" type="button" id="filterMenuButton" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-microsoft"></i></button>
               </div>
-              <div class="row g-3">
-                <div class="col-12 d-none">
-                  {{ form.profile_photo_url(class="d-none",  readonly="readonly", disabled=true, accept="jpg|png|jpeg|png") }}
-              </div>
+                <div class="row g-3">
+                  <div class="col-12 d-none">
+                    {{ form.profile_photo_url(class="d-none",  readonly="readonly", disabled=true, accept="jpg|png|jpeg|png") }}
+                </div>
                 <div class="col-md-6">
                   {{ form.first_name.label(class="form-label") }}
                   {{ form.first_name(class="form-control", readonly="readonly") }}
                 </div>
-  
                 <div class="col-md-6">
                   {{ form.last_name.label(class="form-label") }}
                   {{ form.last_name(class="form-control", readonly="readonly") }}
                 </div>
-  
                 <div class="col-md-6">
                   {{ form.email.label(class="form-label") }}
                   {{ form.email(class="form-control", readonly="readonly") }}
                 </div>
-  
                 <div class="col-md-6">
                   {{ form.mobile.label(class="form-label") }}
                   {{ form.mobile(class="form-control", readonly="readonly") }}
                 </div>
-  
-                <div class="col-12">
-                  {{ form.address.label(class="form-label") }}
-                  {{ form.address(class="form-control", readonly="readonly") }}
-              </div>
-              <div class="col-6">
-                      {{ form.gender.label(class="form-check-label")}}
-                      {{ form.gender(class="form-check", disabled="true")}}
+                <div class="col-6">
+                    {{ form.gender.label(class="form-check-label")}}
+                    {{ form.gender(class="form-check", disabled="true")}}
                 </div>
                 <div class="col-6">
                   {{ form.dob.label(class="form-check-label")}}
                   {{ form.dob(class="form-control", readonly="readonly")}}
                 </div>
-                
+                <div class="col-12 border px-2 py-2 my-2">
+                  <p>Address</p>
+                  <div class="row">
+                      <div class="col-lg-4 col-md-6 col-12">
+                          {{ form.street.label(class="form-label") }}
+                          {{ form.street(class="form-control form-control-sm", readonly="readonly") }}
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-12">
+                          {{ form.landmark.label(class="form-label") }}
+                          {{ form.landmark(class="form-control form-control-sm", readonly="readonly") }}
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-12">
+                          {{ form.address_line.label(class="form-label") }}
+                          {{ form.address_line(class="form-control form-control-sm", readonly="readonly") }}
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-12">
+                          {{ form.city.label(class="form-label") }}
+                          {{ form.city(class="form-control form-control-sm", readonly="readonly") }}
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-12">
+                          {{ form.state.label(class="form-label") }}
+                          {{ form.state(class="form-control form-control-sm", readonly="readonly") }}
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-12">
+                          {{ form.pincode.label(class="form-label") }}
+                          {{ form.pincode(class="form-control form-control-sm", readonly="readonly") }}
+                      </div>
+                  </div>
+              </div>
                 <div class="col-12 text-end">
                   <button type="button" id="myProfileEditButton" class="btn btn-sm btn-dark">Edit</button>
                   <a href="{{url_for('dashboard.index')}}" class="btn btn-sm btn-outline-dark">Back</a>
@@ -108,7 +128,7 @@ $.validator.addMethod('filesize', function(value, element, param) {
       $('#filter-options-phone').html($('.filter-options').html());
       $("#myProfileEditButton").click(function () {
         if ($("input").prop("readonly")) {
-          $("input, textarea").prop("readonly", false);
+          $("input:not(#email), textarea").prop("readonly", false);
           $("input[type='checkbox']").prop("disabled", false);
           $("input[type='date']").prop("disabled", false);
           $("input").prop("disabled", false);

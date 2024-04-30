@@ -83,6 +83,8 @@ class CheckoutController:
         logged_in_user, roles = get_current_user().values()
         try:
             coupon_code = request.form.get("coupon_code")
+            print(coupon_code)
+
             coupon = self.coupon_service.get_by_code(coupon_code)
             if coupon:
                 is_valid_coupon = self.user_service.check_coupon_by_coupon_id(logged_in_user.id, coupon.id)

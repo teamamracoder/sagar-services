@@ -79,11 +79,6 @@ block content %}
                 {{ form.mobile.label(class="form-label") }}
                 {{ form.mobile(class="form-control", readonly="readonly") }}
               </div>
-
-              <div class="col-12">
-                {{ form.address.label(class="form-label") }}
-                {{ form.address(class="form-control", readonly="readonly") }}
-            </div>
             <div class="col-6">
                     {{ form.gender.label(class="form-check-label")}}
                     {{ form.gender(class="form-check")}}
@@ -92,6 +87,35 @@ block content %}
                 {{ form.dob.label(class="form-check-label")}}
                 {{ form.dob(class="form-control", readonly="readonly")}}
               </div>
+              <div class="col-12 border px-2 py-2 my-2">
+                <p>Address</p>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.street.label(class="form-label") }}
+                        {{ form.street(class="form-control form-control-sm", readonly="readonly") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.landmark.label(class="form-label") }}
+                        {{ form.landmark(class="form-control form-control-sm", readonly="readonly") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.address_line.label(class="form-label") }}
+                        {{ form.address_line(class="form-control form-control-sm", readonly="readonly") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.city.label(class="form-label") }}
+                        {{ form.city(class="form-control form-control-sm", readonly="readonly") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.state.label(class="form-label") }}
+                        {{ form.state(class="form-control form-control-sm", readonly="readonly") }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        {{ form.pincode.label(class="form-label") }}
+                        {{ form.pincode(class="form-control form-control-sm", readonly="readonly") }}
+                    </div>
+                </div>
+            </div>
               <div class="col-12 text-end">
                 <button type="button" id="myProfileEditButton" class="btn btn-blue">Edit</button>
                 <a href="{{url_for('home.index')}}" class="btn btn-outline-blue">Back</a>
@@ -110,7 +134,7 @@ block content %}
 
     $("#myProfileEditButton").click(function () {
       if ($("input").prop("readonly")) {
-        $("input, textarea").prop("readonly", false);
+        $("input:not(#email), textarea").prop("readonly", false);
         $("input").prop("disabled", false);
         $("input[type='radio']").prop("disabled", false);
         $("input[type='date']").prop("disabled", false);
