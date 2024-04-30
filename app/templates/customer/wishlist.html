@@ -83,6 +83,8 @@
         fetchWishlistDetails();
 
         window.removeFromWishlist = function (wishlist_id) {
+            wishBtnTooltip = document.getElementById("wishBtnTooltip");
+            totalWish = wishBtnTooltip.innerText;
             $.ajax({
                 url: "{{ url_for('wishlist.status',id=0) }}".replace('0', wishlist_id),
                 type: "GET",
@@ -93,6 +95,10 @@
                             toastr.error("Product Removed From Wishlist");
                             $(".wishlist_item_" + wishlist_id).css("display", "none")
                         }
+                        if (totalWish > 0) {
+                            totalWish = parseInt(totalWish) - 1;
+                        }
+                        wishBtnTooltip.innerHTML = totalWish;
                     }
                     else {
                         toastr.error(responseData.message);

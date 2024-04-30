@@ -726,43 +726,6 @@
     });
     //For Product carousel End
 
-    // add to cart
-    // window.addToCart = function (product_id) {
-    //     $.ajax({
-    //         url: "{{ url_for('cart.add',product_id=0) }}".replace('0', product_id),
-    //         type: "GET",
-    //         complete: res => {
-    //             responseData = res.responseJSON
-    //             if (responseData.status == 'success') {
-    //                 if (responseData.data) {
-    //                     toastr.success(responseData.message);
-    //                     tooltipTitle = "Added to Cart"
-    //                     tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
-    //                 }
-    //                 else {
-    //                     toastr.error(responseData.message);
-    //                     tooltipTitle = "Add to Cart"
-    //                     tooltipIcon = '<i class="bi bi-cart-plus"></i>'
-    //                 }
-    //             }
-    //             else {
-    //                 toastr.error(responseData.message);
-    //                 tooltipTitle = "Add to Cart"
-    //                 tooltipIcon = '<i class="bi bi-cart-plus"></i>'
-    //             }
-    //             // $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
-
-    //             // $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`)
-    //             console.log($("#CartBtn_" + product_id));
-    //             $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`);
-    //             console.log($("#CartBtn_" + product_id));
-    //         },
-    //         error: function (xhr, status, error) {
-    //             toastr.error('Error fetching wishlist details:', error);
-    //         }
-    //     });
-    // }
-
     //Add to Cart
     function addToCart(product_id) {
         cartBtnTooltip = document.getElementById("cartBtnTooltip");
@@ -800,13 +763,6 @@
                     }
                     cartBtnTooltip.innerHTML = totalCart;
                 }
-                // $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
-
-                // $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`)
-                // console.log($("#CartBtn_" + product_id));
-                // $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`);
-                // console.log($("#CartBtn_" + product_id));
-
 
             },
             error: function (xhr, status, error) {
