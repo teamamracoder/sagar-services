@@ -178,6 +178,37 @@ email_templates = DefaultTemplate(
                 </html>
             """,
 
+            "SENT_COUPON_TEMPLATE":"""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Welcome to Sagar-Services!</title>
+                </head>
+                <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+                <div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); ">
+                    <header class="header" style="text-align: start; margin-bottom: 20px;">
+                        <img src="companyLogo.png" alt="Sagar-Services Logo" width="150px" height="50px" style="display: block; margin-right: auto;">
+                    </header>
+                    <main class="content" style="text-align: start; margin-bottom: 20px;">
+                        <h1>Thank You for Shopping with Sagar-co!</h1>
+                        <p>Hi [FULL_NAME],</p>
+                        <p> Congratulations..! your a lucky customer for Sagar-co!</p>
+                        <p> You Got a coupon code - [COUPON_CODE]<br/> Use the coupon code and enjoy your shopping with Sagar-co!</p>
+                        <p>Thank you for your support!</p>
+                        <p>Best wishes,</p>
+                        <p>The Sagar-co Team</p>
+                    </main>
+                    <footer class="footer" style="text-align: center; margin-top: 20px;">
+                        <p>Sagar-Services | Privacy Policy | Support</p>
+                        <p>© 2024 Sagar-Services. All Rights Reserved.</p>
+                    </footer>
+                </div>
+                </body>
+                </html>
+            """,
+
             "PASSWORD_CHANGE_TEMPLATE":"""
                 <!DOCTYPE html>
                 <html lang="en">

@@ -61,3 +61,11 @@ class ProductReviewService(BaseService):
             "rating_counts": counts
         }
 
+
+    def get_check_is_review_or_not(self,product_id,user_id):
+        reviews = self.model.query.filter_by(product_id=product_id,user_id=user_id).all()
+
+        for review in reviews:
+            if review.product_id == product_id and review.user_id == user_id:
+                return review
+        return None

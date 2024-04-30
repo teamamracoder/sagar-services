@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateProductQnAForm, UpdateProductQnAForm
-from app.services import ProductQnAService, ProductService, UserService
+from app.services import ProductQnAService, ProductService, UserService, OrderService
 from datetime import datetime
 from app.auth import get_current_user
 
@@ -9,6 +9,7 @@ class ProductQnAController:
         self.product_service = ProductService()
         self.product_qna_service = ProductQnAService()
         self.user_service = UserService()
+        self.order_service = OrderService()
 
     def get(self):
         return render_template("admin/product_qna/index.html")
@@ -72,15 +73,28 @@ class ProductQnAController:
         products = self.product_service.get_active()
 
         if qnaForm.validate_on_submit():
-            product = self.product_qna_service.create(
-                created_by=logged_in_user.id,
-                created_at=datetime.now(),
-                product_id = qnaForm.product_id.data,
-                question = qnaForm.question.data,
-                user_id = logged_in_user.id
-            )
-            product=self.product_service.get_by_id(product_id)
-            return redirect(url_for("product.product_details_page",product_id=product_id))
+            
+            is_ordered = self.order_service.get_by_user_and_product_id(product_id, logged_in_user.id)
+            is_qna = self.product_qna_service.get_check_is_qna_or_not(product_id, logged_in_user.id)
+            
+            if is_ordered:
+                if is_qna is None:
+                    product = self.product_qna_service.create(
+                        created_by=logged_in_user.id,
+                        created_at=datetime.now(),
+                        product_id = qnaForm.product_id.data,
+                        question = qnaForm.question.data,
+                        user_id = logged_in_user.id
+                    )
+                    product=self.product_service.get_by_id(product_id)
+                    return redirect(url_for("product.product_details_page",product_id=product_id))
+                
+                error_message = "Can't give ask any query..! Already done..."
+                return redirect(url_for("product.product_details_page", product_id=product_id, error=error_message))
+
+            error_message = "Can't give ask any question..! Order the product first."
+            return redirect(url_for("product.product_details_page", product_id=product_id, error=error_message))
+
         return redirect(url_for("product.product_details_page",product_id=product_id,qnaForm=qnaForm))
 
        

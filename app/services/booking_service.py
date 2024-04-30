@@ -93,3 +93,11 @@ class BookingService(BaseService):
             "service_statuses": present_statuses,
             "status_counts": status_counts_list
         }
+
+    def get_by_user_and_service_id(self, service_id, user_id):
+        bookings = self.model.query.filter_by(service_id=service_id, user_id=user_id).all()
+        
+        for booking in bookings:
+            if booking.service_id == service_id and booking.user_id == user_id:
+                return booking
+        return None

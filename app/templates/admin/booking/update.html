@@ -41,6 +41,10 @@
                 {{ form.area_pincode.label(class="form-label") }}
                 {{ form.area_pincode(class="form-control form-control-sm") }}
             </div>
+            <div class="col-12">
+                {{ form.booking_details.label(class="form-label") }}
+                {{ form.booking_details(class="form-control form-control-sm", id="default-editor") }}
+            </div>
             <div class="col-12 my-2">
                 <button type="submit" class="btn btn-dark btn-sm">Update</button>
                 <a href="{{ url_for('booking.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
@@ -49,6 +53,23 @@
     </form>
 
 </div>
+
+<script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea#default-editor',
+        height: 300,
+        theme: 'modern',
+        plugins: [
+          'advlist autolink lists link charmap print preview hr anchor',
+          'searchreplace wordcount visualblocks visualchars code fullscreen',
+          'insertdatetime nonbreaking save table contextmenu directionality',
+          'emoticons template paste textcolor colorpicker textpattern'
+        ],
+        toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
+        toolbar2: 'print preview media | forecolor backcolor emoticons'
+    });
+</script>
+
 <script>
     $(document).ready(function(){
 

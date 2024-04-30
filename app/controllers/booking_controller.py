@@ -101,7 +101,8 @@ class BookingController:
                 service_status=form.service_status.data,
                 payment_status=form.payment_status.data,
                 payment_method=form.payment_method.data,
-                area_pincode=form.area_pincode.data
+                area_pincode=form.area_pincode.data,
+                booking_details=form.booking_details.data
                 ):
                 return redirect(url_for("booking.index"))
         return render_template("admin/booking/update.html", id=id, form=form)
@@ -122,22 +123,46 @@ class BookingController:
         booking = self.booking_service.get_by_id(id)
         if booking is None:
              return {"status":"error","message": "Booking not found"}
-        if status_type == 'payment':
-            status_key = payment_statuses.get_key(status)
-            updated_data = {
-                'payment_status': status_key,
-                'updated_at': datetime.now(),
-                'updated_by': logged_in_user.id
-            }
-        if status_type == 'booking':
-            status_key = service_statuses.get_key(status)
-            updated_data = {
-                'service_status': status_key,
-                'updated_at': datetime.now(),
-                'updated_by': logged_in_user.id
-            }
-        self.booking_service.update(id, **updated_data)
-        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+        else:
+            if status_type == 'payment':
+                status_key = payment_statuses.get_key(status)
+                updated_data = {
+                    'payment_status': status_key,
+                    'updated_at': datetime.now(),
+                    'updated_by': logged_in_user.id
+                }
+                return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+
+            if status_type == 'booking':
+                service_new_status = service_statuses.get_key(status)
+                # get previous booking status
+                service_prev_status=booking.service_status
+                service_prev_status_name = service_statuses.get_value(service_prev_status)
+                if service_prev_status!=3 and service_prev_status!=4:
+                    if service_new_status>=service_prev_status :
+                        # update booking table
+                        updated_data = {
+                            'service_status': service_new_status,
+                            'updated_at': datetime.now(),
+                            'updated_by': 1
+                        }
+                        self.booking_service.update(id, **updated_data)
+                        # insert status in booking_log
+                        self.booking_log_service.create(
+                            created_by=logged_in_user.id,
+                            created_at=datetime.now(),
+                            booking_id=booking.id,
+                            service_status=service_new_status
+                        )
+                        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+                    else:
+                        return {"status":"error","message":f"{status_type} status can not be changed to old step","data":status}
+                else:
+                    return {"status":"error","message":f"{status_type} is already {service_prev_status_name} so, can not change status","data":status}
+            else:
+                return {"status":"error","message":f"{status_type} status can not be chaged","data":status}
+
+
 
     def details(self,id):
         booking = self.booking_service.get_by_id(id)
