@@ -26,7 +26,6 @@
                 </div>
                 <script>
                     var category_param = new URLSearchParams(window.location.search).get('category');
-                    console.log(category_param)
                     if (category_param != null) {
                         $(".category_filters").html("<a href='/products' class='text-dark'>View all categories</a>")
 
@@ -315,6 +314,7 @@
                 type: "GET",
                 complete: res => {
                     responseData = res.responseJSON
+                    console.log(responseData)
                     if (responseData.status == 'success') {
                         if (responseData.data) {
                             toastr.success(responseData.message);
@@ -327,7 +327,7 @@
                             tooltipIcon = '<i class="bi bi-cart-plus"></i>'
                         }
                     }
-                    else {
+                    else if (responseData.status == 'error'){
                         toastr.error(responseData.message);
                         tooltipTitle = "Add to Cart"
                         tooltipIcon = '<i class="bi bi-cart-plus"></i>'
@@ -373,7 +373,7 @@
         }
 
         window.checkout = function (product_id) {
-            console.log(product_id)
+            window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
         }
 
     });

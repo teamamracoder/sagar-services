@@ -13,22 +13,30 @@ from app.utils.file_utils import FileUtils
 from app.utils.mail_utils import MailUtils
 from app.utils.voice_utils import VOICEUtils
 from app.utils import cache
-
+from app.constants import email_templates
 
 class AuthController:
 
     def __init__(self) -> None:
         self.user_service = UserService()
         self.role_service = RoleService()
+    
+    def send_mail(self,send_to:str, title:str, msg:str)->bool:
+        is_sent = MailUtils.send(send_to,title,msg)
+        if is_sent:
+            return True
+        return False
 
-    def send_otp(self, user_id: int, type:str, send_to:str) -> bool:
+    def send_otp(self, user_id: int, type:str, send_to:str, msg:str) -> bool:
         otp = str(random.randint(100000, 999999))
+        user = self.user_service.get_by_id(user_id)
 
         # send otp to mobile number or email
         if type=="mobile":
             send_status=VOICEUtils.voice_send(send_to, otp)
         else:
-            send_status=MailUtils.send(send_to,"otp verification",f"Your OTP is {otp} and it is valid upto 3 minutes")
+            msg = msg.replace("[OTP]",otp).replace("[FIRST_NAME]",user.first_name)
+            send_status=self.send_mail(send_to,"otp verification",msg)
         if send_status:
             cache.set(user_id, otp, timeout=180)
             print(cache.get(user_id))
@@ -69,7 +77,8 @@ class AuthController:
             )
 
             if user:
-                if self.send_otp(user.id, "email", user.email):
+                msg = email_templates.get_value('OTP_TEMPLATE')
+                if self.send_otp(user.id, "email", user.email,msg):
                     return redirect(url_for("auth.verify_otp", id=user.id))
                 else:
                     flash("OTP sending failed, please try again", "error")
@@ -81,7 +90,6 @@ class AuthController:
     def verify_otp(self, user_id):
         form = VerifyOtpForm()
         ctp = cache.get(user_id)
-        print(ctp)
         if form.validate_on_submit():
             otp_attempt = form.otp.data
             cached_otp = cache.get(user_id)
@@ -96,6 +104,8 @@ class AuthController:
             user = self.user_service.update(user_id, is_active=True)
 
             if user:
+                msg = email_templates.get_value('WELCOME_TEMPLATE').replace("[FIRST_NAME]",user.first_name).replace("[FULL_NAME]",f"{user.first_name} {user.last_name}")
+                self.send_mail(user.email,"signup verification succcessful",msg)
                 login(user)
                 return redirect(url_for("home.index"))
             else:
@@ -126,7 +136,8 @@ class AuthController:
 
         if user:
             if type=="email":
-                status=self.send_otp(user.id, type, user.email)
+                msg = email_templates.get_value('OTP_TEMPLATE')
+                status=self.send_otp(user.id, type, user.email,msg)
             else:
                 status=self.send_otp(user.id, type, user.mobile)
 
@@ -170,6 +181,8 @@ class AuthController:
         user_id = request.form.get("user_id")
         user = self.user_service.update(user_id, password=new_password)
         if user:
+            msg = email_templates.get_value('PASSWORD_CHANGE_TEMPLATE').replace("[FIRST_NAME]",user.first_name)
+            self.send_mail(user.email,"password changed",msg)
             login(user)
             return {
                 "status": "success",

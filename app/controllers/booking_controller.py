@@ -6,6 +6,8 @@ from app.constants import payment_methods
 from app.constants import service_statuses
 from app.constants import payment_statuses
 from app.auth import get_current_user
+from app.constants import email_templates
+from app.utils.mail_utils import MailUtils
 
 class BookingController:
     def __init__(self) -> None:
@@ -172,4 +174,58 @@ class BookingController:
         data = self.booking_log_service.add_booking_logs_with_this(data)
         print(data)
         return jsonify(data)
+
+
+    def booking_create(self,service_id):
+        logged_in_user,roles=get_current_user().values()
+        service = self.service_service.get_by_id(service_id)
+        return render_template('customer/book_now.html',service=service, user=logged_in_user)
+    
+    def confirm(self):
+        logged_in_user,roles=get_current_user().values()
+        service_id = int(request.form.get('service_id'))
+        service = self.service_service.get_by_id(service_id)
+        is_new_address = request.form.get('new-address')
+        
+        if is_new_address:
+            service_location = request.form.get("StreetAddress")+","+request.form.get("Landmark")+","+request.form.get("Additional Address")+","+request.form.get("City")+","+request.form.get("State")
+            area_pincode=request.form.get("PinCode")
+            mobile = request.form.get("MobileNo")
+        else:
+            mobile = logged_in_user.mobile
+            service_location = logged_in_user.address
+            area_pincode = logged_in_user.pincode
+        if request.form.get("pay-method")=='1':
+            payment_status = 2
+        else:
+            payment_status = 1
+            
+        booking_details={
+            "created_by":logged_in_user.id,
+            "created_at":datetime.now(),
+            "user_id":logged_in_user.id,
+            "payment_method":request.form.get("pay-method"),
+            "area_pincode":area_pincode,
+            "service_location":service_location,
+            "mobile":mobile,
+            "payment_status":payment_status,
+            "service_id":service_id,
+            "total_charges":service.service_charge-service.discount,
+            "service_status":1
+        }
+        
+        booking = self.booking_service.create(**booking_details)
+        self.booking_log_service.create(
+            created_by=logged_in_user.id,
+            created_at=datetime.now(),
+            booking_id=booking.id,
+            booking_status=booking.service_status
+        )
+
+        msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
+        MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)
+        return render_template("customer/booking_success.html")
+    
+    def booking_success(self):
+        return render_template("customer/booking_success.html")
 

@@ -33,7 +33,7 @@ class MailUtils:
             msg["Subject"] = subject
 
             # Add the message body
-            msg.attach(MIMEText(message, "plain"))
+            msg.attach(MIMEText(message, "html"))
 
             # Send the email
             smtp_server.send_message(msg)

@@ -1,5 +1,6 @@
 from app.models import UserModel
 from .base_service import BaseService
+from db import db
 from datetime import datetime, timedelta
 from collections import defaultdict
 from sqlalchemy import func
@@ -17,6 +18,9 @@ class UserService(BaseService):
             item["fullname"] = user.first_name + " " + user.last_name
             item["email"] = user.email
         return items
+
+    def get_user_name_by_this(self,user_id):
+        return UserModel.query.filter_by(user_id=user_id).all()
 
     def add_message_with_this(self, messages: dict) -> dict:
         for message in messages:
@@ -171,3 +175,17 @@ class UserService(BaseService):
                ).count()
 
            return total_users
+    
+    def check_coupon_by_coupon_id(self,user_id,coupon_id):
+        user = self.get_by_id(user_id)
+        if user.coupon==coupon_id:
+            return True
+        else:
+            return False
+        
+    def delete_coupon(self,user_id,coupon_id):
+        user = self.model.query.filter_by(id=user_id).first()
+        print(user.coupon)
+        user.coupon =None
+        db.session.commit()
+

@@ -37,3 +37,9 @@ def update(id):
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
 def status(id):
     return product_qna_controller.status(id)
+
+
+# customer
+@product_qna_bp.route("/product_qnas/<int:product_id>", methods=["GET","POST"])
+def product_qna_create(product_id):
+    return product_qna_controller.product_qna_create(product_id)

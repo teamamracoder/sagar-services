@@ -60,9 +60,9 @@
 
 .accordion{
     
-  --bs-accordion-btn-bg: #fbb888;
+  --bs-accordion-btn-bg: #b9d8f758;
   --bs-accordion-active-color: rgb(247, 248, 245);
-  --bs-accordion-active-bg: #f96a05;
+  --bs-accordion-active-bg: #7ab8f6;
   --bs-accordion-border-color: rgba(34, 34, 45, 0.4);
   --bs-accordion-btn-focus-box-shadow: rgb(128, 0, 255);
 }

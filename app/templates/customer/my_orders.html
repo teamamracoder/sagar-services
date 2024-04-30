@@ -21,62 +21,6 @@
         </ol>
     </nav>
     <div class="row" id="order_list">
-        <!-- single order -->
-        <!-- <div class="col-12">      
-            <div class="card rounded-0">
-                <div class="card-body">
-                    <div class="d-flex ">
-                        <img class="align-self-center img-fluid" src="moni.jpg" width="250">
-                        <div>
-                            <h5 class="bold">product_name</h5>
-                            <p class="text-muted"> Qt: qty item</p>
-                            <p class="text-muted"> shipping_address</p>
-                            <h4 class="mb-3"> <i class="bi bi-currency-rupee"></i>price <span class="small text-muted">(payment_method)/payment_status </span></h4>
-                            <p class="text-muted">Expected Delivery on: <span class="text-body">expected_delivery_date</span></p>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="dot"></span>
-                        <hr class="flex-fill track-line">
-
-                        <span class="d-flex justify-content-center align-items-center big-dot dot">
-                            <i class="fa fa-check text-white"></i>
-                        </span>
-                    </div>
-                    <div class="d-flex flex-row justify-content-between align-items-center">
-                        <div class="d-flex flex-column align-items-start">
-                            <span>15 Mar</span><span><strong>Processing</strong></span>
-                        </div>
-
-                        <div class="d-flex flex-column justify-content-center">
-                            <span>15 Mar</span><span><strong>Packaging</strong></span></div>
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                            <span>15 Mar</span><span><strong>Shipping</strong></span>
-                        </div>
-                        <div class="d-flex flex-column align-items-center">
-                            <span>15 Mar</span><span><strong>Out for delivery</strong></span>
-                        </div>
-                        <div class="d-flex flex-column align-items-end">
-                            <span>15 Mar</span><span><strong>Delivered</strong></span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="btn btn-outline-blue text-center">Order Again</a>
-                        <a href="" class="btn btn-outline-blue text-center">Cancel</a>
-                    </div>
-                </div>   
-            </div>
-        </div> -->
-        <!-- end single -->
     </div>
     <div class="row">
         <div class="col-12">
@@ -119,9 +63,7 @@ $(document).ready(function () {
     bookingContainer.empty();
     if(orders){
         orders.data.forEach(function(order) {
-            var order_statuses = order.order_statuses;
-            var order_logs = order.order_logs;
-            var latestStatusKey = order_logs.length > 0 ? order_logs[order_logs.length - 1].status_key : 0;
+            var order_log = order.order_latest_log;
             var bookingDiv = $('<div class="col-12">');
 
             // Construct the HTML for the booking
@@ -129,85 +71,50 @@ $(document).ready(function () {
                 <div class="col-12 border m-2">      
                     <div class="card rounded-0 shadow-sm">
                         <div class="card-body">
-                            <div class="d-flex ">
-                                <img class="align-self-center img-fluid" src="../../static/${order.product_img_urls[0]}" width="250" style="object-fit:contain;">
-                                <div>
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 flex">
+                                    <img class="align-self-center img-fluid w-100" src="../../static/${order.product_img_urls[0]}" style="object-fit:contain; max-height:200px;">
+                                </div>
+                                <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
                                     <h5 class="bold">${order.product_name}</h5>
                                     <p class="text-muted"> Qt: ${order.quantity} item</p>
                                     <p class="text-muted"> ${order.shipping_address}</p>
+                                    <p class="text-muted">${order_log.status_name}:${getFormattedDate(order_log.created_at)}</p>
                                     <h4 class="mb-3"> 
                                         <i class="bi bi-currency-rupee"></i>
                                         ${order.price}/-`;
-                                        if(latestStatusKey<5){
+                                        if(order_log.status<5){
                                             bookingHTML +=`<span class="small text-muted">(${order.payment_method_name})/${order.payment_status_name} </span></h4>
-
-                                         <p class="text-muted">Expected Delivery on: <span class="text-body">${getFormattedDate(order.expected_delivery)}</span></p>`;
+                                            <p class="text-muted">Expected Delivery on: <span class="text-body">${order.expected_delivery != null ? getFormattedDate(order.expected_delivery) : ''}</span></p>`;
                                     }
                                 
                                     bookingHTML += `</div>
                             </div>
-                            <div class="d-flex flex-row justify-content-between align-items-center align-content-center">`;
+                            <div class="d-flex flex-row justify-content-between align-items-center">`;
 
-            // console.log(latestStatusKey)
-            if(latestStatusKey!=6){
-                // Mapping tracking dots and lines
-                for (var i = 0; i < 4; i++) {
-                   var dotId = `dot_${i + 1}`;
-                   var lineId = `line_${i+1}`;
-                   var dotClass = i < latestStatusKey ? "dot-success" : "dot";
-                   var lineClass = i < latestStatusKey ? "track-line-success" : "track-line";
-                   bookingHTML += `
-                       <span class="${dotClass}" id="${dotId}"></span>
-                       <hr class="flex-fill ${lineClass}" id="${lineId}">`;
-               }
-               var dotId = `dot_5`;
-               var dotClass = 4 < latestStatusKey ? "dot-success" : "dot";
-               bookingHTML += `
-                   <span class="${dotClass}" id="${dotId}"></span>
-                            </div>
-                            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-                                <div class="d-flex flex-column align-items-start">
-                                    <span><strong>Processing</strong></span>
-                                    <span>${order_logs[0] ? getFormattedDateTime(order_logs[0].created_at): ``}</span>
-                                </div>
-                            
-                                <div class="d-flex flex-column justify-content-center">
-                                    <span><strong>Packaging</strong></span>
-                                    <span>${order_logs[1] ? getFormattedDateTime(order_logs[1].created_at): ``}</span>
-                                </div>
-
-                                <div class="d-flex flex-column justify-content-center">
-                                    <span><strong>Shipping</strong></span>
-                                    <span>${order_logs[2] ? getFormattedDateTime(order_logs[2].created_at): ``}</span>
-                                </div>
-
-                                <div class="d-flex flex-column align-items-center">
-                                    <span><strong>Out for delivery</strong></span>
-                                    <span>${order_logs[3] ? getFormattedDateTime(order_logs[3].created_at): ``}</span>
-                                </div>
-
-                                <div class="d-flex flex-column align-items-end">
-                                    <span><strong>Delivered</strong></span>
-                                    <span>${order_logs[4] ? getFormattedDateTime(order_logs[4].created_at): ``}</span>
-                                </div>
-                            </div>`
+            // console.log(order_log.status)
+            if(order_log.status!=6){
             }
             else{
                 bookingHTML += `<p href="" class="text-danger text-end"><i class="bi bi-exclamation-triangle"></i> Ordered Canceled</p>`;
             }
 
+            
+                                if(order_log.status<3){
+                                    bookingHTML += `
+                                    <p class="text-danger" style="cursor:pointer;" onclick="cancelOrder(${order.id})">Cancel</p>`;
+                                }
+            bookingHTML +=`
+                                <div class="d-flex flex-column">
+                                    <a href="/order_details/${order.id}" class="btn btn-blue mb-1">View Details</a>`;
+                                    
+                                    if(order_log.status>4){
+                                        bookingHTML += `
+                                        <a href="/checkout/${order.product_id}" class="btn btn-outline-blue">Order Again</a>`;
+                                    }
+                                    
             bookingHTML += `
-                            <div class="d-flex justify-content-end">`;
-                                if(latestStatusKey<3){
-                                    bookingHTML += `
-                                    <button class="btn btn-outline-blue text-center" onclick="cancelOrder(${order.id})">Cancel</button>`;
-                                }
-                                if(latestStatusKey>4){
-                                    bookingHTML += `
-                                    <a href="/checkout/${order.product_id}" class="btn btn-outline-blue text-center">Order Again</a>`;
-                                }
-                                bookingHTML += `
-                            </div>
+                                </div>
                         </div>   
                     </div>
                 </div>
@@ -221,78 +128,6 @@ $(document).ready(function () {
         })  
     }
 };
-
-    // function renderBookings(orders) {
-    //         var bookingContainer = $('#order_list');
-    //         bookingContainer.empty();
-    //         if(orders){
-    //             orders.data.forEach(function(order) {
-    //                 var order_statuses = order.order_statuses
-    //                 var latestStatusKey = order.order_logs.length > 0 ? order.order_logs[order.order_logs.length - 1].status_key : 0;
-    //                 var bookingDiv = $('<div class="col-12">');
-                    
-    //                 // Construct the HTML for the booking
-    //                 var bookingHTML = `
-    //                     <div class="col-12 border m-2">      
-    //                         <div class="card rounded-0 shadow-sm">
-    //                             <div class="card-body">
-    //                                 <div class="d-flex ">
-    //                                     <img class="align-self-center img-fluid" src="../../static/${order.product_img_urls[0]}" width="250" style="object-fit:contain;">
-    //                                     <div>
-    //                                         <h5 class="bold">${order.product_name}</h5>
-    //                                         <p class="text-muted"> Qt: ${order.quantity} item</p>
-    //                                         <p class="text-muted"> ${order.shipping_address}</p>
-    //                                         <h4 class="mb-3"> <i class="bi bi-currency-rupee"></i>${order.price} <span class="small text-muted">(${order.payment_method_name})/${order.payment_status_name} </span></h4>
-    //                                         <p class="text-muted">Expected Delivery on: <span class="text-body">${order.expected_delivery}</span></p>
-    //                                     </div>
-    //                                 </div>
-                                    
-    //                                 <div class="d-flex flex-row justify-content-between align-items-center align-content-center">`;
-    //                                     order_statuses.forEach(function(status, index) {
-    //             var dotId = `dot_${index + 1}`;
-    //             var lineId = `line_${index + 1}`;
-    //             var dotClass = index < latestStatusKey ? "dot-success" : "dot";
-    //             var lineClass = index < latestStatusKey ? "track-line-success" : "track-line";
-    //             bookingHTML += `
-    //                 <span class="${dotClass}" id="${dotId}"></span>
-    //                 <hr class="flex-fill ${lineClass}" id="${lineId}">`;
-    //         });
-
-    //         bookingHTML += `
-    //                         </div>
-    //                         <div class="d-flex flex-row justify-content-between align-items-center">`;
-
-    //         // Adding tracking status
-    //         order.order_logs.forEach(function(log) {
-    //             bookingHTML += `
-    //                 <div class="d-flex flex-column align-items-center">
-    //                     <span>
-    //                         <span>${log.created_at}</span>
-    //                         <span>${log.status_name}</span>
-    //                     </span>
-    //                 </div>`;
-    //         });
-
-    //         bookingHTML += `
-    //                         </div>
-    //                         <div class="d-flex justify-content-between">
-    //                             <a href="" class="btn btn-outline-blue text-center">Order Again</a>
-    //                             <a href="" class="btn btn-outline-blue text-center">Cancel</a>
-    //                         </div>
-    //                     </div>   
-    //                 </div>
-    //             </div>
-    //         `;
-
-                    
-    //                 // Append the booking HTML to the booking div
-    //                 bookingDiv.html(bookingHTML);
-
-    //                 // Append the booking div to the bookings container
-    //                 bookingContainer.append(bookingDiv);
-    //             })  
-    //         }
-    //     };
 
     function renderPaginationControls(metadata) {
         var paginationControls = $('#pagination_controls');

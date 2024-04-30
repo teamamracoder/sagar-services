@@ -4,6 +4,36 @@
 
 {% block content %}
 
+<!-- ************* Review star ********************** -->
+<style>
+  .rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+  }
+
+  .rating > input {
+    display: none;
+  }
+
+  .rating > label {
+    display: inline-block;
+    padding: 5px;
+    font-size: 30px;
+    color: #ddd; /* Empty star color */
+    cursor: pointer;
+  }
+
+  .rating > label:hover,
+  .rating > label:hover ~ label,
+  .rating > input:checked ~ label {
+    color: #ffd700; /* Filled star color */
+  }
+</style>
+<!-- *********************************************** -->
+
+
+
 <div class="container-fluid">
   <div class="container-fluid single-product">
     <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
@@ -20,25 +50,30 @@
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-5">
         <div id="cursor" ></div>
-        <div class="details-img-container">
-        <img
-          src="{{ url_for('static',filename=product.product_img_urls[0]) }}"
-          width="100%"
-          id="ProductImg"
-          alt=""
-        />
+        <div class="details-img-container" style="height: 400px;object-fit: contain;">
+          <!-- <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt=""> -->
+
+          <img
+            src="{{ url_for('static',filename=product.product_img_urls[0]) }}"
+            width="100%"
+            id="ProductImg"
+            alt=""
+            style="height: 100%;width: fit-content;"
+          />
         </div>
         <div class="small-img-row">
+          
           {% for img in product.product_img_urls %}
-          <div class="small-img-col ">
+          <div class="small-img-col">
             <img
               src="{{ url_for('static',filename=img) }}"
-              width="70%"
               class="small-img"
               alt=""
+              style="height: 70px;width: 70px;object-fit: contain;"
             />
           </div>
           {% endfor %}
+
         </div>
         <div class="booking-btn d-flex justify-content-evenly my-2">
           {% if cart %}
@@ -46,7 +81,7 @@
           {% else %}
             <button type="button" id="cart_button_{{product.id}}" onclick='addToCart("{{ product.id }}")'  class="btn btn-blue" style="width: 45%">Add to Cart</button>
           {% endif %}
-          <button type="button" onclcik='checkout("{{ product.id }}")' class="btn btn-outline-blue" style="width: 45%">Buy Now</button>
+          <a type="button" href="{{ url_for('checkout.checkout_page',product_id=product.id) }}" class="btn btn-outline-blue" style="width: 45%">Buy Now</a>
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-7">
@@ -63,8 +98,8 @@
                 <span class="">Save ₹{{product.discount}} <strike style="font-size: 12px;">MSRP ₹{{product.price}}</strike></span></p>
               </div>
               <div class="ms-0">
-                <span style="font-size: 12px;">Reviews</span><br/>
-                <div id="rating" class="rating"></div>
+                <span style="font-size: 12px">Reviews</span><br />
+                  <div id="rating" class="rating rating text-warning d-flex flex-row justify-content-start flex-row-reverse"></div>
               </div>
 
                 <div>
@@ -99,7 +134,8 @@
       </div>
     </div>
 
-    <div class="container-fluid">
+    <!-- revice section -->
+    <div class="container-fluid mt-4">
       <div class="row">
         <div class="col">
           <div class="bg-light">
@@ -135,136 +171,198 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="tab-pane-1">
-                <h4 class="mb-3">Product Specifications</h4>
-                {{product.specifications | safe}}
+                <h4 class="mb-3">Short Description</h4>
+                <p>{{product.sort_description}}</p>
               </div>
               <div class="tab-pane fade" id="tab-pane-2">
                 <div class="row">
-                  <div class="col-md-6">
-                    <h4 class="mb-4">1 review for "Product Name"</h4>
-                    <div class="media mb-4">
-                      <img
-                        src="img/user.jpg"
-                        alt="Image"
-                        class="img-fluid me-3 mt-1"
-                        style="width: 45px"
-                      />
-                      <div class="media-body">
-                        <h6>
-                          John Doe<small> - <i>01 Jan 2045</i></small>
-                        </h6>
-                        <div class="text-primary mb-2">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star-half-alt"></i>
-                          <i class="far fa-star"></i>
-                        </div>
-                        <p>
-                          Diam amet duo labore stet elitr ea clita ipsum,
-                          tempor labore accusam ipsum et no at. Kasd diam
-                          tempor rebum magna dolores sed sed eirmod ipsum.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  {% if logged_in_user.id %}
                   <div class="col-md-6">
                     <h4 class="mb-4">Leave a review</h4>
                     <small
-                      >Your email address will not be published. Required
-                      fields are marked *</small
+                      >Your email address will not be published. Required fields
+                      are marked <span class="text-danger fs-5">*</span></small
                     >
-                    <div class="d-flex my-3">
-                      <p class="mb-0 me-2">Your Rating * :</p>
-                      <div class="text-primary">
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
+                    <div
+                      class="border border-1 shadow p-3 mb-5 bg-body rounded"
+                    >
+                      <form
+                        method="POST"
+                        action="{{ url_for('product_review.product_review_create', product_id=product.id) }}"
+                        enctype="multipart/form-data"
+                        id="reviewForm"
+                      >
+                        {{ reviewForm.csrf_token }}
+                        <div class="row">
+                          <div class="col-12">
+                            {{ reviewForm.product_id(class="form-control
+                            form-control-sm", value=product.id, hidden="hidden")
+                            }}
+                          </div>
+                          <div class="col-12">
+                            <input
+                              type="text"
+                              name="review_title"
+                              class="form-control form-control-sm"
+                              placeholder="Title"
+                            />
+                          </div>
+                          <div class="col-12">
+                            <textarea
+                              name="description"
+                              class="form-control form-control-sm"
+                              placeholder="Message..."
+                            ></textarea>
+                          </div>
+                          <div class="row">
+                            <div class="col-6">
+                              <div class="rating" id="ratingStars">
+                                <input
+                                  type="radio"
+                                  id="star5"
+                                  name="rating"
+                                  value="5"
+                                /><label for="star5"
+                                  ><i class="bi bi-star-fill"></i
+                                ></label>
+                                <input
+                                  type="radio"
+                                  id="star4"
+                                  name="rating"
+                                  value="4"
+                                /><label for="star4"
+                                  ><i class="bi bi-star-fill"></i
+                                ></label>
+                                <input
+                                  type="radio"
+                                  id="star3"
+                                  name="rating"
+                                  value="3"
+                                /><label for="star3"
+                                  ><i class="bi bi-star-fill"></i
+                                ></label>
+                                <input
+                                  type="radio"
+                                  id="star2"
+                                  name="rating"
+                                  value="2"
+                                /><label for="star2"
+                                  ><i class="bi bi-star-fill"></i
+                                ></label>
+                                <input
+                                  type="radio"
+                                  id="star1"
+                                  name="rating"
+                                  value="1"
+                                /><label for="star1"
+                                  ><i class="bi bi-star-fill"></i
+                                ></label>
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <input
+                                type="file"
+                                name="product_review_img_urls"
+                                class="form-control form-control-sm multi with-preview"
+                                accept="image/*"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12 my-2">
+                            <input
+                              type="submit"
+                              class="btn btn-dark btn-sm"
+                              value="Submit"
+                            />
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  {% endif %}
+                  <div class="col-md-6 p-3 mb-5 bg-body">
+                    {% for review in product_reviews %} {% if loop.index <= 3 %}
+                    <div>
+                      <div class="media mb-4 row">
+                        <div class="col-4">
+                          <img
+                            src="{{ review.product_review_img_urls[0] }}"
+                            alt="Image"
+                            class="img-fluid me-3 mt-1"
+                            style="width: 45px"
+                          />
+                        </div>
+                        <div class="col-6">
+                          {% for name in users_id %}
+                              <h6>{{ name.first_name }}</h6>
+                          {% endfor %}
+
+                        </div>
+                        <div class="media-body">
+                          <div class="ms-0">
+                            <div class="rating text-warning d-flex flex-row justify-content-start flex-row-reverse">
+                              {% set integer_part = review.rating | int %} {%
+                              for _ in range(integer_part) %}
+                              <span class="bi bi-star-fill"></span>
+                              {% endfor %} {% for _ in range(5-integer_part) %}
+                              <span class="bi bi-star"></span>
+                              {% endfor %}
+                            </div>
+                          </div>
+                          <p>{{ review.description }}</p>
+                        </div>
                       </div>
                     </div>
-                    <form>
-                      <div class="form-group">
-                        <label for="message">Your Review *</label>
-                        <textarea
-                          id="message"
-                          cols="30"
-                          rows="5"
-                          class="form-control"
-                        ></textarea>
-                      </div>
-                      <div class="form-group">
-                        <label for="name">Your Name *</label>
-                        <input type="text" class="form-control" id="name" />
-                      </div>
-                      <div class="form-group">
-                        <label for="email">Your Email *</label>
-                        <input type="email" class="form-control" id="email" />
-                      </div>
-                      <div class="form-group mb-0">
-                        <input
-                          type="submit"
-                          value="Leave Your Review"
-                          class="btn btn-primary px-3"
-                        />
+                    {% endif %} {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="tab-pane-3">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5 class="mb-3">Ask your doubts..?</h5>
+                    <form
+                      method="POST"
+                      action="{{ url_for('product_qna.product_qna_create',product_id=product.id) }}"
+                      id="qnaForm"
+                    >
+                      {{ qnaForm.csrf_token }}
+                      <span onclick="sendQna('{{product.id}}')"></span>
+                      <div class="row">
+                        <div class="col-12">
+                          {{ qnaForm.product_id(class="form-control
+                          form-control-sm", value=product.id, hidden="hidden")
+                          }}
+                        </div>
+                        <div class="col-12">
+                          <textarea
+                            name="question"
+                            class="form-control form-control-sm"
+                            placeholder="Message..."
+                          ></textarea>
+                        </div>
+                        <div class="col-12 my-2">
+                          <input
+                            type="submit"
+                            class="btn btn-dark btn-sm"
+                            value="Submit"
+                          />
+                        </div>
                       </div>
                     </form>
                   </div>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="tab-pane-3">
-                <h4 class="mb-3">Additional Information</h4>
-                <p>
-                  Eos no lorem eirmod diam diam, eos elitr et gubergren diam
-                  sea. Consetetur vero aliquyam invidunt duo dolores et duo
-                  sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
-                  consetetur invidunt sed sed et, lorem duo et eos elitr,
-                  sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed
-                  tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing,
-                  eos dolores sit no ut diam consetetur duo justo est, sit
-                  sanctus diam tempor aliquyam eirmod nonumy rebum dolor
-                  accusam, ipsum kasd eos consetetur at sit rebum, diam kasd
-                  invidunt tempor lorem, ipsum lorem elitr sanctus eirmod
-                  takimata dolor ea invidunt.
-                </p>
-                <div class="row">
                   <div class="col-md-6">
                     <ul class="list-group list-group-flush">
+                      {% for qna in product_qnas %} {% if loop.index <= 3 %}
                       <li class="list-group-item px-0">
-                        Sit erat duo lorem duo ea consetetur, et eirmod
-                        takimata.
+                        <strong class="text-dark">Questions:</strong> {{
+                        qna.question }}
                       </li>
                       <li class="list-group-item px-0">
-                        Amet kasd gubergren sit sanctus et lorem eos
-                        sadipscing at.
+                        <strong class="text-dark">Answer:</strong> {{ qna.answer
+                        }}
                       </li>
-                      <li class="list-group-item px-0">
-                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Takimata ea clita labore amet ipsum erat justo
-                        voluptua. Nonumy.
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-md-6">
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item px-0">
-                        Sit erat duo lorem duo ea consetetur, et eirmod
-                        takimata.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Amet kasd gubergren sit sanctus et lorem eos
-                        sadipscing at.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                      </li>
-                      <li class="list-group-item px-0">
-                        Takimata ea clita labore amet ipsum erat justo
-                        voluptua. Nonumy.
-                      </li>
+                      {% endif %} {% endfor %}
                     </ul>
                   </div>
                 </div>
@@ -292,9 +390,9 @@
                           <i class="far fa-star"></i>
                         </div>
                         <p>
-                          Diam amet duo labore stet elitr ea clita ipsum,
-                          tempor labore accusam ipsum et no at. Kasd diam
-                          tempor rebum magna dolores sed sed eirmod ipsum.
+                          Diam amet duo labore stet elitr ea clita ipsum, tempor
+                          labore accusam ipsum et no at. Kasd diam tempor rebum
+                          magna dolores sed sed eirmod ipsum.
                         </p>
                       </div>
                     </div>
@@ -302,8 +400,8 @@
                   <div class="col-md-6">
                     <h4 class="mb-4">Leave a review</h4>
                     <small
-                      >Your email address will not be published. Required
-                      fields are marked *</small
+                      >Your email address will not be published. Required fields
+                      are marked *</small
                     >
                     <div class="d-flex my-3">
                       <p class="mb-0 me-2">Your Rating * :</p>
@@ -347,8 +445,8 @@
             </div>
           </div>
         </div>
-      </div>
     </div>
+    <!-- revice section end-->
   </div>
 </div>
 
@@ -481,6 +579,183 @@ $(document).ready(function () {
 })
 
 
+</script>
+
+
+<script>
+  // *********************** for review *******************************
+  $(document).ready(function () {
+    $("#reviewForm").submit(function (event) {
+      // Prevent the default form submission
+      event.preventDefault();
+
+      // Serialize the form data
+      var formData = new FormData($(this)[0]);
+
+      // Send an AJAX request
+      $.ajax({
+        type: "POST",
+        url: $(this).attr("action"), // Endpoint URL from the form action attribute
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          // Handle success response
+          console.log("Form submitted successfully");
+          console.log(response);
+          // Reset form fields
+          $("#reviewForm")[0].reset();
+          // Show toast message
+          showToast("Form submitted successfully", "success");
+        },
+        error: function (xhr, status, error) {
+          // Handle errors if any
+          console.error("Error occurred while submitting form:", error);
+          // Show toast message for error
+          showToast("Error occurred while submitting form", "error");
+        },
+      });
+    });
+  });
+ 
+
+  // *********************** for qna *******************************
+  $(document).ready(function () {
+    $("#qnaForm").submit(function (event) {
+      // Prevent the default form submission
+      event.preventDefault();
+
+      // Serialize the form data
+      var formData = new FormData($(this)[0]);
+
+      // Send an AJAX request
+      $.ajax({
+        type: "POST",
+        url: $(this).attr("action"), // Endpoint URL from the form action attribute
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          // Handle success response
+          console.log("Form submitted successfully");
+          console.log(response);
+          // Reset form fields
+          $("#qnaForm")[0].reset();
+          // Show toast message
+          showToast("Form submitted successfully", "success");
+        },
+        error: function (xhr, status, error) {
+          // Handle errors if any
+          console.error("Error occurred while submitting form:", error);
+          // Show toast message for error
+          showToast("Error occurred while submitting form", "error");
+        },
+      });
+    });
+  });
+ 
+
+
+  // ************** toster *****************
+  function showToast(message, type) {
+    // Show toast message using Bootstrap's toast component
+    var toastClass =
+      type === "success" ? "bg-success text-white" : "bg-danger text-white";
+    var toast = $(
+      '<div class="toast ' +
+        toastClass +
+        '" role="alert" aria-live="assertive" aria-atomic="true">\n' +
+        '  <div class="toast-header">\n' +
+        '    <strong class="me-auto">Message</strong>\n' +
+        '    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>\n' +
+        "  </div>\n" +
+        '  <div class="toast-body">\n' +
+        message +
+        "  </div>\n" +
+        "</div>"
+    );
+
+    // Append the toast to the body and show it
+    $(".toast-container").append(toast);
+    var bsToast = new bootstrap.Toast(toast[0]);
+    bsToast.show();
+
+    // Remove the toast after it's hidden
+    toast.on("hidden.bs.toast", function () {
+      $(this).remove();
+    });
+  }
+</script>
+<!-- ***************** for giving rating ******************* -->
+<script>
+  $(document).ready(function () {
+    $(".rating input").on("change", function () {
+      var rating = parseInt($(this).val()); // Get the selected rating
+      $(".rating label").removeClass("fas").addClass("far"); // Reset all stars to empty
+      $(".rating input:checked")
+        .prevAll("label")
+        .removeClass("far")
+        .addClass("fas"); // Fill stars for selected rating and preceding ratings
+    });
+  });
+</script>
+
+
+<!-- ******************* form validations ********************* -->
+<script>
+  $(document).ready(function(){
+      $('#qnaForm').validate({
+          rules: {
+              question: {
+                  required: true,
+                  minlength: 10,
+                  maxlength: 100
+              },
+          },
+          messages: {
+              question: {
+                  required: "Asks your query..?",
+                  minlength: "Input must be minimum 10 characters",
+                  maxlength: "Input must be maximum 100 characters"
+              },
+          },
+          submitHandler: function (form) {
+              form.submit();
+          }
+      });
+  });
+  // review
+  $(document).ready(function(){
+      $('#reviewForm').validate({
+          rules: {
+              title: {
+                  required: true,
+                  minlength: 10,
+                  maxlength: 50
+              },
+              description: {
+                  required: true,
+                  minlength: 10,
+                  maxlength: 100
+              },
+          },
+          messages: {
+              title: {
+                  required: "Your feedback... ",
+                  minlength: "Input must be minimum 10 characters",
+                  maxlength: "Input must be maximum 50 characters"
+              },
+              description: {
+                  required: "Leave a Message...!",
+                  minlength: "Input must be minimum 10 characters",
+                  maxlength: "Input must be within 100 char..."
+              },
+          },
+          submitHandler: function (form) {
+              form.submit();
+          }
+      });
+  });
 </script>
 
 {% endblock %}

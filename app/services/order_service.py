@@ -43,6 +43,11 @@ class OrderService(BaseService):
         for item in items["data"]:
             item['payment_method_name']=payment_methods.get_value(item["payment_method"])
         return items
+    
+    def add_payment_status_name_with_this(self,orders):
+        for order in orders['data']:
+            order['payment_status_name']=payment_statuses.get_value(order["payment_status"])
+        return orders
 
     def get_orders_by_user_id(self,user_id,request,columns):
         page = int(request.args.get('page', 1))
@@ -229,3 +234,4 @@ class OrderService(BaseService):
                ).count()
 
            return total_orders
+    

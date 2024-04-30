@@ -1,6 +1,7 @@
 from app.models import CartModel, ProductModel
 from .base_service import BaseService
 from app.constants import cart_statuses
+from db import db
 
 
 class CartService(BaseService):
@@ -58,6 +59,15 @@ class CartService(BaseService):
             return datas
         except Exception as e:
             return datas
+  
+    def update_cart_status(self, user_id, product_id, cart_status):
+    # Assuming self.db_session is your SQLAlchemy session
+        cart_item = self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
+        if cart_item:
+            cart_item.cart_status = cart_status
+            self.status(cart_item.id)
+            db.session.commit()
+        return True
 
     def get_total_cart_items_by_user_id(self,user_id):
             cart_items = self.model.query.filter_by(user_id=user_id, is_active=True).count()
