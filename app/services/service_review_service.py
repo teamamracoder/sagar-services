@@ -8,6 +8,7 @@ class ServiceReviewService(BaseService):
 
     def get_review_by_service_id(self,service_id):
         reviews= self.model.query.filter_by(service_id=service_id).all()
+        
         # for review in reviews
             # user = user_service.get_by_id(review.user_id)
             # review['user']= user
@@ -22,4 +23,13 @@ class ServiceReviewService(BaseService):
 
     def serialize_review(self, review):
         return {key: getattr(review, key) for key in review.__dict__ if not key.startswith("_")}
+
+    def get_check_is_review_or_not(self, service_id, user_id):
+        reviews = self.model.query.filter_by(service_id=service_id, user_id=user_id).all()
+
+        for review in reviews:
+            if review.service_id == service_id and review.user_id == user_id:
+                return review
+        return None
+
 

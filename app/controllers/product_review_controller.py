@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateProductReviewForm, UpdateProductReviewForm
-from app.services import ProductReviewService, ProductService
+from app.services import ProductReviewService, ProductService, OrderService, OrderLogService
 from datetime import datetime
 from app.auth import get_current_user
 from app.utils import FileUtils
@@ -11,6 +11,8 @@ class ProductReviewController:
     def __init__(self) -> None:
         self.product_review_service = ProductReviewService()
         self.product_service = ProductService()
+        self.order_log_service = OrderLogService()
+        self.order_service = OrderService()
 
     def get(self):
         return render_template("admin/product_review/index.html")
@@ -74,3 +76,45 @@ class ProductReviewController:
         if is_active:
             return {"status":"success","message":"Review Activated","data":is_active}
         return {"status":"success","message":"Review Deactivated","data":is_active}
+
+
+# ********************************
+    def product_review_create(self,product_id):
+        logged_in_user,roles=get_current_user().values()
+        reviewForm = CreateProductReviewForm()
+        products=self.product_service.get_active()
+        # form.product_id.choices = [(product.id, product.product_name) for product in products]
+       
+        if reviewForm.validate_on_submit():
+            is_ordered = self.order_service.get_by_user_and_product_id(product_id, logged_in_user.id)
+            is_review = self.product_review_service.get_check_is_review_or_not(product_id, logged_in_user.id)
+            
+            if is_ordered:
+                if is_review is None:
+           
+                    filepath=FileUtils.save('product_reviews',reviewForm.product_review_img_urls.data)
+                    if isinstance(filepath,str):
+                        filepath=[filepath]
+                    self.product_review_service.create(
+                        created_by=logged_in_user.id,
+                        created_at=datetime.now(),
+                        user_id=logged_in_user.id,   
+                        review_title=reviewForm.review_title.data,
+                        description=reviewForm.description.data,
+                        product_review_img_urls=filepath,
+                        rating=reviewForm.rating.data,
+                        product_id=reviewForm.product_id.data,
+                    )
+                    product=self.product_service.get_by_id(product_id)
+                    return redirect(url_for("product.product_details_page",product_id=product_id,reviewForm=reviewForm))
+                
+                # If the user has already given feedback, redirect with an error message
+                error_message = "Can't give any feedback! Already done..."
+                return redirect(url_for("product.product_details_page", product_id=product_id, error=error_message))
+
+            # If the service is not booked by the user, redirect with an error message
+            error_message = "Can't give any feedback! Order the product first."
+            return redirect(url_for("product.product_details_page", product_id=product_id, error=error_message))
+
+            # return render_template("admin/product_review/add.html", form=form, error="product_review already exists")
+        return redirect(url_for("product.product_details_page",product_id=product_id, reviewForm=reviewForm))

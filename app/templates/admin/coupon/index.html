@@ -23,6 +23,7 @@
                 <th>Discount Type</th>
                 <th>Expiry Date</th>
                 <th>Count</th>
+                <th>Send to Customer</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -63,6 +64,13 @@
                 },
                 { "data": "count" },
                 {
+                    "data":null,
+                    "render": function(data, type, row){
+                        return '<div class="d-flax"><input type=text id="SendCouponForUserId" class="form-control form-sm" placeholder="UserId" />'+
+                        '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="editTooltip" onclick="sendCouponRecord(' + row.id + ')">Send</button>'
+                    }
+                },
+                {
                     "data": null,
                     "render": function (data, type, row) {
                         return '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="editTooltip" onclick="editRecord(' + row.id + ')"><i class="bi bi-pencil"></i></button>' +
@@ -78,6 +86,11 @@
 
         window.editRecord = function (id) {
             window.location.href= "/admin/coupons/update/" + id;
+        };
+
+        window.sendCouponRecord = function(id) {
+            var userId = $('#SendCouponForUserId').val(); // Fetch the value of the input field
+            window.location.href = "/admin/coupons/send_coupon/" + id +"/"+ userId;
         };
 
         window.deactivateRecord = function (id, is_active) {

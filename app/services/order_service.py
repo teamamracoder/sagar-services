@@ -43,6 +43,11 @@ class OrderService(BaseService):
         for item in items["data"]:
             item['payment_method_name']=payment_methods.get_value(item["payment_method"])
         return items
+    
+    def add_payment_status_name_with_this(self,orders):
+        for order in orders['data']:
+            order['payment_status_name']=payment_statuses.get_value(order["payment_status"])
+        return orders
 
     def get_orders_by_user_id(self,user_id,request,columns):
         page = int(request.args.get('page', 1))
@@ -207,25 +212,44 @@ class OrderService(BaseService):
         }
 
     def get_all_orders(self,time_range):
-           end_date = datetime.now()
-           if time_range == 'Weekly':
-               start_date = end_date - timedelta(days=end_date.weekday())
-           elif time_range == 'Monthly':
-               start_date = end_date.replace(day=1)- timedelta(days=1)
-           elif time_range == 'Yearly':
-               start_date = end_date.replace(month=1, day=1)
-           elif time_range == 'Overall':
-               start_date = None
+        end_date = datetime.now()
+        if time_range == 'Weekly':
+            start_date = end_date - timedelta(days=end_date.weekday())
+        elif time_range == 'Monthly':
+            start_date = end_date.replace(day=1)- timedelta(days=1)
+        elif time_range == 'Yearly':
+            start_date = end_date.replace(month=1, day=1)
+        elif time_range == 'Overall':
+            start_date = None
 
-           if start_date is not None:
+        if start_date is not None:
                total_orders = OrderModel.query.filter(
                    OrderModel.created_at >= start_date,
                    OrderModel.created_at <= end_date,
                    OrderModel.is_active == True
                ).count()
-           else:
-               total_orders = OrderModel.query.filter(
-                   OrderModel.is_active == True
-               ).count()
+        else:
+            total_orders = OrderModel.query.filter(
+                OrderModel.is_active == True
+            ).count()
+        total_orders = OrderModel.query.filter(
+            OrderModel.created_at >= start_date,
+            OrderModel.created_at <= end_date,
+            OrderModel.is_active==True
+        ).count()
 
-           return total_orders
+        return total_orders
+
+
+
+    def get_by_user_and_product_id(self, product_id, user_id):
+        orders = self.model.query.filter_by(product_id=product_id, user_id=user_id).all()
+        
+        for order in orders:
+            if order.product_id == product_id and order.user_id == user_id:
+                return order
+        return None
+
+
+    
+

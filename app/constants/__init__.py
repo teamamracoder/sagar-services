@@ -1,2 +1,2 @@
-from .default_templates import DefaultTemplate
+from .default_templates import email_templates
 from .default_values import payment_methods,roles,order_statuses,discount_types,service_statuses,cart_statuses,departments,payment_statuses

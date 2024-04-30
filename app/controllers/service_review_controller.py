@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateServiceReviewForm
-from app.services import ServiceReviewService, ServiceService
+from app.services import ServiceReviewService, ServiceService, BookingLogService, BookingService
 from datetime import datetime
 from app.auth import get_current_user
 from app.utils import FileUtils
@@ -10,6 +10,8 @@ class ServiceReviewController:
     def __init__(self) -> None:
         self.service_review_service = ServiceReviewService()
         self.service_service = ServiceService()
+        self.booking_log_service = BookingLogService()
+        self.booking_service = BookingService()
 
     def get(self):
         return render_template("admin/service_review/index.html")
@@ -87,35 +89,40 @@ class ServiceReviewController:
 
 
 
-    def service_review_create(self,service_id):
-        logged_in_user,roles=get_current_user().values()
+    def service_review_create(self, service_id):
+        logged_in_user, roles = get_current_user().values()
         reviewForm = CreateServiceReviewForm()
-        services=self.service_service.get_active()
-        # form.service_id.choices = [(service.id, service.service_name) for service in services]
-       
-        if reviewForm.validate_on_submit():
-            # check if user purchased this service(from booking table, make function as  get_booking_by_user_is_and_service_id)
-                # if no
-                    # check if user already gave a review (from review table, make funtion as get_review_by_user_id_and_service_id)
-                        # if no
-                            # proceed below
-                        # else return render template with error
-                        # return redirect(url_for("service.service_details_page",service_id=service_id, error="error here"))
 
-            filepath=FileUtils.save('service_reviews',reviewForm.service_review_img_urls.data)
-            if isinstance(filepath,str):
-                filepath=[filepath]
-            self.service_review_service.create(
-                created_by=logged_in_user.id,
-                created_at=datetime.now(),
-                user_id=logged_in_user.id,   
-                review_title=reviewForm.review_title.data,
-                description=reviewForm.description.data,
-                service_review_img_urls=filepath,
-                rating=reviewForm.rating.data,
-                service_id=reviewForm.service_id.data,
-            )
-            service=self.service_service.get_by_id(service_id)
-            return redirect(url_for("service.service_details_page",service_id=service_id))
-            # return render_template("admin/service_review/add.html", form=form, error="product_review already exists")
-        return redirect(url_for("service.service_details_page",service_id=service_id, reviewForm=reviewForm))
+        if reviewForm.validate_on_submit():
+            is_booked = self.booking_service.get_by_user_and_service_id(service_id, logged_in_user.id)
+            is_review = self.service_review_service.get_check_is_review_or_not(service_id, logged_in_user.id)
+            
+            if is_booked:
+                if is_review is None:
+                    # Proceed with creating the review
+                    filepath = FileUtils.save('service_reviews', reviewForm.service_review_img_urls.data)
+                    if isinstance(filepath, str):
+                        filepath = [filepath]
+
+                    self.service_review_service.create(
+                        created_by=logged_in_user.id,
+                        created_at=datetime.now(),
+                        user_id=logged_in_user.id,   
+                        review_title=reviewForm.review_title.data,
+                        description=reviewForm.description.data,
+                        service_review_img_urls=filepath,
+                        rating=reviewForm.rating.data,
+                        service_id=reviewForm.service_id.data,
+                    )
+                    return redirect(url_for("service.service_details_page", service_id=service_id))
+
+               # If the user has already given feedback, redirect with an error message
+                error_message = "Can't give any feedback! Already done..."
+                return redirect(url_for("service.service_details_page", service_id=service_id, error=error_message))
+ 
+            # If the service is not booked by the user, redirect with an error message
+            error_message = "Can't give any feedback! Book the service first."
+            return redirect(url_for("service.service_details_page", service_id=service_id, error=error_message))
+
+        # If form validation fails, redirect back to the service details page with the form data
+        return redirect(url_for("service.service_details_page", service_id=service_id, reviewForm=reviewForm))

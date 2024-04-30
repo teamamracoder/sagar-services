@@ -754,7 +754,7 @@
                         cartBtnTooltip.innerHTML = totalCart;
                     }
                 }
-                else {
+                else if (responseData.status == 'error') {
                     toastr.error(responseData.message);
                     tooltipTitle = "Add to Cart"
                     tooltipIcon = '<i class="bi bi-cart-plus"></i>'

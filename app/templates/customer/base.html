@@ -190,11 +190,11 @@
                                 <input type="text" class="form-control form-control-sm" name="message" required>
                             </div>
                             <div class="col-1 p-0 m-0">
-                                <label for="profile_photo_url">
+                                <label for="attachement_url">
                                     <i class="bi bi-paperclip fs-5 p-0 m-0 btn btn-outline-dark border-0"></i>
                                 </label>
                                 <input type="file" name="attachement_url" class="d-none" ,
-                                    accept="jpg|jpeg|png|webp|gif|docs|pdf|xlxs" , id="profile_photo_url">
+                                    accept="jpg|jpeg|png|webp|gif|docs|pdf|xlxs" , id="attachement_url">
                             </div>
                             <div class="col-1 p-0 m-0">
                                 <button type="submit" class="btn btn-dark btn-sm float-end" id="message_send_btn"><i
@@ -433,25 +433,25 @@
 
 
 
-        window.addEventListener('scroll', function () {
-            let scrollPosition = window.scrollY;
-            document.querySelectorAll('.nav-link').forEach(link => {
-                let sectionId = link.getAttribute('href').substring(1);
-                let section = document.getElementById(sectionId);
-                let navbarHeight = document.getElementById('navbarSupportedContent').offsetHeight;
+        // window.addEventListener('scroll', function () {
+        //     let scrollPosition = window.scrollY;
+        //     document.querySelectorAll('.nav-link').forEach(link => {
+        //         let sectionId = link.getAttribute('href').substring(1);
+        //         let section = document.getElementById(sectionId);
+        //         let navbarHeight = document.getElementById('navbarSupportedContent').offsetHeight;
 
-                if (section) {
-                    let sectionTop = section.getBoundingClientRect().top + window.scrollY - navbarHeight;
-                    let sectionHeight = section.offsetHeight;
+        //         if (section) {
+        //             let sectionTop = section.getBoundingClientRect().top + window.scrollY - navbarHeight;
+        //             let sectionHeight = section.offsetHeight;
 
-                    if (scrollPosition >= sectionTop && scrollPosition < (sectionTop + sectionHeight)) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
-                }
-            });
-        });
+        //             if (scrollPosition >= sectionTop && scrollPosition < (sectionTop + sectionHeight)) {
+        //                 link.classList.add('active');
+        //             } else {
+        //                 link.classList.remove('active');
+        //             }
+        //         }
+        //     });
+        // });
     </script>
 </body>
 

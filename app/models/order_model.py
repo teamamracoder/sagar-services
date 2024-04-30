@@ -60,12 +60,13 @@ class OrderModel(db.Model):
 
     payment_status=db.Column(db.Integer)
 
-    area_pincode=db.Column(db.Integer,nullable=False)
+    area_pincode=db.Column(db.String(6))
 
     expected_delivery = db.Column(db.Date)
 
     mobile = db.Column(db.String(15))
 
+    delivery_charge = db.Column(db.Integer)
     users = db.relationship('UserModel', foreign_keys=[user_id], backref="orders")
     products = db.relationship("ProductModel",back_populates="orders")
     # created_by_id = db.relationship("UserModel", foreign_keys=[created_by], backref="orders_created")

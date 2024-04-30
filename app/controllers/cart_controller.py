@@ -4,6 +4,7 @@ from app.services import CartService, ProductService
 from datetime import datetime
 from app.constants import cart_statuses
 from app.auth import get_current_user
+from app.utils import cache
 
 class CartController:
     def __init__(self) -> None:
@@ -47,10 +48,28 @@ class CartController:
         cart = self.cart_service.get_by_id(id)
         if cart is None:
             return {"status":"error","message":"item not found","data":None}
-        is_active=self.cart_service.status(id)
-        if is_active:
-            return {"status":"success","message":"Cart Activated","data":is_active}
-        return {"status":"success","message":"Cart Deactivated","data":is_active}
+        else:
+            is_active=self.cart_service.status(id)
+            if is_active:
+                return {"status":"success","message":"Cart Activated","data":is_active}
+            else:
+                ######################################################################
+                logged_in_user, roles = get_current_user().values()
+                
+                # data = request.json
+                product_id = request.form.get("product_id")
+                quantity = request.form.get("qty")
+                # Retrieve cart items from the cache
+                cache_key = f"cart_{logged_in_user.id}"
+                cart_items = cache.get(cache_key)
+                # Initialize an empty list if cart_items is None
+                if cart_items is None:
+                    cart_items = []
+                # Filter out the item with the given product ID
+                cart_items = [cart_item for cart_item in cart_items if cart_item['product_id'] != cart.product_id]
+                cache.set(cache_key, cart_items)
+                #####################################################################
+                return {"status":"success","message":"Cart Deactivated","data":is_active}
 
 
 
@@ -67,10 +86,25 @@ class CartController:
     
             # Extract product ids from cart items
             product_ids = [cart_item.product_id for cart_item in cart_items]
-    
-            # Get product details for the product ids
+
+        
             products = self.product_service.get_product_details_by_ids(product_ids)
     
+            # Get product details for the product ids
+            products_dict = self.product_service.get_product_details_by_ids_dict(product_ids)
+            print(products_dict)
+            filtered_products=[]
+            for product in products_dict:
+                if product['stock']>2:
+                    cache_item={
+                        'product_id':product['product_id'],
+                        'quantity':1
+                    }
+                filtered_products.append(cache_item)
+            
+            print(filtered_products)
+
+            cache.set('cart_' + str(logged_in_user.id), filtered_products)
             # Construct response data
             response_data = []
             for cart_item in cart_items:
@@ -101,26 +135,37 @@ class CartController:
             try:
                 if cart_item:
                     if cart_item.is_active:
-                        self.status(cart_item.id)
-                        return {"status":"success","message":"Product Removed From Cart","data":False}
-                    else:
-                        self.cart_service.update(
-                            cart_item.id,
-                            updated_by=logged_in_user.id,  
-                            updated_at=datetime.now(),
-                            status=1,
-                            is_active = True
-                        )
-                        return {"status":"success","message":"Product Added to Cart","data":True}
+                        # self.status(cart_item.id)
+                        return {"status":"added"}
+                    if not cart_item.is_active:
+                        #check product stock
+                        product = self.product_service.get_by_id(product_id)
+                        if product:
+                            if product.stock<3:
+                                return {"status":"error","message":"Out of stock","data":True}
+                            else:
+                                self.cart_service.update(
+                                    cart_item.id,
+                                    updated_by=logged_in_user.id,  
+                                    updated_at=datetime.now(),
+                                    status=1,
+                                    is_active = True
+                                )
+                                return {"status":"success","message":"Product Added to Cart","data":True}
                 else:
-                    self.cart_service.create(
-                        created_by=logged_in_user.id,  
-                        created_at=datetime.now(),
-                        user_id=logged_in_user.id,
-                        product_id=product_id,
-                        status=1
-                    )
-                    return {"status":"success","message":"Product Added to Cart","data":True}
+                    product = self.product_service.get_by_id(product_id)
+                    if product:
+                        if product.stock<3:
+                            return {"status":"error","message":"Out of stock","data":True}
+                        else:
+                            self.cart_service.create(
+                                created_by=logged_in_user.id,  
+                                created_at=datetime.now(),
+                                user_id=logged_in_user.id,
+                                product_id=product_id,
+                                status=1
+                            )
+                            return {"status":"success","message":"Product Added to Cart","data":True}
 
             except ValueError as e:
                 return jsonify({'error': str(e)}), 500

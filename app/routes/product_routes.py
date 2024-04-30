@@ -84,3 +84,8 @@ def products_page_data():
 @product_bp.route("/product_details/<int:product_id>", methods=["GET", "PATCH"])
 def product_details_page(product_id):
     return product_controller.product_details_page(product_id)
+
+@product_bp.route("/check_area_availability", methods=[ "POST"])
+def check_area_availability():
+    return product_controller.check_area_availability()
+

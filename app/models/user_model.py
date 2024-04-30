@@ -23,9 +23,22 @@ class UserModel(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(255))
     address = db.Column(db.Text)
+    landmark=db.Column(db.Text)
+    address_line=db.Column(db.Text)
+    city=db.Column(db.Text)
+    state=db.Column(db.Text)
+    street=db.Column(db.Text)
+    pincode = db.Column(db.Integer)
     gender = db.Column(db.String(20))
     dob = db.Column(db.Date)
     profile_photo_url = db.Column(db.Text)
+    coupon = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            "coupons.id",
+            name="fk_users_coupons"
+        ),
+    )
 
     # roles = db.relationship("RoleModel", backref="user")
     # staff = db.relationship("RoleModel", back_populates="users",uselist=False)
