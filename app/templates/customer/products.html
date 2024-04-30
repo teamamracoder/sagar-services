@@ -26,7 +26,6 @@
                 </div>
                 <script>
                     var category_param = new URLSearchParams(window.location.search).get('category');
-                    console.log(category_param)
                     if (category_param != null) {
                         $(".category_filters").html("<a href='/products' class='text-dark'>View all categories</a>")
 
@@ -315,6 +314,7 @@
                 type: "GET",
                 complete: res => {
                     responseData = res.responseJSON
+                    console.log(responseData)
                     if (responseData.status == 'success') {
                         if (responseData.data) {
                             toastr.success(responseData.message);

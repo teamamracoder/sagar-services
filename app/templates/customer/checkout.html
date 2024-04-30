@@ -4,12 +4,12 @@
 
 {% block content %}
 
-<div class="container-fluidrow row d-flex justify-content-start mt-5">
+<div class="container-fluid row row d-flex justify-content-start mt-5">
   <div class="col-lg-5 col-md-5 d-none d-md-block">
     <img src="../../static/img/gif.gif" alt="" class="checkout-img" style="opacity: 0.3; object-fit: contain;">
   </div>
   <div class="col-lg-6 col-md-6 col-sm-12" >
-  <form class="accordion shadow-sm rounded-0 adminForm" id="accordionPanelsStayOpenExample" method="POST" action="{{url_for('checkout.confirm')}}">
+  <form class="accordion shadow-sm rounded-0 adminForm" id="accordionPanelsStayOpenExample" method="POST" action="{{url_for('booking.confirm')}}">
       <div class="accordion-item rounded-0">
         <h2 class="accordion-header rounded-0">
           <button type="button" class="accordion-button accordion-button1 rounded-0" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
@@ -266,7 +266,8 @@
       nextButton2copy.style.display='block'
       nextButton2.style.display='none'
 
-    } else {
+    } 
+    else {
       update_availability();
       $("accordionPanelsStayOpenExample").removeClass("adminForm")
         $("#newAddressForm").addClass("d-none")
@@ -289,7 +290,8 @@
         $("accordionPanelsStayOpenExample").addClass("adminForm")
 
             // Do something when the checkbox is checked
-        } else {
+        } 
+        else {
           update_availability();
           $("input[type='text']:not(#coupon_code)").prop("required",false);
             console.log("Checkbox is  unchecked");
@@ -562,6 +564,7 @@ function validate_address(){
       $("#place_order").attr("disabled",false)
     }
   })
+  
   $(document).ready(function () {
         $('.adminForm').validate({
             rules: {
@@ -653,7 +656,7 @@ function validate_address(){
 
 
 </script>
-
+<!-- 
 <script>
     // Get references to the checkbox and the new address form
     const addressCheckbox = document.getElementById('addressCheckbox');
@@ -770,7 +773,7 @@ dis_coupon.style.display = coupon.checked ? 'none' : 'block';
 dis_coupon.style.display = coupon.checked ? 'block' : 'none';
   });
 
-</script>
+</script> -->
 
 
 {% endblock %}

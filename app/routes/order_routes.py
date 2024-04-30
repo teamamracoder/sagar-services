@@ -71,3 +71,9 @@ def cancel(order_id):
     return order_controller.cancel(order_id)
 
 
+@order_bp.route("/order_details/<int:order_id>")
+@login_required
+def order_details_page(order_id):
+    return order_controller.order_details_page(order_id)
+
+

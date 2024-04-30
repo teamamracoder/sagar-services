@@ -74,3 +74,7 @@ def deleteImage(service_id,filename):
 def service_details_page(service_id):
     return service_controller.service_details_page(service_id)
 
+@service_bp.route("/check_area_availability/", methods=[ "POST"])
+def check_area_availability():
+    return service_controller.check_area_availability()
+
