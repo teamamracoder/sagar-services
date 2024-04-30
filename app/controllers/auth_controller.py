@@ -85,12 +85,12 @@ class AuthController:
             self.role_service.create(
                 user_id=user.id, role=3, created_by=user.id, created_at=datetime.now()
             )
-
             if user:
                 msg = email_templates.get_value('OTP_TEMPLATE')
                 if self.send_otp(user.id, "email", user.email,msg):
                     return redirect(url_for("auth.verify_otp", id=user.id))
                 else:
+                    print("sent")
                     flash("OTP sending failed, please try again", "error")
         return render_template("auth/signup.html", form=form)
 
