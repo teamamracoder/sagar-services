@@ -51,3 +51,31 @@ def get_current_user():
         
     except Exception as e:
         return {'logged_in_user':current_user,'roles':[]}
+    
+
+
+# login required override with decorator for is_verified check
+
+def login_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(current_user.id)
+        # get user
+        if not current_user.id:
+            return redirect(url_for("auth/login.html"))
+        else:
+            if not current_user.is_active:
+                return redirect(url_for("auth.verify_otp", id=current_user.id))
+            # return redirect(url_for("PREVIOUS_PAGE"))    
+
+            
+        
+        # user = current_user.id
+        #check is_active
+        
+        # if not current_user.is_authenticated:
+        #     return redirect(url_for("auth.login"))
+        # if not any(user_role in roles_param for user_role in get_current_user()['roles']):
+        #     return redirect(url_for("error_bp.unauthorized_access"))
+        return func(*args, **kwargs)
+    return wrapper

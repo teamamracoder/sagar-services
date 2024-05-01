@@ -86,17 +86,18 @@ class AuthController:
                 pincode=form.pincode.data,
                 created_at=datetime.now(),
                 profile_photo_url=filepath,
-                is_active=False,
+                is_active=True,
+                is_verified=False
             )
             self.role_service.create(
                 user_id=user.id, role=3, created_by=user.id, created_at=datetime.now()
             )
             if user:
+                login(user)
                 msg = email_templates.get_value('OTP_TEMPLATE')
                 if self.send_otp(user.id, "email", user.email,msg):
                     return redirect(url_for("auth.verify_otp", id=user.id))
                 else:
-                    print("sent")
                     flash("OTP sending failed, please try again", "error")
         return render_template("auth/signup.html", form=form)
 
@@ -120,9 +121,9 @@ class AuthController:
             user = self.user_service.update(user_id, is_active=True)
 
             if user:
+                self.user_service.update(user.id, is_verified=True)
                 msg = email_templates.get_value('WELCOME_TEMPLATE').replace("[FIRST_NAME]",user.first_name).replace("[FULL_NAME]",f"{user.first_name} {user.last_name}")
                 self.send_mail(user.email,"signup verification succcessful",msg)
-                login(user)
                 return redirect(url_for("home.index"))
             else:
                 flash("Invalid OTP", "error")
