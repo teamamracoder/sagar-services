@@ -59,23 +59,13 @@ def get_current_user():
 def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        print(current_user.id)
+        print(current_user)
         # get user
-        if not current_user.id:
-            return redirect(url_for("auth/login.html"))
-        else:
-            if not current_user.is_active:
-                return redirect(url_for("auth.verify_otp", id=current_user.id))
-            # return redirect(url_for("PREVIOUS_PAGE"))    
-
-            
-        
-        # user = current_user.id
-        #check is_active
-        
-        # if not current_user.is_authenticated:
-        #     return redirect(url_for("auth.login"))
-        # if not any(user_role in roles_param for user_role in get_current_user()['roles']):
-        #     return redirect(url_for("error_bp.unauthorized_access"))
+        if not hasattr(current_user, 'id'):
+            return redirect(url_for("auth.login"))
+        elif not current_user.is_active:
+            return redirect(url_for("auth.login"))
+        elif not current_user.is_verified:
+            return redirect(url_for("auth.verify_otp", id=current_user.id))
         return func(*args, **kwargs)
     return wrapper

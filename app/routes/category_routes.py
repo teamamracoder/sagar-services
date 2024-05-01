@@ -1,6 +1,7 @@
 from flask import Blueprint
 from app.controllers import CategoryController
-from flask_login import login_required
+# from flask_login import login_required
+from app.auth import login_required
 from app.constants import roles
 from app.auth import role_required
 category_bp = Blueprint("category", __name__)
