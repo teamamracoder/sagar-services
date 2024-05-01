@@ -26,6 +26,7 @@
                 </div>
                 <script>
                     var category_param = new URLSearchParams(window.location.search).get('category');
+                    console.log(category_param)
                     if (category_param != null) {
                         $(".category_filters").html("<a href='/products' class='text-dark'>View all categories</a>")
 
@@ -309,40 +310,27 @@
 
         // add to cart
         window.addToCart = function (product_id) {
-            cartBtnTooltip = document.getElementById("cartBtnTooltip");
-            totalCart = cartBtnTooltip.innerText;
             $.ajax({
                 url: "{{ url_for('cart.add',product_id=0) }}".replace('0', product_id),
                 type: "GET",
                 complete: res => {
                     responseData = res.responseJSON
-                    console.log(responseData)
                     if (responseData.status == 'success') {
                         if (responseData.data) {
                             toastr.success(responseData.message);
                             tooltipTitle = "Added to Cart"
                             tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
-                            totalCart = parseInt(totalCart) + 1;
-                            cartBtnTooltip.innerHTML = totalCart;
                         }
                         else {
                             toastr.error(responseData.message);
                             tooltipTitle = "Add to Cart"
                             tooltipIcon = '<i class="bi bi-cart-plus"></i>'
-                            if (totalCart > 0) {
-                                totalCart = parseInt(totalCart) - 1;
-                            }
-                            cartBtnTooltip.innerHTML = totalCart;
                         }
                     }
-                    else if (responseData.status == 'error'){
+                    else {
                         toastr.error(responseData.message);
                         tooltipTitle = "Add to Cart"
                         tooltipIcon = '<i class="bi bi-cart-plus"></i>'
-                        if (totalCart > 0) {
-                            totalCart = parseInt(totalCart) - 1;
-                        }
-                        cartBtnTooltip.innerHTML = totalCart;
                     }
                     $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
                 },
@@ -353,8 +341,6 @@
         }
 
         window.addToWishlist = function (product_id) {
-            wishBtnTooltip = document.getElementById("wishBtnTooltip");
-            totalWish = wishBtnTooltip.innerText;
             $.ajax({
                 url: "{{ url_for('wishlist.add',product_id=0) }}".replace('0', product_id),
                 type: "GET",
@@ -365,27 +351,17 @@
                             toastr.success(responseData.message);
                             tooltipTitle = "Added to Wishlist"
                             tooltipIcon = '<i class="bi bi-heart-fill"></i>'
-                            totalWish = parseInt(totalWish) + 1;
-                            wishBtnTooltip.innerHTML = totalWish;
                         }
                         else {
                             toastr.error(responseData.message);
                             tooltipTitle = "Added to Wishlist"
                             tooltipIcon = '<i class="bi bi-heart"></i>'
-                            if (totalWish > 0) {
-                                totalWish = parseInt(totalWish) - 1;
-                            }
-                            wishBtnTooltip.innerHTML = totalWish;
                         }
                     }
                     else {
                         toastr.error(responseData.message);
                         tooltipTitle = "Added to Wishlist"
                         tooltipIcon = '<i class="bi bi-heart"></i>'
-                        if (totalWish > 0) {
-                            totalWish = parseInt(totalWish) - 1;
-                        }
-                        wishBtnTooltip.innerHTML = totalWish;
                     }
                     $("#wishlist_icon_" + product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
 
@@ -397,7 +373,7 @@
         }
 
         window.checkout = function (product_id) {
-            window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
+            console.log(product_id)
         }
 
     });
