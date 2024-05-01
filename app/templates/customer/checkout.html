@@ -34,8 +34,8 @@
                         </script>
                         <td>
                             <select class="form-select qty-selector" id="qty_{{ product.id }}" onchange="updateQuantity('{{ product.id }}')">
-                                <option value="" disabled>qty</option>
-                                <option value="{{ product.id }}_1" selected>1</option>
+                                <option value="" disabled selected>---</option>
+                                <option value="{{ product.id }}_1">1</option>
                                 <option value="{{ product.id }}_2">2</option>
                                 <option value="{{ product.id }}_3">3</option>
                             </select>
@@ -108,8 +108,17 @@
             <div class="user border shadow-sm p-3 bg-body-tertiary">
               <strong class="pe-1">Name:</strong> {{user.first_name + " "+user.last_name}}
               <br><strong class="pe-1">Email:</strong> {{user.email}}
-              <br><strong class="pe-1">Address:</strong> {{ user.landmark }} ,{{ user.address_line }} ,{{ user.city }}, {{ user.state }} ,{{ user.street }}
-              <br><strong class="pe-1">Pincode:</strong> <span id="prev_pincode">{{user.pincode}}</span>
+              <br><strong class="pe-1">Address:</strong> {{
+                [
+                    user.landmark,
+                    user.address_line,
+                    user.city,
+                    user.state,
+                    user.street
+                ] | select('defined')  | select('ne', '')
+                | join(', ')
+            }}
+              <br><strong class="pe-1">Pincode:</strong> <span id="prev_pincode">{% if user.pincode %}{{user.pincode}}{% endif %}</span>
               <br><strong class="pe-1">Contact No:</strong> {{user.mobile}}
             </div>
               <br>
@@ -136,7 +145,7 @@
                         <input type="number" class="form-control" id="MobleNo" name="MobileNo" placeholder="Enter Mobile No">
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="newCity" class="form-label">Street Address</label>
+                        <label for="StreetAddress" class="form-label">Street Address</label>
                         <input type="text" class="form-control" id="StreetAddress" name="StreetAddress" placeholder="Flat/House No./Floor/Building/Street">
                     </div>
                     <div class="col-6 mb-3">
@@ -197,11 +206,11 @@
       </div>
 
 
+      <div id="pincode_available_messages">
+                        
+      </div>
       
   </form>
-  <div id="pincode_available_messages">
-                    
-  </div>
   </div>
 </div>
 <script>

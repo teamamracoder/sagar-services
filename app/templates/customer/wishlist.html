@@ -11,6 +11,9 @@
             <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
         </ol>
     </nav>
+    <div class="d-none d-flex align-items-center justify-content-center" id="empty-wishlist-container">
+        <img src="{{url_for('static',filename='img/empty-wishlist.png')}}" alt="" class="">
+    </div>
     <div class="row" id="wishlist-items-container">
 
     </div>
@@ -24,9 +27,16 @@
                 url: "{{ url_for('wishlist.wishlist_page_data') }}",
                 type: "GET",
                 success: function (response) {
-                    console.log(response)
-                    // Call function to render cart details
-                    renderWishlistDetails(response);
+                    if(response.length==0){
+                        $("#empty-wishlist-container").removeClass("d-none")
+                        $("#wishlist-items-container").css("display","none")
+                    }
+                    else{
+                        $("#empty-wishlist-container").addClass("d-none")
+                        $("#wishlist-items-container").css("display","block")
+                        // Call function to render cart details
+                        renderWishlistDetails(response);
+                    }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching Wishlist details:', error);
@@ -51,8 +61,8 @@
                 else {
                     product_image = null
                 }
-                wishlistTable.append(`<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border shadow-sm">
-                  <div class="card border-0 shadow-none my-1 rounded-0 wishlist_item_${item.id}">
+                wishlistTable.append(`<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border shadow-sm wishlist_item_${item.id}">
+                  <div class="card border-0 shadow-none my-1 rounded-0">
                     <div class="card-body border-0">
                       <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
@@ -92,6 +102,10 @@
                         if (!responseData.data) {
                             toastr.error("Product Removed From Wishlist");
                             $(".wishlist_item_" + wishlist_id).css("display", "none")
+                        }
+                        if(responseData.wishlist_count==0){
+                            $("#empty-wishlist-container").removeClass("d-none")
+                            $("#wishlist-items-container").css("display","none")
                         }
                     }
                     else {

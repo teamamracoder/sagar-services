@@ -23,13 +23,15 @@ class WishlistController:
 
     # is_active will be updated as activated/deactivated
     def status(self, wishlist_id):
+        logged_in_user, roles = get_current_user().values()
         wishlist = self.wishlist_service.get_by_id(wishlist_id)
         if wishlist is None:
             return {"status":"error","message":"Wishlist Deactivated"}
         is_active=self.wishlist_service.status(wishlist_id)
         if is_active:
             return {"status":"success","message":"Wishlist Activated","data":is_active}
-        return {"status":"success","message":"Wishlist Deactivated","data":is_active}
+        wishlist_count = self.wishlist_service.get_total_wishlist_items_by_user_id(logged_in_user.id)
+        return {"status":"success","message":"Wishlist Deactivated","data":is_active, "wishlist_count":wishlist_count}
 
 
 
