@@ -221,6 +221,17 @@ class BookingController:
             booking_id=booking.id,
             booking_status=booking.service_status
         )
+        
+        if is_new_address:
+            self.user_service.update(
+                logged_in_user.id,
+                landmark = request.form.get("StreetAddress"),
+                address_line = request.form.get("Landmark"),
+                city = request.form.get("Additional Address"),
+                state = request.form.get("City"),
+                street = request.form.get("State"),
+                pincode = int(request.form.get("PinCode").strip())
+            )
 
         msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
         MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)

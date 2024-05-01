@@ -17,11 +17,11 @@ class UserController:
         if form.validate_on_submit():
             filepath=FileUtils.save('users',[form.profile_photo_url.data])
             self.user_service.create(
-                email=form.email.data,
-                password=form.password.data,
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                mobile=form.mobile.data,
+                email=form.email.data.strip(),
+                password=form.password.data.strip(),
+                first_name=form.first_name.data.strip(),
+                last_name=form.last_name.data.strip(),
+                mobile=form.mobile.data.strip(),
                 landmark=form.landmark.data,
                 address_line=form.address_line.data,
                 city=form.city.data,
@@ -59,10 +59,10 @@ class UserController:
                 filepath=new_filepath
             self.user_service.update(
                 id=id,
-                email=form.email.data,
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                mobile=form.mobile.data,
+                email=form.email.data.strip(),
+                first_name=form.first_name.data.strip(),
+                last_name=form.last_name.data.strip(),
+                mobile=form.mobile.data.strip(),
                 dob=form.dob.data,
                 gender=form.gender.data,
                 landmark=form.landmark.data,
@@ -109,10 +109,10 @@ class UserController:
             filepath=new_filepath
         self.user_service.update(
             id=logged_in_user.id,
-            email=form.email.data,
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            mobile=form.mobile.data,
+            email=form.email.data.strip(),
+            first_name=form.first_name.data.strip(),
+            last_name=form.last_name.data.strip(),
+            mobile=form.mobile.data.strip(),
             updated_by=logged_in_user.id,
             gender = form.gender.data,
             dob = form.dob.data,

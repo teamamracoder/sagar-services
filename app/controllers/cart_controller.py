@@ -55,7 +55,7 @@ class CartController:
             else:
                 ######################################################################
                 logged_in_user, roles = get_current_user().values()
-                
+                cart_count = self.cart_service.get_total_cart_items_by_user_id(logged_in_user.id)
                 # data = request.json
                 product_id = request.form.get("product_id")
                 quantity = request.form.get("qty")
@@ -69,7 +69,7 @@ class CartController:
                 cart_items = [cart_item for cart_item in cart_items if cart_item['product_id'] != cart.product_id]
                 cache.set(cache_key, cart_items)
                 #####################################################################
-                return {"status":"success","message":"Cart Deactivated","data":is_active}
+                return {"status":"success","message":"Cart Deactivated","data":is_active, "cart_count":cart_count}
 
 
 
@@ -92,7 +92,6 @@ class CartController:
     
             # Get product details for the product ids
             products_dict = self.product_service.get_product_details_by_ids_dict(product_ids)
-            print(products_dict)
             filtered_products=[]
             for product in products_dict:
                 if product['stock']>2:
