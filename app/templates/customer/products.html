@@ -317,6 +317,7 @@
                     console.log(responseData)
                     if (responseData.status == 'success') {
                         if (responseData.data) {
+                            $("#cartBtnTooltip").text(responseData.cart_count)
                             toastr.success(responseData.message);
                             tooltipTitle = "Added to Cart"
                             tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
@@ -346,21 +347,25 @@
                 type: "GET",
                 complete: res => {
                     responseData = res.responseJSON
+                    console.log(responseData)
                     if (responseData.status === 'success') {
                         if (responseData.data) {
+                            $("#wishBtnTooltip").text(responseData.wishlist_count)
                             toastr.success(responseData.message);
                             tooltipTitle = "Added to Wishlist"
                             tooltipIcon = '<i class="bi bi-heart-fill"></i>'
                         }
                         else {
+                            $("#wishBtnTooltip").text(responseData.wishlist_count)
                             toastr.error(responseData.message);
-                            tooltipTitle = "Added to Wishlist"
+                            tooltipTitle = "Add to Wishlist"
                             tooltipIcon = '<i class="bi bi-heart"></i>'
                         }
                     }
                     else {
+                        $("#wishBtnTooltip").text(responseData.wishlist_count)
                         toastr.error(responseData.message);
-                        tooltipTitle = "Added to Wishlist"
+                        tooltipTitle = "Add to Wishlist"
                         tooltipIcon = '<i class="bi bi-heart"></i>'
                     }
                     $("#wishlist_icon_" + product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)

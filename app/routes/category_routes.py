@@ -32,7 +32,6 @@ def update(id):
     return category_controller.update(id)
 
 
-# @category_bp.route("/admin/categories/status/<string:id>", methods=["GET", "PATCH"])
 @category_bp.route("/admin/categories/status/<int:id>", methods=["GET", "PATCH"])
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])

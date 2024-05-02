@@ -23,13 +23,15 @@ class WishlistController:
 
     # is_active will be updated as activated/deactivated
     def status(self, wishlist_id):
+        logged_in_user, roles = get_current_user().values()
         wishlist = self.wishlist_service.get_by_id(wishlist_id)
         if wishlist is None:
             return {"status":"error","message":"Wishlist Deactivated"}
         is_active=self.wishlist_service.status(wishlist_id)
         if is_active:
             return {"status":"success","message":"Wishlist Activated","data":is_active}
-        return {"status":"success","message":"Wishlist Deactivated","data":is_active}
+        wishlist_count = self.wishlist_service.get_total_wishlist_items_by_user_id(logged_in_user.id)
+        return {"status":"success","message":"Wishlist Deactivated","data":is_active, "wishlist_count":wishlist_count}
 
 
 
@@ -57,8 +59,9 @@ class WishlistController:
                 if product:
                     cart=self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product.id)
                     in_cart=False
-                    if cart.is_active:
-                        in_cart=True
+                    if cart:
+                        if cart.is_active:
+                            in_cart=True
                     response_data.append({
                         'id': wishlist_item.id,
                         'product_id': product.id,
@@ -86,9 +89,10 @@ class WishlistController:
                 wishlist_item=self.wishlist_service.get_wishlist_item_by_user_id_product_id(logged_in_user.id,product_id)
                 if wishlist_item:
                     is_active=self.status(wishlist_item.id)
+                    wishlist_count = self.wishlist_service.get_total_wishlist_items_by_user_id(logged_in_user.id)
                     if is_active['data']:
-                        return {"status":"success","message":"Product Added To Wishlist","data":is_active['data']}
-                    return {"status":"success","message":"Product removed from Wishlist","data":is_active['data']}
+                        return {"status":"success","message":"Product Added To Wishlist","data":is_active['data'], "wishlist_count":wishlist_count}
+                    return {"status":"success","message":"Product removed from Wishlist","data":is_active['data'], "wishlist_count":wishlist_count}
 
                 else:
                     wishlist_item=self.wishlist_service.create(
@@ -97,10 +101,10 @@ class WishlistController:
                         user_id=logged_in_user.id,
                         product_id=product_id
                     )
+                    wishlist_count = self.wishlist_service.get_total_wishlist_items_by_user_id(logged_in_user.id)
                     if wishlist_item:
-                        return {"status":"success","message":"Product Added To Wishlist","data":wishlist_item.is_active}
+                        return {"status":"success","message":"Product Added To Wishlist","data":wishlist_item.is_active,"wishlist_count":wishlist_count}
                     return {"status":"error","message":"Something went wrong"}
-
             else:
                 return {"status":"error","message":"Something went wrong"}
         else:

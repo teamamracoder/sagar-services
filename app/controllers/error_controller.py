@@ -16,3 +16,6 @@ class ErrorController:
 
     def unauthorized_access(self):
         return render_template("error/unauthorized_access.html")
+
+    def deactivated(self):
+        return render_template("error/deactivated.html")

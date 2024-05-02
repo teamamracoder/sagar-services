@@ -249,7 +249,7 @@ email_templates = DefaultTemplate(
                         <img src="companyLogo.png" alt="Sagar-Services Logo" width="150px" height="50px" style="display: block; margin-right: auto;">
                     </header>
                     <main class="content" style="text-align: start; margin-bottom: 20px;">
-                        <h1>Thank You for Shopping with Sagar-co!</h1>
+                        <h1>Thank You for Choosing our Service!</h1>
                         <p>Hi [FULL_NAME],</p>
                         <p>We appreciate your recent booking and hope you had an exceptional service experience. Your feedback is important to us and helps us improve our services.</p>
                         <p>We kindly ask you to take a moment to share your thoughts on your recent shopping experience. Your input means a lot to us!</p>

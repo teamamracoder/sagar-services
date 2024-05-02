@@ -17,11 +17,11 @@ class UserController:
         if form.validate_on_submit():
             filepath=FileUtils.save('users',[form.profile_photo_url.data])
             self.user_service.create(
-                email=form.email.data,
-                password=form.password.data,
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                mobile=form.mobile.data,
+                email=form.email.data.strip(),
+                password=form.password.data.strip(),
+                first_name=form.first_name.data.strip(),
+                last_name=form.last_name.data.strip(),
+                mobile=form.mobile.data.strip(),
                 landmark=form.landmark.data,
                 address_line=form.address_line.data,
                 city=form.city.data,
@@ -32,7 +32,9 @@ class UserController:
                 created_at=datetime.now(),
                 dob=form.dob.data,
                 gender=form.gender.data,
-                profile_photo_url=filepath
+                profile_photo_url=filepath,
+                is_verified = True,
+                is_active=True
             )
             return redirect(url_for("user.index"))
         return render_template("admin/user/add.html", form=form)
@@ -59,10 +61,10 @@ class UserController:
                 filepath=new_filepath
             self.user_service.update(
                 id=id,
-                email=form.email.data,
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                mobile=form.mobile.data,
+                email=form.email.data.strip(),
+                first_name=form.first_name.data.strip(),
+                last_name=form.last_name.data.strip(),
+                mobile=form.mobile.data.strip(),
                 dob=form.dob.data,
                 gender=form.gender.data,
                 landmark=form.landmark.data,
@@ -90,8 +92,10 @@ class UserController:
 
     def details(self,id):
         user=self.user_service.get_by_id(id)
-        return render_template("admin/user/details.html",user=user)
-    
+        if user:
+            return render_template("admin/user/details.html",user=user)
+        return redirect(url_for('dashboard.index'))
+
     def admin_my_profile(self):
         logged_in_user,roles=get_current_user().values()
         user = self.user_service.get_by_id(logged_in_user.id)
@@ -109,10 +113,10 @@ class UserController:
             filepath=new_filepath
         self.user_service.update(
             id=logged_in_user.id,
-            email=form.email.data,
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            mobile=form.mobile.data,
+            email=form.email.data.strip(),
+            first_name=form.first_name.data.strip(),
+            last_name=form.last_name.data.strip(),
+            mobile=form.mobile.data.strip(),
             updated_by=logged_in_user.id,
             gender = form.gender.data,
             dob = form.dob.data,

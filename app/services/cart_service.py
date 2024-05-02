@@ -61,7 +61,6 @@ class CartService(BaseService):
             return datas
   
     def update_cart_status(self, user_id, product_id, cart_status):
-    # Assuming self.db_session is your SQLAlchemy session
         cart_item = self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
         if cart_item:
             cart_item.cart_status = cart_status
