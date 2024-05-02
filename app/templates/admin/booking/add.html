@@ -3,48 +3,74 @@
 {% block title %}Add Booking{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" >
     <h3 class="text-center my-3">Add Booking</h3>
 
+    <div class="border p-5 border-1 shadow shadow-lg">
     <form method="POST" action="{{ url_for('booking.add') }}" id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.service_id.label(class="form-label") }}
-                {{ form.service_id(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.service_id.label(class="form-label") }}
+                    {{ form.service_id(class="form-control form-control") }}
+                </div>
+                <div class="col-6">
+                    {{ form.total_charges.label(class="form-label") }}
+                    {{ form.total_charges(class="form-control form-control", placeholder="Total Charges..") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.total_charges.label(class="form-label") }}
-                {{ form.total_charges(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.service_status.label(class="form-label") }}
+                    {{ form.service_status(class="form-control") }}
+                </div>
+                <div class="col-6">
+                    {{ form.payment_status.label(class="form-label") }}
+                    {{ form.payment_status(class="form-control") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.service_location.label(class="form-label") }}
-                {{ form.service_location(class="form-control") }}
+            
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.payment_method.label(class="form-label") }}
+                    {{ form.payment_method(class="form-control form-control") }}
+                </div>
+                <div class="col-6">
+                    {{ form.area_pincode.label(class="form-label") }}
+                    {{ form.area_pincode(class="form-control form-control", placeholder="Available Area Pincode..") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.service_status.label(class="form-label") }}
-                {{ form.service_status(class="form-control") }}
+            <div class="d-flex justify-content-center">
+                <div class="col-12 ">
+                    {{ form.service_location.label(class="form-label") }}
+                    {{ form.service_location(class="form-control", placeholder="Enter Service Locaation..") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.payment_status.label(class="form-label") }}
-                {{ form.payment_status(class="form-control") }}
+           
+            <div class="row">
+                <div class="col-12 my-3">
+                    <a href="{{ url_for('booking.index') }}" class="btn btn-outline-dark btn-sm ">Back</a>
+                </div>
+                <div class="col my-4" style="margin-left: -80px;">
+                  <input type="submit" class="btn btn-dark btn-sm" value="Submit" />
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.payment_method.label(class="form-label") }}
-                {{ form.payment_method(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.area_pincode.label(class="form-label") }}
-                {{ form.area_pincode(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('booking.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
-            </div>
+            
         </div>
     </form>
 
 </div>
+</div>
+
+
+
+
+
+
+
 <script>
     $(document).ready(function(){
         $('#adminForm').validate({

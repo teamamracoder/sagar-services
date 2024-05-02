@@ -6,35 +6,51 @@
 <div class="container">
     <h3 class="text-center my-3">Update Staff</h3>
 
+    <div class="border p-5 border-1 shadow shadow-lg">
     <form method="POST" action="{{ url_for('staff.update', id=id) }}" enctype="multipart/form-data"  id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.salary.label(class="form-label") }}
-                {{ form.salary(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.salary.label(class="form-label") }}
+                    {{ form.salary(class="form-control form-control", placeholder="Enter Salary") }}
+                </div>
+                <div class="col-6">
+                    {{ form.qualification.label(class="form-label") }}
+                    {{ form.qualification(class="form-control form-control", placeholder="Enter Qualification") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.qualification.label(class="form-label") }}
-                {{ form.qualification(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.join_date.label(class="form-label") }}
+                    {{ form.join_date(class="form-control form-control") }}
+                </div>
+                <div class="col-6">
+                    {{ form.leave_date.label(class="form-label") }}
+                    {{ form.leave_date(class="form-control form-control") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.join_date.label(class="form-label") }}
-                {{ form.join_date(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.leave_date.label(class="form-label") }}
-                {{ form.leave_date(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
+            <div class="col-6">
                 {{ form.department.label(class="form-label") }}
-                {{ form.department(class="form-control form-control-sm") }}
+                {{ form.department(class="form-control form-control", placeholder="Enter Department") }}
             </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Update</button>
-                <a href="{{ url_for('staff.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            
+           
+
+            <div class="row">
+                <div class="col my-3">
+                    <a href="{{ url_for('staff.index') }}" class="btn btn-outline-dark btn-sm ">Back</a>
+                </div>
+                <div class="col my-4" style="margin-left: -80px;">
+                  <input type="submit" class="btn btn-dark btn-sm" value="Update" />
+                </div>
             </div>
+            
         </div>
     </form>
+</div>
 </div>
 <script>
     $(document).ready(function () {

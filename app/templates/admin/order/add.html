@@ -6,60 +6,75 @@
 <div class="container">
     <h3 class="text-center my-3">Add Order</h3>
 
+    <div class="border p-5 border-1 shadow shadow-lg">
     <form method="POST" action="{{ url_for('order.add') }}" id="adminForm">
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.product_id.label(class="form-label") }}
-                {{ form.product_id(class="form-control form-control-sm") }}
+            
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.product_id.label(class="form-label") }}
+                    {{ form.product_id(class="form-control form-control", placeholder="Enter product_id") }}
+                </div>
+                <div class="col-6">
+                    {{ form.user_id.label(class="form-label") }}
+                    {{ form.user_id(class="form-control form-control", placeholder="Enter user_id") }}
+                </div>
             </div>
-            <p id="productError" class="error">
-                {% if error %}
-                    {{ error }}
-                {% endif %}
-            </p>
-            <div class="col-12">
-                {{ form.user_id.label(class="form-label") }}
-                {{ form.user_id(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.price.label(class="form-label") }}
+                    {{ form.price(class="form-control form-control", readonly="readonly", placeholder="Price") }}
+                </div>
+                <div class="col-6">
+                    {{ form.quantity.label(class="form-label") }}
+                    {{ form.quantity(class="form-control form-control") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.price.label(class="form-label") }}
-                {{ form.price(class="form-control form-control-sm", readonly="readonly") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.payment_method.label(class="form-label") }}
+                    {{ form.payment_method(class="form-control") }}
+                </div>
+                <div class="col-6">
+                    {{ form.payment_status.label(class="form-label") }}
+                    {{ form.payment_status(class="form-control") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.quantity.label(class="form-label") }}
-                {{ form.quantity(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.payment_method.label(class="form-label") }}
-                {{ form.payment_method(class="form-control") }}
-            </div>
-            <div class="col-12">
-                {{ form.payment_status.label(class="form-label") }}
-                {{ form.payment_status(class="form-control") }}
+
+            <div class="row p-3">
+                <div class="col-4">
+                    {{ form.mobile.label(class="form-label") }}
+                    {{ form.mobile(class="form-control form-control", placeholder="Enter Mobile No..") }}
+                </div>
+                <div class="col-4">
+                    {{ form.area_pincode.label(class="form-label") }}
+                    {{ form.area_pincode(class="form-control form-control", placeholder="Enter Available Area Pincode") }}
+                </div>
+                <div class="col-4">
+                    {{ form.expected_delivery.label(class="form-label") }}
+                    {{ form.expected_delivery(class="form-control form-control") }}
+                </div>
             </div>
             <div class="col-12">
                 {{ form.shipping_address.label(class="form-label") }}
-                {{ form.shipping_address(class="form-control form-control-sm") }}
+                {{ form.shipping_address(class="form-control form-control", placeholder="Enter Shipping Address") }}
             </div>
-            <div class="col-12">
-                {{ form.mobile.label(class="form-label") }}
-                {{ form.mobile(class="form-control form-control-sm") }}
+
+            <div class="row">
+                <div class="col my-3">
+                    <a href="{{ url_for('order.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                </div>
+                <div class="col my-4" style="margin-left: -80px;">
+                  <input type="submit" class="btn btn-dark btn-sm" value="Submit" />
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.area_pincode.label(class="form-label") }}
-                {{ form.area_pincode(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.expected_delivery.label(class="form-label") }}
-                {{ form.expected_delivery(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('order.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
-            </div>
+            
         </div>
     </form>
+    </div>
 
 </div>
 <script>
@@ -75,11 +90,11 @@
                     required: true,
                     digits:true,
                     min: 1,
-                    max: 5
+                    
                 },
                 shipping_address: {
                     required: true,
-                    minlength: 20,
+                    minlength: 10,
                     maxlength: 100
                 },
                 area_pincode:{
@@ -99,7 +114,6 @@
                     required: "Please enter Quantity",
                     digits: "Invalid Quantity",
                     min: "Quantity can not be less then 0",
-                    max: "Quantity can not exceed 5"
                 },
                 shipping_address: {
                     required: "Please enter shipping_address",

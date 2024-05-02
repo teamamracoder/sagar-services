@@ -6,23 +6,31 @@
 <div class="container">
     <h3 class="text-center my-3">Update Category</h3>
 
+    <div class="border p-5 border-1 shadow shadow-lg">
     <form method="POST" action="{{ url_for('category.update', id=id) }}" enctype="multipart/form-data"  id="adminForm">
         {{ form.csrf_token }}
-        <div class="row">
-            <div class="col-12">
+        <div class="row p-3">
+            <div class="col-6">
                 {{ form.category_name.label(class="form-label") }}
-                {{ form.category_name(class="form-control form-control-sm") }}
+                {{ form.category_name(class="form-control form-control", placeholder="Enter Category Name..") }}
             </div>
-            <div class="col-12">
+            <div class="col-6">
                 {{ form.category_img_url.label(class="form-label") }}
-                {{ form.category_img_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
+                {{ form.category_img_url(class="form-control form-control multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
             </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Update</button>
-                <a href="{{ url_for('category.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+
+            <div class="row">
+                <div class="col my-3">
+                    <a href="{{ url_for('category.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                </div>
+                <div class="col my-4" style="margin-left: -80px;">
+                  <input type="submit" class="btn btn-dark btn-sm" value="Update" />
+                </div>
             </div>
+
         </div>
     </form>
+    </div>
 </div>
 <script>
     $(document).ready(function () {
@@ -30,7 +38,7 @@
             rules: {
                 category_name: {
                     required: true,
-                    minlength: 3,
+                    minlength: 2,
                     maxlength: 40
                 }
             },

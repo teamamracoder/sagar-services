@@ -6,64 +6,92 @@
 <div class="container">
     <h3 class="text-center my-3">Update Product</h3>
 
-    <form method="POST" action="{{ url_for('product.update', id=id) }}" enctype="multipart/form-data"  id="adminForm">
-        {{ form.csrf_token }}
-        <div class="row">
-            <div class="col-12">
-                {{ form.category_id.label(class="form-label") }}
-                {{ form.category_id(class="form-control form-control-sm") }}
+    <div class="border p-5 border-1 shadow shadow-lg">
+        <form method="POST" action="{{ url_for('product.update', id=id) }}" enctype="multipart/form-data"  id="adminForm">
+            {{ form.csrf_token }}
+            <div class="row">
+
+
+                <div class="row p-3">
+                    <div class="col-6">
+                        {{ form.category_id.label(class="form-label") }}
+                        {{ form.category_id(class="form-control form-control") }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.product_name.label(class="form-label") }}
+                        {{ form.product_name(class="form-control form-control", placeholder="Enter Product Name") }}
+                    </div>
+                </div>
+
+                <div class="row p-3">
+                    <div class="col-6">
+                        {{ form.brand.label(class="form-label") }}
+                        {{ form.brand(class="form-control form-control", placeholder="Enter Brand Name") }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.model.label(class="form-label") }}
+                        {{ form.model(class="form-control form-control", placeholder="Enter Model Name") }}
+                    </div>
+                </div>
+
+                <div class="row p-3">
+                    <div class="col-6">
+                        {{ form.price.label(class="form-label") }}
+                        {{ form.price(class="form-control form-control", placeholder="Enter Price") }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.discount.label(class="form-label") }}
+                        {{ form.discount(class="form-control form-control", placeholder="Enter Discount") }}
+                    </div>
+                </div>
+
+                <div class="row p-3">
+                    <div class="col-6">
+                        {{ form.stock.label(class="form-label") }}
+                        {{ form.stock(class="form-control form-control", placeholder="Enter Stock") }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.hidden_tag() }}
+                        {{ form.product_img_urls.label(class="form-label") }}
+                        {{ form.product_img_urls(class="form-control form-control multi with-preview max-10 maxsize-40960 accept-gif|jpg|png|jpeg|webp") }}
+                    </div>
+                </div>
+
+                <div class="row p-3">
+                    <div class="col-6">
+                        {{ form.payment_methods.label(class="form-label") }}
+                        {{ form.payment_methods(class="form-control form-control-sm", multiple="multiple") }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.available_area_pincodes.label(class="form-label") }}
+                        {{ form.available_area_pincodes(class="form-control form-control", placeholder="Enter Available Area Pincode") }}
+                    </div>  
+                </div>
+
+                <div class="row p-3">
+                    <div class="col-12">
+                        {{ form.sort_description.label(class="form-label") }}
+                        {{ form.sort_description(class="form-control form-control", placeholder="Enter Short Description") }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.specifications.label(class="form-label") }}
+                        {{ form.specifications(class="form-control form-control", id="default-editor") }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col my-3">
+                        <a href="{{ url_for('product.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                    </div>
+                    <div class="col my-4" style="margin-left: -80px;">
+                    <input type="submit" class="btn btn-dark btn-sm" value="Update" />
+                    </div>
+                </div>
+
             </div>
-            <div class="col-12">
-                {{ form.product_name.label(class="form-label") }}
-                {{ form.product_name(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.brand.label(class="form-label") }}
-                {{ form.brand(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.model.label(class="form-label") }}
-                {{ form.model(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.price.label(class="form-label") }}
-                {{ form.price(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.discount.label(class="form-label") }}
-                {{ form.discount(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.stock.label(class="form-label") }}
-                {{ form.stock(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.hidden_tag() }}
-                {{ form.product_img_urls.label(class="form-label") }}
-                {{ form.product_img_urls(class="form-control form-control-sm multi with-preview max-10 maxsize-40960 accept-gif|jpg|png|jpeg|webp") }}
-            </div>
-            <div class="col-12">
-                {{ form.sort_description.label(class="form-label") }}
-                {{ form.sort_description(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.specifications.label(class="form-label") }}
-                {{ form.specifications(class="form-control form-control-sm", id="default-editor") }}
-            </div>
-            <div class="col-12">
-                {{ form.payment_methods.label(class="form-label") }}
-                {{ form.payment_methods(class="form-control", multiple="multiple") }}
-            </div>
-            <div class="col-12">
-                {{ form.available_area_pincodes.label(class="form-label") }}
-                {{ form.available_area_pincodes(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Update</button>
-                <a href="{{ url_for('product.index') }}" class="btn btn-outline-dark btn-sm">Cancel</a>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
+
 </div>
 <script type="text/javascript">
     tinymce.init({
@@ -114,6 +142,10 @@
                 specifications: {
                     required: true,
                     minlength: 10
+                },
+                sort_description:{
+                    required: true,
+                    minlength: 10
                 }
             },
             messages: {
@@ -147,7 +179,12 @@
                 specifications: {
                     required: "Please enter Specifications",
                     minlength: "Specifications must be at least 10 characters long",
-                    maxlength: "Specifications must not exceed 200 characters"
+                    
+                },
+                specifications: {
+                    required: "Please enter sort description",
+                    minlength: "Sort description must be at least 10 characters long",
+                   
                 }
             },
             submitHandler: function (form) {

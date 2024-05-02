@@ -7,24 +7,35 @@
 <div class="container">
     <h3 class="text-center my-3">Add ServiceType</h3>
 
+    <div class="border p-5 border-1 shadow shadow-lg">
     <form method="POST" action="{{ url_for('service_type.add') }}" id="adminForm" enctype="multipart/form-data"> 
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.type_name.label(class="form-label") }}
-                {{ form.type_name(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.service_type_img_url.label(class="form-label") }}
-                {{ form.service_type_img_url(class="form-control form-control-sm", class="multi with-preview max-1", accept="gif|jpg|png|jpeg|webp") }}
+
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.type_name.label(class="form-label") }}
+                    {{ form.type_name(class="form-control form-control", placeholder="Enter Service Type Name") }}
+                </div>
+                <div class="col-6">
+                    {{ form.service_type_img_url.label(class="form-label") }}
+                    {{ form.service_type_img_url(class="form-control form-control multi with-preview max-1 accept-gif|jpg|png|jpeg|webp") }}
+                </div>
             </div>
             
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('service_type.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            <div class="row">
+                <div class="col my-3">
+                    <a href="{{ url_for('service_type.index') }}" class="btn btn-outline-dark btn-sm ">Back</a>
+                </div>
+                <div class="col my-4" style="margin-left: -80px;">
+                  <input type="submit" class="btn btn-dark btn-sm" value="Submit" />
+                </div>
             </div>
+
         </div>
     </form>
+    </div>
 
 </div>
 

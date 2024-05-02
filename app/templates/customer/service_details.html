@@ -125,7 +125,11 @@
           </div>
           <div class="col-12 mt-2">
             <h3>Service Details<i class="bi bi-cpu"></i></h3>
-            <p>{{service.description|safe}</p>
+            <p>
+                  <p>{{ service.description[:350]|safe }}</p>
+             
+              
+              </p>
           </div>
         </div>
       </div>
@@ -202,7 +206,7 @@
             <div class="tab-content">
               <div class="tab-pane fade show active" id="tab-pane-1">
                 <h4 class="mb-3">Service Description</h4>
-                <p>{{service.description}}</p>
+                <p>{{service.description|safe}}</p>
               </div>
               <div class="tab-pane fade" id="tab-pane-2">
                 <div class="row">
