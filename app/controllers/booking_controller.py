@@ -276,16 +276,43 @@ class BookingController:
         return redirect(url_for("booking.booking_success"))
     
     def booking_success(self):
-        return render_template("customer/booking_success.html")
-    
-    def booking_success(self):
         logged_in_user,roles=get_current_user().values()
         success_check = cache.get("booking_success_"+ str(logged_in_user.id))
         if success_check:
             msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
             MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)
             cache.delete("booking_success_"+ str(logged_in_user.id))
-            return render_template("customer/order_success.html")
+            return render_template("customer/booking_success.html")
         else:
             return redirect(url_for("home.index"))
+
+
+    def booking_details_page(self,booking_id):
+        booking=self.booking_service.get_by_id(booking_id)
+        service = self.service_service.get_by_id(booking.service_id)
+        user = self.user_service.get_by_id(booking.user_id)
+        payment_method = payment_methods.get_value(booking.payment_method)
+        payment_status = payment_statuses.get_value(booking.payment_status)
+        booking_logs= self.booking_log_service.get_booking_log_by_booking_id(booking_id)
+        return render_template("customer/booking_details.html",booking=booking,booking_logs=booking_logs,service=service,user=user,payment_status=payment_status,payment_method=payment_method)
+    
+
+    def cancel(self,booking_id):
+        logged_in_user,roles=get_current_user().values()
+        booking = self.booking_service.get_by_id(booking_id)
+        booking_prev_status=booking.service_status
+        if booking_prev_status == 1:
+            updated_data = {
+                'service_status': 4,
+                'updated_at': datetime.now(),
+                'updated_by': 1
+            }
+            self.booking_service.update(id, **updated_data)
+            self.booking_log_service.create(
+                created_by=logged_in_user.id,
+                created_at=datetime.now(),
+                booking_id=booking.id,
+                booking_status=4
+            )
+        return redirect(url_for("booking.bookings_page"))
 

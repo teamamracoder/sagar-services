@@ -198,5 +198,4 @@ class OrderController:
         payment_method = payment_methods.get_value(order.payment_method)
         payment_status = payment_statuses.get_value(order.payment_status)
         order_logs= self.order_log_service.get_order_log_by_order_id(order_id)
-        print(order_logs)
         return render_template("customer/order_details.html",order=order,order_logs=order_logs,product=product,user=user,payment_status=payment_status,payment_method=payment_method)

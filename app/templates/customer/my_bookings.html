@@ -1,6 +1,6 @@
 {% extends 'customer/base.html' %}
 
-{% block title %}My Bookings{% endblock %}
+{% block title %}Sagar-services | Bookings {% endblock %}
 
 {% block content %}
 <style>
@@ -20,9 +20,12 @@
             <li class="breadcrumb-item active" aria-current="page">My Bookings</li>
         </ol>
     </nav>
+    <div class="d-none d-flex align-items-center justify-content-center" id="empty-cart-container">
+        <img src="{{url_for('static',filename='img/empty-list.png')}}" alt="" class="">
+      </div>
     <div class="row" id="order_list">
     </div>
-    <div class="row">
+    <div class="row" id="pagination-container">
         <div class="col-12">
             <nav>
               <ul class="pagination justify-content-center" id="pagination_controls">
@@ -34,11 +37,26 @@
 </div>
 <script>
 $(document).ready(function () {
-
-    window.cancelOrder = function(booking_id){
-        // use swal
-        window.location.href=`/booking/cancel/${booking_id}`
-    }
+    window.cancelOrder = function (booking_id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Cancel Booking",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Cancel Booking",
+            cancelButtonText: "Back",
+            confirmButtonColor:"#d7504D",
+            cancelButtonColor:"#5FA052",
+            customClass: {
+                confirmButton: 'btn btn-sm rounded-0 border-0',
+                cancelButton: 'btn btn-sm rounded-0'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href=`/booking/cancel/${booking_id}`
+            }
+        });
+    };
 
     window.fetchPaginatedBookings = function (page) {
         $.ajax({
@@ -49,8 +67,18 @@ $(document).ready(function () {
                 page_size: 10
             },
             success: function (response) {
-                renderBookings(response);
-                renderPaginationControls(response);
+                if(response.data.length<1){
+                    $("#order_list").css("display","none")
+                    $("#empty-cart-container").removeClass("d-none")
+                    $("#pagination-container").css("display","none")
+                }
+                else{
+                    $("#order_list").css("display","block")
+                    $("#pagination-container").css("display","block")
+                    $("#empty-cart-container").addClass("d-none")
+                    renderBookings(response.data);
+                    renderPaginationControls(response);
+                }
             },
             error: function (xhr, status, error) {
                 console.error('Error fetching booking details:', error);
@@ -61,7 +89,7 @@ $(document).ready(function () {
     var bookingContainer = $('#order_list');
     bookingContainer.empty();
     if(bookings){
-        bookings.data.forEach(function(booking) {
+        bookings.forEach(function(booking) {
             var booking_log = booking.booking_latest_log;
             var bookingDiv = $('<div class="col-12">');
 

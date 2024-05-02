@@ -1,6 +1,6 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Users{% endblock %}
+{% block title %}All Users List{% endblock %}
 
 {% block content %}
 
@@ -22,7 +22,6 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone No.</th>
-                <th>Address</th>
                 <th>Roles</th>
                 <th>Action</th>
             </tr>
@@ -75,7 +74,6 @@
                     }
                 },
                 { "data": "mobile" },
-                { "data": "address" },
                 { 
                     "data": null,
                     "render": function (data, type, row) {

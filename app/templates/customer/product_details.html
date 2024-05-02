@@ -1,6 +1,6 @@
 {% extends 'customer/base.html' %}
 
-{% block title %}Products Details{% endblock %}
+{% block title %}{{product.product_name}}{% endblock %}
 
 {% block content %}
 
@@ -541,6 +541,7 @@ $(document).ready(function () {
                     console.log(responseData)
                     if (responseData.status == 'success') {
                             if(responseData.data){
+                               $("#cartBtnTooltip").text(responseData.cart_count)
                                 toastr.success(responseData.message);
                                 $("#cart_button_"+product_id).replaceWith(`<a type="button" href="/cart" id="cart_button_{{product.id}}"  class="btn btn-blue" style="width: 45%">View Cart</a>`)
                                 

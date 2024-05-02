@@ -1,6 +1,6 @@
 {% extends 'customer/base.html' %} 
 
-{% block title %}Cart{% endblock %} 
+{% block title %}Shopping Cart | Sagar-services{% endblock %} 
 {% block content %}
 
 <div class="container">
@@ -158,6 +158,7 @@
                     responseData=res.responseJSON
                         if (responseData.status === 'success') {
                             if(!responseData.data){
+                              $("#cartBtnTooltip").text(responseData.cart_count)
                                 toastr.error("Product Removed Cart");
                                 $(".cart_item_"+cart_id).css("display","none")
                                 subtotalSpan.text(Number(subtotalSpan.text())-((Number($(".cart_price_"+cart_id).text()))+Number($(".cart_discount_"+cart_id).text())));
@@ -165,6 +166,7 @@
                                 totalPriceSpan.text(Number(totalPriceSpan.text())-Number($(".cart_price_"+cart_id).text()));
                             }
                             if(responseData.cart_count==0){
+                              $("#cartBtnTooltip").text(responseData.cart_count)
                               $("#price-table-container").css("display","none")
                               $("#empty-cart-container").removeClass("d-none")
                               $("#cart-items-container").css("display","none")

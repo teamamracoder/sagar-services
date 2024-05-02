@@ -5,6 +5,7 @@ from app.constants import roles
 from datetime import datetime
 from app.auth import get_current_user
 from app.utils import FileUtils
+from app.utils import EncryptionUtils
 
 class UserController:
     def __init__(self) -> None:
@@ -18,7 +19,7 @@ class UserController:
             filepath=FileUtils.save('users',[form.profile_photo_url.data])
             self.user_service.create(
                 email=form.email.data.strip(),
-                password=form.password.data.strip(),
+                password=EncryptionUtils.encrypt(form.password.data.strip()),
                 first_name=form.first_name.data.strip(),
                 last_name=form.last_name.data.strip(),
                 mobile=form.mobile.data.strip(),
@@ -30,8 +31,6 @@ class UserController:
                 pincode=form.pincode.data,
                 created_by=logged_in_user.id,
                 created_at=datetime.now(),
-                dob=form.dob.data,
-                gender=form.gender.data,
                 profile_photo_url=filepath,
                 is_verified = True,
                 is_active=True
@@ -75,7 +74,8 @@ class UserController:
                 pincode=form.pincode.data,
                 profile_photo_url=filepath,
                 updated_by=logged_in_user.id,
-                updated_at=datetime.now()
+                updated_at=datetime.now(),
+                password = EncryptionUtils.encrypt(form.password.data.strip())
             )
             return redirect(url_for("user.index"))
         return render_template("admin/user/update.html", id=id, form=form)
@@ -92,8 +92,10 @@ class UserController:
 
     def details(self,id):
         user=self.user_service.get_by_id(id)
-        return render_template("admin/user/details.html",user=user)
-    
+        if user:
+            return render_template("admin/user/details.html",user=user)
+        return redirect(url_for('dashboard.index'))
+
     def admin_my_profile(self):
         logged_in_user,roles=get_current_user().values()
         user = self.user_service.get_by_id(logged_in_user.id)

@@ -1,6 +1,6 @@
 {% extends 'customer/base.html' %}
 
-{% block title %}Order Status Of Sagar-services{% endblock %}
+{% block title %}Booking{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
         <div class="col-12">
         <div class="card my-2 px-0 rounded-0">
             <div class="card-header">
-                <h5 class="text-center my-1">Order Details</h5>
+                <h5 class="text-center my-1">Booking Details</h5>
             </div>
             <div class="card-body py-0 w-100">
                 <div class="row" style="min-height: 200px;">
@@ -20,71 +20,63 @@
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
+                                            <th>Service</th>
                                             <th>Total Amount</th>
                                             <th>Payment</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><img src="{{ url_for('static', filename=product.product_img_urls[0])  }}" alt="" class="adminTableImg"></td>
-                                            <td>{{ product.product_name }}</td>
-                                            <td>x{{order.quantity}}</td>
-                                            <td>₹{{ order.price }}/-</td>
+                                            <td><img src="{{ url_for('static', filename=service.service_img_urls[0])  }}" alt="" class="adminTableImg"></td>
+                                            <td>{{ service.service_name }}</td>
+                                            <td>₹{{ booking.total_charges }}/-</td>
                                             <td>{{payment_method}}/{{payment_status}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                {% if booking.booking_details %}
+                                <div class="row p-1 shadow-sm">
+                                    <p class="fw-bold">Details</p>
+                                    {{booking.booking_details}}
+                                </div>
+                                {% endif %}
                                 <div class="row border p-1 shadow-sm">
                                     <div class="col-6">
-                                        
-                                            <p class="fw-bold">Shipping Information :</p>
-                                            <p>{{ user.first_name +" "+ user.last_name }}, {{order.mobile}}</p>
-                                            <p>{{
-                                              [
-                                                  user.landmark,
-                                                  user.address_line,
-                                                  user.city,
-                                                  user.state,
-                                                  user.street
-                                              ] | select('defined')  | select('ne', '') | select('ne', None)
-                                              | join(', ')
-                                          }}, {{ order.area_pincode }}</p>
-                                        
+                                        <p class="fw-bold">Service Location :</p>
+                                        <p>{{ user.first_name +" "+ user.last_name }}, {{booking.mobile}}</p>
+                                        <p>{{ booking.service_location }}, {{ booking.area_pincode }}</p>
                                     </div>
                                     <div class="col-6">
                                         <p class="fw-bold">Billing Information :</p>
                                         <p>{{ user.first_name +" "+ user.last_name }}, {{user.mobile}}</p>
                                         <p>{{ user.email }}</p>
-                                        <p>{{ user.address }},{{user.pincode}}</p>
+                                        <p>{{
+                                            [
+                                                user.landmark,
+                                                user.address_line,
+                                                user.city,
+                                                user.state,
+                                                user.street
+                                            ] | select('defined')  | select('ne', '') | select('ne', None)
+                                            | join(', ')
+                                        }},{{user.pincode}}</p>
                                     </div>
                                 </div>
-                                
-                                
                                 <div class="progress-wrapper mt-4 py-0">
                                    <ol class="ProgressBar">
                                      <li class="ProgressBar-step">
                                        <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
-                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>PROCESSING</span><span class="date_0"></span></span>
+                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>BOOKED</span><span class="date_0"></span></span>
                                      </li>
                                      <li class="ProgressBar-step">
                                        <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
-                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>PACKAGING</span><span class="date_1"></span></span>
+                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>ON THE WAY</span><span class="date_1"></span></span>
 
                                      </li>
                                      <li class="ProgressBar-step">
                                        <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
-                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>SHIPPING</span><span class="date_2"></span></span>
+                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>PROVIDED</span><span class="date_2"></span></span>
                                      </li>
-                                     <li class="ProgressBar-step">
-                                       <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
-                                       <span class="ProgressBar-stepLabel d-flex flex-column"><span>ON_THE_WAY</span><span class="date_3"></span></span>
-                                    </li>
-                                     <li class="ProgressBar-step">
-                                        <svg class="ProgressBar-icon"><use xlink:href="#checkmark-bold"/></svg>
-                                        <span class="ProgressBar-stepLabel d-flex flex-column"><span>DELIVERED</span><span class="date_4"></span></span>
-                                    </li>
                                    </ol>
                                 </div>
                                    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -93,7 +85,7 @@
                                      </symbol>
                                    </svg>
                             </div>
-                            <p id="cancelled_text" class="text-danger text-end d-none"><i class="bi bi-exclamation-triangle"></i> Ordered Canceled</p>
+                            <p id="cancelled_text" class="text-danger text-end d-none"><i class="bi bi-exclamation-triangle"></i> Booking Canceled</p>
                             <button id="invoice" class="btn btn-outline-blue d-none">Invoice</button>
                         </div>
                     </div>
@@ -104,7 +96,7 @@
     </div>
 </div>
 <script>
-  var progressDataString = '{{ order_logs | tojson }}'
+  var progressDataString = '{{ booking_logs | tojson }}'
   var progressData = JSON.parse(progressDataString);
   function updateProgressBar() {
     var $bar = $(".ProgressBar");
@@ -122,15 +114,19 @@
             
             var $step = $bar.children().eq(index);
             $step.addClass("is-complete");
+            
             if (index === progressData.length - 1) {
               $step.addClass("is-current");
             }
+
           });
       }
   }
+
 $(document).ready(function() {
   updateProgressBar();
 });
+
 </script>
 
 {% endblock %}

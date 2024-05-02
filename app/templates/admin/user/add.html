@@ -1,6 +1,6 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Add User{% endblock %}
+{% block title %}Add New User{% endblock %}
 
 {% block content %}
 
@@ -59,14 +59,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                {{ form.gender.label(class="form-check-label")}}
-                {{ form.gender(class="form-check", required="true")}}
-          </div>
-          <div class="col-6">
-            {{ form.dob.label(class="form-check-label")}}
-            {{ form.dob(class="form-check", required="true")}}
-      </div>
+
             <div class="col-12">
                 {{ form.profile_photo_url.label(class="form-label") }}
                 {{ form.profile_photo_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}

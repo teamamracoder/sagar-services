@@ -82,4 +82,6 @@ class StaffController:
     
     def details(self,id):
         staff=self.staff_service.get_by_id(id)
-        return render_template("admin/staff/details.html",staff=staff)
+        user = self.user_service.get_by_id(staff.user_id)
+        department = departments.get_value(staff.department)
+        return render_template("admin/staff/details.html",staff=staff,user=user, department=department)
