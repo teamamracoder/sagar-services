@@ -24,3 +24,12 @@ class ServiceReviewService(BaseService):
     def serialize_review(self, review):
         return {key: getattr(review, key) for key in review.__dict__ if not key.startswith("_")}
 
+    def get_check_is_review_or_not(self, service_id, user_id):
+        reviews = self.model.query.filter_by(service_id=service_id, user_id=user_id).all()
+
+        for review in reviews:
+            if review.service_id == service_id and review.user_id == user_id:
+                return review
+        return None
+
+

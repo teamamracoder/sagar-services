@@ -25,3 +25,8 @@ def check_coupon():
 @login_required
 def confirm():
     return checkout_controller.confirm()
+
+@checkout_bp.route("/order_success")
+@login_required
+def order_success():
+    return checkout_controller.order_success()

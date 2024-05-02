@@ -176,7 +176,6 @@ class CheckoutController:
                     ] if attr is not None or attr is not ''
                 )
                 area_pincode = logged_in_user.pincode
-                print(type(area_pincode))
             if request.form.get("pay-method")=='1':
                 payment_status = 2
             else:
@@ -207,23 +206,32 @@ class CheckoutController:
                 self.cart_service.update_cart_status(logged_in_user.id,product_id,2)
             
             if is_new_address:
-                self.user_service.update(
-                    logged_in_user.id,
-                    landmark = request.form.get("StreetAddress"),
-                    address_line = request.form.get("Landmark"),
-                    city = request.form.get("Additional Address"),
-                    state = request.form.get("City"),
-                    street = request.form.get("State"),
-                    pincode = int(request.form.get("PinCode").strip())
-                )
+                if not logged_in_user.pincode:
+                    self.user_service.update(
+                        logged_in_user.id,
+                        landmark = request.form.get("StreetAddress"),
+                        address_line = request.form.get("Landmark"),
+                        city = request.form.get("Additional Address"),
+                        state = request.form.get("City"),
+                        street = request.form.get("State"),
+                        pincode = int(request.form.get("PinCode").strip())
+                    )
 
-            # cache.delete(f"cart_{logged_in_user.id}")
-            msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
-            MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
-            return "order success"
+            cache.delete(f"cart_{logged_in_user.id}")
+            cache.set("order_success_"+ str(logged_in_user.id), True)
+            return redirect(url_for("checkout.order_success"))
         return render_template("customer/cart.html")
 
-
+    def order_success(self):
+        logged_in_user,roles=get_current_user().values()
+        success_check = cache.get("order_success_"+ str(logged_in_user.id))
+        if success_check:
+            msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
+            MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
+            cache.delete("order_success_"+ str(logged_in_user.id))
+            return render_template("customer/order_success.html")
+        else:
+            return redirect(url_for("home.index"))
 
 
 def calculate_amount(product_id, qty, price, discount):

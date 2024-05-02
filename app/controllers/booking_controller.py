@@ -8,6 +8,7 @@ from app.constants import payment_statuses
 from app.auth import get_current_user
 from app.constants import email_templates
 from app.utils.mail_utils import MailUtils
+from app.utils import cache
 
 class BookingController:
     def __init__(self) -> None:
@@ -103,7 +104,8 @@ class BookingController:
                 service_status=form.service_status.data,
                 payment_status=form.payment_status.data,
                 payment_method=form.payment_method.data,
-                area_pincode=form.area_pincode.data
+                area_pincode=form.area_pincode.data,
+                booking_details=form.booking_details.data
                 ):
                 return redirect(url_for("booking.index"))
         return render_template("admin/booking/update.html", id=id, form=form)
@@ -124,22 +126,46 @@ class BookingController:
         booking = self.booking_service.get_by_id(id)
         if booking is None:
              return {"status":"error","message": "Booking not found"}
-        if status_type == 'payment':
-            status_key = payment_statuses.get_key(status)
-            updated_data = {
-                'payment_status': status_key,
-                'updated_at': datetime.now(),
-                'updated_by': logged_in_user.id
-            }
-        if status_type == 'booking':
-            status_key = service_statuses.get_key(status)
-            updated_data = {
-                'service_status': status_key,
-                'updated_at': datetime.now(),
-                'updated_by': logged_in_user.id
-            }
-        self.booking_service.update(id, **updated_data)
-        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+        else:
+            if status_type == 'payment':
+                status_key = payment_statuses.get_key(status)
+                updated_data = {
+                    'payment_status': status_key,
+                    'updated_at': datetime.now(),
+                    'updated_by': logged_in_user.id
+                }
+                return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+
+            if status_type == 'booking':
+                service_new_status = service_statuses.get_key(status)
+                # get previous booking status
+                service_prev_status=booking.service_status
+                service_prev_status_name = service_statuses.get_value(service_prev_status)
+                if service_prev_status!=3 and service_prev_status!=4:
+                    if service_new_status>=service_prev_status :
+                        # update booking table
+                        updated_data = {
+                            'service_status': service_new_status,
+                            'updated_at': datetime.now(),
+                            'updated_by': 1
+                        }
+                        self.booking_service.update(id, **updated_data)
+                        # insert status in booking_log
+                        self.booking_log_service.create(
+                            created_by=logged_in_user.id,
+                            created_at=datetime.now(),
+                            booking_id=booking.id,
+                            service_status=service_new_status
+                        )
+                        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+                    else:
+                        return {"status":"error","message":f"{status_type} status can not be changed to old step","data":status}
+                else:
+                    return {"status":"error","message":f"{status_type} is already {service_prev_status_name} so, can not change status","data":status}
+            else:
+                return {"status":"error","message":f"{status_type} status can not be chaged","data":status}
+
+
 
     def details(self,id):
         booking = self.booking_service.get_by_id(id)
@@ -172,15 +198,16 @@ class BookingController:
         data = self.booking_service.add_service_status_with_this(data)
         data = self.booking_service.add_payment_status_with_this(data)
         data = self.booking_log_service.add_booking_logs_with_this(data)
-        print(data)
         return jsonify(data)
 
 
     def booking_create(self,service_id):
         logged_in_user,roles=get_current_user().values()
         service = self.service_service.get_by_id(service_id)
-        return render_template('customer/book_now.html',service=service, user=logged_in_user)
-    
+        if service:
+            return render_template('customer/book_now.html',service=service, user=logged_in_user)
+        return render_template('customer/index.html')
+
     def confirm(self):
         logged_in_user,roles=get_current_user().values()
         service_id = int(request.form.get('service_id'))
@@ -193,9 +220,17 @@ class BookingController:
             mobile = request.form.get("MobileNo")
         else:
             mobile = logged_in_user.mobile
-            service_location = logged_in_user.landmark+","+logged_in_user.address_line+","+logged_in_user.city+","+logged_in_user.state+","+logged_in_user.street
+            service_location = ",".join(
+                str(attr) for attr in [
+                    logged_in_user.landmark,
+                    logged_in_user.address_line,
+                    logged_in_user.city,
+                    logged_in_user.state,
+                    logged_in_user.street
+                ] if attr is not None or attr is not ''
+            )
             area_pincode = logged_in_user.pincode
-        if request.form.get("pay-method")=='1':
+        if request.form.get("pay_method")=='1':
             payment_status = 2
         else:
             payment_status = 1
@@ -204,7 +239,7 @@ class BookingController:
             "created_by":logged_in_user.id,
             "created_at":datetime.now(),
             "user_id":logged_in_user.id,
-            "payment_method":request.form.get("pay-method"),
+            "payment_method":request.form.get("pay_method"),
             "area_pincode":area_pincode,
             "service_location":service_location,
             "mobile":mobile,
@@ -223,20 +258,33 @@ class BookingController:
         )
         
         if is_new_address:
-            self.user_service.update(
-                logged_in_user.id,
-                landmark = request.form.get("StreetAddress"),
-                address_line = request.form.get("Landmark"),
-                city = request.form.get("Additional Address"),
-                state = request.form.get("City"),
-                street = request.form.get("State"),
-                pincode = int(request.form.get("PinCode").strip())
-            )
+            if not logged_in_user.pincode:
+                self.user_service.update(
+                    logged_in_user.id,
+                    landmark = request.form.get("StreetAddress"),
+                    address_line = request.form.get("Landmark"),
+                    city = request.form.get("Additional Address"),
+                    state = request.form.get("City"),
+                    street = request.form.get("State"),
+                    pincode = int(request.form.get("PinCode").strip())
+                )
 
         msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
         MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)
-        return render_template("customer/booking_success.html")
+        cache.set("booking_success_"+ str(logged_in_user.id), True)
+        return redirect(url_for("booking.booking_success"))
     
     def booking_success(self):
         return render_template("customer/booking_success.html")
+    
+    def booking_success(self):
+        logged_in_user,roles=get_current_user().values()
+        success_check = cache.get("booking_success_"+ str(logged_in_user.id))
+        if success_check:
+            msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
+            MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)
+            cache.delete("booking_success_"+ str(logged_in_user.id))
+            return render_template("customer/order_success.html")
+        else:
+            return redirect(url_for("home.index"))
 

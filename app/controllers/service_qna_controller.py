@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateServiceQnAForm, UpdateServiceQnAForm
-from app.services import ServiceQnAService, ServiceService, UserService
+from app.services import ServiceQnAService, ServiceService, UserService, BookingService
 from datetime import datetime
 from app.auth import get_current_user
 
@@ -9,6 +9,7 @@ class ServiceQnAController:
         self.service_service = ServiceService()
         self.service_qna_service = ServiceQnAService()
         self.user_service = UserService()
+        self.booking_service = BookingService()
 
     def get(self):
         return render_template("admin/service_qna/index.html")
@@ -77,16 +78,27 @@ class ServiceQnAController:
     def service_qna_create(self,service_id):
         logged_in_user,roles=get_current_user().values()
         qnaForm = CreateServiceQnAForm()
-        services = self.service_service.get_active()
+        services = self.service_service.get_by_id(service_id)
 
         if qnaForm.validate_on_submit():
-            service = self.service_qna_service.create(
-                created_by=logged_in_user.id,
-                created_at=datetime.now(),
-                service_id = qnaForm.service_id.data,
-                question = qnaForm.question.data,
-                user_id = logged_in_user.id
-            )
-            service=self.service_service.get_by_id(service_id)
-            return redirect(url_for("service.service_details_page",service_id=service_id))
+            is_booked = self.booking_service.get_by_user_and_service_id(service_id, logged_in_user.id)
+            is_qna = self.service_qna_service.get_check_is_qna_or_not(service_id, logged_in_user.id)
+            if is_booked:
+                if is_qna is None:
+                    service = self.service_qna_service.create(
+                        created_by=logged_in_user.id,
+                        created_at=datetime.now(),
+                        service_id = qnaForm.service_id.data,
+                        question = qnaForm.question.data,
+                        user_id = logged_in_user.id
+                    )
+                    service=self.service_service.get_by_id(service_id)
+                    return redirect(url_for("service.service_details_page",service_id=service_id))
+
+                error_message = "Can't ask any query..! Already done..."
+                return redirect(url_for("service.service_details_page", service_id=service_id, error=error_message))
+ 
+            error_message = "Can't give ask any question..! Book the service first."
+            return redirect(url_for("service.service_details_page", service_id=service_id, error=error_message))
+
         return redirect(url_for("service.service_details_page",service_id=service_id,qnaForm=qnaForm))

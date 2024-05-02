@@ -33,8 +33,8 @@ class UserController:
                 dob=form.dob.data,
                 gender=form.gender.data,
                 profile_photo_url=filepath,
-                is_active = True,
-                is_verified = True
+                is_verified = True,
+                is_active=True
             )
             return redirect(url_for("user.index"))
         return render_template("admin/user/add.html", form=form)

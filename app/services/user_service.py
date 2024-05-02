@@ -193,3 +193,7 @@ class UserService(BaseService):
         user.coupon =None
         db.session.commit()
 
+
+    def get_data_for_staffs(self,staff_user_ids):
+        data = self.model.query.filter(self.model.id.in_(staff_user_ids)).all()
+        return data

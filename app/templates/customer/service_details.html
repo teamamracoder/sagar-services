@@ -28,7 +28,11 @@
   }
 </style>
 <!-- *********************************************** -->
-
+{% if error %}
+<div class="alert alert-danger" role="alert">
+    {{ error }}
+</div>
+{% endif %}
 <div class="container-fluid">
   <div class="container-fluid small-container single-product">
     <!-- overview section -->
@@ -134,38 +138,27 @@
         Our experts have been featured in press numerous times.
       </p>
     </div>
-    <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-6 rounded-2">
-        <div class="row h-75">
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            <img
-              src="../../static/img/team-member-1.jpg"
-              width="100%"
-              alt="staff-1"
-            />
-          </div>
-          <div class="col-8 d-flex flex-column justify-content-center">
-            <h3>Name: SUBHASIS DAS</h3>
-            <p>Experience: 7 years</p>
-            <p>Expertise on: CPU Repairing</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-6 rounded-2">
-        <div class="row h-75">
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            <img
-              src="../../static/img/team-member-2.jpg"
-              width="100%"
-              alt="staff-2"
-            />
-          </div>
-          <div class="col-8 d-flex flex-column justify-content-center">
-            <h3>Name: ANKITA DAS</h3>
-            <p>Experience: 10 years</p>
-            <p>Expertise on: CPU Repairing</p>
-          </div>
+    <div class="row">  
+      <div class="container pt-5 pb-3">
+        <div class="row px-xl-3">
+          <div class="owl-carousel vendor-carousel">
+            {% for staff in data_for_staffs %}
+                <div class="col-5">
+                    <!-- <div class="bg-light mx-auto"> -->
+                      <img
+                      src="../../static/img/team-member-1.jpg"
+                      width="100"
+                      height="auto"
+                      alt="staff-1"
+                    />
+                    <!-- </div> -->
+                </div>
+                <div class="col-7">
+                  <h6>Name :{{staff.first_name}} {{staff.last_name}}</h6>
+                  <p>Contact: {{staff.mobile}}<br/>Email: {{staff.email}}</p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
       </div>
     </div>
@@ -216,6 +209,8 @@
                   {% if logged_in_user.id %}
                   <div class="col-md-6">
                     <h4 class="mb-4">Leave a review</h4>
+                   
+                    <span class="text-danger">{{error}}</span>
                     <small
                       >Your email address will not be published. Required fields
                       are marked <span class="text-danger fs-5">*</span></small
@@ -356,6 +351,7 @@
               </div>
               <div class="tab-pane fade" id="tab-pane-3">
                 <div class="row">
+                  {% if logged_in_user.id %} 
                   <div class="col-md-6">
                     <h5 class="mb-3">Ask your doubts..?</h5>
                     <form
@@ -388,6 +384,7 @@
                       </div>
                     </form>
                   </div>
+                  {% endif %}
                   <div class="col-md-6">
                     <ul class="list-group list-group-flush">
                       {% for qna in service_qnas %} {% if loop.index <= 3 %}
@@ -732,5 +729,29 @@
           }
       });
   });
+</script>
+
+
+<script>
+  //Brand Carousel
+  $('.vendor-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: false,
+        dots: false,
+        autoplay: true,
+        smartSpeed: 3000,
+        responsive: {
+            0: {
+                items: 2.5
+            },
+            576: {
+                items: 3.5
+            },
+            700: {
+                items: 4.5
+            }
+        }
+    });
 </script>
 {% endblock %}
