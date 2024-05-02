@@ -62,34 +62,7 @@
                         {{ form.password.label(class="form-label") }}
                         {{ form.password(class="form-control form-control-sm", type="password") }}
                     </div>
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-6">
-                                {{ form.street.label(class="form-label") }}
-                                {{ form.street(class="form-control form-control-sm") }}
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-6">
-                                {{ form.landmark.label(class="form-label") }}
-                                {{ form.landmark(class="form-control form-control-sm") }}
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-6">
-                                {{ form.address_line.label(class="form-label") }}
-                                {{ form.address_line(class="form-control form-control-sm") }}
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-6">
-                                {{ form.city.label(class="form-label") }}
-                                {{ form.city(class="form-control form-control-sm") }}
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-6">
-                                {{ form.state.label(class="form-label") }}
-                                {{ form.state(class="form-control form-control-sm") }}
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-6">
-                                {{ form.pincode.label(class="form-label") }}
-                                {{ form.pincode(class="form-control form-control-sm") }}
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="col-12 my-2 text-center">
                         <button type="submit" class="btn btn-dark btn-sm mt-3">SIGN UP</button>
                     </div>
@@ -129,8 +102,6 @@
             },
             password: {
                 required: true,
-                minlength: 4,
-                maxlength: 40,
                 strongPassword: true
             }
         },

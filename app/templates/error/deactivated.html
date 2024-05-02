@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Deactivated</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        body {
+            font-family: "Ubuntu", sans-serif;
+            background-color:#ff383822 ;
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="text-center shadow p-5 border" style="background-color:#ffff ;">
+            <video loading="lazy" muted="muted" src="{{ url_for('static', filename='video/deactiveGif.mp4') }}" type="video/mp4" autoplay loop height="100"></video>
+            <h1 class="mt-1">Account Deactivated</h1>
+            <p class="text-danger">Your account has been deactivated.</p>
+            <p>Please contact support for further assistance.</p>
+            <a href="{{url_for('contact_bp.contact_us_page')}}" class="btn btn-blue rounded-0">Contact For Support</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

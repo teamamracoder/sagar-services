@@ -95,7 +95,7 @@
     <div class="container w-sm-100 mt-5">
     <div class="card text-center">
         <div class="card-header d-flex bg-light">
-           <h3 class="card-title mx-auto text-primary"> Thank You for Booking our Service! 
+           <h3 class="card-title mx-auto text-primary"> Thank You for Shopping! 
             <img src="{{ url_for('static', filename='img/cart101.png') }}"  alt="..." height="70px">
           </h3>
         </div>
@@ -106,7 +106,7 @@
               <video loading="lazy" muted="muted" src="{{ url_for('static', filename='video/Packing.mp4') }}" type="video/mp4" autoplay="autoplay" loop="loop" height="200px"></video>
               </div>
 
-            <h3 class="card-title  text-success">Your booking has been successfully placed.</h3>
+            <h3 class="card-title  text-success">Your order has been successfully placed.</h3>
 
           <p class="card-text">We will send you an email confirmation shortly.</p>
           
@@ -153,7 +153,7 @@
                 clearInterval(countdownInterval);
                 redirectMessageElement.textContent = "Redirecting to the Home page...";
                 setTimeout(function() {
-                  window.location.href = "{{url_for('home.index')}}";
+                    window.location.href = "{{url_for('home.index')}}";
                 }, 1000);
             }
         }, 1000);

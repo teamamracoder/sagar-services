@@ -54,6 +54,7 @@ class OrderService(BaseService):
         page_size = int(request.args.get('page_size', 10))
         query = self.model.query
         query = query.filter(self.model.user_id == user_id)
+        query = query.order_by(self.model.created_at.desc())
         # Perform pagination after filtering
         paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
         paginated_data = paginated_query.items

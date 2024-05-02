@@ -47,6 +47,7 @@ class BookingService(BaseService):
         page_size = int(request.args.get('page_size', 10))
         query = self.model.query
         query = query.filter(self.model.user_id == user_id)
+        query = query.order_by(self.model.created_at.desc())
         # Perform pagination after filtering
         paginated_query = query.paginate(page=page, per_page=page_size, error_out=False)
         paginated_data = paginated_query.items
@@ -106,3 +107,8 @@ class BookingService(BaseService):
             if booking.service_id == service_id and booking.user_id == user_id:
                 return booking
         return None
+
+    def add_payment_status_name_with_this(self,orders):
+        for order in orders['data']:
+            order['payment_status_name']=payment_statuses.get_value(order["payment_status"])
+        return orders
