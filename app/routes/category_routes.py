@@ -1,7 +1,6 @@
 from flask import Blueprint
 from app.controllers import CategoryController
-# from flask_login import login_required
-from app.auth import login_required
+from flask_login import login_required
 from app.constants import roles
 from app.auth import role_required
 category_bp = Blueprint("category", __name__)
@@ -33,7 +32,6 @@ def update(id):
     return category_controller.update(id)
 
 
-# @category_bp.route("/admin/categories/status/<string:id>", methods=["GET", "PATCH"])
 @category_bp.route("/admin/categories/status/<int:id>", methods=["GET", "PATCH"])
 @login_required
 @role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
