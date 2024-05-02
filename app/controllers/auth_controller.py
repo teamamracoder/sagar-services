@@ -14,6 +14,7 @@ from app.utils.mail_utils import MailUtils
 from app.utils.voice_utils import VOICEUtils
 from app.utils import cache
 from app.constants import email_templates
+from app.utils import EncryptionUtils
 
 class AuthController:
 
@@ -47,8 +48,10 @@ class AuthController:
     def login(self):
         form = LoginForm()
         if form.validate_on_submit():
+            password = EncryptionUtils.encrypt(form.password.data.strip())
+            print(password)
             user = self.user_service.get_user_by_email_or_mobile_and_password(
-                form.email_or_mobile.data.strip(), form.password.data.strip()
+                form.email_or_mobile.data.strip(), password
             )
             if user:
                 if user.is_active:
@@ -96,9 +99,10 @@ class AuthController:
                 return render_template("auth/signup.html", form=form)
             
             filepath = FileUtils.save("users", [form.profile_photo_url.data])
+            password = EncryptionUtils.encrypt(form.password.data.strip())
             user = self.user_service.create(
                 email=email,
-                password=form.password.data.strip(),
+                password=password,
                 first_name=form.first_name.data.strip(),
                 last_name=form.last_name.data.strip(),
                 mobile=mobile,
@@ -212,7 +216,7 @@ class AuthController:
         }
 
     def change_password(self):
-        new_password = request.form.get("new_password")
+        new_password = EncryptionUtils.encrypt(request.form.get("new_password").strip())
         user_id = request.form.get("user_id")
         user = self.user_service.update(user_id, password=new_password)
         if user:
