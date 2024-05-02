@@ -7,38 +7,54 @@
 
 <div class="container">
     <h3 class="text-center my-3">Add Coupon</h3>
+    <div class="border p-5 border-1 shadow shadow-lg">
 
     <form method="POST" action="{{ url_for('coupon.add') }}" id="AddCouponForm" enctype="multipart/form-data">
 
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.coupon_code.label(class="form-label") }}
-                {{ form.coupon_code(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.coupon_code.label(class="form-label") }}
+                    {{ form.coupon_code(class="form-control form-control", placeholder="Enter Coupon Code..") }}
+                </div>
+                <div class="col-6">
+                    {{ form.expiry_date.label(class="form-label") }}
+                    {{ form.expiry_date(class="form-control form-control") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.expiry_date.label(class="form-label") }}
-                {{ form.expiry_date(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.discount_type.label(class="form-label") }}
+                    {{ form.discount_type(class="form-control form-control") }}
+                </div>
+                <div class="col-6">
+                    {{ form.discount.label(class="form-label") }}
+                    {{ form.discount(class="form-control form-control", placeholder="Enter Discount..") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.discount_type.label(class="form-label") }}
-                {{ form.discount_type(class="form-control form-control-sm") }}
+
+            
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.coupon_img_url.label(class="form-label") }}
+                    {{ form.coupon_img_url(class="form-control form-control multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
+                </div>
+                <div class="col-6">
+                    {{ form.count.label(class="form-label") }}
+                    {{ form.count(class="form-control form-control", placeholder="Enter Count..") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.discount.label(class="form-label") }}
-                {{ form.discount(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.coupon_img_url.label(class="form-label") }}
-                {{ form.coupon_img_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
-            </div>
-            <div class="col-12">
-                {{ form.count.label(class="form-label") }}
-                {{ form.count(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('coupon.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+
+            <div class="row">
+                <div class="col my-3">
+                  <a href="{{ url_for('coupon.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                </div>
+                <div class="col my-4" style="margin-left: -80px;">
+                  <input type="submit" class="btn btn-dark btn-sm" value="Submit" />
+                </div>
             </div>
         </div>
     </form>
