@@ -11,9 +11,10 @@ class ServiceService(BaseService):
             service_name = self.get_service_by_id(data["service_id"])
             if service_name:
                 data["service_name"] = service_name
+                data["service_img_urls"] = self.get_service_img_by_id(data["service_id"])
             else:
-                # Handle case where service with the given ID doesn't exist
-                data["service_name"] = "Unknown"
+                data["service_name"] = ""
+                data["service_img_urls"] = ['']
         return datas
 
     def get_service_name_by_id(self,service_id):
@@ -21,13 +22,16 @@ class ServiceService(BaseService):
 
     def get_active(self):
         return ServiceModel.query.filter_by(is_active=True).order_by(ServiceModel.service_name).all()
+    
+    def get_service_img_by_id(self,service_id):
+        return self.model.query.filter_by(id=service_id).first().service_img_urls
 
     def get_total_price(self,request):
         service_id = int(request.args.get("service_id"))
 
         service=self.get_by_id(service_id)
         if service is None:
-            return {"error": "Product not found"}
+            return {"error": "Service not found"}
 
         discount=service.discount
         service_charge=service.service_charge

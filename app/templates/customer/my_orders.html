@@ -91,32 +91,35 @@ $(document).ready(function () {
                                     bookingHTML += `</div>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center">`;
-
-            // console.log(order_log.status)
-            if(order_log.status!=6){
-            }
-            else{
-                bookingHTML += `<p href="" class="text-danger text-end"><i class="bi bi-exclamation-triangle"></i> Ordered Canceled</p>`;
-            }
+           
 
             
-                                if(order_log.status<3){
-                                    bookingHTML += `
-                                    <p class="text-danger" style="cursor:pointer;" onclick="cancelOrder(${order.id})">Cancel</p>`;
-                                }
+            
             bookingHTML +=`
-                                <div class="d-flex flex-column">
-                                    <a href="/order_details/${order.id}" class="btn btn-blue mb-1">View Details</a>`;
-                                    
-                                    if(order_log.status>4){
-                                        bookingHTML += `
-                                        <a href="/checkout/${order.product_id}" class="btn btn-outline-blue">Order Again</a>`;
-                                    }
-                                    
+                <div class="d-flex flex-column justify-content-end">
+                    <a href="/order_details/${order.id}" class="btn btn-blue mb-1">View Details</a>`;
+                    
+                    if(order_log.status>4){
+                        bookingHTML += `
+                        <a href="/checkout/${order.product_id}" class="btn btn-outline-blue">Order Again</a>`;
+                    }
+                    
             bookingHTML += `
-                                </div>
-                        </div>   
-                    </div>
+                </div>`;
+            if(order_log.status<3){
+                bookingHTML += `
+                <p class="text-danger" style="cursor:pointer;" onclick="cancelOrder(${order.id})">Cancel</p>`;
+            }
+            if(order_log.status==6){
+                bookingHTML += `<p href="" class="text-danger text-end"><i class="bi bi-exclamation-triangle"></i> Ordered Canceled</p>`;
+            }
+            if(order_log.status==5){
+                bookingHTML += `<p href="" class="text-success text-end"><i class="bi bi-check2-all"></i> Delivered</p>`;
+            }
+            
+            bookingHTML +=`
+                </div>   
+                </div>
                 </div>
             `;
 

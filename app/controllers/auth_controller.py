@@ -51,9 +51,12 @@ class AuthController:
                 form.email_or_mobile.data.strip(), form.password.data.strip()
             )
             if user:
-                login(user)
-                next_page = request.args.get("next")
-                return redirect(next_page or url_for("home.index"))
+                if user.is_active:
+                    login(user)
+                    next_page = request.args.get("next")
+                    return redirect(next_page or url_for("home.index"))
+                else:
+                    return redirect(url_for('error_bp.deactivated'))
             else:
                 flash("*Invalid username or password", "error")
         return render_template("auth/login.html", form=form)
@@ -63,14 +66,35 @@ class AuthController:
         if form.validate_on_submit():
             email=form.email.data.strip()
             mobile=form.mobile.data.strip()
+
             prev_user = self.user_service.get_user_by_email(email)
             if prev_user:
+                if not prev_user.is_verified:
+                    msg = email_templates.get_value('OTP_TEMPLATE')
+                    if self.send_otp(prev_user.id, "email", prev_user.email,msg):
+                        flash("Account already exist with this email address, please verify to continue", "unverified")
+                        return redirect(url_for("auth.verify_otp", id=prev_user.id))
+                    else:
+                        flash("Something went wrong!, please try again", "otp_error")
+                        return render_template("auth/signup.html", form=form)
+
                 flash("Email already exist", "email_error")
                 return render_template("auth/signup.html", form=form)
+            
             prev_user = self.user_service.get_user_by_mobile(mobile)
             if prev_user:
+                if not prev_user.is_verified:
+                    msg = ""
+                    if self.send_otp(prev_user.id, "mobile", prev_user.mobile, msg):
+                        flash("Account already exist with this Mobile no., please verify to continue", "unverified")
+                        return redirect(url_for("auth.verify_otp", id=prev_user.id))
+                    else:
+                        flash("Something went wrong!, please try again", "otp_error")
+                        return render_template("auth/signup.html", form=form)
+
                 flash("Phone No. already exist", "mobile_error")
                 return render_template("auth/signup.html", form=form)
+            
             filepath = FileUtils.save("users", [form.profile_photo_url.data])
             user = self.user_service.create(
                 email=email,
@@ -78,26 +102,21 @@ class AuthController:
                 first_name=form.first_name.data.strip(),
                 last_name=form.last_name.data.strip(),
                 mobile=mobile,
-                landmark=form.landmark.data,
-                address_line=form.address_line.data,
-                city=form.city.data,
-                state=form.state.data,
-                street=form.street.data,
-                pincode=form.pincode.data,
                 created_at=datetime.now(),
                 profile_photo_url=filepath,
                 is_active=False,
+                is_verified = False
             )
             self.role_service.create(
                 user_id=user.id, role=3, created_by=user.id, created_at=datetime.now()
             )
             if user:
+                login(user)
                 msg = email_templates.get_value('OTP_TEMPLATE')
                 if self.send_otp(user.id, "email", user.email,msg):
                     return redirect(url_for("auth.verify_otp", id=user.id))
                 else:
-                    print("sent")
-                    flash("OTP sending failed, please try again", "error")
+                    flash("OTP sending failed, please try again", "otp_error")
         return render_template("auth/signup.html", form=form)
 
     def reset_password(self):
@@ -117,15 +136,15 @@ class AuthController:
             cache.delete(user_id)
 
             # update is_active column
-            user = self.user_service.update(user_id, is_active=True)
-
+            user = self.user_service.update(user_id, is_active=True, is_verified=True)
             if user:
-                msg = email_templates.get_value('WELCOME_TEMPLATE').replace("[FIRST_NAME]",user.first_name).replace("[FULL_NAME]",f"{user.first_name} {user.last_name}")
-                self.send_mail(user.email,"signup verification succcessful",msg)
                 login(user)
+                self.user_service.update(user.id, is_verified=True)
+                msg = email_templates.get_value('WELCOME_TEMPLATE').replace("[FIRST_NAME]",user.first_name).replace("[FULL_NAME]",f"{user.first_name} {user.last_name}")
+                self.send_mail(user.email,"verification succcessful",msg)
                 return redirect(url_for("home.index"))
             else:
-                flash("Invalid OTP", "error")
+                flash("Invalid OTP", "otp_error")
         return render_template("auth/verify_otp.html", form=form, id=user_id)
 
     def logout(self):

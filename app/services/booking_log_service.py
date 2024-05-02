@@ -44,3 +44,16 @@ class BookingLogService(BaseService):
                     booking_logs_dicts.append(log_dict)
                 booking['booking_logs']=booking_logs_dicts
         return bookings
+    
+    
+    def add_booking_latest_log(self,bookings):
+        for booking in bookings['data']:
+            booking_log= self.model.query.filter_by(booking_id=booking['id']).order_by(self.model.created_at.desc()).first()
+            if booking_log:
+                booking['booking_latest_log'] = {
+                    'booking_log_id': booking_log.id,
+                    'created_at': booking_log.created_at, 
+                    'status':booking_log.booking_status,
+                    'status_name': service_statuses.get_value(booking_log.booking_status)
+                }
+        return bookings

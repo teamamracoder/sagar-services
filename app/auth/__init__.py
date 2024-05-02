@@ -3,7 +3,7 @@ from functools import wraps
 from flask import abort, redirect, url_for
 from app.services import RoleService
 from app.services import UserService
-
+from app.constants import roles
 login_manager = LoginManager()
 user_service = UserService()
 role_service = RoleService()
@@ -13,13 +13,13 @@ def init_auth(app):
     login_manager.login_view = "auth.login"
 
 
-def role_required(roles):
+def role_required(roles_param):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             if not current_user.is_authenticated:
                 return redirect(url_for("auth.login"))
-            if not any(user_role.role in roles for user_role in current_user.roles):
+            if not any(user_role in roles_param for user_role in get_current_user()['roles']):
                 return redirect(url_for("error_bp.unauthorized_access"))
             return func(*args, **kwargs)
 
@@ -51,3 +51,4 @@ def get_current_user():
         
     except Exception as e:
         return {'logged_in_user':current_user,'roles':[]}
+    

@@ -162,17 +162,24 @@ class CheckoutController:
             
             if is_new_address:
                 shipping_address = request.form.get("StreetAddress")+","+request.form.get("Landmark")+","+request.form.get("Additional Address")+","+request.form.get("City")+","+request.form.get("State")
-                area_pincode=request.form.get("PinCode")
+                area_pincode=request.form.get("PinCode").strip()
                 mobile = request.form.get("MobileNo")
             else:
                 mobile = logged_in_user.mobile
-                shipping_address = logged_in_user.landmark+","+logged_in_user.address_line+","+logged_in_user.city+","+logged_in_user.state+","+logged_in_user.street
+                shipping_address = ",".join(
+                    str(attr) for attr in [
+                        logged_in_user.landmark,
+                        logged_in_user.address_line,
+                        logged_in_user.city,
+                        logged_in_user.state,
+                        logged_in_user.street
+                    ] if attr is not None or attr is not ''
+                )
                 area_pincode = logged_in_user.pincode
             if request.form.get("pay-method")=='1':
                 payment_status = 2
             else:
                 payment_status = 1
-            print(payment_status)
 
             for order_details in products_info:
                 order_details.update({"delivery_charge": 50,
@@ -197,14 +204,34 @@ class CheckoutController:
                     order_status=order.order_status
                 )
                 self.cart_service.update_cart_status(logged_in_user.id,product_id,2)
+            
+            if is_new_address:
+                if not logged_in_user.pincode:
+                    self.user_service.update(
+                        logged_in_user.id,
+                        landmark = request.form.get("StreetAddress"),
+                        address_line = request.form.get("Landmark"),
+                        city = request.form.get("Additional Address"),
+                        state = request.form.get("City"),
+                        street = request.form.get("State"),
+                        pincode = int(request.form.get("PinCode").strip())
+                    )
 
-            msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
-            MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
             cache.delete(f"cart_{logged_in_user.id}")
-            return "order success"
+            cache.set("order_success_"+ str(logged_in_user.id), True)
+            return redirect(url_for("checkout.order_success"))
         return render_template("customer/cart.html")
 
-
+    def order_success(self):
+        logged_in_user,roles=get_current_user().values()
+        success_check = cache.get("order_success_"+ str(logged_in_user.id))
+        if success_check:
+            msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
+            MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
+            cache.delete("order_success_"+ str(logged_in_user.id))
+            return render_template("customer/order_success.html")
+        else:
+            return redirect(url_for("home.index"))
 
 
 def calculate_amount(product_id, qty, price, discount):
