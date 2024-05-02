@@ -131,8 +131,9 @@ class BookingController:
                 updated_data = {
                     'payment_status': status_key,
                     'updated_at': datetime.now(),
-                    'updated_by': logged_in_user.id
+                    'updated_by': 1
                 }
+                self.booking_service.update(id, **updated_data)
                 return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
 
             if status_type == 'booking':
@@ -154,9 +155,10 @@ class BookingController:
                             created_by=logged_in_user.id,
                             created_at=datetime.now(),
                             booking_id=booking.id,
-                            service_status=service_new_status
+                            booking_status=service_new_status
                         )
-                        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status}
+                        self.booking_service.update(id, payment_status=1)
+                        return {"status":"success","message":f"{status_type} status chaged to {status}","data":status, "key":service_new_status}
                     else:
                         return {"status":"error","message":f"{status_type} status can not be changed to old step","data":status}
                 else:
