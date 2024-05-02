@@ -176,7 +176,6 @@ class CheckoutController:
                     ] if attr is not None or attr is not ''
                 )
                 area_pincode = logged_in_user.pincode
-                print(type(area_pincode))
             if request.form.get("pay-method")=='1':
                 payment_status = 2
             else:
@@ -207,20 +206,21 @@ class CheckoutController:
                 self.cart_service.update_cart_status(logged_in_user.id,product_id,2)
             
             if is_new_address:
-                self.user_service.update(
-                    logged_in_user.id,
-                    landmark = request.form.get("StreetAddress"),
-                    address_line = request.form.get("Landmark"),
-                    city = request.form.get("Additional Address"),
-                    state = request.form.get("City"),
-                    street = request.form.get("State"),
-                    pincode = int(request.form.get("PinCode").strip())
-                )
+                if not logged_in_user.pincode:
+                    self.user_service.update(
+                        logged_in_user.id,
+                        landmark = request.form.get("StreetAddress"),
+                        address_line = request.form.get("Landmark"),
+                        city = request.form.get("Additional Address"),
+                        state = request.form.get("City"),
+                        street = request.form.get("State"),
+                        pincode = int(request.form.get("PinCode").strip())
+                    )
 
             # cache.delete(f"cart_{logged_in_user.id}")
             msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
             MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
-            return "order success"
+            return render_template("customer/booking_success.html")
         return render_template("customer/cart.html")
 
 

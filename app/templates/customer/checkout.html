@@ -115,7 +115,7 @@
                     user.city,
                     user.state,
                     user.street
-                ] | select('defined')  | select('ne', '')
+                ] | select('defined')  | select('ne', '') | select('ne', None)
                 | join(', ')
             }}
               <br><strong class="pe-1">Pincode:</strong> <span id="prev_pincode">{% if user.pincode %}{{user.pincode}}{% endif %}</span>
@@ -127,7 +127,7 @@
                 <input type="checkbox" name="new-address" id="addressCheckbox" checked>
                 <label for="addressCheckbox">Ship To New Address</label>
               </strong>
-              <p class="text-danger">Your address is insufficient</p>
+              <p class="text-danger">Your address is insufficient, please provide your address</p>
                 {% else %}
                 <strong class="ps-5">
                     <input type="checkbox" name="new-address" id="addressCheckbox">
@@ -142,7 +142,7 @@
                 <div class="row">
                     <div class="col-6 mb-3">
                         <label for="MobleNo" class="form-label">Mobile No.</label>
-                        <input type="number" class="form-control" id="MobleNo" name="MobileNo" placeholder="Enter Mobile No">
+                        <input type="text" class="form-control" id="MobleNo" name="MobileNo" placeholder="Enter Mobile No">
                     </div>
                     <div class="col-6 mb-3">
                         <label for="StreetAddress" class="form-label">Street Address</label>
@@ -198,7 +198,7 @@
 
               </div>
              <div class="d-flex justify-content-end">
-              <button type="submit" class="btn m-3 third-btn btn-blue" id="place_order">Place Order</button>
+              <button type="submit" class="btn m-3 third-btn btn-blue" id="place_order">PLACE ORDER</button>
              </div>
             </div>
           </div>
@@ -289,7 +289,6 @@
         // Check if the checkbox is checked
         if ($("#addressCheckbox").prop("checked")) {
           $("input[type='text']:not(#coupon_code)").prop("required",true);
-            console.log("Checkbox is checked");
             $("#newAddressForm").removeClass("d-none")
         nextButton2copy.style.display='block'
         nextButton2.style.display='none'
@@ -467,7 +466,6 @@ nextButton2.addEventListener('click', function() {
 
 
 nextButton2copy.addEventListener('click', function() {    
-  // check here///////////////////////////////////////////////////////
   is_Empty=validate_address();
   if(is_Empty){
     alert("Please provide New Address")
@@ -515,59 +513,59 @@ dis_coupon.style.display = coupon.checked ? 'block' : 'none';
 
 
 function validate_address(){
-
-        var isEmpty = false;
-
-        // Validate each input field except the one with ID "coupon"
-        $("#accordionPanelsStayOpenExample input[type='text']:not(#coupon_code)").each(function() {
-            if ($(this).val().trim() === "") {
-                isEmpty = true;
-            }
-        });
-        return isEmpty
+    var isEmpty = false;
+    // Validate each input field except the one with ID "coupon"
+    $("#accordionPanelsStayOpenExample input[type='text']:not(#coupon_code)").each(function() {
+        if ($(this).val().trim() === "") {
+            isEmpty = true;
+        }
+    });
+    return isEmpty
 }
 
-  $("#PinCode").on("focusout",function (){
+  $("#PinCode").on("input",function (){
     $("#pincode_available_messages").html("")
-    var products = [];
-    var pincode = $(this).val()
-    // Select all elements with class name "product_id"
-    var productElements = document.querySelectorAll(".product_id");
-    productElements.forEach(function(productElement) {
-      products.push(productElement.textContent.trim()); // Trim to remove any leading or trailing whitespace
-    });
-    is_valid = true
-    // Iterate through the selected elements and push their text content into the products array
-    products.forEach(function(productId) {
-        // Make an AJAX call for each product
-        $.ajax({
-            url: "{{url_for('product.check_area_availability')}}", // Replace 'your_api_endpoint' with your actual API endpoint
-            method: 'POST', // or 'GET', depending on your API requirements
-            dataType: "json",
-            data: {
-                "product_id": productId,
-                "pincode": pincode // Assuming pincode is constant, you can replace it with a variable if needed
-            },
-            complete: (res) => {
-                res.then(data => {
-                  
-                    if(!data.is_available){
-                      $("#product_row_"+productId).addClass('text-decoration-line-through text-danger')
-                      $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from product from cart</p>`)
-                      $("#place_order").attr("disabled",true)
-                      is_valid = is_valid & data.is_available
-                    }
-                    else{
-                      $("#product_row_"+productId).removeClass('text-decoration-line-through text-danger')
-                      is_valid = is_valid & data.is_available
-                    }
+    if($(this).val().length==6){
+      var products = [];
+      var pincode = $(this).val()
+      // Select all elements with class name "product_id"
+      var productElements = document.querySelectorAll(".product_id");
+      productElements.forEach(function(productElement) {
+        products.push(productElement.textContent.trim()); // Trim to remove any leading or trailing whitespace
+      });
+      is_valid = true
+      // Iterate through the selected elements and push their text content into the products array
+      products.forEach(function(productId) {
+          // Make an AJAX call for each product
+          $.ajax({
+              url: "{{url_for('product.check_area_availability')}}", // Replace 'your_api_endpoint' with your actual API endpoint
+              method: 'POST', // or 'GET', depending on your API requirements
+              dataType: "json",
+              data: {
+                  "product_id": productId,
+                  "pincode": pincode // Assuming pincode is constant, you can replace it with a variable if needed
+              },
+              complete: (res) => {
+                  res.then(data => {
 
-                });
-              }
-        });
-    });
-    if (is_valid){
-      $("#place_order").attr("disabled",false)
+                      if(!data.is_available){
+                        $("#product_row_"+productId).addClass('text-decoration-line-through text-danger')
+                        $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from product from cart</p>`)
+                        $("#place_order").attr("disabled",true)
+                        is_valid = is_valid & data.is_available
+                      }
+                      else{
+                        $("#product_row_"+productId).removeClass('text-decoration-line-through text-danger')
+                        is_valid = is_valid & data.is_available
+                      }
+
+                  });
+                }
+          });
+      });
+      if (is_valid){
+        $("#place_order").attr("disabled",false)
+      }
     }
   })
   
@@ -577,7 +575,8 @@ function validate_address(){
               MobleNo:{
                     required: true,
                     digits:true,
-                    numberLength:10
+                    minlength:10,
+                    maxlength:10
               },
               StreetAddress:{
                     required: true,
@@ -607,7 +606,8 @@ function validate_address(){
               PinCode:{
                 required: true,
                 digits:true,
-                numberLength:10
+                minlength:6,
+                maxlength:6
               }
 
             },
@@ -615,7 +615,8 @@ function validate_address(){
               MobleNo:{
                 required: "Please Provide a Phone Number",
                 digits:"Phone number should be In digits",
-                numberLength: "Phone number should be atleast 10 characters"
+                minlength: "Phone number should be 10 digits",
+                maxlength: "Phone number should be 10 digits"
 
               },
               StreetAddress:{
@@ -651,135 +652,18 @@ function validate_address(){
               PinCode:{
                     required: "Provide an PinCode",
                     digits:"Pin code should be in digits",
-                    numberLength:"PinCode should be 6 characters"
+                    minlength:"PinCode should be 6 digits",
+                    maxlength:"PinCode should be 6 digits"
               },
             },
             submitHandler: function () {
-                $("place_order").attr("disabled",true)
+                $("place_order").attr("disabled",false)
             }
         });
     });
 
 
 </script>
-<!-- 
-<script>
-    // Get references to the checkbox and the new address form
-    const addressCheckbox = document.getElementById('addressCheckbox');
-  const newAddressForm = document.getElementById('newAddressForm');
-  const userAddressForm = document.getElementById('user-addr-btn');
-
-  // Add an event listener to the checkbox
-  addressCheckbox.addEventListener('change', function() {
-      // Toggle the visibility of the new address form based on the checkbox state
-      newAddressForm.style.display = addressCheckbox.checked ? 'block' : 'none';
-      userAddressForm.style.display = addressCheckbox.checked ? 'none' : 'flex';
-  });
-
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-// Get references to the "Next" buttons
-const nextButton1 = document.querySelector('.first-btn');
-const nextButton2 = document.querySelector('.second-btn');
-const nextButton2copy = document.querySelector('.second-btn-2');
-const nextButton3 = document.querySelector('.third-btn');
-const check1 = document.querySelector('.check1');
-const check2 = document.querySelector('.check2');
-const check3 = document.querySelector('.check3');
-const paymentMethodRadioGroup = document.getElementsByName('pay-method');
-
-
-// Get references to the accordion panels
-const accordion1 = document.querySelector('#panelsStayOpen-collapseOne');
-const accordion2 = document.querySelector('#panelsStayOpen-collapseTwo');
-const accordion3 = document.querySelector('#panelsStayOpen-collapseThree');
-
-
-const accordionButton1 = document.querySelector('.accordion-button1');
-const accordionButton2 = document.querySelector('.accordion-button2');
-const accordionButton3 = document.querySelector('.accordion-button3');
-
-// Initialize the state of the second and third accordion panels as locked
-let isAccordion2Locked = true;
-let isAccordion3Locked = true;
-
-
-
-// Add click event listener to the first "Next" button
-nextButton1.addEventListener('click', function() {
-  // Close the first accordion panel and remove active color
-  accordion1.classList.remove('show');
-  check1.style.display = 'block';
-
- 
-  accordionButton1.classList.add('collapsed');
-  // Unlock and open the second accordion panel
-  if (isAccordion2Locked) {
-      isAccordion2Locked = false;
-      accordionButton2.classList.remove('collapsed');
-      accordion2.classList.add('show');
-  }
-});
-
-// Add click event listener to the second "Next" button
-nextButton2.addEventListener('click', function() {
-  // Close the second accordion panel and remove active color
-  accordion2.classList.remove('show');
-  check2.style.display = 'block';
-  accordionButton2.classList.add('collapsed');
-  // Unlock and open the third accordion panel
-  if (isAccordion3Locked) {
-      isAccordion3Locked = false;
-      accordionButton3.classList.remove('collapsed');
-      accordion3.classList.add('show');
-  }
-});
-
-
-nextButton2copy.addEventListener('click', function() {
-  // Close the second accordion panel and remove active color
-  accordion2.classList.remove('show');
-  check2.style.display = 'block';
-  accordionButton2.classList.add('collapsed');
-
-  // Unlock and open the third accordion panel
-  if (isAccordion3Locked) {
-      isAccordion3Locked = false;
-      accordionButton3.classList.remove('collapsed');
-      accordion3.classList.add('show');
-  }
-});
-
-for (const radioButton of paymentMethodRadioGroup) {
-radioButton.addEventListener('change', () => {
-  check3.style.display = 'block';
-});
-}
-
-// Prevent default toggling of accordion panels for locked panels
-document.querySelector('#accordionPanelsStayOpenExample').addEventListener('show.bs.collapse', function(event) {
-  const target = event.target;
-  if ((target === accordion2 && isAccordion2Locked) || (target === accordion3 && isAccordion3Locked)) {
-      // Prevent the accordion panel from opening if it is locked
-      event.preventDefault();
-  }
-});
-});
-
-
-
-
-const coupon = document.getElementById('have_coupon');
-const dis_coupon = document.getElementById('check_have_coupon');
-
-coupon.addEventListener('change', function() {
-dis_coupon.style.display = coupon.checked ? 'none' : 'block';
-dis_coupon.style.display = coupon.checked ? 'block' : 'none';
-  });
-
-</script> -->
 
 
 {% endblock %}

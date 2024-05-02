@@ -197,15 +197,16 @@ class BookingController:
         data = self.booking_service.add_service_status_with_this(data)
         data = self.booking_service.add_payment_status_with_this(data)
         data = self.booking_log_service.add_booking_logs_with_this(data)
-        print(data)
         return jsonify(data)
 
 
     def booking_create(self,service_id):
         logged_in_user,roles=get_current_user().values()
         service = self.service_service.get_by_id(service_id)
-        return render_template('customer/book_now.html',service=service, user=logged_in_user)
-    
+        if service:
+            return render_template('customer/book_now.html',service=service, user=logged_in_user)
+        return render_template('customer/index.html')
+
     def confirm(self):
         logged_in_user,roles=get_current_user().values()
         service_id = int(request.form.get('service_id'))
@@ -218,9 +219,17 @@ class BookingController:
             mobile = request.form.get("MobileNo")
         else:
             mobile = logged_in_user.mobile
-            service_location = logged_in_user.landmark+","+logged_in_user.address_line+","+logged_in_user.city+","+logged_in_user.state+","+logged_in_user.street
+            service_location = ",".join(
+                str(attr) for attr in [
+                    logged_in_user.landmark,
+                    logged_in_user.address_line,
+                    logged_in_user.city,
+                    logged_in_user.state,
+                    logged_in_user.street
+                ] if attr is not None or attr is not ''
+            )
             area_pincode = logged_in_user.pincode
-        if request.form.get("pay-method")=='1':
+        if request.form.get("pay_method")=='1':
             payment_status = 2
         else:
             payment_status = 1
@@ -229,7 +238,7 @@ class BookingController:
             "created_by":logged_in_user.id,
             "created_at":datetime.now(),
             "user_id":logged_in_user.id,
-            "payment_method":request.form.get("pay-method"),
+            "payment_method":request.form.get("pay_method"),
             "area_pincode":area_pincode,
             "service_location":service_location,
             "mobile":mobile,
@@ -248,15 +257,16 @@ class BookingController:
         )
         
         if is_new_address:
-            self.user_service.update(
-                logged_in_user.id,
-                landmark = request.form.get("StreetAddress"),
-                address_line = request.form.get("Landmark"),
-                city = request.form.get("Additional Address"),
-                state = request.form.get("City"),
-                street = request.form.get("State"),
-                pincode = int(request.form.get("PinCode").strip())
-            )
+            if not logged_in_user.pincode:
+                self.user_service.update(
+                    logged_in_user.id,
+                    landmark = request.form.get("StreetAddress"),
+                    address_line = request.form.get("Landmark"),
+                    city = request.form.get("Additional Address"),
+                    state = request.form.get("City"),
+                    street = request.form.get("State"),
+                    pincode = int(request.form.get("PinCode").strip())
+                )
 
         msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
         MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)

@@ -39,7 +39,7 @@ class UserModel(UserMixin, db.Model):
             name="fk_users_coupons"
         ),
     )
-
+    is_verified = db.Column(db.Boolean, default= False)
     # roles = db.relationship("RoleModel", backref="user")
     # staff = db.relationship("RoleModel", back_populates="users",uselist=False)
     # conversations = db.relationship("ConversationModel", back_populates="users")
