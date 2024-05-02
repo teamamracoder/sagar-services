@@ -51,3 +51,21 @@ def get_current_user():
         
     except Exception as e:
         return {'logged_in_user':current_user,'roles':[]}
+    
+
+
+# login required override with decorator for is_verified check
+
+def login_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(current_user)
+        # get user
+        if not hasattr(current_user, 'id'):
+            return redirect(url_for("auth.login"))
+        elif not current_user.is_active:
+            return redirect(url_for("auth.login"))
+        elif not current_user.is_verified:
+            return redirect(url_for("auth.verify_otp", id=current_user.id))
+        return func(*args, **kwargs)
+    return wrapper
