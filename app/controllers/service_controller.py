@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from app.forms import CreateServiceForm, UpdateServiceForm, CreateServiceReviewForm, CreateServiceQnAForm, AddServiceImageForm
-from app.services import ServiceService, ServiceTypeService, ServiceReviewService, ServiceQnAService, UserService
+from app.services import ServiceService, ServiceTypeService, ServiceReviewService, ServiceQnAService, UserService, StaffService
 from datetime import datetime
 from app.constants import payment_methods
 from app.auth import get_current_user
@@ -14,6 +14,7 @@ class ServiceController:
         self.service_review_service = ServiceReviewService()
         self.service_qna_service = ServiceQnAService()
         self.user_service = UserService()
+        self.staff_service = StaffService()
 
     def get(self):
         return render_template("admin/service/index.html")
@@ -162,16 +163,19 @@ class ServiceController:
         reviewForm = CreateServiceReviewForm()
         qnaForm = CreateServiceQnAForm()
         service = self.service_service.get_by_id(service_id)
+        active_staffs = self.staff_service.get_active()
+        staff_user_ids = [staff.user_id for staff in active_staffs]
+        data_for_staffs = self.user_service.get_data_for_staffs(staff_user_ids)
         service_reviews = self.service_review_service.get_review_by_service_id(service_id)
 
-        sr=[{
-            "id":service_review.id,
-            "user_id":service_review.created_by
-            } for service_review in service_reviews]
+        # sr=[{
+        #     "id":service_review.id,
+        #     "user_id":service_review.created_by
+        #     } for service_review in service_reviews]
             
-        sr=[service_review.created_by for service_review in service_reviews]
+        # sr=[service_review.created_by for service_review in service_reviews]
 
-        print(sr)
+        # print(sr)
 
         # users_id = [(service_review.id, service_review.created_by) for service_review in service_reviews]
         # user_details = []
@@ -183,8 +187,8 @@ class ServiceController:
         service_qnas = self.service_qna_service.get_qna_by_service_id(service_id)
         if service is None:
             return render_template("error/something_went_wrong.html")
-        return render_template("customer/service_details.html",service=service, reviewForm=reviewForm, qnaForm=qnaForm, service_reviews=service_reviews,service_qnas=service_qnas,logged_in_user=logged_in_user)
-    
+
+        return render_template("customer/service_details.html",service=service, reviewForm=reviewForm, qnaForm=qnaForm, service_reviews=service_reviews,service_qnas=service_qnas,data_for_staffs=data_for_staffs,staff_user_ids=staff_user_ids,logged_in_user=logged_in_user)
 
     def check_area_availability(self):
         print(request.form)

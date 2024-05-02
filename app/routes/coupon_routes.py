@@ -45,3 +45,9 @@ def update(id):
 def status(id):
     return coupon_controller.status(id)
 
+@coupon_bp.route("/admin/coupons/send_coupon/<int:id>/<string:user_id>", methods=["GET", "POST"])
+@login_required
+@role_required([roles.get_key("ADMIN"), roles.get_key("STAFF")])
+def send_coupon(id,user_id):
+    return coupon_controller.send_coupon(id,user_id)
+
