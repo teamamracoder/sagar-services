@@ -33,7 +33,8 @@ class ProductController:
         form = CreateProductForm()
         categories=self.category_service.get_active()
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
-        form.payment_methods.choices = payment_methods.get_all_items()
+        # form.payment_methods.choices = payment_methods.get_all_items()
+        form.payment_methods.choices = [(1,'COD')]
         if form.validate_on_submit():
             filepath=FileUtils.save('products',form.product_img_urls.data)
             if isinstance(filepath,str):
@@ -69,8 +70,8 @@ class ProductController:
         categories=self.category_service.get_active()
         form = UpdateProductForm(obj=product)
         form.category_id.choices = [(category.id, category.category_name) for category in categories]
-        form.payment_methods.choices = payment_methods.get_all_items()
-
+        # form.payment_methods.choices = payment_methods.get_all_items()
+        form.payment_methods.choices = [(1,'COD')]
         if form.validate_on_submit():
             filepath=product.product_img_urls
             new_filepath=FileUtils.save('products',form.product_img_urls.data)

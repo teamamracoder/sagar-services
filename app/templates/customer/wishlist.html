@@ -14,11 +14,10 @@
     <div class="d-none d-flex align-items-center justify-content-center" id="empty-wishlist-container">
         <img src="{{url_for('static',filename='img/empty-wishlist.png')}}" alt="" class="">
     </div>
-    <div class="row" id="wishlist-items-container">
+    <div class="row d-flex" id="wishlist-items-container">
 
     </div>
 </div>
-
 <script>
     $(document).ready(function () {
         // Function to fetch cart details
@@ -100,10 +99,12 @@
                     responseData = res.responseJSON
                     if (responseData.status === 'success') {
                         if (!responseData.data) {
+                            $("#wishBtnTooltip").text(responseData.wishlist_count)
                             toastr.error("Product Removed From Wishlist");
                             $(".wishlist_item_" + wishlist_id).css("display", "none")
                         }
                         if(responseData.wishlist_count==0){
+                            $("#wishBtnTooltip").text(responseData.wishlist_count)
                             $("#empty-wishlist-container").removeClass("d-none")
                             $("#wishlist-items-container").css("display","none")
                         }
@@ -126,10 +127,12 @@
                     responseData = res.responseJSON
                     if (responseData.status == 'success') {
                         if (responseData.data) {
+                            $("#cartBtnTooltip").text(responseData.cart_count)
                             toastr.success(responseData.message);
                             $("#cart_button_" + product_id).replaceWith(`<a href="/cart" class="btn btn-outline-blue m-1 w-100" id="cart_button_${product_id}" >View Cart</a>`)
                         }
                         else {
+                            $("#cartBtnTooltip").text(responseData.cart_count)
                             toastr.error(responseData.message);
                             $("#cart_button_" + product_id).text("Add To Cart")
 

@@ -13,23 +13,58 @@
                 <div class="row" style="min-height: 200px;">
                     <div class="col-md-2 border-end">
                         <div class="p-1">
-                            <img src="{{ url_for('static', filename='img/flask-icon.png') }}" alt="..." class="card-img">
+                            {% if user.profile_photo_url %}
+                            <img src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="..." class="card-img">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/AVTAR.jpg') }}" alt="..." class="card-img">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-10">
                         <ul class="list-group border-0">
-                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
-                                <i class="bi bi-cpu me-2"></i>
-                                {{ staff.salary }}
+                            <li class="list-group-item border-0">
+                                <span class="fw-bold">Name :</span> {{ user.first_name + " " +user.last_name }}
                             </li>
-                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
-                                <i class="bi bi-cpu me-2"></i>
-                                {{ staff.qualification }}
+                            <li class="list-group-item  border-0">
+                                <span class="fw-bold">Email :</span> {{ user.email }}
                             </li>
-                            <li class="list-group-item d-flex justify-content-start align-items-center border-0">
-                                <i class="bi bi-cpu me-2"></i>
-                                {{ staff.department }}
+                            <li class="list-group-item border-0">
+                                <span class="fw-bold">Mobile No. :</span> {{ user.mobile }}
                             </li>
+                            <li class="list-group-item  border-0">
+                                <span class="fw-bold">Address :</span> {{
+                                    [
+                                        user.landmark,
+                                        user.address_line,
+                                        user.city,
+                                        user.state,
+                                        user.street
+                                    ] | select('defined')  | select('ne', '') | select('ne', None) | join(', ')
+                                }}
+                            </li>
+                            <li class="list-group-item border-0">
+                                <span class="fw-bold">Gender :</span> {{ user.gender }}
+                            </li>
+                            <li class="list-group-item border-0">
+                                <span class="fw-bold">Date of Birth. :</span> {{ user.dob }}
+                            </li>
+                            <li class="list-group-item  border-0">
+                                <span class="fw-bold">Salary : </span>{{ staff.salary }}
+                            </li>
+                            <li class="list-group-item  border-0">
+                                <span class="fw-bold">Qualification : </span>{{ staff.qualification }}
+                            </li>
+                            <li class="list-group-item  border-0">
+                                <span class="fw-bold">Department : </span>{{ department }}
+                            </li>
+                            <li class="list-group-item  border-0">
+                                <span class="fw-bold">Joined At : </span>{{ staff.join_date.strftime('%Y-%m-%d') }}
+                            </li>
+                            {% if staff.leave_date %}
+                            <li class="list-group-item  border-0">
+                                <span class="fw-bold">Joined At : </span>{{ staff.leave_date.strftime('%Y-%m-%d') }}
+                            </li>
+                            {% endif %}
                           </ul>
                     </div>
                 </div>

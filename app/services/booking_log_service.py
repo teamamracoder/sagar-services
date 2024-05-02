@@ -20,7 +20,7 @@ class BookingLogService(BaseService):
                 booking_logs_dicts.append(log_dict)
 
         return booking_logs_dicts
-    
+
     # def add_booking_log_with_this(self, items: dict) -> dict:
     #     for item in items["data"]:
     #         item["booking_logs"] = self.get_booking_log_by_booking_id(item['id'])
