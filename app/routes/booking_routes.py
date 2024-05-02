@@ -81,7 +81,7 @@ def booking_create_page(service_id):
 def confirm():
     return booking_controller.confirm()
 
-@booking_bp.route("/booking_success", methods=["GET","POST"])
+@booking_bp.route("/booking_success")
 @login_required
 def booking_success():
     return booking_controller.booking_success()

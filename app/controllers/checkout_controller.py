@@ -217,13 +217,21 @@ class CheckoutController:
                         pincode = int(request.form.get("PinCode").strip())
                     )
 
-            # cache.delete(f"cart_{logged_in_user.id}")
-            msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
-            MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
-            return render_template("customer/booking_success.html")
+            cache.delete(f"cart_{logged_in_user.id}")
+            cache.set("order_success_"+ str(logged_in_user.id), True)
+            return redirect(url_for("checkout.order_success"))
         return render_template("customer/cart.html")
 
-
+    def order_success(self):
+        logged_in_user,roles=get_current_user().values()
+        success_check = cache.get("order_success_"+ str(logged_in_user.id))
+        if success_check:
+            msg = email_templates.get_value('THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
+            MailUtils.send(logged_in_user.email, "Order Confirmed", msg)
+            cache.delete("order_success_"+ str(logged_in_user.id))
+            return render_template("customer/order_success.html")
+        else:
+            return redirect(url_for("home.index"))
 
 
 def calculate_amount(product_id, qty, price, discount):

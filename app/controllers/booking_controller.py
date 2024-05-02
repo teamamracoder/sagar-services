@@ -8,6 +8,7 @@ from app.constants import payment_statuses
 from app.auth import get_current_user
 from app.constants import email_templates
 from app.utils.mail_utils import MailUtils
+from app.utils import cache
 
 class BookingController:
     def __init__(self) -> None:
@@ -270,8 +271,20 @@ class BookingController:
 
         msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
         MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)
-        return render_template("customer/booking_success.html")
+        cache.set("booking_success_"+ str(logged_in_user.id), True)
+        return redirect(url_for("booking.booking_success"))
     
     def booking_success(self):
         return render_template("customer/booking_success.html")
+    
+    def booking_success(self):
+        logged_in_user,roles=get_current_user().values()
+        success_check = cache.get("booking_success_"+ str(logged_in_user.id))
+        if success_check:
+            msg = email_templates.get_value('BOOKING_THANK_YOU_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}")
+            MailUtils.send(logged_in_user.email, "Booking Confirmed", msg)
+            cache.delete("booking_success_"+ str(logged_in_user.id))
+            return render_template("customer/order_success.html")
+        else:
+            return redirect(url_for("home.index"))
 
