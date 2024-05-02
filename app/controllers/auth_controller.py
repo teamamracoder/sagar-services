@@ -51,9 +51,12 @@ class AuthController:
                 form.email_or_mobile.data.strip(), form.password.data.strip()
             )
             if user:
-                login(user)
-                next_page = request.args.get("next")
-                return redirect(next_page or url_for("home.index"))
+                if user.is_active:
+                    login(user)
+                    next_page = request.args.get("next")
+                    return redirect(next_page or url_for("home.index"))
+                else:
+                    return redirect(url_for('error_bp.deactivated'))
             else:
                 flash("*Invalid username or password", "error")
         return render_template("auth/login.html", form=form)
@@ -69,10 +72,10 @@ class AuthController:
                 if not prev_user.is_verified:
                     msg = email_templates.get_value('OTP_TEMPLATE')
                     if self.send_otp(prev_user.id, "email", prev_user.email,msg):
-                        flash("Account already exist with this email address, please verify to continue", "error")
+                        flash("Account already exist with this email address, please verify to continue", "unverified")
                         return redirect(url_for("auth.verify_otp", id=prev_user.id))
                     else:
-                        flash("Something went wrong!, please try again", "error")
+                        flash("Something went wrong!, please try again", "otp_error")
                         return render_template("auth/signup.html", form=form)
 
                 flash("Email already exist", "email_error")
@@ -83,10 +86,10 @@ class AuthController:
                 if not prev_user.is_verified:
                     msg = ""
                     if self.send_otp(prev_user.id, "mobile", prev_user.mobile, msg):
-                        flash("Account already exist with this Mobile no., please verify to continue", "error")
+                        flash("Account already exist with this Mobile no., please verify to continue", "unverified")
                         return redirect(url_for("auth.verify_otp", id=prev_user.id))
                     else:
-                        flash("Something went wrong!, please try again", "error")
+                        flash("Something went wrong!, please try again", "otp_error")
                         return render_template("auth/signup.html", form=form)
 
                 flash("Phone No. already exist", "mobile_error")
@@ -113,7 +116,7 @@ class AuthController:
                 if self.send_otp(user.id, "email", user.email,msg):
                     return redirect(url_for("auth.verify_otp", id=user.id))
                 else:
-                    flash("OTP sending failed, please try again", "error")
+                    flash("OTP sending failed, please try again", "otp_error")
         return render_template("auth/signup.html", form=form)
 
     def reset_password(self):
@@ -135,12 +138,13 @@ class AuthController:
             # update is_active column
             user = self.user_service.update(user_id, is_active=True, is_verified=True)
             if user:
+                login(user)
                 self.user_service.update(user.id, is_verified=True)
                 msg = email_templates.get_value('WELCOME_TEMPLATE').replace("[FIRST_NAME]",user.first_name).replace("[FULL_NAME]",f"{user.first_name} {user.last_name}")
-                self.send_mail(user.email,"signup verification succcessful",msg)
+                self.send_mail(user.email,"verification succcessful",msg)
                 return redirect(url_for("home.index"))
             else:
-                flash("Invalid OTP", "error")
+                flash("Invalid OTP", "otp_error")
         return render_template("auth/verify_otp.html", form=form, id=user_id)
 
     def logout(self):

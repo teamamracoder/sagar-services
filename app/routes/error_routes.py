@@ -19,3 +19,7 @@ def something_went_wrong():
 @error_bp.route("/unauthorized-access")
 def unauthorized_access():
     return error_controller.unauthorized_access()
+
+@error_bp.route("/deactivated")
+def deactivated():
+    return error_controller.deactivated()

@@ -78,7 +78,6 @@ class BookingController:
         for staff_id, _ in staffs_id:
             staff_detail = self.user_service.get_by_id(staff_id)
             staff_details.append(staff_detail)
-        print(staff_details)
         form.staff_id.choices = [(staff.id, staff.first_name) for staff in staff_details]
         
         
@@ -192,12 +191,12 @@ class BookingController:
 
     def bookings_page_data(self):
         logged_in_user,roles=get_current_user().values()
-        columns = ["id", "created_by", "created_at","updated_by","updated_at","is_active","service_id","user_id","staff_id","total_charges","service_location","service_status","payment_status","payment_method","area_pincode"]
+        columns = ["id", "created_at", "service_id","staff_id","total_charges","service_location","service_status","area_pincode", "payment_status","payment_method"]
         data = self.booking_service.get_bookings_by_user_id(logged_in_user.id,request, columns)
         data = self.service_service.add_service_with_this(data)
-        data = self.booking_service.add_service_status_with_this(data)
-        data = self.booking_service.add_payment_status_with_this(data)
-        data = self.booking_log_service.add_booking_logs_with_this(data)
+        data = self.booking_log_service.add_booking_latest_log(data)
+        data = self.booking_service.add_payment_status_name_with_this(data)
+        data = self.booking_service.add_payment_method_with_this(data)
         return jsonify(data)
 
 
