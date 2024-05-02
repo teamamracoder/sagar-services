@@ -37,11 +37,26 @@
 </div>
 <script>
 $(document).ready(function () {
-
-    window.cancelOrder = function(booking_id){
-        // use swal
-        window.location.href=`/booking/cancel/${booking_id}`
-    }
+    window.cancelOrder = function (booking_id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Cancel Booking",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Cancel Booking",
+            cancelButtonText: "Back",
+            confirmButtonColor:"#d7504D",
+            cancelButtonColor:"#5FA052",
+            customClass: {
+                confirmButton: 'btn btn-sm rounded-0 border-0',
+                cancelButton: 'btn btn-sm rounded-0'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href=`/booking/cancel/${booking_id}`
+            }
+        });
+    };
 
     window.fetchPaginatedBookings = function (page) {
         $.ajax({
