@@ -92,8 +92,10 @@ class UserController:
 
     def details(self,id):
         user=self.user_service.get_by_id(id)
-        return render_template("admin/user/details.html",user=user)
-    
+        if user:
+            return render_template("admin/user/details.html",user=user)
+        return redirect(url_for('dashboard.index'))
+
     def admin_my_profile(self):
         logged_in_user,roles=get_current_user().values()
         user = self.user_service.get_by_id(logged_in_user.id)

@@ -101,7 +101,6 @@ class CartController:
                     }
                 filtered_products.append(cache_item)
             
-            print(filtered_products)
 
             cache.set('cart_' + str(logged_in_user.id), filtered_products)
             # Construct response data
@@ -150,7 +149,8 @@ class CartController:
                                     status=1,
                                     is_active = True
                                 )
-                                return {"status":"success","message":"Product Added to Cart","data":True}
+                                cart_count = self.cart_service.get_total_cart_items_by_user_id(logged_in_user.id)
+                                return {"status":"success","message":"Product Added to Cart","data":True, "cart_count":cart_count}
                 else:
                     product = self.product_service.get_by_id(product_id)
                     if product:
@@ -164,7 +164,8 @@ class CartController:
                                 product_id=product_id,
                                 status=1
                             )
-                            return {"status":"success","message":"Product Added to Cart","data":True}
+                            cart_count = self.cart_service.get_total_cart_items_by_user_id(logged_in_user.id)
+                            return {"status":"success","message":"Product Added to Cart","data":True, "cart_count":cart_count}
 
             except ValueError as e:
                 return jsonify({'error': str(e)}), 500

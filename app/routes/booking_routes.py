@@ -66,7 +66,7 @@ def bookings_page():
 def bookings_page_data():
     return booking_controller.bookings_page_data()
 
-@booking_bp.route("/cancel/<int:booking_id>")
+@booking_bp.route("/booking/cancel/<int:booking_id>")
 @login_required
 def cancel(booking_id):
     return booking_controller.cancel(booking_id)
@@ -85,3 +85,8 @@ def confirm():
 @login_required
 def booking_success():
     return booking_controller.booking_success()
+
+@booking_bp.route("/booking_details/<int:booking_id>")
+@login_required
+def booking_details_page(booking_id):
+    return booking_controller.booking_details_page(booking_id)
