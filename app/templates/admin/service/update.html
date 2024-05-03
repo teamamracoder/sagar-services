@@ -15,50 +15,51 @@
             <div class="row">
     
                 <div class="row p-3">
-                    <div class="col-6">
+                    <div class="col-4">
                         {{ form.service_type_id.label(class="form-label") }}
                         {{ form.service_type_id(class="form-control form-control") }}
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         {{ form.service_name.label(class="form-label") }}
                         {{ form.service_name(class="form-control form-control", placeholder="Enter Service Name") }}
                     </div>
-                </div>
-    
-                <div class="col-12">
-                    {{ form.description.label(class="form-label") }}
-                    {{ form.description(class="form-control form-control", id="default-editor") }}
-                </div>
-                <div class="row p-3">
-                    <div class="col-6">
-                        {{ form.service_charge.label(class="form-label") }}
-                        {{ form.service_charge(class="form-control form-control", placeholder="Enter Service Charges") }}
-                    </div>
-                    <div class="col-6">
-                        {{ form.discount.label(class="form-label") }}
-                        {{ form.discount(class="form-control form-control", placeholder="Enter Discount") }}
-                    </div>
-                </div>
-    
-                <div class="row p-3">
-                    <div class="col-6">
-                        {{ form.payment_methods.label(class="form-label") }}
-                        {{ form.payment_methods(class="form-control form-control") }}
-                    </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         {{ form.hidden_tag() }}
                         {{ form.service_img_urls.label(class="form-label") }}
                         {{ form.service_img_urls(class="form-control form-control multi with-preview max-10 maxsize-40960 accept-gif|jpg|png|jpeg|webp") }}
                     </div>
                 </div>
     
+                
+                <div class="row p-3">
+                    <div class="col-4">
+                        {{ form.service_charge.label(class="form-label") }}
+                        {{ form.service_charge(class="form-control form-control", placeholder="Enter Service Charges") }}
+                    </div>
+                    <div class="col-4">
+                        {{ form.discount.label(class="form-label") }}
+                        {{ form.discount(class="form-control form-control", placeholder="Enter Discount") }}
+                    </div>
+                    <div class="col-4">
+                        {{ form.available_area_pincodes.label(class="form-label") }}
+                        {{ form.available_area_pincodes(class="form-control form-control") }}
+                    </div>
+                </div>
+    
+                <div class="col-12">
+                    {{ form.payment_methods.label(class="form-label") }}
+                    {{ form.payment_methods(class="form-control form-control") }}
+                </div>
+    
+                <div class="col-12">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control form-control", id="default-editor") }}
+                </div>
                
                 <div class="row">
                     <div class="col my-3">
-                        <a href="{{ url_for('service.index') }}" class="btn btn-outline-dark btn-sm ">Back</a>
-                    </div>
-                    <div class="col my-4" style="margin-left: -80px;">
                         <input type="submit" class="btn btn-dark btn-sm" value="Update" />
+                        <a href="{{ url_for('service.index') }}" class="btn btn-outline-dark btn-sm ">Back</a>
                     </div>
                 </div>
     

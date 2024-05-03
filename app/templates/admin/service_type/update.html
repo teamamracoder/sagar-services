@@ -20,16 +20,14 @@
                     </div>
                     <div class="col-6">
                         {{ form.service_type_img_url.label(class="form-label") }}
-                        {{ form.service_type_img_url(class="form-control form-control multi with-preview max-1 accept-gif|jpg|png|jpeg|webp") }}
+                        {{ form.service_type_img_url(class="form-control form-control multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col my-3">
+                        <input type="submit" class="btn btn-dark btn-sm" value="Update" />
                         <a href="{{ url_for('service_type.index') }}" class="btn btn-outline-dark btn-sm ">Back</a>
-                    </div>
-                    <div class="col my-4" style="margin-left: -80px;">
-                      <input type="submit" class="btn btn-dark btn-sm" value="Update" />
                     </div>
                 </div>
     

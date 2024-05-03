@@ -31,7 +31,8 @@ class ServiceController:
         form = CreateServiceForm()
         service_types=self.service_type_service.get_active()
         form.service_type_id.choices = [(service_type.id, service_type.type_name) for service_type in service_types]
-        form.payment_methods.choices = payment_methods.get_all_items()
+        # form.payment_methods.choices = payment_methods.get_all_items()
+        form.payment_methods.choices = [(1,'COD')]
 
         if form.validate_on_submit():
             filepath=FileUtils.save('services',form.service_img_urls.data)
@@ -67,7 +68,8 @@ class ServiceController:
         service_types=self.service_type_service.get_active()
         form = UpdateServiceForm(obj=service)
         form.service_type_id.choices = [(service_type.id, service_type.type_name) for service_type in service_types]
-        form.payment_methods.choices = payment_methods.get_all_items()
+        # form.payment_methods.choices = payment_methods.get_all_items()
+        form.payment_methods.choices = [(1,'COD')]
         
         if form.validate_on_submit():
             filepath = service.service_img_urls

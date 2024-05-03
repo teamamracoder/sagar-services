@@ -7,69 +7,82 @@
 <div class="container">
     <h3 class="text-center my-3">Add User</h3>
 
+<div class="border p-5 border-1 shadow shadow-lg">
     <form method="POST" action="{{ url_for('user.add') }}" id="adminForm" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.first_name.label(class="form-label") }}
-                {{ form.first_name(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.first_name.label(class="form-label") }}
+                    {{ form.first_name(class="form-control form-control", placeholder="First Name") }}
+                </div>
+                <div class="col-6">
+                    {{ form.last_name.label(class="form-label") }}
+                    {{ form.last_name(class="form-control form-control", placeholder="Last Name") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.last_name.label(class="form-label") }}
-                {{ form.last_name(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control form-control", placeholder="Email Address") }}
+                </div>
+                <div class="col-6">
+                    {{ form.mobile.label(class="form-label") }}
+                    {{ form.mobile(class="form-control form-control", placeholder="Mobile Number") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.mobile.label(class="form-label") }}
-                {{ form.mobile(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control form-control", placeholder="Password") }}
+                </div>
+                <div class="col-6">
+                    {{ form.profile_photo_url.label(class="form-label") }}
+                    {{ form.profile_photo_url(class="form-control form-control multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
+                </div>
             </div>
             <div class="col-12 border px-2 py-2 my-2">
                 <p>Address</p>
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-12">
                         {{ form.street.label(class="form-label") }}
-                        {{ form.street(class="form-control form-control-sm") }}
+                        {{ form.street(class="form-control form-control", placeholder="Street") }}
                     </div>
                     <div class="col-lg-4 col-md-6 col-12">
                         {{ form.landmark.label(class="form-label") }}
-                        {{ form.landmark(class="form-control form-control-sm") }}
+                        {{ form.landmark(class="form-control form-control", placeholder="Landmark") }}
                     </div>
                     <div class="col-lg-4 col-md-6 col-12">
                         {{ form.address_line.label(class="form-label") }}
-                        {{ form.address_line(class="form-control form-control-sm") }}
+                        {{ form.address_line(class="form-control form-control", placeholder="Address Line") }}
                     </div>
                     <div class="col-lg-4 col-md-6 col-12">
                         {{ form.city.label(class="form-label") }}
-                        {{ form.city(class="form-control form-control-sm") }}
+                        {{ form.city(class="form-control form-control", placeholder="City") }}
                     </div>
                     <div class="col-lg-4 col-md-6 col-12">
                         {{ form.state.label(class="form-label") }}
-                        {{ form.state(class="form-control form-control-sm") }}
+                        {{ form.state(class="form-control form-control", placeholder="State") }}
                     </div>
                     <div class="col-lg-4 col-md-6 col-12">
                         {{ form.pincode.label(class="form-label") }}
-                        {{ form.pincode(class="form-control form-control-sm") }}
+                        {{ form.pincode(class="form-control form-control", placeholder="Pincode") }}
                     </div>
                 </div>
             </div>
 
-            <div class="col-12">
-                {{ form.profile_photo_url.label(class="form-label") }}
-                {{ form.profile_photo_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
-            </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
-                <a href="{{ url_for('user.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            <div class="row">
+                <div class="col my-3">
+                    <input type="submit" class="btn btn-dark btn-sm" value="Submit" />
+                    <a href="{{ url_for('user.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
+                </div>
             </div>
         </div>
     </form>
+</div>
 
 </div>
 

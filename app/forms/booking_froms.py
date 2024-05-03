@@ -13,7 +13,7 @@ class CreateBookingForm(FlaskForm):
 
 class UpdateBookingForm(FlaskForm):
     service_id  = SelectField('Service', validators=[DataRequired()])
-    staff_id  = SelectField("Staffs [Select a Staff who takes the responsibility for this service]")
+    staff_id  = SelectField("Select a Staff")
     total_charges = FloatField('Total Charges')
     service_location = TextAreaField('Service Location', validators=[DataRequired()])
     service_status = SelectField('Service Status', coerce=int, validators=[DataRequired()])

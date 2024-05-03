@@ -6,28 +6,43 @@
 
 <div class="container">
     <h3 class="text-center my-3">Edit User</h3>
+
+    <div class="border p-5 border-1 shadow shadow-lg">
     <form method="POST" action="{{ url_for('user.update',id=id) }}" id="adminForm"  enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="row">
-            <div class="col-12">
-                {{ form.first_name.label(class="form-label") }}
-                {{ form.first_name(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.first_name.label(class="form-label") }}
+                    {{ form.first_name(class="form-control form-control-sm") }}
+                </div>
+                <div class="col-6">
+                    {{ form.last_name.label(class="form-label") }}
+                    {{ form.last_name(class="form-control form-control-sm") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.last_name.label(class="form-label") }}
-                {{ form.last_name(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control form-control-sm") }}
+                </div>
+                <div class="col-6">
+                    {{ form.mobile.label(class="form-label") }}
+                    {{ form.mobile(class="form-control form-control-sm") }}
+                </div>
             </div>
-            <div class="col-12">
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.mobile.label(class="form-label") }}
-                {{ form.mobile(class="form-control form-control-sm") }}
-            </div>
-            <div class="col-12">
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control form-control-sm") }}
+
+            <div class="row p-3">
+                <div class="col-6">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control form-control-sm", readonly=readonly) }}
+                </div>
+                <div class="col-6">
+                    {{ form.profile_photo_url.label(class="form-label") }}
+                    {{ form.profile_photo_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
+                </div>
             </div>
             <div class="col-12 border px-2 py-2 my-2">
                 <p>Address</p>
@@ -66,16 +81,16 @@
             {{ form.dob.label(class="form-check-label")}}
             {{ form.dob(class="form-check", required="true")}}
       </div>
-            <div class="col-12">
-                {{ form.profile_photo_url.label(class="form-label") }}
-                {{ form.profile_photo_url(class="form-control form-control-sm multi with-preview max-1 maxsize-4096 accept-gif|jpg|png|jpeg|webp") }}
-            </div>
-            <div class="col-12 my-2">
-                <button type="submit" class="btn btn-dark btn-sm">Update</button>
+
+        <div class="row">
+            <div class="col my-3">
+                <input type="submit" class="btn btn-dark btn-sm" value="Update" />
                 <a href="{{ url_for('user.index') }}" class="btn btn-outline-dark btn-sm">Back</a>
             </div>
         </div>
+        </div>
     </form>
+</div>
 </div>
 <script>
     $(document).ready(function () {
