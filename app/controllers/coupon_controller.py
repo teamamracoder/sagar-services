@@ -95,7 +95,9 @@ class CouponController:
         if coupon is None:
             return {"status":"error","message":"item not found","data":None}
         is_avaiable_coupon = self.user_service.check_coupon_by_coupon_id(user_id,id)
-        msg = email_templates.get_value('SENT_COUPON_TEMPLATE').replace("[FULL_NAME]",f"{logged_in_user.first_name} {logged_in_user.last_name}").replace("[COUPON_CODE]",coupon.coupon_code).replace("[EXPIRY_DATE]",coupon.expiry_date)
+        expiry_date_str = str(coupon.expiry_date)
+        msg = email_templates.get_value('SENT_COUPON_TEMPLATE').replace("[FULL_NAME]", f"{logged_in_user.first_name} {logged_in_user.last_name}").replace("[COUPON_CODE]", coupon.coupon_code).replace("[EXPIRY_DATE]", expiry_date_str)
+
         MailUtils.send(logged_in_user.email, "Congratulations! You Got a New Coupon Code ", msg)
         
         
