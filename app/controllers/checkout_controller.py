@@ -75,7 +75,6 @@ class CheckoutController:
             return {'status': 'success', 'message': 'Quantity updated successfully'}
 
         except Exception as e:
-            print("Error:", e)
             return {'status': 'error', 'message': str(e)}
 
 
@@ -83,7 +82,6 @@ class CheckoutController:
         logged_in_user, roles = get_current_user().values()
         try:
             coupon_code = request.form.get("coupon_code")
-            print(coupon_code)
 
             coupon = self.coupon_service.get_by_code(coupon_code)
             if coupon:
@@ -104,7 +102,6 @@ class CheckoutController:
         cache_key = f"cart_{logged_in_user.id}"
         products_with_qty = cache.get(cache_key)
         if products_with_qty:
-            print(products_with_qty)
 
             products_info = []
 
@@ -173,7 +170,7 @@ class CheckoutController:
                         logged_in_user.city,
                         logged_in_user.state,
                         logged_in_user.street
-                    ] if attr is not None or attr is not ''
+                    ] if attr is not None or attr != ''
                 )
                 area_pincode = logged_in_user.pincode
             if request.form.get("pay-method")=='1':
@@ -193,10 +190,23 @@ class CheckoutController:
                 "mobile":mobile,
                 "payment_status":payment_status,
                 })
-            
 
+            # rechecking quantity in the final moment
             for order_details in products_info:
+                db_product_stock = self.product_service.get_by_id(order_details['product_id']).stock
+                if order_details['quantity']>db_product_stock:
+                    return redirect(url_for('error_bp.something_went_wrong'))
+            
+            for order_details in products_info:
+            # decrease quantity from product stock
+                db_product_stock = self.product_service.get_by_id(order_details['product_id']).stock
+                new_stock = db_product_stock - order_details['quantity']
+                self.product_service.update(order_details['product_id'],stock=new_stock)
+
+                # craete order
                 order = self.order_service.create(**order_details)
+
+                # create order log
                 self.order_log_service.create(
                     created_by=logged_in_user.id,
                     created_at=datetime.now(),
@@ -209,11 +219,11 @@ class CheckoutController:
                 if not logged_in_user.pincode:
                     self.user_service.update(
                         logged_in_user.id,
-                        landmark = request.form.get("StreetAddress"),
-                        address_line = request.form.get("Landmark"),
-                        city = request.form.get("Additional Address"),
-                        state = request.form.get("City"),
-                        street = request.form.get("State"),
+                        landmark = request.form.get("Landmark"),
+                        address_line = request.form.get("Additional Address"),
+                        city = request.form.get("City"),
+                        state = request.form.get("State"),
+                        street = request.form.get("StreetAddress"),
                         pincode = int(request.form.get("PinCode").strip())
                     )
 

@@ -12,14 +12,14 @@
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter By Categories</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input all_products" checked name="category"
-                            value="">
-                        <label class="custom-control-label">All Products</label>
+                            value="" id="cat_all">
+                        <label class="custom-control-label" for="cat_all">All Products</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0 rounded-0">1000</span> -->
                     </div>
                     {% for category in categories %}
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" name="category" class="custom-control-input" value="{{category.id}}">
-                        <label class="custom-control-label">{{ category.category_name }}</label>
+                        <input type="checkbox" name="category" class="custom-control-input" value="{{category.id}}" id="cat_{{category.id}}">
+                        <label class="custom-control-label" for="cat_{{category.id}}">{{ category.category_name }}</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">150</span> -->
                     </div>
                     {% endfor %}
@@ -35,14 +35,14 @@
                 <div class="bg-light p-4 mb-30">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter by Brand</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input all_brands" checked name="brand" value="">
-                        <label class="custom-control-label">All Brands</label>
+                        <input type="checkbox" class="custom-control-input all_brands" checked name="brand" value="" id="brand_all">
+                        <label class="custom-control-label" for="brand_all">All Brands</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">1000</span> -->
                     </div>
                     {% for brand in brands %}
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" name="brand" value="{{ brand }}">
-                        <label class="custom-control-label">{{ brand }}</label>
+                        <input type="checkbox" class="custom-control-input" name="brand" value="{{ brand }}" id="brand_{{ brand }}">
+                        <label class="custom-control-label" for="brand_{{ brand }}">{{ brand }}</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">150</span> -->
                     </div>
                     {% endfor %}
@@ -50,28 +50,28 @@
                 <div class="bg-light p-4 mb-4">
                     <h5 class="section-title text-uppercase mb-3"><span class="pe-3">Filter by price</span></h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input all_prices" name="price" value="" checked>
-                        <label class="custom-control-label">All Price</label>
+                        <input type="checkbox" class="custom-control-input all_prices" name="price" value="" checked id="price_all">
+                        <label class="custom-control-label" for="price_all">All Price</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">1000</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" name="price" value="less_than_1000">
-                        <label class="custom-control-label">less than ₹1000</label>
+                        <input type="checkbox" class="custom-control-input" name="price" value="less_than_1000" id="price_less_than_1000">
+                        <label class="custom-control-label" for="price_less_than_1000">less than ₹1000</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">150</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" name="price" value="1000_to_5000">
-                        <label class="custom-control-label">₹1000 - ₹5000</label>
+                        <input type="checkbox" class="custom-control-input" name="price" value="1000_to_5000" id="price_1000_to_5000">
+                        <label class="custom-control-label" for="price_1000_to_5000">₹1000 - ₹5000</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">295</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" name="price" value="5000_to_10000">
-                        <label class="custom-control-label">₹5000 - ₹10000</label>
+                        <input type="checkbox" class="custom-control-input" name="price" value="5000_to_10000" id="price_5000_to_10000">
+                        <label class="custom-control-label" for="price_5000_to_10000">₹5000 - ₹10000</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">246</span> -->
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" name="price" value="more_than_10000">
-                        <label class="custom-control-label">more than ₹10000</label>
+                        <input type="checkbox" class="custom-control-input" name="price" value="more_than_10000" id="price_more_than_10000">
+                        <label class="custom-control-label" for="price_more_than_10000">more than ₹10000</label>
                         <!-- <span class="badge border fw-normal text-dark rounded-0">145</span> -->
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                 </div>
 
                 <!-- products -->
-                <div class="row" id="product_list">
+                <div class="row d-flex" id="product_list">
                     <!-- single product -->
                 </div>
                 <div class="col-12">
@@ -219,15 +219,15 @@
                 wishlistTooltipTitle = product.wishlist ? "Added to Wishlist" : "Add to Wishlist";
                 wishlistTooltipIcon = product.wishlist ? '<i class="bi bi-heart-fill"></i>' : '<i class="bi bi-heart"></i>';
 
-                cart_button = `<button id="cart_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product.id})" data-bs-placement="bottom" title="${cartTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${cartTooltipIcon}</button>`
-                wishlist_button = `<button id="wishlist_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product.id})" data-bs-placement="bottom" title="${wishlistTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${wishlistTooltipIcon}</button>`
+                cart_button = `<button id="cart_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToCart(event,${product.id})" data-bs-placement="bottom" title="${cartTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${cartTooltipIcon}</button>`
+                wishlist_button = `<button id="wishlist_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(event,${product.id})" data-bs-placement="bottom" title="${wishlistTooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${wishlistTooltipIcon}</button>`
 
                 // Create a new div element to hold the product information
-                var productDiv = $('<div>', { class: 'col-lg-3 col-md-3 col-sm-4 col-6 pb-1' });
+                var productDiv = $('<div>', { class: 'col-lg-3 col-md-3 col-sm-4 col-6 pb-1 d-flex flex-column justify-content-between' });
 
                 // Construct the HTML for the product
                 var productHTML = `
-                        <div class="product-item mb-4 shadow-sm">
+                        <a class="product-item mb-4 shadow-sm" href="/product_details/${product.id}">
                             <div class="product-img position-relative overflow-hidden d-flex flex-column align-items-center">
                                 <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt="" style="max-height:150px;">
                                 <div class="product-action">
@@ -236,7 +236,7 @@
                                     <button id="checkout_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="checkout(${product.id})" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></button>
                                 </div>
                             </div>
-                            <div class="text-center py-4">
+                            <div class="text-center pb-4">
                                 <div class="product-title px-1">
                                     <a class="h6 text-decoration-none link-blue " href="/product_details/${product.id}">${product.product_name}</a>
                                     </div>
@@ -248,7 +248,7 @@
                                     <small>(${numberOfReviews})</small>
                                 </div>
                             </div>
-                        </div>`;
+                        </a>`;
 
                 // Append the product HTML to the product div
                 productDiv.html(productHTML);
@@ -290,25 +290,40 @@
 
         function handleCheckboxChange(checkboxes, defaultCheckbox) {
             checkboxes.change(function () {
-                // If the default checkbox is checked, uncheck all other checkboxes in the same section
-                if (checkboxes.is(':checked')) {
-                    defaultCheckbox.prop('checked', false);
-                } else {
-                    // If all other checkboxes within the section are unchecked, select the default checkbox
-                    if (checkboxes.not(this).not(":checked").length === checkboxes.not(this).length) {
-                        defaultCheckbox.prop('checked', true);
-                    }
+        var defaultChecked = defaultCheckbox.prop('checked');
+        var clickedCheckbox = $(this);
+
+        // If the clicked checkbox is the default checkbox
+        if (clickedCheckbox.is(defaultCheckbox)) {
+            // If the default checkbox is checked, uncheck all other checkboxes in the same section
+            if (defaultChecked) {
+                checkboxes.not(defaultCheckbox).prop('checked', false);
+            } else {
+                // If user tries to uncheck the default checkbox, keep it checked
+                defaultCheckbox.prop('checked', true);
+            }
+        } else {
+            // If any checkbox other than the default checkbox is checked, uncheck the default checkbox
+            if (clickedCheckbox.prop('checked')) {
+                defaultCheckbox.prop('checked', false);
+            } else {
+                // If all other checkboxes within the section are unchecked, select the default checkbox
+                if (checkboxes.not(defaultCheckbox).not(":checked").length === checkboxes.not(defaultCheckbox).length) {
+                    defaultCheckbox.prop('checked', true);
                 }
-
+            }
+        }
+        
                 // Call fetchPaginatedProducts with page number 1 after 3 seconds
-
                 fetchPaginatedProducts(1);
 
             });
         }
 
         // add to cart
-        window.addToCart = function (product_id) {
+        window.addToCart = function (event,product_id) {
+            event.preventDefault();
+            event.stopPropagation();
             $.ajax({
                 url: "{{ url_for('cart.add',product_id=0) }}".replace('0', product_id),
                 type: "GET",
@@ -328,12 +343,16 @@
                             tooltipIcon = '<i class="bi bi-cart-plus"></i>'
                         }
                     }
+                    else if (responseData.status == 'added'){
+                        tooltipTitle = "Added to Cart"
+                        tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
+                    }
                     else if (responseData.status == 'error'){
                         toastr.error(responseData.message);
                         tooltipTitle = "Add to Cart"
                         tooltipIcon = '<i class="bi bi-cart-plus"></i>'
                     }
-                    $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+                    $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(event, ${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
                 },
                 error: function (xhr, status, error) {
                     toastr.error('Error fetching wishlist details:', error);
@@ -341,13 +360,14 @@
             });
         }
 
-        window.addToWishlist = function (product_id) {
+        window.addToWishlist = function (event,product_id) {
+            event.preventDefault();
+            event.stopPropagation();
             $.ajax({
                 url: "{{ url_for('wishlist.add',product_id=0) }}".replace('0', product_id),
                 type: "GET",
                 complete: res => {
                     responseData = res.responseJSON
-                    console.log(responseData)
                     if (responseData.status === 'success') {
                         if (responseData.data) {
                             $("#wishBtnTooltip").text(responseData.wishlist_count)
@@ -368,7 +388,7 @@
                         tooltipTitle = "Add to Wishlist"
                         tooltipIcon = '<i class="bi bi-heart"></i>'
                     }
-                    $("#wishlist_icon_" + product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+                    $("#wishlist_icon_" + product_id).replaceWith(`<button id="wishlist_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToWishlist(event,${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
 
                 },
                 error: function (xhr, status, error) {

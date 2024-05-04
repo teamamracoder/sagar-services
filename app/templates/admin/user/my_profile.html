@@ -16,11 +16,11 @@
                           <i class="bi bi-pencil-square position-absolute d-none" style="top:0;right:0;" id="image_edit_icon"></i>
                           {% if user.profile_photo_url and user.profile_photo_url != '' %}
                           <img
-                            src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
+                            src="{{ url_for('static', filename=user.profile_photo_url) }}" alt="Photo" style="width: 100%; object-fit: contain; height:200px;" class="userImgTag"
                           />
                           {% else %}
                           <img
-                            src="../../static/img/AVTAR.jpg" alt="Photo" style="width: 100%; object-fit: contain" class="userImgTag"
+                            src="../../static/img/AVTAR.jpg" alt="Photo" style="width: 100%; object-fit: contain; height:200px;" class="userImgTag"
                           />
                           {% endif %}
                         </label>
@@ -101,7 +101,7 @@
                       </div>
                       <div class="col-lg-4 col-md-6 col-12">
                           {{ form.pincode.label(class="form-label") }}
-                          {{ form.pincode(class="form-control form-control-sm", readonly="readonly") }}
+                          {{ form.pincode(class="form-control form-control-sm", readonly="readonly", type="text") }}
                       </div>
                   </div>
               </div>
@@ -178,13 +178,13 @@ $("#image_edit_icon").removeClass("d-none")
                 mobile: {
                     required: true,
                 },
-                password: {
-                    required: true,
-                    minlength: 4,
-                    maxlength: 40
-                },
                 profile_photo_url:{
                   filesize: 1024
+                },
+                pincode:{
+                  digits:true,
+                  maxlength:6,
+                  minlength:6
                 }
             },
             messages: {
@@ -207,8 +207,10 @@ $("#image_edit_icon").removeClass("d-none")
                 mobile: {
                     required: "Please enter your mobile number",
                 },
-                password: {
-                    required: "password should be minimum 4 character",
+                pincode:{
+                  digits:"Invalid pin code",
+                  maxlength:"Invalid pin code",
+                  minlength:"Invalid pin code"
                 }
             },
             submitHandler: function (form) {

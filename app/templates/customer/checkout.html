@@ -5,10 +5,10 @@
 {% block content %}
 
 <div class="container-fluid row row d-flex justify-content-start mt-5">
-  <div class="col-lg-5 col-md-5 d-none d-md-block">
+  <div class="col-lg-6 col-md-12 d-none d-lg-block">
     <img src="../../static/img/gif.gif" alt="" class="checkout-img" style="opacity: 0.3; object-fit: contain;">
   </div>
-  <div class="col-lg-6 col-md-6 col-sm-12" >
+  <div class="col-lg-6 col-md-12 col-sm-12" >
   <form class="accordion shadow-sm rounded-0 adminForm" id="accordionPanelsStayOpenExample" method="POST" action="{{url_for('checkout.confirm')}}">
       <div class="accordion-item rounded-0">
         <h2 class="accordion-header rounded-0">
@@ -26,8 +26,8 @@
                     {% for product in products %}
                     <tr id="product_row_{{product.id}}">
                         <td class="d-none product_id">{{product.id}}</td>
-                        <td><img src="{{ url_for('static', filename=product.product_img_urls[0]) }}" class="product-img" alt="Product Image" height="67px" width="67px"></td>
-                        <td class="text-primary">{{ product.product_name }}</td>
+                        <td><img src="{{ url_for('static', filename=product.product_img_urls[0]) }}" class="product-img" alt="Product Image" height="67px" width="67px" style="object-fit: contain;"></td>
+                        <td class="text-primary">{{ product.product_name }}<br/> <span id="not_available_{{ product.id }}" class="text-danger">*Not available in your area</span></td>
                         <td>₹ <span id="price_{{product.id}}">{{ product.price - product.discount }}</span>/-</td>
                         <script>
                             var total_price=total_price+Number("{{product.price - product.discount }}");
@@ -87,7 +87,7 @@
           </div>
 
           <div class="d-flex justify-content-end mt-3">
-              <button type="button" class="btn first-btn m-3 btn-blue">Next</button>
+              <button type="button" class="btn first-btn m-3 btn-blue" id="first_btn">Next</button>
           </div>
           
           </div>
@@ -205,9 +205,14 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-lg-6">
 
-      <div id="pincode_available_messages">
-                        
+        </div>
+        <div id="pincode_available_messages" class="ps-lg-4 col-lg-6">
+                          
+        </div>
+
       </div>
       
   </form>
@@ -245,13 +250,12 @@
                 complete: (res) => {
                     res.then(data => {
                         if(!data.is_available){
-                          $("#product_row_"+productId).addClass('text-decoration-line-through text-danger')
-                          $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from product from cart</p>`)
+                          $("#not_available_"+productId).removeClass('d-none')
+                          $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from cart</p>`)
                           $("#place_order").attr("disabled",true)
                         }
                         else{
-
-                          $("#product_row_"+productId).removeClass('text-decoration-line-through text-danger')
+                          $("#not_available_"+productId).addClass('d-none')
                         }
                     });
                   }
@@ -549,13 +553,13 @@ function validate_address(){
                   res.then(data => {
 
                       if(!data.is_available){
-                        $("#product_row_"+productId).addClass('text-decoration-line-through text-danger')
+                        $("#not_available_"+productId).removeClass('d-none')
                         $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from product from cart</p>`)
                         $("#place_order").attr("disabled",true)
                         is_valid = is_valid & data.is_available
                       }
                       else{
-                        $("#product_row_"+productId).removeClass('text-decoration-line-through text-danger')
+                        $("#not_available_"+productId).addClass('d-none')
                         is_valid = is_valid & data.is_available
                       }
 
