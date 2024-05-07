@@ -233,7 +233,7 @@
                                 <div class="product-action">
                                     ${cart_button}
                                     ${wishlist_button}
-                                    <button id="checkout_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="checkout(${product.id})" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></button>
+                                    <button id="checkout_icon_${product.id}" class="btn btn-outline-blue btn-square" onclick="checkout(event,${product.id},${product.stock})" data-bs-placement="bottom" title="Buy Now" data-bs-custom-class="custom-tooltip" href=""><i class="bi bi-bag"></i></button>
                                 </div>
                             </div>
                             <div class="text-center pb-4">
@@ -397,8 +397,16 @@
             });
         }
 
-        window.checkout = function (product_id) {
-            window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
+        window.checkout = function (event,product_id,stock) {
+            event.preventDefault();
+            event.stopPropagation();
+            if(stock<1){
+                toastr.error("Out of Stock");
+            }
+            else{
+                window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
+
+            }
         }
 
     });
