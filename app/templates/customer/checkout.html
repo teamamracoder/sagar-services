@@ -5,10 +5,10 @@
 {% block content %}
 
 <div class="container-fluid row row d-flex justify-content-start mt-5">
-  <div class="col-lg-5 col-md-5 d-none d-md-block">
+  <div class="col-lg-4 col-md-12 d-none d-lg-block">
     <img src="../../static/img/gif.gif" alt="" class="checkout-img" style="opacity: 0.3; object-fit: contain;">
   </div>
-  <div class="col-lg-6 col-md-6 col-sm-12" >
+  <div class="col-lg-8 col-md-12 col-sm-12" >
   <form class="accordion shadow-sm rounded-0 adminForm" id="accordionPanelsStayOpenExample" method="POST" action="{{url_for('checkout.confirm')}}">
       <div class="accordion-item rounded-0">
         <h2 class="accordion-header rounded-0">
@@ -26,20 +26,35 @@
                     {% for product in products %}
                     <tr id="product_row_{{product.id}}">
                         <td class="d-none product_id">{{product.id}}</td>
-                        <td><img src="{{ url_for('static', filename=product.product_img_urls[0]) }}" class="product-img" alt="Product Image" height="67px" width="67px"></td>
-                        <td class="text-primary">{{ product.product_name }}</td>
+                        <td><img src="{{ url_for('static', filename=product.product_img_urls[0]) }}" class="product-img" alt="Product Image" height="67px" width="67px" style="object-fit: contain;"></td>
+                        <td class="text-primary">{{ product.product_name }}<br/> <span id="not_available_{{ product.id }}" class="text-danger">*Not available in your area</span></td>
                         <td>₹ <span id="price_{{product.id}}">{{ product.price - product.discount }}</span>/-</td>
                         <script>
                             var total_price=total_price+Number("{{product.price - product.discount }}");
                         </script>
-                        <td>
+                        <td class="align-middle">
+                          <div class="input-group quantity mx-auto" style="width: 100px;">
+                              <div class="input-group-btn">
+                                  <button type="button" class="btn btn-sm btn-blue btn-minus" onclick='updateQuantity("decrease","{{product.id}}")'>
+                                  <i class="bi bi-dash"></i>
+                                  </button>
+                              </div>
+                              <input type="text" class="form-control form-control-sm text-center" value="1" id="qty_{{ product.id }}" min="1" readonly>
+                              <div class="input-group-btn">
+                                  <button type="button" class="btn btn-sm btn-blue btn-plus" onclick='updateQuantity("increase","{{product.id}}")'>
+                                      <i class="bi bi-plus"></i>
+                                  </button>
+                              </div>
+                          </div>
+                      </td>
+                        <!-- <td>
                             <select class="form-select qty-selector" id="qty_{{ product.id }}" onchange="updateQuantity('{{ product.id }}')">
                                 <option value="" disabled selected>---</option>
                                 <option value="{{ product.id }}_1">1</option>
                                 <option value="{{ product.id }}_2">2</option>
                                 <option value="{{ product.id }}_3">3</option>
                             </select>
-                        </td>
+                        </td> -->
                         <td>₹ <span id="sub_total_price_{{product.id}}" class="sub_total_price">{{ product.price - product.discount }}</span>/-</td>
                     </tr>
                     {% endfor %}
@@ -47,7 +62,7 @@
                 <tfoot class="">
                     <tr>
                         <td colspan="4">Delivery Charge</td>
-                        <td>₹ 50/-</td>
+                        <td>₹ 50.0/-</td>
                     </tr>
                     <tr>
                         <td colspan="4"><strong>Total Price</strong></td>
@@ -56,7 +71,7 @@
                 </tfoot>
             </table>
             <script>
-                $("#total_price").text(total_price+50)
+                $("#total_price").text(parseFloat(total_price+50).toFixed(1))
             </script>
           
 
@@ -68,10 +83,11 @@
           <div class="container d-flex justify-content-center">
           <div class="input-group mt-3 w-50">
             <input type="text" class="form-control w-25 rounded-0" id="coupon_code" name="coupon_code" placeholder="Enter Coupon Code" aria-label="Enter Coupon Code " aria-describedby="button-addon2"> 
-             <button type="button" class="btn btn-outline-blue rounded-0" id="button-addon2">Submit</button>
+             <button type="button" class="btn btn-outline-blue rounded-0 ms-1" id="button-addon2">APPLY</button>
+            <input type="hidden" value="0" id="is_valid_coupon">
+            </div>
           </div>
-          </div>
-          <div class="text-center me-5 d-none" id="invalid-coupon-text"><small>Invalied Coupon Code</small></div>
+          <div class="text-center me-5 d-none text-danger" id="invalid-coupon-text"><small>Invalied Coupon Code</small></div>
 
             <div class="separation-line mt-3"></div>
             <div class="total-section flex-between flex-vertical-center d-none" id="coupon-success-section">
@@ -79,7 +95,7 @@
                 <div class="text-center"><h6 class="text-dark">Congratulations ! The coupon has been successfully applied.</h6></div>
                 <div class="total-label f-secondary-color text-center">Now You have to Pay</div>
                 <div class="text-center">
-                  <strong>₹ <span id="coupon-discount"></span>.00 /-</strong>
+                  <strong  class="text-success">₹ <span id="coupon-discount"></span>/-</strong>
                 </div>
               </div>
               <i class="ai-coin size-lg"></i>
@@ -87,7 +103,7 @@
           </div>
 
           <div class="d-flex justify-content-end mt-3">
-              <button type="button" class="btn first-btn m-3 btn-blue">Next</button>
+              <button type="button" class="btn first-btn m-3 btn-blue" id="first_btn">Next</button>
           </div>
           
           </div>
@@ -189,10 +205,11 @@
               <strong>Please select the preferred payment method to use on this order.</strong> 
               <br>
               <div>
-                <input type="radio" value="1" name="pay-method" id="COD" required><label for="COD"> &nbsp; Payment by COD</label>
+                <input type="radio" value="1" name="pay_method" id="COD"><label for="COD">Cash On Delivery</label>
+                <p class="payment_error text-danger p-0 m-0"></p>
               </div>
               <div>
-                <input type="radio" value="2" name="pay-method" id="Online" disabled><label for="Online"> &nbsp; Payment by UPI/Wallet/Debit & Credit Card</label> (Currently This feature is Not Available)
+                <input type="radio" value="2" name="pay_method" id="Online" disabled><label for="Online"> Payment by UPI/Wallet/Debit & Credit Card</label> (Currently This feature is Not Available)
               </div>
               <div>
 
@@ -205,9 +222,14 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-lg-6">
 
-      <div id="pincode_available_messages">
-                        
+        </div>
+        <div id="pincode_available_messages" class="ps-lg-4 col-lg-6">
+                          
+        </div>
+
       </div>
       
   </form>
@@ -218,97 +240,144 @@
   $(document).ready(()=> {
     var nextButton2copy = document.querySelector('.second-btn-2');
     var nextButton2 = document.querySelector('.second-btn');
-    // $("#place_order").attr("disabled",true)
+
     function update_availability(){
-      $("#pincode_available_messages").html("")
-      var products = [];
-      var pincode = $("#prev_pincode").text()
-      console.log(pincode)
-      // Select all elements with class name "product_id"
-      if(pincode!='' && pincode!= 'None'){
-      
-        var productElements = document.querySelectorAll(".product_id");
-        productElements.forEach(function(productElement) {
-          products.push(productElement.textContent.trim()); // Trim to remove any leading or trailing whitespace
-        });
-        // Iterate through the selected elements and push their text content into the products array
-        products.forEach(function(productId) {
-            // Make an AJAX call for each product
-            $.ajax({
-                url: "{{url_for('product.check_area_availability')}}", // Replace 'your_api_endpoint' with your actual API endpoint
-                method: 'POST', // or 'GET', depending on your API requirements
-                dataType: "json",
-                data: {
-                    "product_id": productId,
-                    "pincode": pincode // Assuming pincode is constant, you can replace it with a variable if needed
-                },
-                complete: (res) => {
-                    res.then(data => {
-                        if(!data.is_available){
-                          $("#product_row_"+productId).addClass('text-decoration-line-through text-danger')
-                          $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from product from cart</p>`)
-                          $("#place_order").attr("disabled",true)
-                        }
-                        else{
+        $("#pincode_available_messages").html("")
+        var products = [];
+        var pincode = $("#prev_pincode").text()
+        // Select all elements with class name "product_id"
+        if(pincode!='' && pincode!= 'None'){
+            var productElements = document.querySelectorAll(".product_id");
+            productElements.forEach(function(productElement) {
+              products.push(productElement.textContent.trim()); // Trim to remove any leading or trailing whitespace
+            });
+            // Iterate through the selected elements and push their text content into the products array
+            products.forEach(function(productId) {
+              is_available = true
+              // Make an AJAX call for each product
+                $.ajax({
+                    url: "{{url_for('product.check_area_availability')}}", // Replace 'your_api_endpoint' with your actual API endpoint
+                    method: 'POST', // or 'GET', depending on your API requirements
+                    dataType: "json",
+                    data: {
+                        "product_id": productId,
+                        "pincode": pincode // Assuming pincode is constant, you can replace it with a variable if needed
+                    },
+                    complete: (res) => {
+                        res.then(data => {
+                            if(!data.is_available){
+                              $("#not_available_"+productId).removeClass('d-none')
+                              $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from cart</p>`)
+                              is_available = is_available & false
+                            }
+                            else{
+                              is_available = is_available & true
+                              $("#not_available_"+productId).addClass('d-none')
+                            }
+                          }).then(()=>{
+                            if(!is_available){
+                              $("#place_order").attr("disabled",true)
+                            }
+                            else{
+                            $("#place_order").attr("disabled",false)
 
-                          $("#product_row_"+productId).removeClass('text-decoration-line-through text-danger')
-                        }
-                    });
-                  }
+                          }
+                        })
+
+                    }
                 });
-              });
-            
-            }
-
-
+            });
+        }   
     }
 
     // // Check the initial state of the checkbox
     if ($("#addressCheckbox").prop("checked")) {
-      update_availability()
-      $("accordionPanelsStayOpenExample").addClass("adminForm")
-      $("input[type='text']:not(#coupon_code)").prop("required",true);
-      $("#newAddressForm").removeClass("d-none")
-      nextButton2copy.style.display='block'
-      nextButton2.style.display='none'
-
-    } 
-    else {
-      update_availability();
-      $("accordionPanelsStayOpenExample").removeClass("adminForm")
+      $("#place_order").attr("disabled",true)
+        update_availability()
+        $("accordionPanelsStayOpenExample").addClass("adminForm")
+        $("input[type='text']:not(#coupon_code)").prop("required",true);
+        $("#newAddressForm").removeClass("d-none")
+        nextButton2copy.style.display='block'
+        nextButton2.style.display='none'
+      } 
+      else {
+        $("#place_order").attr("disabled",false)
+        update_availability();
+        $("accordionPanelsStayOpenExample").removeClass("adminForm")
         $("#newAddressForm").addClass("d-none")
         $("input[type='text']:not(#coupon_code)").prop("required",false);
         $("#newAddressForm").addClass("d-none");
         nextButton2copy.style.display='none'
         nextButton2.style.display='block'
-        // Do something when the checkbox is initially unchecked
     }
     
     // Add an event listener for the 'change' event
     $("#addressCheckbox").on("change", function() {
         // Check if the checkbox is checked
         if ($("#addressCheckbox").prop("checked")) {
-          $("input[type='text']:not(#coupon_code)").prop("required",true);
+            $("input[type='text']:not(#coupon_code)").prop("required",true);
             $("#newAddressForm").removeClass("d-none")
-        nextButton2copy.style.display='block'
-        nextButton2.style.display='none'
-        $("accordionPanelsStayOpenExample").addClass("adminForm")
-
-            // Do something when the checkbox is checked
+            nextButton2copy.style.display='block'
+            nextButton2.style.display='none'
+            $("accordionPanelsStayOpenExample").addClass("adminForm")
         } 
         else {
-          update_availability();
-          $("input[type='text']:not(#coupon_code)").prop("required",false);
-            console.log("Checkbox is  unchecked");
+            update_availability();
+            $("input[type='text']:not(#coupon_code)").prop("required",false);
             $("#newAddressForm").addClass("d-none")
             nextButton2copy.style.display='none'
             nextButton2.style.display='block'
             $("accordionPanelsStayOpenExample").removeClass("adminForm")
-
-
-            // Do something when the checkbox is unchecked
         }
     });
+
+    function update(productId,quantityValue){
+      var quantityElement = $('#qty_' + productId);
+      $.ajax({
+        url:"{{url_for('checkout.update_quantity')}}",
+        type:"POST",
+        dataType:"json",
+        data:{
+          "product_id":productId,
+          "qty":quantityValue
+        },
+        complete: (res) => {
+          res.then(data => {
+            if(data.status=='success' || data.status=='full'){
+              quantityElement.val(data.qty)
+              var total_price=0;
+              $("#sub_total_price_"+productId).text(parseFloat(data.qty * Number($("#price_"+productId).text())).toFixed(1))
+              $(".sub_total_price").each(function() {
+                  total_price+=Number($(this).text())
+              })
+              $("#total_price").text(parseFloat(total_price+50).toFixed(1))
+              if(data.status=='full'){
+                toastr.error("Maximum quantity reached")
+              }
+            }
+            else{
+              console.log(data.message)
+            }
+        })
+      }})
+    }
+
+    //updateQuantity
+    window.updateQuantity=function (action, productId) {
+        var quantityElement = $('#qty_' + productId);
+        var quantityValue = Number(quantityElement.val());
+        if (action === 'increase') {
+            quantityValue += 1;
+            update(productId,quantityValue)
+            
+          } else if (action === 'decrease') {
+            quantityValue = Math.max(1, quantityValue - 1);
+            update(productId,quantityValue)
+          }
+    }
+
+    
+
 
     $("#button-addon2").on("click",function(){
         var coupon_code=$("#coupon_code").val()
@@ -324,16 +393,17 @@
             if(coupon.status=="success"){
                 var total_price=Number($("#total_price").text());
                 if (coupon.discount_type==2){
-                    $("#coupon-discount").text(total_price-((total_price*coupon.discount)/100))
+                    $("#coupon-discount").text(parseFloat(total_price-((total_price*coupon.discount)/100)).toFixed(1))
                 }
                 else if(coupon.type==1){
-                    // $("#total_price").text(total_price-coupon.discount)
-                    $("#coupon-discount").text(total_price-coupon.discount)
+                    $("#coupon-discount").text(parseFloat(total_price-coupon.discount).toFixed(1))
                 }
                 $("#coupon-success-section").removeClass("d-none")
                 $("#invalid-coupon-text").addClass("d-none")
-            }
-            else{
+                $("#is_valid_coupon").val("1")
+              }
+              else{
+              $("#is_valid_coupon").val("0")
                 $("#coupon-success-section").addClass("d-none")
                 $("#invalid-coupon-text").removeClass("d-none")
             }
@@ -341,50 +411,20 @@
       }})
     })
 
-    function update(product_id,qty){
-      $.ajax({
-        url:"{{url_for('checkout.update_quantity')}}",
-        type:"POST",
-        dataType:"json",
-        data:{
-          "product_id":product_id,
-          "qty":qty
-        },
-        complete: (res) => {
-          res.then(data => {
-            var total_price=0;
-            $("#sub_total_price_"+product_id).text(Number(qty) * Number($("#price_"+product_id).text()))
-            $(".sub_total_price").each(function() {
-                total_price+=Number($(this).text())
-            })
-            $("#total_price").text(total_price+50)
-        })
-      }})
-    }
-
-    window.updateQuantity=function(product_id){
-      qty=$("#qty_"+product_id).val()
-      var [product_id, qty] = qty.split("_").map(Number);
-      if(qty != null && qty != undefined){
-        update(product_id,qty)
-      }
-    }
+    
+    $("input[name='pay_method']").on("change",function(){
+      $(".payment_error").text("");
+    })
 
 
     $("#accordionPanelsStayOpenExample").submit(function(e){
-        e.preventDefault();
-        var isValid = true;
-        $(".qty-selector").each(function() {
-            if ($(this).val() == "" || $(this).val() == null || $(this).val() == undefined) {
-                e.preventDefault();
-                isValid = false;
-                alert("Please select a quantity for all items.");
-                return false;
-            }
-        });
-        if (isValid) {
-            $(this).off("submit").submit();
-        }
+      e.preventDefault();
+      if($("#COD").prop("checked")){
+        $(this).off("submit").submit();
+      }
+      else{
+        $(".payment_error").text("Please select payment method");
+      }
     });
 })
 
@@ -406,98 +446,103 @@
 
 
 document.addEventListener('DOMContentLoaded', function() {
-// Get references to the "Next" buttons
-const nextButton1 = document.querySelector('.first-btn');
-const nextButton2 = document.querySelector('.second-btn');
-const nextButton2copy = document.querySelector('.second-btn-2');
-const nextButton3 = document.querySelector('.third-btn');
-const check1 = document.querySelector('.check1');
-const check2 = document.querySelector('.check2');
-const check3 = document.querySelector('.check3');
-const paymentMethodRadioGroup = document.getElementsByName('pay-method');
+    // Get references to the "Next" buttons
+    const nextButton1 = document.querySelector('.first-btn');
+    const nextButton2 = document.querySelector('.second-btn');
+    const nextButton2copy = document.querySelector('.second-btn-2');
+    const nextButton3 = document.querySelector('.third-btn');
+    const check1 = document.querySelector('.check1');
+    const check2 = document.querySelector('.check2');
+    const check3 = document.querySelector('.check3');
+    const paymentMethodRadioGroup = document.getElementsByName('pay_method');
 
 
-// Get references to the accordion panels
-const accordion1 = document.querySelector('#panelsStayOpen-collapseOne');
-const accordion2 = document.querySelector('#panelsStayOpen-collapseTwo');
-const accordion3 = document.querySelector('#panelsStayOpen-collapseThree');
+    // Get references to the accordion panels
+    const accordion1 = document.querySelector('#panelsStayOpen-collapseOne');
+    const accordion2 = document.querySelector('#panelsStayOpen-collapseTwo');
+    const accordion3 = document.querySelector('#panelsStayOpen-collapseThree');
 
 
-const accordionButton1 = document.querySelector('.accordion-button1');
-const accordionButton2 = document.querySelector('.accordion-button2');
-const accordionButton3 = document.querySelector('.accordion-button3');
+    const accordionButton1 = document.querySelector('.accordion-button1');
+    const accordionButton2 = document.querySelector('.accordion-button2');
+    const accordionButton3 = document.querySelector('.accordion-button3');
 
-// Initialize the state of the second and third accordion panels as locked
-let isAccordion2Locked = true;
-let isAccordion3Locked = true;
-
-
-
-// Add click event listener to the first "Next" button
-nextButton1.addEventListener('click', function() {
-  // Close the first accordion panel and remove active color
-  accordion1.classList.remove('show');
-  check1.style.display = 'block';
-
- 
-  accordionButton1.classList.add('collapsed');
-  // Unlock and open the second accordion panel
-  if (isAccordion2Locked) {
-      isAccordion2Locked = false;
-      accordionButton2.classList.remove('collapsed');
-      accordion2.classList.add('show');
-  }
-});
-
-// Add click event listener to the second "Next" button
-nextButton2.addEventListener('click', function() {
-  // Close the second accordion panel and remove active color
- 
-  accordion2.classList.remove('show');
-  check2.style.display = 'block';
-  accordionButton2.classList.add('collapsed');
-  // Unlock and open the third accordion panel
-  if (isAccordion3Locked) {
-      isAccordion3Locked = false;
-      accordionButton3.classList.remove('collapsed');
-      accordion3.classList.add('show');
-  }
-});
+    // Initialize the state of the second and third accordion panels as locked
+    let isAccordion2Locked = true;
+    let isAccordion3Locked = true;
 
 
-nextButton2copy.addEventListener('click', function() {    
-  is_Empty=validate_address();
-  if(is_Empty){
-    alert("Please provide New Address")
-    return
-  }
-  // Close the second accordion panel and remove active color
-  accordion2.classList.remove('show');
-  check2.style.display = 'block';
-  accordionButton2.classList.add('collapsed');
 
-  // Unlock and open the third accordion panel
-  if (isAccordion3Locked) {
-      isAccordion3Locked = false;
-      accordionButton3.classList.remove('collapsed');
-      accordion3.classList.add('show');
-  }
-});
+    // Add click event listener to the first "Next" button
+    nextButton1.addEventListener('click', function() {
+      // Close the first accordion panel and remove active color
+      if ($("#is_valid_coupon").val()== '0'){
+        $("#have_coupon").prop("checked",false)
+        $("#check_have_coupon").css("display","none")
+        
+      }
+      accordion1.classList.remove('show');
+      check1.style.display = 'block';
 
-for (const radioButton of paymentMethodRadioGroup) {
-radioButton.addEventListener('change', () => {
-  check3.style.display = 'block';
-});
-}
+    
+      accordionButton1.classList.add('collapsed');
+      // Unlock and open the second accordion panel
+      if (isAccordion2Locked) {
+          isAccordion2Locked = false;
+          accordionButton2.classList.remove('collapsed');
+          accordion2.classList.add('show');
+      }
+    });
 
-// Prevent default toggling of accordion panels for locked panels
-document.querySelector('#accordionPanelsStayOpenExample').addEventListener('show.bs.collapse', function(event) {
-  const target = event.target;
-  if ((target === accordion2 && isAccordion2Locked) || (target === accordion3 && isAccordion3Locked)) {
-      // Prevent the accordion panel from opening if it is locked
-      event.preventDefault();
-  }
-});
+    // Add click event listener to the second "Next" button
+    nextButton2.addEventListener('click', function() {
+      // Close the second accordion panel and remove active color
+    
+      accordion2.classList.remove('show');
+      check2.style.display = 'block';
+      accordionButton2.classList.add('collapsed');
+      // Unlock and open the third accordion panel
+      if (isAccordion3Locked) {
+          isAccordion3Locked = false;
+          accordionButton3.classList.remove('collapsed');
+          accordion3.classList.add('show');
+      }
+    });
+
+
+    nextButton2copy.addEventListener('click', function() {    
+      is_Empty=validate_address();
+      if(is_Empty){
+        alert("Please provide New Address")
+        return
+      }
+      // Close the second accordion panel and remove active color
+      accordion2.classList.remove('show');
+      check2.style.display = 'block';
+      accordionButton2.classList.add('collapsed');
+
+      // Unlock and open the third accordion panel
+      if (isAccordion3Locked) {
+          isAccordion3Locked = false;
+          accordionButton3.classList.remove('collapsed');
+          accordion3.classList.add('show');
+      }
+    });
+
+    for (const radioButton of paymentMethodRadioGroup) {
+    radioButton.addEventListener('change', () => {
+      check3.style.display = 'block';
+    });
+    }
+
+    // Prevent default toggling of accordion panels for locked panels
+    document.querySelector('#accordionPanelsStayOpenExample').addEventListener('show.bs.collapse', function(event) {
+      const target = event.target;
+      if ((target === accordion2 && isAccordion2Locked) || (target === accordion3 && isAccordion3Locked)) {
+          // Prevent the accordion panel from opening if it is locked
+          event.preventDefault();
+      }
+    });
 });
 
 
@@ -549,13 +594,13 @@ function validate_address(){
                   res.then(data => {
 
                       if(!data.is_available){
-                        $("#product_row_"+productId).addClass('text-decoration-line-through text-danger')
+                        $("#not_available_"+productId).removeClass('d-none')
                         $("#pincode_available_messages").append(`<p class="text-danger">NOTE: ${data.message}, please remove this from product from cart</p>`)
                         $("#place_order").attr("disabled",true)
                         is_valid = is_valid & data.is_available
                       }
                       else{
-                        $("#product_row_"+productId).removeClass('text-decoration-line-through text-danger')
+                        $("#not_available_"+productId).addClass('d-none')
                         is_valid = is_valid & data.is_available
                       }
 
@@ -609,7 +654,6 @@ function validate_address(){
                 minlength:6,
                 maxlength:6
               }
-
             },
             messages: {
               MobleNo:{
@@ -654,12 +698,13 @@ function validate_address(){
                     digits:"Pin code should be in digits",
                     minlength:"PinCode should be 6 digits",
                     maxlength:"PinCode should be 6 digits"
-              },
+              }
             },
-            submitHandler: function () {
-                $("place_order").attr("disabled",false)
+            submitHandler: function (form) {
+                $("#place_order").attr("disabled",false)
             }
         });
+
     });
 
 

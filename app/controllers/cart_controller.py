@@ -94,12 +94,12 @@ class CartController:
             products_dict = self.product_service.get_product_details_by_ids_dict(product_ids)
             filtered_products=[]
             for product in products_dict:
-                if product['stock']>2:
+                if product['stock']>0:
                     cache_item={
                         'product_id':product['product_id'],
                         'quantity':1
                     }
-                filtered_products.append(cache_item)
+                    filtered_products.append(cache_item)
             
 
             cache.set('cart_' + str(logged_in_user.id), filtered_products)
@@ -119,7 +119,7 @@ class CartController:
                         'stock': product.stock,
                         'image': product.product_img_urls
                     })
-    
+            print(response_data)
             return jsonify(response_data)
     
         except ValueError as e:
@@ -139,7 +139,7 @@ class CartController:
                         #check product stock
                         product = self.product_service.get_by_id(product_id)
                         if product:
-                            if product.stock<3:
+                            if product.stock<1:
                                 return {"status":"error","message":"Out of stock","data":True}
                             else:
                                 self.cart_service.update(

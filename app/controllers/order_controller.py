@@ -188,6 +188,9 @@ class OrderController:
         order = self.order_service.get_by_id(order_id)
         order_prev_status=order.order_status
         if order_prev_status == 1 or order_prev_status ==2:
+            product = self.product_service.get_by_id(order.product_id)
+            new_stock = product.stock + order.quantity
+            self.product_service.update(product.id, stock = new_stock)
             self.order_status(order_id,'order','CANCELLED')
         return redirect(url_for("order.orders_page"))
 

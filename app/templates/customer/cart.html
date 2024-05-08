@@ -128,13 +128,13 @@
                             <div class="col-lg-6 col-md-12 col-sm-12">
                               <p class="m-0 p-0 fs-5 fw-bold">${item.product_name}</p>
                               <p class="m-0 p-0">By <span>${item.brand}</span></p>
-                              <p class="m-0 p-0">${item.stock > 2 ? '<small class="text-success">In Stock</small>' : '<small class="text-danger">Out of Stock</small>'}</p>
+                              <p class="m-0 p-0">${item.stock > 0 ? '<small class="text-success">In Stock</small>' : '<small class="text-danger">Out of Stock</small>'}</p>
                               <p class="m-0 p-0">Price: <span class="fw-bold"><i class="bi bi-currency-rupee"></i><span class="cart_price_${item.id}">${(item.price-item.discount).toFixed(2)}</span></span></p>
                               <p class="m-0 p-0">You Saved: <span class="text-success"><i class="bi bi-currency-rupee"></i><span class="cart_discount_${item.id}">${item.discount.toFixed(2)}</span></span></p>
                             </div>
                             <div class="col-lg-6 col-md-12 col-sm-12">
                               <button class="btn btn-outline-blue m-1 w-100" onclick="removeFromCart(${item.id})">Remove</button> 
-                              <button class="btn btn-outline-blue m-1 w-100" onclick="checkout(${item.product_id})">Checkout</button> 
+                              <button class="btn btn-outline-blue m-1 w-100" onclick="checkout(${item.product_id},${item.stock})">Checkout</button> 
                             </div>
                           </div>
                         </div>
@@ -182,8 +182,13 @@
             });
     }
 
-    window.checkout = function (product_id){
-      window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
+    window.checkout = function (product_id,stock){
+      if(stock>0){
+        window.location.href="{{ url_for('checkout.checkout_page',product_id=0) }}".replace('0',product_id)
+      }
+      else{
+        toastr.error("Out of Stock")
+      }
     }
 </script>
 

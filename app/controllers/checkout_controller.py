@@ -22,10 +22,8 @@ class CheckoutController:
         if product_id_param !=0:
             product = self.product_service.get_by_id(product_id_param)
             if product:
-                if product.stock<3:
+                if product.stock<1:
                     return render_template("customer/cart.html")
-            else:
-                return render_template("customer/cart.html")
         
         logged_in_user,roles=get_current_user().values()
         cache_key = f"cart_{logged_in_user.id}"
@@ -50,32 +48,37 @@ class CheckoutController:
 
             # Retrieve cart items from the cache
             cache_key = f"cart_{logged_in_user.id}"
-            cart_items = cache.get(cache_key)
+            cache_items = cache.get(cache_key)
 
-            # Initialize an empty list if cart_items is None
-            if cart_items is None:
-                cart_items = []
+            # Initialize an empty list if cache_items is None
+            if cache_items is None:
+                cache_items = []
 
 
             # Filter out the item with the given product ID
-            # cart_items = list(filter(lambda item: item['product_id'] != product_id, cart_items))
-            cart_items = [cart_item for cart_item in cart_items if cart_item['product_id'] != int(product_id)]
+            cache_items = [cache_item for cache_item in cache_items if cache_item['product_id'] != int(product_id)]
 
 
             # Create a new dictionary with the updated quantity
-            updated_item = {'product_id': int(product_id), 'quantity': int(quantity)}
+            product = self.product_service.get_by_id(int(product_id))
+            if int(quantity)<=product.stock :
+                qty = int(quantity)
+                status = "success"
+            else:
+                qty = product.stock
+                status = "full"
 
-            # Append the updated item to cart_items
-            cart_items.append(updated_item)
+            updated_item = {'product_id': int(product_id), 'quantity': qty}
 
+            # Append the updated item to cache_items
+            cache_items.append(updated_item)
 
             # Update the cache with the modified cart items
-            cache.set(cache_key, cart_items)
+            cache.set(cache_key, cache_items)
 
-            return {'status': 'success', 'message': 'Quantity updated successfully'}
+            return {'status': status, 'qty':qty}
 
         except Exception as e:
-            print("Error:", e)
             return {'status': 'error', 'message': str(e)}
 
 
@@ -83,7 +86,6 @@ class CheckoutController:
         logged_in_user, roles = get_current_user().values()
         try:
             coupon_code = request.form.get("coupon_code")
-            print(coupon_code)
 
             coupon = self.coupon_service.get_by_code(coupon_code)
             if coupon:
@@ -99,12 +101,13 @@ class CheckoutController:
             return {'status':'error','message': str(e)}
 
     def confirm(self):
+        if not request.form.get("pay_method"):
+            return render_template("customer/cart.html")
         logged_in_user,roles=get_current_user().values()
 
         cache_key = f"cart_{logged_in_user.id}"
         products_with_qty = cache.get(cache_key)
         if products_with_qty:
-            print(products_with_qty)
 
             products_info = []
 
@@ -173,10 +176,10 @@ class CheckoutController:
                         logged_in_user.city,
                         logged_in_user.state,
                         logged_in_user.street
-                    ] if attr is not None or attr is not ''
+                    ] if attr is not None or attr != ''
                 )
                 area_pincode = logged_in_user.pincode
-            if request.form.get("pay-method")=='1':
+            if request.form.get("pay_method")=='1':
                 payment_status = 2
             else:
                 payment_status = 1
@@ -186,17 +189,30 @@ class CheckoutController:
                 "created_by":logged_in_user.id,
                 "created_at":datetime.now(),
                 "user_id":logged_in_user.id,
-                "payment_method":request.form.get("pay-method"),
+                "payment_method":request.form.get("pay_method"),
                 "order_status":1,
                 "area_pincode":area_pincode,
                 "shipping_address":shipping_address,
                 "mobile":mobile,
                 "payment_status":payment_status,
                 })
-            
 
+            ## rechecking quantity in the final moment
             for order_details in products_info:
+                db_product_stock = self.product_service.get_by_id(order_details['product_id']).stock
+                if order_details['quantity']>db_product_stock:
+                    return redirect(url_for('error_bp.something_went_wrong'))
+            
+            for order_details in products_info:
+            ## decrease quantity from product stock
+                db_product_stock = self.product_service.get_by_id(order_details['product_id']).stock
+                new_stock = db_product_stock - order_details['quantity']
+                self.product_service.update(order_details['product_id'],stock=new_stock)
+
+                ## craete order
                 order = self.order_service.create(**order_details)
+
+                ## create order log
                 self.order_log_service.create(
                     created_by=logged_in_user.id,
                     created_at=datetime.now(),
@@ -209,11 +225,11 @@ class CheckoutController:
                 if not logged_in_user.pincode:
                     self.user_service.update(
                         logged_in_user.id,
-                        landmark = request.form.get("StreetAddress"),
-                        address_line = request.form.get("Landmark"),
-                        city = request.form.get("Additional Address"),
-                        state = request.form.get("City"),
-                        street = request.form.get("State"),
+                        landmark = request.form.get("Landmark"),
+                        address_line = request.form.get("Additional Address"),
+                        city = request.form.get("City"),
+                        state = request.form.get("State"),
+                        street = request.form.get("StreetAddress"),
                         pincode = int(request.form.get("PinCode").strip())
                     )
 
@@ -237,3 +253,5 @@ class CheckoutController:
 def calculate_amount(product_id, qty, price, discount):
     amount = (price - discount) * qty
     return amount
+
+
