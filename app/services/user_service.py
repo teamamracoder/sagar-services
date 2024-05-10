@@ -182,7 +182,8 @@ class UserService(BaseService):
     
     def check_coupon_by_coupon_id(self,user_id,coupon_id):
         user = self.get_by_id(user_id)
-        if user.coupon==coupon_id:
+
+        if user.coupon==int(coupon_id):
             return True
         else:
             return False

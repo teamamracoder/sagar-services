@@ -236,3 +236,11 @@ class OrderService(BaseService):
 
            return total_orders
     
+
+    def get_by_user_and_product_id(self,product_id,user_id):
+        orders = self.model.query.filter_by(product_id=product_id, user_id=user_id).all()
+        
+        for order in orders:
+            if order.product_id == product_id and order.user_id == user_id:
+                return order
+        return None

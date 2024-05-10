@@ -47,13 +47,13 @@ class ServiceTypeController:
             if new_filepath:
                 FileUtils.delete(filepath)
                 filepath=new_filepath
-                self.service_type_service.update(
-                id=id,
-                updated_by=logged_in_user.id,
-                updated_at=datetime.now(),
-                type_name = form.type_name.data,
-                service_type_img_url = filepath
-            )
+            updated_data = {
+                'type_name' : form.type_name.data,
+                'updated_at' : datetime.now(),
+                'updated_by' : logged_in_user.id,
+                'service_type_img_url' : filepath
+            }
+            self.service_type_service.update(id, **updated_data)
             return redirect(url_for("service_type.index"))
         return render_template("admin/service_type/update.html", form=form, id=id)
         
