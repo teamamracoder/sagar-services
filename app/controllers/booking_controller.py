@@ -179,7 +179,7 @@ class BookingController:
             get_user_id = self.staff_service.get_by_user_id(booking.staff_id) 
             staffs = self.user_service.get_by_id(get_user_id.user_id)
         else:
-            None
+            staffs = []
         return render_template("admin/booking/details.html",booking=booking,service=service,user=user,payment_status=payment_status,booking_logs=booking_logs,staffs=staffs)
 
 

@@ -62,12 +62,19 @@
                     }
                     
                 },
-                { "data": "count" },
+                {
+                    "data": "count",
+                    "render": function(data,type,row){
+                        console.log(row.count)
+                        console.log(row.id)
+                        return `<span id="count_${row.id}">${row.count}</span>`;
+                    }
+                },
                 {
                     "data":null,
                     "render": function(data, type, row){
-                        return '<div class="d-flax"><input type=text id="SendCouponForUserId" class="form-control form-sm" placeholder="UserId" />'+
-                        '<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="editTooltip" onclick="sendCouponRecord(' + row.id + ')">Send</button>'
+                        return `<div class="d-flex justify-content-evenly"><input type="text" id="SendCouponForUserId_${row.id}" class="form-control-sm col-7 border-1 rounded-0" placeholder="UserId" />`+
+                        `<button class="btn btn-outline-dark btn-sm me-1" data-toggle="tooltip" data-bs-placement="bottom" title="Edit" data-bs-custom-class="editTooltip" id="btn_${row.id}" onclick="sendCouponRecord(${row.id})">Send</button>`
                     }
                 },
                 {
@@ -89,9 +96,42 @@
         };
 
         window.sendCouponRecord = function(id) {
-            var userId = $('#SendCouponForUserId').val(); // Fetch the value of the input field
-            window.location.href = "/admin/coupons/send_coupon/" + id +"/"+ userId;
+            var userId = $('#SendCouponForUserId_'+id).val(); // Fetch the value of the input field and trim whitespace
+            var button = $('#btn_'+id);
+            var coupon_count_element = $('#count_'+id)
+            console.log(coupon_count_element.text())
+
+            
+            // Clear the input field
+            $('#SendCouponForUserId_'+id).val("");
+
+            // Start the spinner
+            button.append('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+            $.ajax({
+                url: `/admin/coupons/send_coupon/${userId}/`+id,
+                type: "GET",
+                success: function(response) {
+                    if(response.status == "success"){
+                        toastr.success(response.message);
+                        var coupon_count = coupon_count_element.text()
+                        coupon_count = Number(coupon_count) - 1
+                        coupon_count_element.text(coupon_count)
+                    }
+                    else{
+                        toastr.error(response.message);
+                    }
+                    // Remove the spinner after AJAX request completes
+                    button.find('.spinner-border').remove();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error sending coupon:", error);
+                    // Remove the spinner after AJAX request completes
+                    button.find('.spinner-border').remove();
+                }
+            });
         };
+
 
         window.deactivateRecord = function (id, is_active) {
             const title = is_active ? "Deactivate Coupopn" : "Activate Coupopn";
@@ -105,8 +145,8 @@
                 icon: icon,
                 showCancelButton: true,
                 confirmButtonText: is_active ? "Deactivate" : "Activate",
-                confirmButtonColor:confirmButtonColor,
-                cancelButtonColor:cancelButtonColor,
+                confirmButtonColor:'#808080',
+                cancelButtonColor:'#273746',
                 customClass: {
                     confirmButton: 'btn btn-sm rounded-0',
                     cancelButton: 'btn btn-sm rounded-0'
@@ -138,5 +178,6 @@
             });
         };
     });
+
 </script>
 {% endblock %}

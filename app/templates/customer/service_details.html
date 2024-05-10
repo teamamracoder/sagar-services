@@ -35,8 +35,16 @@
 {% endif %}
 <div class="container-fluid">
   <div class="container-fluid small-container single-product">
-    <!-- overview section -->
-    <p>Home>CPU-Repaile>Details</p>
+    
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="bi bi-house"></i></a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('home.index') }}#ServiceSection">Services</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Service Details</li>
+      </ol>
+    </nav>
+    
+    
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-5">
         <!-- cursor id wala element ta nai -->
@@ -54,15 +62,17 @@
         </div>
         <div class="small-img-row">
           
-          {% for img in service.service_img_urls %}
-          <div class="small-img-col">
-            <img
-              src="{{ url_for('static',filename=img) }}"
-              class="small-img"
-              alt=""
-              style="height: 70px;width: 70px;object-fit: contain;"
-            />
-          </div>
+          {% for img in service.service_img_urls %} 
+            {% if loop.index <= 4 %}
+              <div class="small-img-col">
+                <img
+                  src="{{ url_for('static',filename=img) }}"
+                  class="small-img"
+                  alt=""
+                  style="height: 70px;width: 70px;object-fit: contain;"
+                />
+              </div>
+            {% endif %}
           {% endfor %}
 
         </div>

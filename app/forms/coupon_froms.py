@@ -5,7 +5,7 @@ from wtforms import FileField
 from flask_wtf.file import FileAllowed, FileRequired
 
 class CreateCouponForm(FlaskForm):
-    coupon_code=StringField("coupon Code",validators=[DataRequired()])
+    coupon_code=StringField("Coupon Code",validators=[DataRequired()])
     expiry_date=DateTimeLocalField("Expiry Date",validators=[DataRequired()])
     discount=FloatField("Discount",validators=[DataRequired()])
     discount_type=SelectField("Discount Type",coerce=int, validators=[DataRequired()])

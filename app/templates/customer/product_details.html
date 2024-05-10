@@ -36,7 +36,7 @@
 
 <div class="container-fluid">
   <div class="container-fluid single-product">
-    <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <nav style="--bs-breadcrumb-divider: '/'" aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="{{ url_for('home.index') }}" class="text-decoration-none"><i class="bi bi-house"></i></a>
@@ -44,15 +44,13 @@
         <li class="breadcrumb-item ">
           <a href="{{ url_for('product.products_page') }}" class="text-decoration-none">Products</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">{{ product.product_name }}</li>
+        <li class="breadcrumb-item active" aria-current="page">Products Details</li>
       </ol>
     </nav>
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-5">
         <div id="cursor" ></div>
         <div class="details-img-container" style="height: 400px;object-fit: contain;">
-          <!-- <img class="img-fluid w-lg-100 w-md-60 w-sm-50" src="../../static/${product.product_img_urls[0]}" alt=""> -->
-
           <img
             src="{{ url_for('static',filename=product.product_img_urls[0]) }}"
             width="100%"
@@ -61,17 +59,20 @@
             style="height: 100%;width: fit-content;"
           />
         </div>
+
         <div class="small-img-row">
           
           {% for img in product.product_img_urls %}
-          <div class="small-img-col">
-            <img
-              src="{{ url_for('static',filename=img) }}"
-              class="small-img"
-              alt=""
-              style="height: 70px;width: 70px;object-fit: contain;"
-            />
-          </div>
+          {% if loop.index <= 4 %}
+            <div class="small-img-col">
+              <img
+                src="{{ url_for('static',filename=img) }}"
+                class="small-img"
+                alt=""
+                style="height: 70px;width: 70px;object-fit: contain;"
+              />
+            </div>
+          {% endif %}
           {% endfor %}
 
         </div>
@@ -108,7 +109,7 @@
                   <div id="rating" class="rating rating text-warning d-flex flex-row justify-content-start flex-row-reverse"></div>
               </div>
 
-                <div>
+              <div>
                 <h6>Product Model: {{product.model}}</h6>
                 <div class="">
                   <span>Check Availability:</span>

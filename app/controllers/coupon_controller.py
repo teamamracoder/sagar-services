@@ -88,21 +88,45 @@ class CouponController:
             return {"status":"success","message":"Category Activated","data":is_active}
         return {"status":"success","message":"Category Deactivated","data":is_active}
 
-# 
-    def send_coupon(self, id, user_id):
-        logged_in_user,roles=get_current_user().values()
-        coupon = self.coupon_service.get_by_id(id)
-        if coupon is None:
-            return {"status":"error","message":"item not found","data":None}
-        is_avaiable_coupon = self.user_service.check_coupon_by_coupon_id(user_id,id)
-        expiry_date_str = str(coupon.expiry_date)
-        msg = email_templates.get_value('SENT_COUPON_TEMPLATE').replace("[FULL_NAME]", f"{logged_in_user.first_name} {logged_in_user.last_name}").replace("[COUPON_CODE]", coupon.coupon_code).replace("[EXPIRY_DATE]", expiry_date_str)
 
-        MailUtils.send(logged_in_user.email, "Congratulations! You Got a New Coupon Code ", msg)
+    def send_coupon(self,user_id,id):
+        logged_in_user,roles=get_current_user().values()
+        is_user = self.user_service.get_by_id(user_id)
+        if not is_user:
+                return {"status":"error","message":"This user is not exist...","data":None}
+
+        coupon = self.coupon_service.get_by_id(id)
         
+        if not coupon:
+            return {"status":"error","message":"Item not found","data":None}
+
+        is_available_coupon = self.user_service.check_coupon_by_coupon_id(user_id,id)
         
-        self.user_service.update(
-            id=user_id,
-            coupon=id
-        )
-        return redirect(url_for("coupon.index"))
+        if not is_available_coupon:
+            if coupon.count>0:
+                expiry_date_str = str(coupon.expiry_date)
+                msg = email_templates.get_value('SENT_COUPON_TEMPLATE').replace("[FULL_NAME]", f"{is_user.first_name} {is_user.last_name}").replace("[COUPON_CODE]", coupon.coupon_code).replace("[EXPIRY_DATE]", expiry_date_str)
+
+                # Send email notification
+                MailUtils.send(is_user.email, "Congratulations! You Got a New Coupon Code ", msg)
+                
+                # Update user with the coupon_id
+                self.user_service.update(
+                    id=user_id, 
+                    coupon=id
+                    )
+
+                # update coupon count
+                coupon_count = coupon.count - 1
+                self.coupon_service.update(id=id,count=coupon_count)
+                return {"status": "success", "message": "Coupon sent successfully"}
+            else: 
+                return {"status": "error", "message": "Already all Coupons are distributed"}
+        else:
+            return {"status": "error", "message": "This user already have a Coupon"}
+
+
+    def count(self,id):
+        logged_in_user,roles=get_current_user().values()
+        cpn_count = self.coupon_service.get_by_id(id)
+        return cpn_count.count
