@@ -671,12 +671,21 @@
             onChanged: setupCardClickEvents
 
         });
+        // function setupCardClickEvents() {
+        //     $('.owl-carousel-Product').off('click', '.ProductCard').on('click', '.ProductCard', function () {
+        //         window.location.href = $(this).data('href');
+        //     });
+
+        //     $('.owl-carousel-Product').off('click', '.ProductCard .CardWishDiv span, .ProductCard a').on('click', '.ProductCard .CardWishDiv span, .ProductCard a', function (event) {
+        //         event.stopPropagation();
+        //     });
+        // }
         function setupCardClickEvents() {
-            $('.owl-carousel-Product').off('click', '.ProductCard').on('click', '.ProductCard', function () {
+            $('.ProductCard').click(function () {
                 window.location.href = $(this).data('href');
             });
 
-            $('.owl-carousel-Product').off('click', '.ProductCard .CardWishDiv span, .ProductCard a').on('click', '.ProductCard .CardWishDiv span, .ProductCard a', function (event) {
+            $('.ProductCard .CardWishDiv span, .ProductCard a').click(function (event) {
                 event.stopPropagation();
             });
         }
@@ -749,6 +758,14 @@
 
     //For Product carousel End
 
+    //For Redirect Product Details Page
+    // $('.ProductCard').click(function () {
+    //     window.location.href = $(this).data('href');
+    // });
+
+    // $('.ProductCard .CardWishDiv span, .ProductCard a').click(function (event) {
+    //     event.stopPropagation();
+    // });
 
     //For Redirect Service Details Page
     $('.ServiceCardDiv').click(function () {
