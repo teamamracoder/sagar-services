@@ -53,7 +53,7 @@ class HomeController:
             for_monitor_products.append(serialized_monitor_products)
         for_monitor_products=self.product_reviews_service.get_reviews_by_product_for_home(for_monitor_products)
 
-        # For monitor_products
+        # For laptop_products
         for_laptop_products=[]
         for product in laptop_products:
             serialized_laptop_products = self.product_service.serialized_products(product)
