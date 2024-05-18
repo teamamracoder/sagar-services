@@ -505,7 +505,7 @@
 }
 
 .CardWishDiv span {
-    padding: 4px 6px 0px 6px;
+    padding: 4px 5px 2px 5px;
     margin: 0px 5px;
     border-radius: 100%;
     /* color: #318CE7;; */
@@ -836,8 +836,10 @@
     width: 40px;
     height: 40px;
     border-radius: 50px;
-    background: #e43c5c;
-    color: #fff;
+    /* background: #e43c5c; */
+    background: linear-gradient(to top left, #8fbfef, #2178cf);
+    color: black;
+    /* color: #fff; */
     transition: all 0.5s;
     position: fixed;
     bottom: 20px;

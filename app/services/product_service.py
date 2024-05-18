@@ -20,7 +20,7 @@ class ProductService(BaseService):
         return ProductModel.query.filter_by(id=product_id).first().product_name
 
     def get_latest_products(self):
-        return ProductModel.query.filter_by(is_active=True).order_by(ProductModel.id.desc()).limit(10).all()
+        return ProductModel.query.filter_by(is_active=True).order_by(ProductModel.id.desc()).limit(7).all()
 
     def get_products_by_category(self,category_id):
             return ProductModel.query.filter_by(category_id=category_id,is_active=True).order_by(ProductModel.product_name).all()
@@ -169,7 +169,7 @@ class ProductService(BaseService):
 
            return total_products
 
-        
+
     def get_product_details_by_ids_dict(self, product_ids):
         product_details = []
 
@@ -181,7 +181,7 @@ class ProductService(BaseService):
 
         # Return list of product details dictionaries
         return product_details
-    
+
     def get_product_stock_id(self,product_id):
         return ProductModel.query.filter_by(id=product_id).first().stock
 

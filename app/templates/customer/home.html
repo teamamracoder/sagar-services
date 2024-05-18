@@ -69,7 +69,8 @@
 
                 {% for top_10_products in data.products.top_10_products %}
                 <div class="item mb-4">
-                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
+                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;"
+                        data-href="/product_details/{{top_10_products.id}}">
                         <div class="ProductImgDiv">
                             <img src="../../static/{{top_10_products.product_img_urls[0]}}" class="card-img-top"
                                 alt="...">
@@ -160,7 +161,8 @@
             <div class="owl-carousel owl-carousel-Product owl-theme " id="MonitorProduct">
                 {% for monitor_products in data.products.monitor_products %}
                 <div class="item mb-4">
-                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
+                    <div class="card cardDiv mx-auto ProductCard" data-href="/product_details/{{monitor_products.id}}"
+                        style="width: 12rem;height: 13rem;" id="" href="/product_details/{{monitor_products.id}}">
                         <div class="ProductImgDiv">
                             <img src="../../static/{{monitor_products.product_img_urls[0]}}" class="card-img-top"
                                 alt="...">
@@ -242,7 +244,8 @@
             <div class="owl-carousel owl-carousel-Product owl-theme " id="LaptopProduct">
                 {% for laptop_products in data.products.laptop_products %}
                 <div class="item mb-4">
-                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;" id="">
+                    <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 13rem;"
+                        data-href="/product_details/{{laptop_products.id}}">
                         <div class="ProductImgDiv">
                             <img src="../../static/{{laptop_products.product_img_urls[0]}}" class="card-img-top"
                                 alt="...">
@@ -305,9 +308,12 @@
                             </div>
 
 
-                            <h5 class="card-title text-center ProductName" id=""><a
+                            <!-- <h5 class="card-title text-center ProductName" id=""><a
                                     href="/product_details/{{laptop_products.id}}">{{laptop_products.product_name}}</a>
-                            </h5>
+                            </h5> -->
+                            <h5 class="card-title text-center ProductName" id=""><a
+                                    href="/product_details/{{laptop_products.id}}"
+                                    class="text-decoration-none text-dark">{{laptop_products.product_name}}</a></h5>
                             <div class="price text-center text-muted" style="font-family: 'Raleway', sans-serif;">
                                 <span class=" fw-bold text-success" style="font-size: 15px;
                                     "><i
@@ -340,7 +346,9 @@
         <div class="col-md-12 col-lg-9 d-flex row">
             {% for service in data.services %}
             {% if loop.index <= 6 %}
-            <div class="item mb-4 col-lg-4 col-md-4 col-sm-3 col-6 ServiceCardDiv">
+            <div class="item mb-4 col-lg-4 col-md-4 col-sm-3 col-6 ServiceCardDiv"
+                data-href="service_details/{{ service.id }}">
+
                 <div class="shadow p-1 mx-auto ServiceCard">
                     <div class="">
                         <img src="../../static/{{ service.service_img_urls[0]}}" class="card-img-top " alt="..."
@@ -382,7 +390,7 @@
 
                 </div>
                 <div class="ServiceNameDiv">
-                    <h6 class="ServiceName mx-auto mt-2 px-3 py-1">
+                    <h6 class="ServiceName mx-auto mt-2 px-3 py-1 text-center">
                         <a href="service_details/{{ service.id }}" class="text-decoration-none text-dark">{{
                             service.service_name }}</a>
                     </h6>
@@ -407,7 +415,8 @@
                 <div class="" id="NewlyAddedProductDiv">
                     <div class="d-flex">
                         <img src="../../static/{{ service.service_img_urls[0]}}" alt="">
-                        <div class="ps-3">
+                        <div class="ps-3" style="white-space: nowrap;overflow: hidden;
+                        text-overflow: ellipsis;">
                             <h6 class="card-title text-center ProductName" id=""><a
                                     href="service_details/{{ service.id }}" class="text-decoration-none text-dark">{{
                                     service.service_name }}</a></h6>
@@ -492,7 +501,7 @@
                                 {{ first_name }} {{ last_name }}
 
                             </div>
-                            {%if profile_photo_url!=none %}
+                            {%if profile_photo_url %}
                             <img src="../../static/{{profile_photo_url}}" alt="" class="px-1"
                                 style="width: 40px;height: 32px;border-radius: 100%;">
                             {% else %}
@@ -568,7 +577,8 @@
             {% for category in data.categories %}
             {% if loop.index <= 8 %}
             <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 15rem;" id="">
+                <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 15rem;"
+                    data-href="/products/?category={{category.id}}">
                     <div class="ProductCategoryImgDiv">
                         <img src="../../static/{{category.category_img_url}}" class="card-img-top" alt="..."
                             style="height: 12rem;">
@@ -632,42 +642,62 @@
 <script>
 
     //Product Section
-    $('.owl-carousel-Product').owlCarousel({
-        loop: true,
-        margin: 10,
-        nav: false,
-        dots: false,
-        autoplay: true,
-        smartSpeed: 3000,
-        // autoplayTimeout: 3000,
-        autoplayHoverPause: true,
-        responsive: {
-            0: {
-                items: 1
+    $(document).ready(function () {
+        $('.owl-carousel-Product').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: false,
+            dots: false,
+            autoplay: true,
+            //smartSpeed: 3000,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                360: {
+                    items: 1.9
+                },
+                550: {
+                    items: 2.5
+                },
+                750: {
+                    items: 3.5
+                },
+                850: {
+                    items: 4
+                },
+                950: {
+                    items: 4.5
+                },
+                1150: {
+                    items: 5.5
+                }
             },
-            360: {
-                items: 1.9
-            },
-            550: {
-                items: 2.5
-            },
-            750: {
-                items: 3.5
-            },
-            850: {
-                items: 4
-            },
-            950: {
-                items: 4.5
-            },
-            1150: {
-                items: 5.5
-            }
+            onInitialized: setupCardClickEvents,
+            onChanged: setupCardClickEvents
+
+        });
+        // function setupCardClickEvents() {
+        //     $('.owl-carousel-Product').off('click', '.ProductCard').on('click', '.ProductCard', function () {
+        //         window.location.href = $(this).data('href');
+        //     });
+
+        //     $('.owl-carousel-Product').off('click', '.ProductCard .CardWishDiv span, .ProductCard a').on('click', '.ProductCard .CardWishDiv span, .ProductCard a', function (event) {
+        //         event.stopPropagation();
+        //     });
+        // }
+        function setupCardClickEvents() {
+            $('.ProductCard').click(function () {
+                window.location.href = $(this).data('href');
+            });
+
+            $('.ProductCard .CardWishDiv span, .ProductCard a').click(function (event) {
+                event.stopPropagation();
+            });
         }
-
     });
-
-
     //Brand Carousel
     $('.vendor-carousel').owlCarousel({
         loop: true,
@@ -733,45 +763,34 @@
     document.getElementById("BestSellingFilter").addEventListener("click", function () {
         showProductCarousel(BestSellingProduct, ".filter-BestSelling");
     });
+
     //For Product carousel End
 
-    // add to cart
-    // window.addToCart = function (product_id) {
-    //     $.ajax({
-    //         url: "{{ url_for('cart.add',product_id=0) }}".replace('0', product_id),
-    //         type: "GET",
-    //         complete: res => {
-    //             responseData = res.responseJSON
-    //             if (responseData.status == 'success') {
-    //                 if (responseData.data) {
-    //                     toastr.success(responseData.message);
-    //                     tooltipTitle = "Added to Cart"
-    //                     tooltipIcon = '<i class="bi bi-cart-check-fill"></i>'
-    //                 }
-    //                 else {
-    //                     toastr.error(responseData.message);
-    //                     tooltipTitle = "Add to Cart"
-    //                     tooltipIcon = '<i class="bi bi-cart-plus"></i>'
-    //                 }
-    //             }
-    //             else {
-    //                 toastr.error(responseData.message);
-    //                 tooltipTitle = "Add to Cart"
-    //                 tooltipIcon = '<i class="bi bi-cart-plus"></i>'
-    //             }
-    //             // $("#cart_icon_" + product_id).replaceWith(`<button id="cart_icon_${product_id}" class="btn btn-outline-blue btn-square" onclick="addToCart(${product_id})" data-bs-placement="bottom" title="${tooltipTitle}" data-bs-custom-class="custom-tooltip" href="">${tooltipIcon}</button>`)
+    //For Redirect Product Details Page
+    // $('.ProductCard').click(function () {
+    //     window.location.href = $(this).data('href');
+    // });
 
-    //             // $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`)
-    //             console.log($("#CartBtn_" + product_id));
-    //             $("#CartBtn_" + product_id).replaceWith(`<span id="CartBtn_${product_id}" onclick="addToCart('${product_id}')">${tooltipIcon}</span>`);
-    //             console.log($("#CartBtn_" + product_id));
-    //         },
-    //         error: function (xhr, status, error) {
-    //             toastr.error('Error fetching wishlist details:', error);
-    //         }
-    //     });
-    // }
+    // $('.ProductCard .CardWishDiv span, .ProductCard a').click(function (event) {
+    //     event.stopPropagation();
+    // });
 
+    //For Redirect Service Details Page
+    $('.ServiceCardDiv').click(function () {
+        window.location.href = $(this).data('href');
+    });
+    $('.ServiceCardDiv .ServiceName a').click(function (event) {
+        event.stopPropagation();
+    });
+    //For Redirect Product Details Page according to Category
+    $('.ProductCard').click(function () {
+        window.location.href = $(this).data('href');
+    });
+
+    // Prevent the click event from propagating when clicking on interactive elements
+    $('.ProductCard .ProductCategoryName a').click(function (event) {
+        event.stopPropagation();
+    });
     //Add to Cart
     function addToCart(product_id) {
         cartBtnTooltip = document.getElementById("cartBtnTooltip");
