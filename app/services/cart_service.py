@@ -63,12 +63,15 @@ class CartService(BaseService):
     def update_cart_status(self, user_id, product_id, cart_status):
         cart_item = self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
         if cart_item:
-            cart_item.cart_status = cart_status
-            self.status(cart_item.id)
+            cart_item.status = cart_status
+            cart_item.is_active = False
             db.session.commit()
+        cart_item = self.model.query.filter_by(user_id=user_id, product_id=product_id).first()
         return True
 
     def get_total_cart_items_by_user_id(self,user_id):
             cart_items = self.model.query.filter_by(user_id=user_id, is_active=True).count()
             return cart_items
+    
+        
 

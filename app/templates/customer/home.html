@@ -345,9 +345,10 @@
 
         <div class="col-md-12 col-lg-9 d-flex row">
             {% for service in data.services %}
-
+            {% if loop.index <= 6 %}
             <div class="item mb-4 col-lg-4 col-md-4 col-sm-3 col-6 ServiceCardDiv"
                 data-href="service_details/{{ service.id }}">
+
                 <div class="shadow p-1 mx-auto ServiceCard">
                     <div class="">
                         <img src="../../static/{{ service.service_img_urls[0]}}" class="card-img-top " alt="..."
@@ -395,8 +396,7 @@
                     </h6>
                 </div>
             </div>
-
-
+            {% endif %}
             {% endfor %}
         </div>
         <div class="col-md-12 col-lg-3 container mb-4 NewlyAddedProductHeader">
@@ -408,8 +408,10 @@
                 </ul>
             </div>
             <div id="NewlyAddedProductContainer">
-                {% for service in data.services %}
-                {% if service['service_review'] | length!=0 %}
+                {% for i in range(6) %}
+                {% if loop.index0 < data.services | length %}
+                    {% set service = data.services[loop.index0] %}
+                    {% if service['service_review'] | length != 0 %}
                 <div class="" id="NewlyAddedProductDiv">
                     <div class="d-flex">
                         <img src="../../static/{{ service.service_img_urls[0]}}" alt="">
@@ -521,8 +523,9 @@
                         </div>
                     </div>
                 </div>
-                {%endif%}
-                {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
             </div>
         </div>
 
@@ -546,8 +549,10 @@
                     </li>
                 </ul>
             </div>
+            
             <div id="NewlyAddedProductContainer">
                 {% for latest_products in data.products.latest_products %}
+                {% if loop.index <= 7 %}
                 <div class="d-flex mb-3 ms-3" id="NewlyAddedProductDiv">
                     <img src="../../static/{{latest_products.product_img_urls[0]}}" alt="">
                     <div class="ps-3 text-truncate overflow-hidden text-nowrap">
@@ -564,11 +569,13 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                {% endif %}
+            {% endfor %}
             </div>
         </div>
         <div class="col-md-12 col-lg-9 d-flex row">
             {% for category in data.categories %}
+            {% if loop.index <= 8 %}
             <div class="item mb-5 col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="card cardDiv mx-auto ProductCard" style="width: 12rem;height: 15rem;"
                     data-href="/products/?category={{category.id}}">
@@ -588,6 +595,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
 
         </div>

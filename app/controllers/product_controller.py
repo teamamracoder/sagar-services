@@ -218,6 +218,8 @@ class ProductController:
         qnaForm = CreateProductQnAForm()
         product = self.product_service.get_by_id(product_id)
         product_reviews = self.product_review_service.get_review_by_product_id(product_id)
+        cart=self.cart_service.get_cart_item_by_user_id_product_id(logged_in_user.id,product_id)
+
 
         sr=[{
             "id":product_review.id,
@@ -235,7 +237,8 @@ class ProductController:
         #     user_details.append(user_detail)
 
 
+
         product_qnas = self.product_qna_service.get_qna_by_product_id(product_id)
         if product is None:
             return render_template("error/something_went_wrong.html")
-        return render_template("customer/product_details.html",product=product, reviewForm=reviewForm, qnaForm=qnaForm, product_reviews=product_reviews,product_qnas=product_qnas,logged_in_user=logged_in_user)
+        return render_template("customer/product_details.html",product=product, reviewForm=reviewForm, qnaForm=qnaForm, product_reviews=product_reviews,product_qnas=product_qnas,logged_in_user=logged_in_user, cart=cart)

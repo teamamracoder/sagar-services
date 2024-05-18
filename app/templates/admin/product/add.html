@@ -129,12 +129,12 @@
                 },
                 price: {
                     required: true,
-                    digits:true,
+                    number:true,
                     
                 },
                 discount: {
                     required: true,
-                    digits:true,
+                    number:true,
                 },
                 stock: {
                     required: true,
@@ -153,22 +153,22 @@
             messages: {
                 product_name: {
                     required: "Please enter product name",
-                    minlength: "Name must be at least 3 characters long",
-                    maxlength: "Name must not exceed 40 characters"
+                    minlength: "Name must be at least 1 characters long",
+                    maxlength: "Name must not exceed 200 characters"
                 },
                 brand: {
                     required: "Please enter brand",
-                    minlength: "Name must be at least 2 characters long",
-                    maxlength: "Name must not exceed 20 characters"
+                    minlength: "Name must be at least 1 characters long",
+                    maxlength: "Name must not exceed 50 characters"
                 },
                 model: {
                     required: "Please enter model",
-                    minlength: "Name must be at least 3 characters long",
-                    maxlength: "Name must not exceed 20 characters"
+                    minlength: "Name must be at least 1 characters long",
+                    maxlength: "Name must not exceed 50 characters"
                 },
                 price: {
                     required: "Please enter price",
-                    digits: "Invalid Price",
+                    number: "Invalid Price",
                 },
                 stock: {
                     required: "Please enter stock quantity",
@@ -177,7 +177,7 @@
                 },
                 discount: {
                     required: "Please enter stock quantity",
-                    digits: "Invalid Discount",
+                    number: "Invalid Discount",
                 },
                 specifications: {
                     required: "Please enter Specifications",

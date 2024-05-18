@@ -179,7 +179,7 @@ class BookingController:
             get_user_id = self.staff_service.get_by_user_id(booking.staff_id) 
             staffs = self.user_service.get_by_id(get_user_id.user_id)
         else:
-            None
+            staffs = []
         return render_template("admin/booking/details.html",booking=booking,service=service,user=user,payment_status=payment_status,booking_logs=booking_logs,staffs=staffs)
 
 
@@ -228,7 +228,7 @@ class BookingController:
                     logged_in_user.city,
                     logged_in_user.state,
                     logged_in_user.street
-                ] if attr is not None or attr is not ''
+                ] if attr is not None or attr != ''
             )
             area_pincode = logged_in_user.pincode
         if request.form.get("pay_method")=='1':
@@ -262,11 +262,11 @@ class BookingController:
             if not logged_in_user.pincode:
                 self.user_service.update(
                     logged_in_user.id,
-                    landmark = request.form.get("StreetAddress"),
-                    address_line = request.form.get("Landmark"),
-                    city = request.form.get("Additional Address"),
-                    state = request.form.get("City"),
-                    street = request.form.get("State"),
+                    landmark = request.form.get("Landmark"),
+                    address_line = request.form.get("Additional Address"),
+                    city = request.form.get("City"),
+                    state = request.form.get("State"),
+                    street = request.form.get("StreetAddress"),
                     pincode = int(request.form.get("PinCode").strip())
                 )
 
