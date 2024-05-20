@@ -39,3 +39,7 @@
   - https://api.jquery.com/
 - bootstrap
   - https://getbootstrap.com/docs/5.3/getting-started/introduction/
+
+
+# issue-trakings 
+https://docs.google.com/spreadsheets/d/1WP_fv8xdd1uzSV3x6Uvdsnac9wB5DzEfuszCpsqk6Og/edit?pli=1#gid=399973901
